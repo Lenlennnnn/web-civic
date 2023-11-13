@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Program Form</title>
+    <link rel="stylesheet" href="css/post.css" />
+    <style>
+      /* Style for the location field container */
+      .location-input {
+        display: flex;
+        align-items: center;
+        position: relative;
+      }
+
+      /* Style for the input field */
+      .location-input input[type="text"] {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      /* Style for the "Set Location" button */
+      .set-location-button {
+        position: absolute;
+        top: 35%;
+        transform: translateY(-50%);
+        left: 10px;
+        text-decoration: none;
+        color: #dc3545;
+        /* Change this to your desired color */
+      }
+
+      /* Style for the icon within the button */
+      .set-location-button ion-icon {
+        font-size: 20px;
+        vertical-align: middle;
+      }
+
+      /* Style for the input field placeholder text */
+      #location::placeholder {
+        text-indent: 26px; /* Adjust this value to change the margin-left */
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container-post">
+      <h2>Post an event</h2>
+      <form>
+        <label for="title">Title:</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          required
+          placeholder="Event title"
+        />
+
+        <label for="campus">Civic Engagement:</label>
+        <select id="campus" name="campus" required>
+          <option value="" disabled selected>Choose Category</option>
+          <option value="nasugbu">Tree Planting</option>
+          <option value="balayan">Fund Raising</option>
+          <option value="malvar">Donations</option>
+          <option value="lemery">Clean Up Drive</option>
+          <option value="lipa">Feeding Program</option>
+          <option value="lobo">Relief Operations</option>
+          <option value="mabini">Seminar Training</option>
+          <option value="san juan">Teaching Literacy</option>
+        </select>
+
+        <label for="description">Description:</label>
+        <textarea
+          id="description"
+          name="description"
+          rows="4"
+          required
+          placeholder="Add text"
+        ></textarea>
+
+        <div class="date-fields">
+          <label for="start_date">Start Date:</label>
+          <input
+            type="date"
+            id="start_date"
+            name="start_date"
+            required
+            style="width: 190px"
+          />
+
+          <label for="end_date">End Date:</label>
+          <input
+            type="date"
+            id="end_date"
+            name="end_date"
+            required
+            style="width: 190px"
+          />
+        </div>
+
+        <!-- Google Maps Location Field -->
+        <div class="location-field">
+          <label for="location">Location:</label>
+          <div class="location-input">
+            <input
+              type="text"
+              id="location"
+              name="location"
+              placeholder="Set Location"
+              readonly
+            />
+            <a
+              href="https://maps.google.com"
+              target="_blank"
+              class="set-location-button"
+            >
+              <ion-icon name="locate"></ion-icon>
+            </a>
+          </div>
+        </div>
+
+        <label for="image">Upload Image:</label>
+        <input type="file" id="image" name="image" accept="image/*" required />
+
+        <button id="postB" type="submit">Post</button>
+        <button type="button" id="cancelButton">Cancel</button>
+      </form>
+    </div>
+    <script src="js/post.js"></script>
+  </body>
+</html>
