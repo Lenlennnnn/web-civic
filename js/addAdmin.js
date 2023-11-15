@@ -3,20 +3,24 @@ document.addEventListener("DOMContentLoaded", function () {
   const modal = document.getElementById("myModal");
   const modalContent = document.getElementById("modalContent");
   const closeModal = document.getElementById("closeModal");
+  const modalContentPlaceholder = document.getElementById(
+    "modalContentPlaceholder"
+  );
 
   openModalBtn.addEventListener("click", function () {
     modal.style.display = "block";
-    loadContentIntoModal();
+    if (modalContentPlaceholder) {
+      modalContent.innerHTML = modalContentPlaceholder.innerHTML;
+    }
   });
 
   closeModal.addEventListener("click", function () {
     modal.style.display = "none";
   });
 
-  // Load content from admin.html into the modal
   function loadContentIntoModal() {
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", "admin.php", true);
+    xhr.open("GET", "#", true); // Change 'group.html' to 'admin.html'
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4 && xhr.status === 200) {
         modalContent.innerHTML = xhr.responseText;

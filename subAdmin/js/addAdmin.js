@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Load content from admin.html into the modal
   function loadContentIntoModal() {
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", "admin.php", true);
+    xhr.open("GET", "admin.html", true);
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4 && xhr.status === 200) {
         modalContent.innerHTML = xhr.responseText;

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CiviCall Admin</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="images/icons/civicicon.png" />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="vendor/bootstrap/css/bootstrap.min.css"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="fonts/font-awesome-4.7.0/css/font-awesome.min.css"
+    />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="css/util.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <!--===============================================================================================-->
+    <style>
+      .txt2 {
+        text-decoration: underline;
+        margin-left: 540px;
+      }
+
+      .container-login100-form-btn {
+        cursor: pointer;
+      }
+      .container-login100-form-btn:hover {
+        color: aqua;
+      }
+
+      /* Modal container */
+      .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto; /* Enable scrolling if needed */
+        background-color: rgb(0, 0, 0); /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+      }
+
+      /* Modal content */
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* Centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 60%;
+        border-radius: 8px;
+      }
+
+      /* Close button */
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      /* Other styles for the form elements, adjust as needed */
+      .container-popup {
+        text-align: left;
+        padding: 16px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+      }
+
+      button[type="button"] {
+        background-color: #4caf50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button[type="button"]:hover {
+        background-color: #45a049;
+      }
+
+      #addBtn {
+        border: none;
+        background: none;
+        color: rgb(150, 150, 150);
+        margin-left: 220px;
+        font-size: small;
+      }
+
+      /* CSS for the modal */
+      .modalsupreg {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-contentsupreg {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+      }
+
+      .closesupreg {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .closesupreg:hover,
+      .closesupreg:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .container-popupsupreg {
+        text-align: center;
+      }
+
+      /* Modal Styles */
+      .modal-second {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      .modal-content-second {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      }
+
+      .container-popup-second {
+        text-align: center;
+        position: relative;
+      }
+
+      .close-second {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .close-second:hover,
+      .close-second:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      /* Form Styles */
+      form {
+        display: grid;
+        gap: 10px;
+      }
+
+      label {
+        font-weight: bold;
+        text-align: left;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      #usernamefield,
+      #passwordfield {
+        border: 1px solid white;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="limiter">
+      <div class="container-login100">
+        <div class="wrap-login100">
+          <div
+            class="login100-form-title"
+            style="background-image: url(images/homepage.jpg)"
+          >
+            <span class="login100-form-title-1"> Super Admin's Portal </span>
+          </div>
+          <div>
+            <a href="../subAdmin/login/sublogin.html" class="txt2">
+              Sub Admin Login
+            </a>
+          </div>
+          <form class="login100-form validate-form">
+            <div
+              class="wrap-input100 validate-input m-b-26"
+              data-validate="Username is required"
+            >
+              <span class="label-input100">Username</span>
+              <input
+                class="input100"
+                type="text"
+                name="username"
+                placeholder="Enter username"
+                id="usernamefield"
+              />
+              <span class="focus-input100"></span>
+            </div>
+
+            <div
+              class="wrap-input100 validate-input m-b-18"
+              data-validate="Password is required"
+            >
+              <span class="label-input100">Password</span>
+              <input
+                class="input100"
+                type="password"
+                name="pass"
+                placeholder="Enter password"
+                id="passwordfield"
+              />
+              <span class="focus-input100"></span>
+            </div>
+
+            <div class="flex-sb-m w-full p-b-30">
+              <div class="contact100-form-checkbox">
+                <input
+                  class="input-checkbox100"
+                  id="ckb1"
+                  type="checkbox"
+                  name="remember-me"
+                />
+                <label class="label-checkbox100" for="ckb1">
+                  Remember Me
+                </label>
+              </div>
+
+              <div>
+                <a href="../forgot.html" class="txt1"> Forgot Password? </a>
+              </div>
+            </div>
+
+            <div class="container-login100-form-btn">
+              <a class="login100-form-btn" id="btnlogin">Login</a>
+            </div>
+          </form>
+          <a href="#" id="openModalBtnsupreg">
+            <button type="button" class="btnsupreg" id="addBtn">
+              Register Super Admin Account
+            </button>
+          </a>
+
+          <div class="modalsupreg" id="myModalsupreg">
+            <div class="modal-contentsupreg" id="modalContentsupreg">
+              <div class="container-popupsupreg">
+                <span class="closesupreg" id="closeModalsupreg">&times;</span>
+
+                <!-- Header -->
+                <h2>Enter Code</h2>
+
+                <!-- Textfield for text and number input -->
+                <input
+                  type="text"
+                  id="textNumberField"
+                  name="textNumberField"
+                  required
+                />
+
+                <!-- Proceed Button -->
+                <button type="button" id="proceedBtn">Proceed</button>
+              </div>
+            </div>
+          </div>
+          <!-- Second Modal -->
+          <div class="modal-second" id="mySecondModal">
+            <div class="modal-content-second">
+              <div class="container-popup-second">
+                <span class="close-second" id="closeSecondModal">&times;</span>
+                <h2>Create Admin Account</h2>
+                <form id="MainForm">
+                  <label for="firstname">First Name:</label>
+                  <input
+                    type="text"
+                    id="firstname"
+                    name="firstname"
+                    required
+                    placeholder="Your first name"
+                  />
+
+                  <label for="lastname">Middle Name:</label>
+                  <input
+                    type="text"
+                    id="lastname"
+                    name="lastname"
+                    required
+                    placeholder="Your middle name"
+                  />
+
+                  <label for="middlename">Last Name:</label>
+                  <input
+                    type="text"
+                    id="middlename"
+                    name="middlename"
+                    required
+                    placeholder="Your last name"
+                  />
+
+                  <label for="campus">Gender:</label>
+                  <select id="gender" name="campus" required>
+                    <option value="" disabled selected>Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+
+                  <label for="email">Email Address:</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    placeholder="example@email.com"
+                  />
+
+                  <label for="password">Password:</label>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    required
+                    placeholder="Your password"
+                  />
+                  <label for="password">Confirm Password:</label>
+                  <input
+                    type="password"
+                    id="confirmpassword"
+                    name="password"
+                    required
+                    placeholder="Re-type password"
+                  />
+
+                  <button type="button" id="subbtn">Create Account</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="js/main.js"></script>
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!-- Add an event listener to the button -->
+    <script>
+      // Get the modal elements
+      const modal = document.getElementById("myModalsupreg");
+      const openModalBtn = document.getElementById("openModalBtnsupreg");
+      const closeModalBtn = document.getElementById("closeModalsupreg");
+      const proceedBtn = document.getElementById("proceedBtn");
+      const secondModal = document.getElementById("mySecondModal");
+
+      // Open the modal
+      openModalBtn.addEventListener("click", () => {
+        modal.style.display = "block";
+      });
+
+      // Close the modal
+      closeModalBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+      });
+
+      // Close the modal when clicking outside the modal content
+      window.addEventListener("click", (event) => {
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      });
+
+      // Functionality when clicking the Proceed button in the first modal
+      proceedBtn.addEventListener("click", () => {
+        const textNumberValue =
+          document.getElementById("textNumberField").value;
+
+        // Check if the entered value is "leonard54321"
+        if (textNumberValue === "leonard54321") {
+          // Hide the first modal
+          modal.style.display = "none";
+
+          // Show the second modal
+          secondModal.style.display = "block";
+
+          // Add functionality to close the second modal
+          const closeSecondModalBtn =
+            document.getElementById("closeSecondModal");
+          closeSecondModalBtn.addEventListener("click", () => {
+            secondModal.style.display = "none";
+          });
+
+          // Close the second modal if clicking outside the modal content
+          window.addEventListener("click", (event) => {
+            if (event.target === secondModal) {
+              secondModal.style.display = "none";
+            }
+          });
+        } else {
+          // Optionally, provide feedback for an incorrect input value
+          alert("Incorrect input. Please enter the correct code.");
+        }
+      });
+    </script>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        push,
+        set,
+        get,
+      } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-database.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+      // import { LoginWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+        authDomain: "civicall-app-a54d1.firebaseapp.com",
+        databaseURL:
+          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "civicall-app-a54d1",
+        storageBucket: "civicall-app-a54d1.appspot.com",
+        messagingSenderId: "909514632764",
+        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+        measurementId: "G-0BVYE5XJGV",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const auth = getAuth(app);
+
+      const loginBtn = document.getElementById("btnlogin");
+
+      loginBtn.addEventListener("click", async function () {
+        const email = document.getElementById("usernamefield").value;
+        const password = document.getElementById("passwordfield").value;
+
+        try {
+          // Sign in the user using Firebase Authentication
+          const adminCredential = await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+          const admin = adminCredential.user;
+
+          // Retrieve the reference to the specific node using the user's UID
+          const supAdminRef = ref(db, `SuperAdminAcc/${admin.uid}`);
+
+          // Retrieve the data from the SubAdminAcc node with the provided UID
+          const snapshot = await get(supAdminRef);
+
+          // Check if the snapshot exists and compare the passwords
+          if (snapshot.exists()) {
+            const adminData = snapshot.val();
+            // Assuming 'email' is stored and is used for comparison
+            if (adminData.email === email) {
+              // Authentication successful, redirect to the dashboard
+              window.location.href = "../supdashboard.html";
+            } else {
+              alert("Login failed. Please check your credentials.");
+            }
+          } else {
+            alert("Admin Account not found.");
+          }
+        } catch (error) {
+          console.error("Firebase authentication error:", error);
+
+          alert(
+            "Login failed. Please check your credentials or try again later."
+          );
+        }
+      });
+
+      let firstname = document.getElementById("firstname");
+      let middlename = document.getElementById("middlename");
+      let lastname = document.getElementById("lastname");
+      let password = document.getElementById("password");
+      let gender = document.getElementById("gender");
+      let email = document.getElementById("email");
+      let submit = document.getElementById("subbtn");
+
+      submit.addEventListener("click", RegisterUser);
+
+      function RegisterUser(event) {
+        event.preventDefault();
+
+        createUserWithEmailAndPassword(auth, email.value, password.value)
+          .then((userCredential) => {
+            // User registered successfully
+            const user = userCredential.user;
+
+            // Store additional user data in the database
+            saveUserData(user.uid);
+          })
+          .catch((error) => {
+            // Handle errors here
+            alert(error.message);
+            console.error(error);
+          });
+      }
+
+      function saveUserData(userId) {
+        const dbRef = ref(db);
+
+        // Create a reference to the specific user's data using their unique ID
+        const userRef = ref(db, `SuperAdminAcc/${userId}`);
+
+        // Set the user data in the database including the role as "admin"
+        set(userRef, {
+          firstname: firstname.value,
+          middlename: middlename.value,
+          lastname: lastname.value,
+          gender: gender.value,
+          email: email.value,
+          role: "superadmin", // Set the role of this user as "admin"
+          // New fields to be added
+          birthday: "", // Set empty for now, this will be updated in the future
+          contactNumber: "", // Set empty for now
+          position: "", // Set empty for now
+        })
+          .then(() => {
+            alert("Admin Added Successfully");
+          })
+          .catch((error) => {
+            alert("Error: " + error);
+            console.error(error);
+          });
+      }
+    </script>
+  </body>
+</html>
