@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Civicall Admin Dashboard</title>
     <link rel="icon" type="image/png" href="login/images/icons/civicicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
     <link rel="stylesheet" href="css/dashboard.css" />
     <link rel="stylesheet" href="css/post.css" />
 
@@ -283,9 +287,237 @@
       .page-loading {
         opacity: 0;
       }
+
+      .table-responsive {
+        margin: 0;
+      }
+      .table-wrapper {
+        min-width: 500px;
+        background: #fff;
+        padding: 20px 25px;
+        border-radius: 3px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+      }
+      .table-wrapper .btn {
+        float: right;
+        color: #333;
+        background-color: #fff;
+        border-radius: 3px;
+        border: none;
+        outline: none !important;
+        margin-left: 10px;
+      }
+      .table-wrapper .btn:hover {
+        color: #333;
+        background: #f2f2f2;
+      }
+      .table-wrapper .btn.btn-primary {
+        color: #fff;
+        background: #03a9f4;
+      }
+      .table-wrapper .btn.btn-primary:hover {
+        background: #03a3e7;
+      }
+      .table-title .btn {
+        font-size: 13px;
+        border: none;
+      }
+      .table-title .btn i {
+        float: left;
+        font-size: 21px;
+        margin-right: 5px;
+      }
+      .table-title .btn span {
+        float: left;
+        margin-top: 2px;
+      }
+      .table-title {
+        color: #fff;
+        background: #343a40;
+        padding: 16px 25px;
+        margin: -20px -25px 10px;
+        border-radius: 3px 3px 0 0;
+      }
+      .table-title h2 {
+        margin: 5px 0 0;
+        font-size: 24px;
+      }
+
+      .table-filter .filter-group {
+        float: right;
+        margin-left: 15px;
+      }
+      .table-filter input,
+      .table-filter select {
+        height: 40px;
+        border-radius: 3px;
+        border-color: #ddd;
+        box-shadow: none;
+        margin-right: 20px;
+      }
+
+      .table-filter .btn {
+        height: 34px;
+      }
+      .table-filter label {
+        font-weight: normal;
+        margin-left: 10px;
+      }
+      .table-filter select,
+      .table-filter input {
+        display: inline-block;
+        margin-left: 5px;
+      }
+      .table-filter input {
+        width: 200px;
+        display: inline-block;
+      }
+      .filter-group select.form-control {
+        width: 110px;
+      }
+      .filter-icon {
+        float: right;
+        margin-top: 7px;
+      }
+      .filter-icon i {
+        font-size: 18px;
+        opacity: 0.7;
+      }
+
+      .filter-group {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-bottom: 10px;
+      }
+
+      .filter-group select {
+        margin-left: 10px; /* Adjust as needed */
+      }
+
+      .filter-group label {
+        font-weight: normal;
+        margin-left: 5px; /* Adjust as needed */
+      }
+
+      #searchfilter {
+        position: relative;
+        left: 120px;
+      }
+
+      table.table tr th,
+      table.table tr td {
+        border-color: #e9e9e9;
+        padding: 12px 15px;
+        vertical-align: middle;
+      }
+      table.table tr th:first-child {
+        width: 60px;
+      }
+      table.table tr th:last-child {
+        width: 80px;
+      }
+      table.table-striped tbody tr:nth-of-type(odd) {
+        background-color: #fcfcfc;
+      }
+      table.table-striped.table-hover tbody tr:hover {
+        background: #f5f5f5;
+      }
+      table.table th i {
+        font-size: 13px;
+        margin: 0 5px;
+        cursor: pointer;
+      }
+      table.table td a {
+        font-weight: bold;
+        color: #566787;
+        display: inline-block;
+        text-decoration: none;
+      }
+      table.table td a:hover {
+        color: #2196f3;
+      }
+
+      table.table .eventpic {
+        margin: 0px;
+        width: 300px;
+        height: 150px;
+        padding: 0px;
+        border-radius: 3%;
+      }
+
+      .text-success {
+        color: #10c469;
+      }
+      .text-info {
+        color: #62c9e8;
+      }
+      .text-warning {
+        color: #ffc107;
+      }
+      .text-danger {
+        color: #dc3545;
+      }
+
+      /* Targeting the button inside the .col-sm-8 */
+      .col-sm-8 a.btn {
+        /* Your styles here */
+        display: inline-block;
+        background-color: #28a745;
+        color: #ffffff;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        position: relative;
+        bottom: 35px;
+      }
+
+      .col-sm-8 a.btn:hover {
+        /* Styles when hovering over the button */
+        background-color: #1f7f3b;
+        color: white;
+      }
+
+      #btnfilter {
+        position: relative;
+        left: 100px;
+        top: 2px;
+      }
+
+      #eventfilter {
+        position: relative;
+        right: 210px;
+      }
+
+      #searchfieldcontainer {
+        position: relative;
+        right: 24px;
+      }
+
+      #tableevents {
+        position: relative;
+        bottom: 10px;
+      }
+
+      /* Style for the button */
+      .vieweventdet {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        font-size: 16px;
+        transition: background-color 0.3s, transform 0.3s;
+      }
+
+      /* Hover effect: Darker color and larger size */
+      .vieweventdet:hover {
+        background-color: #9c2e3b; /* Darker color */
+        transform: scale(1.1); /* Enlarge button */
+        cursor: pointer;
+      }
     </style>
   </head>
-
   <body>
     <!-- =============================================== Navigation ================================================ -->
     <div class="container1">
@@ -301,7 +533,7 @@
           </li>
 
           <li>
-            <a href="dashboard.html">
+            <a href="subdashboard.html">
               <span class="icon">
                 <ion-icon name="grid-outline"></ion-icon>
               </span>
@@ -336,15 +568,6 @@
                 <ion-icon name="document-text-outline"></ion-icon>
               </span>
               <span class="title">Reports </span>
-            </a>
-          </li>
-
-          <li>
-            <a href="userManagement.html" class="page-transition">
-              <span class="icon">
-                <ion-icon name="bar-chart-outline"></ion-icon>
-              </span>
-              <span class="title">User Management</span>
             </a>
           </li>
         </ul>
@@ -492,7 +715,7 @@
               </div>
             </div>
           </a>
-          <a href="totalStudents.html" class="no-underline">
+          <a href="totalStudent.html" class="no-underline">
             <div class="card">
               <div>
                 <div class="numbers">2</div>
@@ -507,64 +730,103 @@
         </div>
 
         <!-- =============================================== upcoming Events ================================================ -->
+        <!-- =============================================== upcoming Events ================================================ -->
         <div class="upcoming">
           <div class="upcomingEvents">
-            <div class="cardHeader">
-              <h2>Upcoming Events</h2>
-              <a href="#" class="btn" id="openPostModal">Post</a>
-              <div id="modalContainer" class="modal">
-                <div class="modal-content">
-                  <!-- Content from post.html will be loaded here -->
+            <div class="container-xl">
+              <div class="table-responsive">
+                <div class="table-wrapper">
+                  <div class="table-title">
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <h2>Upcoming Events</h2>
+                      </div>
+                      <div class="col-sm-8">
+                        <a href="#" class="btn" id="openPostModal">Post</a>
+                        <div id="modalContainer" class="modal">
+                          <div class="modal-content">
+                            <!-- Content from post.html will be loaded here -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="table-filter">
+                    <div class="row">
+                      <div class="col-sm-9">
+                        <div id="searchfieldcontainer">
+                          <button
+                            type="button"
+                            id="btnfilter"
+                            class="btn btn-primary"
+                          >
+                            <i class="fa fa-search"></i>
+                          </button>
+
+                          <div class="filter-group" id="searchfilter">
+                            <label>Name</label>
+                            <input type="text" class="form-control" />
+                          </div>
+                        </div>
+
+                        <div class="filter-group" id="eventfilter">
+                          <label>Location</label>
+                          <select class="form-control">
+                            <option>All</option>
+                            <option>Berlin</option>
+                            <option>London</option>
+                            <option>Madrid</option>
+                            <option>New York</option>
+                            <option>Paris</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <table
+                    class="table table-striped table-hover"
+                    id="tableevents"
+                  >
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Event</th>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>1</td>
+                        <td>
+                          <a href="#"
+                            ><img
+                              src="img/linis.jpg"
+                              class="eventpic"
+                              alt="Avatar"
+                          /></a>
+                        </td>
+                        <td>Being clean is the only choice</td>
+                        <td>2023/08/20</td>
+                        <td>
+                          <a href="upcomEventInfo.html">
+                            <button
+                              type="button"
+                              class="vieweventdet"
+                              title="View Details"
+                              data-toggle="tooltip"
+                            >
+                              View
+                            </button></a
+                          >
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
-
-            <!-- Upcoming Events Container -->
-            <table class="tableIto">
-              <thead>
-                <tr>
-                  <th class="number-column">No.</th>
-                  <th>Title</th>
-                  <th>Civic Engagement</th>
-                  <th class="date-column">Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="number-column">1</td>
-                  <td>Learn Teaching</td>
-                  <td>Teaching Literacy</td>
-                  <td class="date-column">Ongoing</td>
-                </tr>
-                <tr
-                  class="clickable-row"
-                  onclick="window.location.href='upcomEventInfo.html';"
-                >
-                  <td class="number-column">2</td>
-                  <td>Clean and Green</td>
-                  <td>Tree Planting</td>
-                  <td class="date-column">2023-08-20</td>
-                </tr>
-                <tr>
-                  <td class="number-column">3</td>
-                  <td>Null</td>
-                  <td>Null</td>
-                  <td class="date-column">Null</td>
-                </tr>
-                <tr>
-                  <td class="number-column">4</td>
-                  <td>Null</td>
-                  <td>Null</td>
-                  <td class="date-column">Null</td>
-                </tr>
-                <tr>
-                  <td class="number-column">5</td>
-                  <td>Null</td>
-                  <td>Null</td>
-                  <td class="date-column">Null</td>
-                </tr>
-              </tbody>
-            </table>
           </div>
         </div>
       </div>
@@ -620,6 +882,35 @@
         });
       });
     </script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+      } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-database.js";
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+        authDomain: "civicall-app-a54d1.firebaseapp.com",
+        databaseURL:
+          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "civicall-app-a54d1",
+        storageBucket: "civicall-app-a54d1.appspot.com",
+        messagingSenderId: "909514632764",
+        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+        measurementId: "G-0BVYE5XJGV",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getDatabase(app);
+    </script>
+
     <script src="js/dashboard.js"></script>
     <script src="js/post.js"></script>
 

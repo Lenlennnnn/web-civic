@@ -219,7 +219,7 @@
   <body>
     <div class="main">
       <div class="topbar">
-        <a href="dashboard.html">
+        <a href="subdashboard.html">
           <div class="back-button">
             <ion-icon name="return-down-back-outline"></ion-icon>
           </div>
@@ -231,7 +231,7 @@
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
         ></script>
       </div>
-      <h1 class="h1-group">User Management</h1>
+      <h1 class="h1-group">Total Students</h1>
       <a href="#" id="openModalBtn">
         <button type="button" class="btn btn-primary custom-button" id="addBtn">
           Add Account
@@ -283,8 +283,8 @@
                 placeholder="Your last name"
               />
 
-              <label for="campus">Gender:</label>
-              <select id="campus" name="campus" required>
+              <label for="gender">Gender:</label>
+              <select id="gender" name="gender" required>
                 <option value="" disabled selected>Select Gender</option>
                 <option value="nasugbu">Male</option>
                 <option value="nasugbu">Female</option>
@@ -292,8 +292,8 @@
 
               <label for="campus">Campus:</label>
               <input
-                type="email"
-                id="email"
+                type="campus"
+                id="showcampus"
                 name="email"
                 required
                 value="JPLPC Malvar"
@@ -319,13 +319,13 @@
               <label for="password">Confirm Password:</label>
               <input
                 type="password"
-                id="password"
+                id="confirmpassword"
                 name="password"
                 required
                 placeholder="Re-type password"
               />
 
-              <button type="submit">Create Account</button>
+              <button type="submit" id="createbtnacc">Create Account</button>
             </form>
           </div>
         </div>
@@ -333,43 +333,16 @@
       <div class="container py-5">
         <div class="row">
           <table id="example" class="table table-striped" style="width: 100%">
-            <thead>
+            <thead class="headerr">
               <tr>
-                <th>No.</th>
+                <th>UID</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Gender</th>
-                <th>NSTP Program</th>
-                <th>Section</th>
-                <th>User Type</th>
+                <th>Campus</th>
+                <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              <tr
-                class="clickable-row"
-                onclick="window.location.href='userManageInfo.html';"
-              >
-                <td>1</td>
-                <td>Cruz, Juan D.</td>
-                <td>20-12345@g.batstate.edu.ph</td>
-                <td>Male</td>
-                <td>Civic Welfare Traing Service</td>
-                <td>4102</td>
-                <td>Student</td>
-              </tr>
-              <tr
-                class="clickable-row"
-                onclick="window.location.href='userManageInfo2.html';"
-              >
-                <td>2</td>
-                <td>Draguin, Sam C.</td>
-                <td>20-54321@g.batstate.edu.ph</td>
-                <td>Male</td>
-                <td>Civic Welfare Traing Service</td>
-                <td>-</td>
-                <td>Graduated</td>
-              </tr>
-            </tbody>
+            <tbody id="tbody1" style="font-size: 13px"></tbody>
           </table>
         </div>
       </div>
@@ -380,6 +353,164 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script>
       new DataTable("#example");
+    </script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+        push,
+        set,
+        onValue,
+        onChildRemoved,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+        authDomain: "civicall-app-a54d1.firebaseapp.com",
+        databaseURL:
+          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "civicall-app-a54d1",
+        storageBucket: "civicall-app-a54d1.appspot.com",
+        messagingSenderId: "909514632764",
+        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+        measurementId: "G-0BVYE5XJGV",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const auth = getAuth(app);
+
+      let firstname = document.getElementById("firstname");
+      let middlename = document.getElementById("middlename");
+      let lastname = document.getElementById("lastname");
+      let password = document.getElementById("password");
+      let gender = document.getElementById("gender");
+      let campus = document.getElementById("campus");
+      let email = document.getElementById("email");
+      let submit = document.getElementById("createbtnacc"); // Update the submit button ID
+
+      submit.addEventListener("click", RegisterUser);
+
+      function RegisterUser(event) {
+        event.preventDefault();
+
+        createUserWithEmailAndPassword(auth, email.value, password.value)
+          .then((userCredential) => {
+            // User registered successfully
+            const user = userCredential.user;
+
+            // Store additional user data in the database
+            saveUserData(user.uid);
+          })
+          .catch((error) => {
+            // Handle errors here
+            alert(error.message);
+            console.error(error);
+          });
+      }
+      function generateTimestamp() {
+        const currentDate = new Date();
+        return currentDate.toISOString();
+      }
+
+      function saveUserData(userId) {
+        const dbRef = ref(db);
+        const userRef = ref(db, `Users/${userId}`);
+
+        // Set the user data in the database including the verificationStatus as "true"
+        set(userRef, {
+          firstname: firstname.value,
+          middlename: middlename.value,
+          lastname: lastname.value,
+          gender: gender.value,
+          campus: campus.value,
+          email: email.value,
+          CurrentEngagement: 0,
+          verificationStatus: true,
+          uid: userId,
+          ImageProfile: "",
+          timestamp: generateTimestamp(),
+          address: "",
+          birthday: "",
+          userType: "",
+          phoneno: "",
+        })
+          .then(() => {
+            alert("User Added Successfully");
+            // You can add any additional actions after user creation if needed
+          })
+          .catch((error) => {
+            alert("Error: " + error);
+            console.error(error);
+          });
+      }
+
+      const UsersRef = ref(db, "Users");
+      const loggedInUserId = sessionStorage.getItem("loggedInUserId");
+      const loggedInUserEmail = sessionStorage.getItem("loggedInUserEmail");
+      const initializeDataTable = () => {
+        if ($.fn.DataTable.isDataTable("#example")) {
+          $("#example").DataTable().destroy();
+        }
+
+        const dataTable = $("#example").DataTable({
+          columns: [
+            { data: "userUID" },
+            { data: "fullname" },
+            { data: "email" },
+            { data: "campus" },
+            { data: "Action" },
+          ],
+        });
+
+        return dataTable;
+      };
+
+      const dataTable = initializeDataTable();
+
+      const populateDataTable = () => {
+        onValue(UsersRef, (snapshot) => {
+          const usersData = snapshot.val();
+
+          dataTable.clear();
+
+          if (usersData) {
+            Object.keys(usersData).forEach((userId) => {
+              const user = usersData[userId];
+
+              dataTable.row.add({
+                userUID: userId,
+                fullname: `${user.firstname} ${user.lastname}`,
+                email: user.email,
+                campus: user.campus,
+                Action:
+                  '<button class="btn btn-danger view-button" data-toggle="modal" data-target="#exampleModalLong">View</button>',
+              });
+            });
+
+            dataTable.draw();
+          } else {
+            console.log("No data available in Users collection.");
+            dataTable.clear().draw();
+          }
+        });
+
+        onChildRemoved(UsersRef, (removedSnapshot) => {
+          const removedUserId = removedSnapshot.key;
+
+          dataTable
+            .rows((idx, data) => data.userUID === removedUserId)
+            .remove()
+            .draw();
+        });
+      };
+
+      populateDataTable();
     </script>
   </body>
 </html>

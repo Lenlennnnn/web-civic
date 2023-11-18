@@ -56,7 +56,7 @@
   <body>
     <div class="main">
       <div class="topbar">
-        <a href="userManagement.html">
+        <a href="totalStudents.html">
           <div class="back-button">
             <ion-icon name="return-down-back-outline"></ion-icon>
           </div>
@@ -78,34 +78,154 @@
                 <th>No.</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Gender</th>
-                <th>NSTP Program</th>
-                <th>Campus</th>
+                <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              <tr
-                class="clickable-row"
-                onclick="window.location.href='validateStudentInfo.html';"
-              >
-                <td>1</td>
-                <td>Cruz, Juan D.</td>
-                <td>20-12345@g.batstate-u.edu.ph</td>
-                <td>Male</td>
-                <td>Civic Welfare Traing Service</td>
-                <td>JPLPC Malvar Batangas</td>
-              </tr>
-            </tbody>
+            <tbody id="tbody1" style="font-size: 13px"></tbody>
           </table>
         </div>
       </div>
     </div>
-    <script src="js/addAdmin.js"></script>
+
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script>
       new DataTable("#example");
+    </script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+        push,
+        set,
+        onValue,
+        onChildRemoved,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+        authDomain: "civicall-app-a54d1.firebaseapp.com",
+        databaseURL:
+          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "civicall-app-a54d1",
+        storageBucket: "civicall-app-a54d1.appspot.com",
+        messagingSenderId: "909514632764",
+        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+        measurementId: "G-0BVYE5XJGV",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const auth = getAuth(app);
+
+      let firstname = document.getElementById("firstname");
+      let middlename = document.getElementById("middlename");
+      let lastname = document.getElementById("lastname");
+      let password = document.getElementById("password");
+      let gender = document.getElementById("gender");
+      let campus = document.getElementById("campus");
+      let email = document.getElementById("email");
+      let nstp = document.getElementById("nstp");
+
+      function saveUserData(userId) {
+        const dbRef = ref(db);
+        const userRef = ref(db, `Users/${userId}`);
+
+        // Set the user data in the database including the verificationStatus as "true"
+        set(userRef, {
+          firstname: firstname.value,
+          middlename: middlename.value,
+          lastname: lastname.value,
+          gender: gender.value,
+          campus: campus.value,
+          nstp: nstp.value,
+          email: email.value,
+          CurrentEngagement: 0,
+          verificationStatus: true,
+          uid: userId,
+          ImageProfile: "",
+          timestamp: generateTimestamp(),
+          address: "",
+          birthday: "",
+          userType: "",
+          phoneno: "",
+        })
+          .then(() => {
+            alert("User Added Successfully");
+            // You can add any additional actions after user creation if needed
+          })
+          .catch((error) => {
+            alert("Error: " + error);
+            console.error(error);
+          });
+      }
+
+      const UsersRef = ref(db, "Users");
+
+      const initializeDataTable = () => {
+        if ($.fn.DataTable.isDataTable("#example")) {
+          $("#example").DataTable().destroy();
+        }
+
+        const dataTable = $("#example").DataTable({
+          columns: [
+            { data: "userUID" },
+            { data: "fullname" },
+            { data: "email" },
+
+            { data: "Action" },
+          ],
+        });
+
+        return dataTable;
+      };
+
+      const dataTable = initializeDataTable();
+
+      const populateDataTable = () => {
+        onValue(UsersRef, (snapshot) => {
+          const usersData = snapshot.val();
+
+          dataTable.clear();
+
+          if (usersData) {
+            Object.keys(usersData).forEach((userId) => {
+              const user = usersData[userId];
+
+              dataTable.row.add({
+                userUID: userId,
+                fullname: `${user.firstname} ${user.lastname}`,
+                email: user.email,
+
+                Action:
+                  '<button class="btn btn-danger view-button" data-toggle="modal" data-target="#exampleModalLong">View</button>',
+              });
+            });
+
+            dataTable.draw();
+          } else {
+            console.log("No data available in Users collection.");
+            dataTable.clear().draw();
+          }
+        });
+
+        onChildRemoved(UsersRef, (removedSnapshot) => {
+          const removedUserId = removedSnapshot.key;
+
+          dataTable
+            .rows((idx, data) => data.userUID === removedUserId)
+            .remove()
+            .draw();
+        });
+      };
+
+      populateDataTable();
     </script>
   </body>
 </html>

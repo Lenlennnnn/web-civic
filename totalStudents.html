@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Total Students</title>
+    <title>User Management</title>
     <link rel="icon" type="image/png" href="login/images/icons/civicicon.png" />
     <link rel="stylesheet" href="css/dashboard.css" />
     <link
@@ -20,7 +20,7 @@
         position: relative;
         right: 235px;
         width: 200%;
-        bottom: 50px;
+        bottom: 40px;
       }
 
       .h1-group {
@@ -150,6 +150,33 @@
         border: solid 1px black;
       }
 
+      /* validation button */
+      #studentValidation {
+        position: relative;
+        bottom: 133px;
+        left: 1010px;
+      }
+
+      #valBtn {
+        background-color: #fd7e14;
+      }
+
+      .notification-link {
+        position: relative;
+        display: inline-block;
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -15px;
+        right: -10px;
+        background-color: red;
+        color: white;
+        border-radius: 50%;
+        padding: 5px 10px;
+        font-size: 12px;
+      }
+
       .back-button:hover {
         background-color: #8c0000;
         /* Change background color on hover */
@@ -167,13 +194,50 @@
       body {
         background-color: #e1e1e1;
       }
+
+      .radio-group {
+        display: flex;
+        align-items: center;
+        position: relative;
+        right: 80px;
+      }
+
+      .radio-group input[type="radio"] {
+        margin-right: -150px;
+        margin-top: 10px;
+        /* Adjust the margin as needed */
+      }
+
+      /* Optional: To align the labels properly with the radio buttons */
+      .radio-group label {
+        display: flex;
+        align-items: center;
+      }
+
+      .modal-dialog {
+        height: 600px;
+        max-width: 100%;
+      }
+      .image-container {
+        display: flex;
+        justify-content: center; /* Horizontally center */
+        align-items: center; /* Vertically center */
+        margin-bottom: 20px; /* Adjust margin as needed */
+      }
+
+      .rounded-image {
+        border-radius: 50%;
+        border: 2px solid black;
+        width: 150px;
+        height: 150px;
+      }
     </style>
   </head>
 
   <body>
     <div class="main">
       <div class="topbar">
-        <a href="dashboard.html">
+        <a href="supdashboard.html">
           <div class="back-button">
             <ion-icon name="return-down-back-outline"></ion-icon>
           </div>
@@ -186,61 +250,399 @@
         ></script>
       </div>
       <h1 class="h1-group">Total Students</h1>
+      <a href="#" id="openModalBtn">
+        <button
+          type="button"
+          class="btn btn-primary custom-button"
+          id="adduserBtn"
+        >
+          Add Account
+        </button>
+      </a>
+      <!-- validate button -->
+      <a
+        href="validateStudent.html"
+        id="studentValidation"
+        class="notification-link"
+      >
+        <button type="button" class="btn btn-primary custom-button" id="valBtn">
+          Validation
+          <span class="notification-badge">new</span>
+        </button>
+      </a>
 
+      <div class="modal" id="myModal">
+        <div class="modal-content" id="modalContent">
+          <div class="container-popup">
+            <span class="close" id="closeModal">&times;</span>
+
+            <h2>Create User Account</h2>
+            <form>
+              <label for="firstname">First Name:</label>
+              <input
+                type="text"
+                id="firstname"
+                name="firstname"
+                required
+                placeholder="Your first name"
+              />
+
+              <label for="middlename">Middle Name:</label>
+              <input
+                type="text"
+                id="middlename"
+                name="lastname"
+                required
+                placeholder="Your middle name"
+              />
+
+              <label for="lastname">Last Name:</label>
+              <input
+                type="text"
+                id="lastname"
+                name="middlename"
+                required
+                placeholder="Your last name"
+              />
+
+              <label for="campus">Gender:</label>
+              <select id="gender" name="campus" required>
+                <option value="" disabled selected>Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+
+              <label for="campus">Campus:</label>
+              <select id="campus" name="campus" required>
+                <option value="" disabled selected>Select campus</option>
+                <option value="ARASOF Nasugbu Campus">
+                  ARASOF Nasugbu Campus
+                </option>
+                <option value="Balayan Campus">Balayan Campus</option>
+                <option value="JPLPC Malvar Campus">JPLPC Malvar Campus</option>
+                <option value="Lemery Campus">Lemery Campus</option>
+                <option value="Lipa Campus">Lipa Campus</option>
+                <option value="Lobo Campus">Lobo Campus</option>
+                <option value="Mabini Campus">Mabini Campus</option>
+                <option value="Pablo Borbon Campus I">
+                  Pablo Borbon Campus I
+                </option>
+                <option value="Pablo Borbon Campus II">
+                  Pablo Borbon Campus II
+                </option>
+                <option value="Rosario Campus">Rosario Campus</option>
+                <option value="San Juan Campus">San Juan Campus</option>
+              </select>
+
+              <label for="email">Email Address:</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                placeholder="example@email.com"
+              />
+
+              <label for="password">Password:</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                placeholder="Your password"
+              />
+              <label for="password">Confirm Password:</label>
+              <input
+                type="password"
+                id="confirmpassword"
+                name="password"
+                required
+                placeholder="Re-type password"
+              />
+
+              <button type="submit" id="createbtnacc">Create Account</button>
+            </form>
+          </div>
+        </div>
+      </div>
       <div class="container py-5">
         <div class="row">
           <table id="example" class="table table-striped" style="width: 100%">
-            <thead>
+            <thead class="headerr">
               <tr>
-                <th>No.</th>
+                <th>UID</th>
                 <th>Name</th>
-                <th>SR-Code</th>
-                <th>Gender</th>
+                <th>Email</th>
                 <th>Campus</th>
-                <th>NSTP Program</th>
-                <th>Year Level</th>
-                <th>Active Points</th>
+                <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              <tr
-                class="clickable-row"
-                onclick="window.location.href='totalStudentInfo.html';"
-              >
-                <td>1</td>
-                <td>Cruz, Juan D.</td>
-                <td>20-12345</td>
-                <td>Male</td>
-                <td>Malvar</td>
-                <td>Civic Welfare Traing Service</td>
-                <td>Second Year</td>
-                <td>123</td>
-              </tr>
-
-              <tr
-                class="clickable-row"
-                onclick="window.location.href='totalStudentInfo2.html';"
-              >
-                <td>2</td>
-                <td>Draguin, Sam C.</td>
-                <td>20-54321</td>
-                <td>Male</td>
-                <td>Malvar</td>
-                <td>Literacy Training Service</td>
-                <td>Graduated</td>
-                <td>321</td>
-              </tr>
-            </tbody>
+            <tbody id="tbody1" style="font-size: 13px"></tbody>
           </table>
         </div>
       </div>
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="exampleModalLong"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLongTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">
+                User Details
+              </h5>
+            </div>
+            <div class="modal-body" id="modalBodyContent">
+              <!-- User details will be populated here -->
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+                id="closemodalbtn"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <script src="js/addAdmin.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="js/addAdmin.js"></script>
+
     <script>
       new DataTable("#example");
+    </script>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+        push,
+        set,
+        onValue,
+        onChildRemoved,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+        authDomain: "civicall-app-a54d1.firebaseapp.com",
+        databaseURL:
+          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "civicall-app-a54d1",
+        storageBucket: "civicall-app-a54d1.appspot.com",
+        messagingSenderId: "909514632764",
+        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+        measurementId: "G-0BVYE5XJGV",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const auth = getAuth(app);
+
+      let firstname = document.getElementById("firstname");
+      let middlename = document.getElementById("middlename");
+      let lastname = document.getElementById("lastname");
+      let password = document.getElementById("password");
+      let gender = document.getElementById("gender");
+      let campus = document.getElementById("campus");
+      let email = document.getElementById("email");
+      let submit = document.getElementById("createbtnacc"); // Update the submit button ID
+
+      submit.addEventListener("click", RegisterUser);
+
+      function RegisterUser(event) {
+        event.preventDefault();
+
+        createUserWithEmailAndPassword(auth, email.value, password.value)
+          .then((userCredential) => {
+            // User registered successfully
+            const user = userCredential.user;
+
+            // Store additional user data in the database
+            saveUserData(user.uid);
+          })
+          .catch((error) => {
+            // Handle errors here
+            alert(error.message);
+            console.error(error);
+          });
+      }
+      function generateTimestamp() {
+        const currentDate = new Date();
+        return currentDate.toISOString();
+      }
+
+      function saveUserData(userId) {
+        const dbRef = ref(db);
+        const userRef = ref(db, `Users/${userId}`);
+
+        // Set the user data in the database including the verificationStatus as "true"
+        set(userRef, {
+          firstname: firstname.value,
+          middlename: middlename.value,
+          lastname: lastname.value,
+          gender: gender.value,
+          campus: campus.value,
+          email: email.value,
+          CurrentEngagement: 0,
+          verificationStatus: true,
+          uid: userId,
+          ImageProfile: "",
+          timestamp: generateTimestamp(),
+          address: "",
+          birthday: "",
+          userType: "",
+          phoneno: "",
+        })
+          .then(() => {
+            alert("User Added Successfully");
+            // You can add any additional actions after user creation if needed
+          })
+          .catch((error) => {
+            alert("Error: " + error);
+            console.error(error);
+          });
+      }
+
+      const UsersRef = ref(db, "Users");
+
+      const initializeDataTable = () => {
+        if ($.fn.DataTable.isDataTable("#example")) {
+          $("#example").DataTable().destroy();
+        }
+
+        const dataTable = $("#example").DataTable({
+          columns: [
+            { data: "userUID" },
+            { data: "fullname" },
+            { data: "email" },
+            { data: "campus" },
+            { data: "Action" },
+          ],
+        });
+
+        return dataTable;
+      };
+
+      const dataTable = initializeDataTable();
+
+      const populateDataTable = () => {
+        onValue(UsersRef, (snapshot) => {
+          const usersData = snapshot.val();
+
+          dataTable.clear();
+
+          if (usersData) {
+            Object.keys(usersData).forEach((userId) => {
+              const user = usersData[userId];
+              $("#example tbody").on(
+                "click",
+                "button.view-button",
+                function () {
+                  const userId = dataTable
+                    .row($(this).parents("tr"))
+                    .data().userUID;
+                  viewUserDetails(userId);
+                }
+              );
+              dataTable.row.add({
+                userUID: userId,
+                fullname: `${user.firstname} ${user.lastname}`,
+                email: user.email,
+                campus: user.campus,
+                Action:
+                  '<button class="btn btn-danger view-button" data-toggle="modal" data-target="#exampleModalLong">View</button>',
+              });
+            });
+
+            dataTable.draw();
+          } else {
+            console.log("No data available in Users collection.");
+            dataTable.clear().draw();
+          }
+        });
+
+        onChildRemoved(UsersRef, (removedSnapshot) => {
+          const removedUserId = removedSnapshot.key;
+
+          dataTable
+            .rows((idx, data) => data.userUID === removedUserId)
+            .remove()
+            .draw();
+        });
+      };
+      function viewUserDetails(userId) {
+        const userRef = ref(db, `Users/${userId}`);
+
+        get(userRef)
+          .then((snapshot) => {
+            const userData = snapshot.val();
+
+            console.log("ImageProfile URL:", userData.ImageProfile);
+
+            const modalBodyContent =
+              document.getElementById("modalBodyContent");
+
+            if (userData) {
+              modalBodyContent.innerHTML = `
+          <div class="image-container"><img src="${userData.ImageProfile}" class="rounded-image"></div>
+          <p><u><h5>Personal Information:</h5></u></p>
+          <p><strong>Name:<input class="form-control" id ="" type="text" value="${userData.firstname}"></input></strong> ${userData.firstname} ${userData.lastname}</p>
+          <p><strong>Date of Birth:</strong> ${userData.birthday}</p>
+          <p><strong>Gender:</strong> ${userData.gender}</p>
+          <p><strong>Address:</strong> ${userData.address}</p>
+          <p><u><h5>Academic Information:</h5></u></p>
+          <p><strong>Campus:</strong> ${userData.campus}</p>
+          <p><strong>SR-Code:</strong> ${userData.srcode}</p>
+          <p><strong>Email:</strong> ${userData.email}</p>
+          <p><strong>Course:</strong> ${userData.course}</p>
+          <p><strong>NSTP Program:</strong> ${userData.nstp}</p>
+          <p><strong>Active Points:</strong> ${userData.activepoints}</p>
+
+          <!-- Add more user details here as needed -->
+        `;
+            } else {
+              modalBodyContent.innerHTML = `<p>No user details found.</p>`;
+            }
+
+            // Show the modal
+            $("#exampleModalLong").modal("show");
+          })
+          .catch((error) => {
+            console.error("Error fetching user details:", error);
+          });
+        const closeButton = document.getElementById("closemodalbtn");
+
+        if (closeButton) {
+          closeButton.addEventListener("click", () => {
+            $("#exampleModalLong").modal("hide");
+          });
+        }
+
+        // Remove outside click close modal functionality
+        $("#exampleModalLong").modal({
+          backdrop: "static", // Prevents modal from closing when clicking outside
+          keyboard: false, // Disables the keyboard close functionality
+        });
+      }
+
+      populateDataTable();
     </script>
   </body>
 </html>

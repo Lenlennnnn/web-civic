@@ -127,7 +127,7 @@
       }
 
       .user-icon {
-        right: 5px;
+        right: 50px;
         top: -2px;
         transition: transform 0.3s ease-in-out;
       }
@@ -135,7 +135,7 @@
       .notification-badge {
         position: absolute;
         top: -5px;
-        right: -1px;
+        right: 46px;
         background-color: #fd7e14;
         color: white;
         border-radius: 50%;
@@ -285,43 +285,6 @@
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
         text-align: center;
       }
-
-      /* Style for the cancel button */
-      #cancelQRCodeButton {
-        background-color: #dc3545;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        padding: 10px 20px;
-        cursor: pointer;
-        margin-top: 10px;
-      }
-
-      #cancelQRCodeButton:hover {
-        background-color: #c82333;
-      }
-
-      #qrcode {
-        margin-left: 77px;
-      }
-
-      #generateQRCodeButton {
-        background-color: #007bff;
-        color: #fff;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: transform 0.2s;
-        position: absolute;
-        left: 83%;
-        top: 62%;
-      }
-
-      #generateQRCodeButton:hover {
-        background-color: #0056b3;
-        transform: scale(1.1);
-      }
     </style>
   </head>
 
@@ -444,22 +407,10 @@
           id="cancelButton"
         ></ion-icon>
 
-        <!-- Generate QR code button -->
-        <button id="generateQRCodeButton">Generate QR Code</button>
-
-        <!-- Modal for displaying QR code -->
-        <div id="qrCodeModal" class="modalqr">
-          <div class="modal-contentqr">
-            <p>Scan me! For attendance to get points</p>
-            <div id="qrcode"></div>
-            <button id="cancelQRCodeButton">Cancel</button>
-          </div>
-        </div>
-
         <div class="event-image">
           <img src="img/linis.jpg" alt="Event Image" />
         </div>
-        <a href="dashboard.html">
+        <a href="subdashboard.html">
           <div class="back-button">
             <ion-icon name="return-down-back-outline"></ion-icon>
           </div>

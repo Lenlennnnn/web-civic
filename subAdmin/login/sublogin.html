@@ -170,7 +170,6 @@
             const userData = snapshot.val();
             // Assuming 'email' is stored and is used for comparison
             if (userData.email === email) {
-              // Authentication successful, redirect to the dashboard
               window.location.href = "../subdashboard.html";
             } else {
               alert("Login failed. Please check your credentials.");

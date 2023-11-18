@@ -166,6 +166,11 @@
         border-radius: 50% 0px 0px 50%;
       }
 
+      .modal-dialog {
+        height: 600px;
+        max-width: 100%;
+      }
+
       body {
         background-color: #e1e1e1;
       }
@@ -247,11 +252,11 @@
                 <option value="Lipa Campus">Lipa Campus</option>
                 <option value="Lobo Campus">Lobo Campus</option>
                 <option value="Mabini Campus">Mabini Campus</option>
-                <option value="Pablo Borbon Campus 1(Poblacion)">
-                  Pablo Borbon Campus 1(Poblacion)
+                <option value="Pablo Borbon Campus I">
+                  Pablo Borbon Campus I
                 </option>
-                <option value=" Pablo Borbon Campus 2(Alanginan)">
-                  Pablo Borbon Campus 2(Alanginan)
+                <option value=" Pablo Borbon Campus II">
+                  Pablo Borbon Campus II
                 </option>
                 <option value="Rosario Campus">Rosario Campus</option>
                 <option value="San Juan Campus">San Juan Campus</option>
@@ -293,40 +298,63 @@
           <table id="example" class="table table-striped" style="width: 100%">
             <thead class="headerr">
               <tr>
-                <th>No.</th>
+                <th>UID</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Account Number</th>
                 <th>Campus</th>
+                <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              <tr
-                class="clickable-row"
-                onclick="window.location.href='adminInfo.html';"
-              >
-                <td>1</td>
-                <td>Ford, Alex G</td>
-                <td>20-122333@g.batstate-u.edu.ph</td>
-                <td>20-122333</td>
-                <td>Lipa Batangas</td>
-              </tr>
-              <tr>
-                <td>Null</td>
-                <td>Null</td>
-                <td>Null</td>
-                <td>Null</td>
-                <td>Null</td>
-              </tr>
-            </tbody>
+            <tbody id="tbody1" style="font-size: 13px"></tbody>
           </table>
         </div>
       </div>
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="exampleModalLong"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLongTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">
+                User Details
+              </h5>
+            </div>
+            <div class="modal-body" id="modalBodyContent">
+              <!-- User details will be populated here -->
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+                id="closemodalbtn"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal fade"
+        id="exampleModalLong"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLongTitle"
+        aria-hidden="true"
+      ></div>
     </div>
-    <script src="js/addAdmin.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="js/addAdmin.js"></script>
 
     <script
       type="module"
@@ -340,7 +368,6 @@
       type="module"
       src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js"
     ></script>
-
     <script>
       new DataTable("#example");
     </script>
@@ -350,8 +377,11 @@
       import {
         getDatabase,
         ref,
+        get,
         push,
         set,
+        onValue,
+        onChildRemoved,
       } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
       import {
         getAuth,
@@ -416,11 +446,10 @@
           gender: gender.value,
           campus: campus.value,
           email: email.value,
-          role: "subadmin", // Set the role of this user as "admin"
-          // New fields to be added
-          birthday: "", // Set empty for now, this will be updated in the future
-          contactNumber: "", // Set empty for now
-          position: "", // Set empty for now
+          role: "subadmin",
+          birthday: "",
+          contactNumber: "",
+          position: "",
         })
           .then(() => {
             alert("Admin Added Successfully");
@@ -430,6 +459,116 @@
             console.error(error);
           });
       }
+      const AdminRef = ref(db, "SubAdminAcc");
+
+      const initializeDataTable = () => {
+        if ($.fn.DataTable.isDataTable("#example")) {
+          $("#example").DataTable().destroy();
+        }
+
+        const dataTable = $("#example").DataTable({
+          columns: [
+            { data: "adminUID" },
+            { data: "fullname" },
+            { data: "email" },
+            { data: "campus" },
+            { data: "Action" },
+          ],
+        });
+
+        return dataTable;
+      };
+
+      const dataTable = initializeDataTable();
+
+      const populateDataTable = () => {
+        onValue(AdminRef, (snapshot) => {
+          const adminData = snapshot.val();
+
+          dataTable.clear();
+
+          if (adminData) {
+            Object.keys(adminData).forEach((userId) => {
+              const user = adminData[userId];
+              $("#example tbody").on(
+                "click",
+                "button.view-button",
+                function () {
+                  const userId = dataTable
+                    .row($(this).parents("tr"))
+                    .data().userUID;
+                  viewUserDetails(userId);
+                }
+              );
+              dataTable.row.add({
+                adminUID: userId,
+                fullname: `${user.firstname} ${user.lastname}`,
+                email: user.email,
+                campus: user.campus,
+                Action:
+                  '<button class="btn btn-danger view-button" data-toggle="modal" data-target="#exampleModalLongTitle">View</button>',
+              });
+            });
+
+            dataTable.draw();
+          } else {
+            console.log("No data available in Users collection.");
+            dataTable.clear().draw();
+          }
+        });
+
+        onChildRemoved(AdminRef, (removedSnapshot) => {
+          const removedUserId = removedSnapshot.key;
+
+          dataTable
+            .rows((idx, data) => data.adminUID === removedUserId)
+            .remove()
+            .draw();
+        });
+      };
+      // Function to fetch user details and display in modal
+      function viewUserDetails(userId) {
+        const userRef = ref(db, `Users/${userId}`);
+
+        get(userRef)
+          .then((snapshot) => {
+            const userData = snapshot.val();
+
+            const modalBodyContent =
+              document.getElementById("modalBodyContent");
+
+            if (userData) {
+              modalBodyContent.innerHTML = `
+            <p><strong>Name:</strong> ${userData.firstname} ${userData.lastname}</p>
+            <p><strong>Email:</strong> ${userData.email}</p>
+            <p><strong>Campus:</strong> ${userData.campus}</p>
+            <!-- Add more user details here as needed -->
+          `;
+            } else {
+              modalBodyContent.innerHTML = `<p>No user details found.</p>`;
+            }
+
+            // Show the modal
+            $("#exampleModalLong").modal("show");
+          })
+          .catch((error) => {
+            console.error("Error fetching user details:", error);
+          });
+        const closeButton = document.getElementById("closemodalbtn");
+
+        if (closeButton) {
+          closeButton.addEventListener("click", () => {
+            $("#exampleModalLong").modal("hide");
+          });
+        }
+
+        // Remove outside click close modal functionality
+        $("#exampleModalLong").modal({
+          backdrop: "static", // Prevents modal from closing when clicking outside
+          keyboard: false, // Disables the keyboard close functionality
+        });
+      }
+      populateDataTable();
     </script>
   </body>
 </html>

@@ -59,7 +59,7 @@ function closeLogoutPopup() {
 function performLogout() {
   // Add your logout logic here (e.g., redirect the user or make an API call)
   // For example, to redirect the user to "Login.html":
-  window.location.href = "login/login.html";
+  window.location.href = "login/suplogin.html";
 }
 
 /* =============================================== for messages ================================================*/
