@@ -300,6 +300,17 @@
       #cancelQRCodeButton:hover {
         background-color: #c82333;
       }
+
+      .description-info-intro,
+      .description-info-obj,
+      .description-info-campus,
+      .description-info-materials {
+        border: 3px solid black;
+        border-radius: 10px;
+        padding: 10px;
+        margin: 10px;
+        background-color: white;
+      }
     </style>
   </head>
 
@@ -435,7 +446,7 @@
       </div> -->
 
         <div class="event-image">
-          <img src="img/linis.jpg" alt="Event Image" />
+          <img src="img/linis.jpg" alt="Event Image" id="imgevent" />
         </div>
         <a href="supdashboard.html">
           <div class="back-button">
@@ -453,7 +464,7 @@
             <div class="input-container">
               <input
                 type="text"
-                id="title"
+                id="title-evnt"
                 name="title"
                 value="Clean and Green"
                 readonly
@@ -465,7 +476,7 @@
             <div class="input-container">
               <input
                 type="text"
-                id="title"
+                id="civic-evnt"
                 name="title"
                 value="Tree Planting"
                 readonly
@@ -477,7 +488,7 @@
             <div class="input-container">
               <input
                 type="text"
-                id="title"
+                id="loc-evnt"
                 name="title"
                 value="Malvar Batangas"
                 readonly
@@ -489,7 +500,7 @@
             <div class="input-container">
               <input
                 type="text"
-                id="title"
+                id="date-time-evnt"
                 name="title"
                 value="2023/08/20 (Tuesday) / 9:00 AM - 4:00 PM"
                 readonly
@@ -501,8 +512,8 @@
       <h2>Project Description</h2>
       <div class="event-description">
         <h2 style="color: white">INTRODUCTION</h2>
-        <div class="description-info">
-          <p>
+        <div class="description-info-intro">
+          <p id="details-evnt">
             Teaching literacy is a foundational and transformative endeavor that
             empowers individuals to navigate, comprehend, and communicate
             effectively in a complex and interconnected world. Literacy is not
@@ -521,8 +532,8 @@
           </p>
         </div>
         <h2 style="color: white">OBJECTIVES</h2>
-        <div class="description-info">
-          <p>
+        <div class="description-info-obj">
+          <p id="details-obj">
             1. Promote Reading Proficiency: To foster a love for reading and
             develop reading comprehension skills, enabling students to engage
             with a wide range of texts effectively.
@@ -567,12 +578,12 @@
           </p>
         </div>
         <h2 style="color: white">CAMPUS</h2>
-        <div class="description-info">
-          <p>JPLPC Malvar Batangas</p>
+        <div class="description-info-campus">
+          <p id="campus-details">JPLPC Malvar Batangas</p>
         </div>
         <h2 style="color: white">MATERIALS</h2>
-        <div class="description-info">
-          <p>
+        <div class="description-info-materials">
+          <p id="materials-details">
             1. Whiteboard/Chalkboard <br />
 
             2. Markers/Chalk <br />
@@ -691,6 +702,39 @@
         qrCodeModal.style.display = "none";
         document.getElementById("qrcode").innerHTML = "";
       });
+    </script>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+        push,
+        set,
+        onValue,
+        onChildRemoved,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+        authDomain: "civicall-app-a54d1.firebaseapp.com",
+        databaseURL:
+          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "civicall-app-a54d1",
+        storageBucket: "civicall-app-a54d1.appspot.com",
+        messagingSenderId: "909514632764",
+        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+        measurementId: "G-0BVYE5XJGV",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const auth = getAuth(app);
+      const viewButtons = document.querySelectorAll("#viewbtnid");
     </script>
   </body>
 </html>

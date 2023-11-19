@@ -393,7 +393,11 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">
+              <h5
+                class="modal-title"
+                id="user-details"
+                style="position: relative; left: 38%"
+              >
                 User Details
               </h5>
             </div>
@@ -401,6 +405,14 @@
               <!-- User details will be populated here -->
             </div>
             <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-light"
+                data-dismiss="modal"
+                id="editmodalbtn"
+              >
+                Edit
+              </button>
               <button
                 type="button"
                 class="btn btn-secondary"
@@ -603,17 +615,21 @@
               modalBodyContent.innerHTML = `
           <div class="image-container"><img src="${userData.ImageProfile}" class="rounded-image"></div>
           <p><u><h5>Personal Information:</h5></u></p>
-          <p><strong>Name:<input class="form-control" id ="" type="text" value="${userData.firstname}"></input></strong> ${userData.firstname} ${userData.lastname}</p>
-          <p><strong>Date of Birth:</strong> ${userData.birthday}</p>
-          <p><strong>Gender:</strong> ${userData.gender}</p>
-          <p><strong>Address:</strong> ${userData.address}</p>
+          <p><strong>Name:<input class="form-control" id ="" type="text" value="${userData.firstname} ${userData.middlename} ${userData.lastname}"></input></strong></p>
+          <p><strong>Date of Birth:<input class="form-control" id ="" type="text" value="${userData.birthday}"></input></strong></p>
+          <p><strong>Gender:<input class="form-control" id ="" type="text" value="${userData.gender}"></input></strong></p>
+          <p><strong>Address:<input class="form-control" id ="" type="text" value="${userData.address}"></input></strong></p>
+          <p><strong>Personal Contact:<input class="form-control" id ="" type="text" value="${userData.phoneno}"></input></strong></p>
+          <p><strong>Emergency Contact:<input class="form-control" id ="" type="text" value="${userData.ContactEme}"></input></strong></p>
           <p><u><h5>Academic Information:</h5></u></p>
-          <p><strong>Campus:</strong> ${userData.campus}</p>
-          <p><strong>SR-Code:</strong> ${userData.srcode}</p>
-          <p><strong>Email:</strong> ${userData.email}</p>
-          <p><strong>Course:</strong> ${userData.course}</p>
-          <p><strong>NSTP Program:</strong> ${userData.nstp}</p>
-          <p><strong>Active Points:</strong> ${userData.activepoints}</p>
+          <p><strong>Campus:<input class="form-control" id ="" type="text" value="${userData.campus}"></input></strong></p>
+          <p><strong>SR-Code:<input class="form-control" id ="" type="text" value="${userData.srcode}"></input></strong></p>
+          <p><strong>Email:<input class="form-control" id ="" type="text" value="${userData.email}"></input></strong></p>
+          <p><strong>Course:<input class="form-control" id ="" type="text" value="${userData.course}"></input></strong></p>
+          <p><strong>NSTP Program:<input class="form-control" id ="" type="text" value="${userData.nstp}"></input></strong></p>
+          <p><strong>User Type:<input class="form-control" id ="" type="text" value="${userData.UserType}"></input></strong></p>
+          <p><strong>Current Engagement:<input class="form-control" id ="" type="text" value="${userData.CurrentEngagement}"></input></strong></p>
+          <p><strong>Active Points:<input class="form-control" id ="" type="text" value="${userData.activepoints}"></input></strong></p>
 
           <!-- Add more user details here as needed -->
         `;

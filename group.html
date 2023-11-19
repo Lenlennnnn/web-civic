@@ -174,6 +174,13 @@
       body {
         background-color: #e1e1e1;
       }
+
+      .image-container {
+        display: flex;
+        justify-content: center; /* Horizontally center */
+        align-items: center; /* Vertically center */
+        margin-bottom: 20px; /* Adjust margin as needed */
+      }
     </style>
   </head>
 
@@ -300,7 +307,6 @@
               <tr>
                 <th>UID</th>
                 <th>Name</th>
-                <th>Email</th>
                 <th>Campus</th>
                 <th>Action</th>
               </tr>
@@ -321,8 +327,12 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">
-                User Details
+              <h5
+                class="modal-title"
+                id="exampleModalLongTitle"
+                style="position: relative; left: 38%"
+              >
+                Admin Details
               </h5>
             </div>
             <div class="modal-body" id="modalBodyContent">
@@ -412,9 +422,9 @@
       let email = document.getElementById("email");
       let submit = document.getElementById("subbtn");
 
-      submit.addEventListener("click", RegisterUser);
+      submit.addEventListener("click", RegisterAdmin);
 
-      function RegisterUser(event) {
+      function RegisterAdmin(event) {
         event.preventDefault();
 
         createUserWithEmailAndPassword(auth, email.value, password.value)
@@ -430,6 +440,11 @@
             alert(error.message);
             console.error(error);
           });
+      }
+
+      function generateTimestamp() {
+        const currentDate = new Date();
+        return currentDate.toISOString();
       }
 
       function saveUserData(userId) {
@@ -450,6 +465,7 @@
           birthday: "",
           contactNumber: "",
           position: "",
+          ImageProfile: "",
         })
           .then(() => {
             alert("Admin Added Successfully");
@@ -459,7 +475,8 @@
             console.error(error);
           });
       }
-      const AdminRef = ref(db, "SubAdminAcc");
+
+      const UsersRef = ref(db, "SubAdminAcc");
 
       const initializeDataTable = () => {
         if ($.fn.DataTable.isDataTable("#example")) {
@@ -468,9 +485,8 @@
 
         const dataTable = $("#example").DataTable({
           columns: [
-            { data: "adminUID" },
+            { data: "userUID" },
             { data: "fullname" },
-            { data: "email" },
             { data: "campus" },
             { data: "Action" },
           ],
@@ -482,14 +498,14 @@
       const dataTable = initializeDataTable();
 
       const populateDataTable = () => {
-        onValue(AdminRef, (snapshot) => {
-          const adminData = snapshot.val();
+        onValue(UsersRef, (snapshot) => {
+          const usersData = snapshot.val();
 
           dataTable.clear();
 
-          if (adminData) {
-            Object.keys(adminData).forEach((userId) => {
-              const user = adminData[userId];
+          if (usersData) {
+            Object.keys(usersData).forEach((userId) => {
+              const user = usersData[userId];
               $("#example tbody").on(
                 "click",
                 "button.view-button",
@@ -501,12 +517,11 @@
                 }
               );
               dataTable.row.add({
-                adminUID: userId,
-                fullname: `${user.firstname} ${user.lastname}`,
-                email: user.email,
+                userUID: userId,
+                fullname: `${user.firstname} ${user.middlename} ${user.lastname}`,
                 campus: user.campus,
                 Action:
-                  '<button class="btn btn-danger view-button" data-toggle="modal" data-target="#exampleModalLongTitle">View</button>',
+                  '<button class="btn btn-danger view-button" data-toggle="modal" data-target="#exampleModalLong">View</button>',
               });
             });
 
@@ -517,33 +532,41 @@
           }
         });
 
-        onChildRemoved(AdminRef, (removedSnapshot) => {
+        onChildRemoved(UsersRef, (removedSnapshot) => {
           const removedUserId = removedSnapshot.key;
 
           dataTable
-            .rows((idx, data) => data.adminUID === removedUserId)
+            .rows((idx, data) => data.userUID === removedUserId)
             .remove()
             .draw();
         });
       };
-      // Function to fetch user details and display in modal
       function viewUserDetails(userId) {
-        const userRef = ref(db, `Users/${userId}`);
+        const userRef = ref(db, `SubAdminAcc/${userId}`);
 
         get(userRef)
           .then((snapshot) => {
             const userData = snapshot.val();
+
+            console.log("ImageProfile URL:", userData.ImageProfile);
 
             const modalBodyContent =
               document.getElementById("modalBodyContent");
 
             if (userData) {
               modalBodyContent.innerHTML = `
-            <p><strong>Name:</strong> ${userData.firstname} ${userData.lastname}</p>
-            <p><strong>Email:</strong> ${userData.email}</p>
-            <p><strong>Campus:</strong> ${userData.campus}</p>
-            <!-- Add more user details here as needed -->
-          `;
+          <div class="image-container"><img src="${userData.ImageProfile}" class="rounded-image"></div>
+          <p><u><h5>Information:</h5></u></p>
+          <p><strong>Name:<input class="form-control" id ="" type="text" value="${userData.firstname} ${userData.middlename} ${userData.lastname}"></input></strong></p>
+          <p><strong>Gender:<input class="form-control" id ="" type="text" value="${userData.gender}"></input></strong></p>
+          <p><strong>Birthday:<input class="form-control" id ="" type="text" value="${userData.birthday}"></input></strong></p>
+          <p><strong>Email:<input class="form-control" id ="" type="text" value="${userData.email}"></input></strong></p>
+          <p><strong>Campus:<input class="form-control" id ="" type="text" value="${userData.campus}"></input></strong></p>
+          <p><strong>Position:<input class="form-control" id ="" type="text" value="${userData.position}"></input></strong></p>
+
+
+          <!-- Add more user details here as needed -->
+        `;
             } else {
               modalBodyContent.innerHTML = `<p>No user details found.</p>`;
             }
@@ -568,6 +591,7 @@
           keyboard: false, // Disables the keyboard close functionality
         });
       }
+
       populateDataTable();
     </script>
   </body>
