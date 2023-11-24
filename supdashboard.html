@@ -515,6 +515,101 @@
         text-align: left;
         border-bottom: 1px solid #ccc; /* Add a border for separation */
       }
+
+      /* Modal styles */
+      .modalupcom {
+        display: none; /* Hide the modal by default */
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+      }
+
+      .modal-contentupcom {
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        background-color: #fefefe;
+        margin: 15% auto; /* Center the modal vertically and horizontally */
+        padding: 20px;
+        border: 1px solid #888;
+        border-radius: 10px; /* Set border radius */
+        width: 80%;
+        height: 900px;
+        max-height: 90%; /* Set a maximum height for the modal content */
+        max-width: 900px; /* Set a maximum width for the modal */
+        transform: translate(-50%, -50%);
+        animation: modalFadeIn 0.5s ease-in-out forwards; /* Animation for fade-in */
+        overflow-y: auto; /* Enable vertical scrolling */
+      }
+
+      /* Customize the scrollbar */
+      .modal-contentupcom::-webkit-scrollbar {
+        width: 10px; /* Width of the scrollbar */
+      }
+
+      .modal-contentupcom::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Track color */
+        border-radius: 10px;
+      }
+
+      .modal-contentupcom::-webkit-scrollbar-thumb {
+        background: #888; /* Thumb color */
+        border-radius: 10px; /* Rounded corners for the thumb */
+      }
+
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+
+      #closemodalbtnupcom {
+        position: relative;
+        bottom: 10px;
+        right: 10px;
+        background-color: #6c757d;
+        color: #ffffff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      #closemodalbtnupcom:hover {
+        background-color: #565e64;
+      }
+
+      /* inside the modal content in upcomming */
+      .modal-contentupcom h2 {
+        /* Your existing styles */
+        text-align: center; /* Center align text inside the container */
+        margin-bottom: 20px;
+        text-decoration: underline;
+      }
+
+      #upcompostpic {
+        height: 250px;
+        width: 500px;
+        border: solid 2px black;
+        border-radius: 10px;
+        display: block; /* Ensures the image behaves as a block element */
+        margin: 0 auto; /* Sets margins to auto to horizontally center the image */
+      }
+
+      .eventpic {
+        border: black solid;
+      }
     </style>
   </head>
 
@@ -831,36 +926,43 @@
                       </thead>
                       <tbody>
                         <tr>
-                          <td id="numid">1</td>
+                          <td id="numid">...</td>
                           <td>
                             <a href="#"
                               ><img
-                                src="img/"
+                                src="img/placeholderpic.jpg"
                                 class="eventpic"
                                 alt="Avatar"
                                 id="eventpicimg"
                             /></a>
                           </td>
-                          <td id="titleid">Clean and Green</td>
-                          <td id="categoryid">Clean up Drive</td>
-                          <td id="campusid">JPLPC Malvar</td>
-                          <td id="dateid">2023/08/20</td>
+                          <td id="titleid">...</td>
+                          <td id="categoryid">...</td>
+                          <td id="campusid">...</td>
+                          <td id="dateid">...</td>
                           <td id="btnviewid">
-                            <a href="#">
-                              <button
-                                type="button"
-                                class="vieweventdet"
-                                title="View Details"
-                                data-toggle="tooltip"
-                                id="viewbtnid"
-                              >
-                                View
-                              </button></a
-                            >
+                            <a> ...</a>
                           </td>
                         </tr>
                       </tbody>
                     </table>
+                    <!-- Updated Modal Structure -->
+                    <div id="eventModalupcom" class="modalupcom">
+                      <div class="modal-contentupcom">
+                        <!-- Content for displaying event details -->
+                        <h2>Event Details</h2>
+                        <div id="eventDetailsupcom"></div>
+
+                        <!-- Close button at bottom-right -->
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          id="closemodalbtnupcom"
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -977,6 +1079,73 @@
       const tableBody = document.querySelector("#tableevents tbody");
       let rowNumber = 1; // Initialize row number
 
+      // Function to open the modal and display event details
+      function openEventModal(eventData) {
+        const modal = document.getElementById("eventModalupcom");
+        const eventDetailsContainer =
+          document.getElementById("eventDetailsupcom");
+
+        // Populate the modal with event details
+        // Customize this part based on how you want to display the data
+        eventDetailsContainer.innerHTML = `
+        <img src="${eventData.image}" alt="Event Image" class="eventpic" id="upcompostpic" />
+        <p><strong>Title:<input class="form-control" id ="" type="text" value="${eventData.title}"></input></strong></p>
+        <p><strong>Category:<input class="form-control" id ="" type="text" value="${eventData.category}"></input></strong></p>
+        <p><strong>Campus:<input class="form-control" id ="" type="text" value="${eventData.campus}"></input></strong></p>
+        <p><strong>Location:<input class="form-control" id ="" type="text" value="${eventData.location}"></input></strong></p>
+        <p><strong>Start Date:<input class="form-control" id ="" type="text" value="${eventData.startDate}"></input></strong></p>
+        <p><strong>End Date:<input class="form-control" id ="" type="text" value="${eventData.endDate}"></input></strong></p>
+        <p>&nbsp</p>
+        <h3><u>Description</u></h3>
+        <p>&nbsp</p>
+        <p><strong>Introduction:<input class="form-control" id ="" type="text" value="${eventData.intro}"></input></strong></p>
+        <p><strong>Objective:<input class="form-control" id ="" type="text" value="${eventData.objective}"></input></strong></p>
+        <p><strong>Instruction:<input class="form-control" id ="" type="text" value="${eventData.instruction}"></input></strong></p>
+        <p><strong>Target Participant:<input class="form-control" id ="" type="text" value="${eventData.targetparty}"></input></strong></p>
+        <p><strong>Payment Receipt:<input class="form-control" id ="" type="text" value="${eventData.paymentRecipient}"></input></strong></p>
+        <p><strong>Payment Method:<input class="form-control" id ="" type="text" value="${eventData.paymentMethod}"></input></strong></p>
+        <p><strong>Fund Collected:<input class="form-control" id ="" type="text" value="${eventData.fundcollected}"></input></strong></p>
+        <p><strong>Facilitators Name:<input class="form-control" id ="" type="text" value="${eventData.facilitatorsName}"></input></strong></p>
+        <p><strong>Facilitators Email:<input class="form-control" id ="" type="text" value="${eventData.facilitatorsContractorEmail}"></input></strong></p>
+        <p><strong>Active Points:<input class="form-control" id ="" type="text" value="${eventData.activepoints}"></input></strong></p>
+
+
+        <!-- Add other event details as needed -->
+      `;
+
+        // Show the modal
+        modal.style.display = "block";
+      }
+
+      // Get the close button elements
+      const closeModalButton = document.getElementById("closemodalbtnupcom");
+
+      // Add click event listener to close the modal when the close button is clicked
+      closeModalButton.addEventListener("click", function () {
+        const modal = document.getElementById("eventModalupcom");
+        modal.style.display = "none"; // Hide the modal
+      });
+
+      // Event delegation for dynamically created buttons
+      document.addEventListener("click", function (event) {
+        if (event.target && event.target.id === "viewupcombtn") {
+          // Get the specific event data associated with the clicked button
+          const clickedRow = event.target.closest("tr");
+          const eventDetails = {
+            image: clickedRow.cells[1].querySelector(".eventpic").src,
+            title: clickedRow.cells[2].innerText,
+            category: clickedRow.cells[3].innerText,
+            campus: clickedRow.cells[4].innerText,
+            dateandtime: clickedRow.cells[5].innerText,
+
+            // Add other details if needed
+          };
+
+          // Open the modal with the event details
+          openEventModal(eventDetails);
+        }
+      });
+
       // Function to fetch and display data in the table
       function displayEventData() {
         // Assuming 'databaseRef' is a reference to your 'Upload Engagement' node
@@ -996,18 +1165,18 @@
             // Create a new table row
             const newRow = tableBody.insertRow();
             newRow.innerHTML = `
-        <td>${rowNumber}</td>
-        <td><a href="#"><img src="${image}" class="eventpic" alt="Event Image"/></a></td>
-        <td>${title}</td>
-        <td>${category}</td>
-        <td>${campus}</td>
-        <td>${dateandtime}</td>
-        <td>
-          <a href="upcomEventInfo.html">
-            <button type="button" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>
-          </a>
-        </td>
-      `;
+          <td>${rowNumber}</td>
+          <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
+          <td>${title}</td>
+          <td>${category}</td>
+          <td>${campus}</td>
+          <td>${dateandtime}</td>
+          <td>
+            <a href="#">
+              <button type="button" id="viewupcombtn" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>
+            </a>
+          </td>
+        `;
 
             // Increment row number
             rowNumber++;
@@ -1018,9 +1187,11 @@
     </script>
     <script src="js/dashboard.js"></script>
     <script src="js/post.js"></script>
-    <script src="firebase.js" type="module">
-      /* code here */
-    </script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
     <!-- =============================================== ionicons ================================================ -->
     <script
       type="module"

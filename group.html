@@ -215,17 +215,17 @@
             <form id="MainForm">
               <label for="firstname">First Name:</label>
               <input
+                required
                 type="text"
                 id="firstname"
                 name="firstname"
-                required
                 placeholder="Your first name"
               />
 
               <label for="lastname">Middle Name:</label>
               <input
                 type="text"
-                id="lastname"
+                id="middlename"
                 name="lastname"
                 required
                 placeholder="Your middle name"
@@ -234,7 +234,7 @@
               <label for="middlename">Last Name:</label>
               <input
                 type="text"
-                id="middlename"
+                id="lastname"
                 name="middlename"
                 required
                 placeholder="Your last name"
@@ -365,6 +365,62 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="js/addAdmin.js"></script>
+    <script>
+      // Function to close the modal
+      function closeModal() {
+        let modal = document.getElementById("myModal");
+        modal.style.display = "none";
+      }
+
+      document.getElementById("subbtn").addEventListener("click", function () {
+        let firstName = document.getElementById("firstname").value.trim();
+        let lastName = document.getElementById("lastname").value.trim();
+        let middleName = document.getElementById("middlename").value.trim();
+        let gender = document.getElementById("gender").value;
+        let campus = document.getElementById("campus").value;
+        let email = document.getElementById("email").value.trim();
+        let password = document.getElementById("password").value.trim();
+        let confirmPassword = document
+          .getElementById("confirmpassword")
+          .value.trim();
+
+        // Validate First Name, Middle Name, and Last Name to accept only letters
+        let nameRegex = /^[A-Za-z]+$/;
+        if (
+          !nameRegex.test(firstName) ||
+          !nameRegex.test(lastName) ||
+          !nameRegex.test(middleName)
+        ) {
+          alert("Use letters only in your name ");
+          return false;
+        }
+
+        // Validate Email Address format
+        let emailRegex = /\S+@\S+\.\S+/;
+        if (!emailRegex.test(email)) {
+          alert("Please enter a valid email address");
+          return false;
+        }
+
+        // Validate Password and Confirm Password to have a minimum of 8 characters
+        if (password.length < 8 || confirmPassword.length < 8) {
+          alert("Minimum 8 characters required for password");
+          return false;
+        }
+
+        // Check if Password and Confirm Password match
+        if (password !== confirmPassword) {
+          alert("Passwords do not match");
+          return false;
+        }
+
+        // If all validations pass, close the modal and perform any other necessary actions
+        closeModal();
+
+        // Additional actions after successful form submission can be added here
+        // For example: document.getElementById("MainForm").submit();
+      });
+    </script>
 
     <script
       type="module"

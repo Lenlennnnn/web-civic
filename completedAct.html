@@ -120,22 +120,56 @@
                 <th>Title</th>
                 <th>Civic Engagement</th>
                 <th>Campus</th>
-                <th>Date Started</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr
-                class="clickable-row"
-                onclick="window.location.href='completeEvent.html';"
-              >
+              <tr class="clickable-row">
                 <td>1</td>
                 <td>Sustainable Environmental Cleaning</td>
                 <td>Clean Up Drive</td>
                 <td>JPLPC Malvar</td>
-                <td>2022-04-12</td>
+                <td>
+                  <button
+                    class="btn btn-danger view-button"
+                    data-toggle="modal"
+                    data-target="#exampleModalLonggg"
+                    id="combtnview"
+                  >
+                    View
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
+          <!-- Modal for Activity Details -->
+          <div
+            class="modal fade"
+            id="exampleModalLonggg"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLongggTitle"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongggTitle">
+                    Activity Details
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body" id="modalBodyContent">
+                  <!-- Activity details will be populated here -->
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -145,6 +179,199 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script>
       new DataTable("#example");
+    </script>
+    <!-- Additional code to populate table and create a modal -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+        push,
+        set,
+        onValue,
+        onChildRemoved,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+        authDomain: "civicall-app-a54d1.firebaseapp.com",
+        databaseURL:
+          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "civicall-app-a54d1",
+        storageBucket: "civicall-app-a54d1.appspot.com",
+        messagingSenderId: "909514632764",
+        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+        measurementId: "G-0BVYE5XJGV",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const auth = getAuth(app);
+
+      function generateTimestamp() {
+        const currentDate = new Date();
+        return currentDate.toISOString();
+      }
+
+      function saveUserData(userId) {
+        const dbRef = ref(db);
+        const userRef = ref(db, `Upload Engagement/${userId}`);
+
+        // Set the user data in the database including the verificationStatus as "true"
+        set(userRef, {
+          firstname: firstname.value,
+          middlename: middlename.value,
+          lastname: lastname.value,
+          gender: gender.value,
+          campus: campus.value,
+          email: email.value,
+          intro: intro.value,
+          CurrentEngagement: 0,
+          verificationStatus: true,
+          uid: userId,
+          ImageProfile: "",
+          timestamp: generateTimestamp(),
+          address: "",
+          birthday: "",
+          userType: "",
+          phoneno: "",
+          activepts: "",
+          finishactivity: "",
+        });
+      }
+
+      const UsersRef = ref(db, "Upload Engagement");
+
+      const initializeDataTable = () => {
+        if ($.fn.DataTable.isDataTable("#example")) {
+          $("#example").DataTable().destroy();
+        }
+
+        const dataTable = $("#example").DataTable({
+          columns: [
+            { data: "userUID" },
+            { data: "title" },
+            { data: "category" },
+            { data: "campus" },
+            { data: "Action" },
+          ],
+        });
+
+        return dataTable;
+      };
+
+      const dataTable = initializeDataTable();
+
+      const populateDataTable = () => {
+        onValue(UsersRef, (snapshot) => {
+          const usersData = snapshot.val();
+
+          dataTable.clear();
+
+          if (usersData) {
+            Object.keys(usersData).forEach((userId) => {
+              const user = usersData[userId];
+              $("#example tbody").on(
+                "click",
+                "button.view-button",
+                function () {
+                  const userId = dataTable
+                    .row($(this).parents("tr"))
+                    .data().userUID;
+                  viewUserDetails(userId);
+                }
+              );
+              dataTable.row.add({
+                userUID: userId,
+                title: user.title,
+                category: user.category,
+                campus: user.campus,
+                Action:
+                  '<button class="btn btn-danger view-button" data-toggle="modal" data-target="#exampleModalLong">View</button>',
+              });
+            });
+
+            dataTable.draw();
+          } else {
+            console.log("No data available in Users collection.");
+            dataTable.clear().draw();
+          }
+        });
+
+        onChildRemoved(UsersRef, (removedSnapshot) => {
+          const removedUserId = removedSnapshot.key;
+
+          dataTable
+            .rows((idx, data) => data.userUID === removedUserId)
+            .remove()
+            .draw();
+        });
+      };
+      function viewUserDetails(userId) {
+        const userRef = ref(db, `Upload Engagement/${userId}`);
+
+        get(userRef)
+          .then((snapshot) => {
+            const userData = snapshot.val();
+
+            console.log("ImageProfile URL:", userData.ImageProfile);
+
+            const modalBodyContent =
+              document.getElementById("modalBodyContent");
+
+            if (userData) {
+              modalBodyContent.innerHTML = `
+          <div class="image-container"><img src="${userData.ImageProfile}" class="rounded-image"></div>
+          <p><u><h5>Personal Information:</h5></u></p>
+          <p><strong>Name:<input class="form-control" id ="" type="text" value="${userData.firstname} ${userData.middlename} ${userData.lastname}"></input></strong></p>
+          <p><strong>Date of Birth:<input class="form-control" id ="" type="text" value="${userData.birthday}"></input></strong></p>
+          <p><strong>Gender:<input class="form-control" id ="" type="text" value="${userData.gender}"></input></strong></p>
+          <p><strong>Address:<input class="form-control" id ="" type="text" value="${userData.address}"></input></strong></p>
+          <p><strong>Personal Contact:<input class="form-control" id ="" type="text" value="${userData.phoneno}"></input></strong></p>
+          <p><strong>Emergency Contact:<input class="form-control" id ="" type="text" value="${userData.ContactEme}"></input></strong></p>
+          <p><u><h5>Academic Information:</h5></u></p>
+          <p><strong>Campus:<input class="form-control" id ="" type="text" value="${userData.campus}"></input></strong></p>
+          <p><strong>SR-Code:<input class="form-control" id ="" type="text" value="${userData.srcode}"></input></strong></p>
+          <p><strong>Email:<input class="form-control" id ="" type="text" value="${userData.email}"></input></strong></p>
+          <p><strong>Course:<input class="form-control" id ="" type="text" value="${userData.course}"></input></strong></p>
+          <p><strong>NSTP Program:<input class="form-control" id ="" type="text" value="${userData.nstp}"></input></strong></p>
+          <p><strong>User Type:<input class="form-control" id ="" type="text" value="${userData.userType}"></input></strong></p>
+          <p><strong>Current Engagement:<input class="form-control" id ="" type="text" value="${userData.CurrentEngagement}"></input></strong></p>
+          <p><strong>Finish Activity:<input class="form-control" id ="" type="text" value="${userData.finishactivity}"></input></strong></p>
+          <p><strong>Active Points:<input class="form-control" id ="" type="text" value="${userData.activepts}"></input></strong></p>
+
+          <!-- Add more user details here as needed -->
+        `;
+            } else {
+              modalBodyContent.innerHTML = `<p>No user details found.</p>`;
+            }
+
+            // Show the modal
+            $("#exampleModalLong").modal("show");
+          })
+          .catch((error) => {
+            console.error("Error fetching user details:", error);
+          });
+        const closeButton = document.getElementById("closemodalbtn");
+
+        if (closeButton) {
+          closeButton.addEventListener("click", () => {
+            $("#exampleModalLong").modal("hide");
+          });
+        }
+
+        // Remove outside click close modal functionality
+        $("#exampleModalLong").modal({
+          backdrop: "static", // Prevents modal from closing when clicking outside
+          keyboard: false, // Disables the keyboard close functionality
+        });
+      }
+
+      populateDataTable();
     </script>
   </body>
 </html>
