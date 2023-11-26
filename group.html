@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admins</title>
-    <link rel="icon" type="image/png" href="login/images/icons/civicicon.png" />
+    <link rel="icon" type="image/png" href="login/images/icons/civicon.png" />
     <link rel="stylesheet" href="css/dashboard.css" />
     <link
       rel="stylesheet"
@@ -180,6 +180,13 @@
         justify-content: center; /* Horizontally center */
         align-items: center; /* Vertically center */
         margin-bottom: 20px; /* Adjust margin as needed */
+      }
+
+      .rounded-image {
+        border-radius: 50%;
+        border: 2px solid black;
+        width: 150px;
+        height: 150px;
       }
     </style>
   </head>
@@ -384,6 +391,8 @@
           .getElementById("confirmpassword")
           .value.trim();
 
+        let isValid = true; // Flag to track validation status
+
         // Validate First Name, Middle Name, and Last Name to accept only letters
         let nameRegex = /^[A-Za-z]+$/;
         if (
@@ -392,33 +401,47 @@
           !nameRegex.test(middleName)
         ) {
           alert("Use letters only in your name ");
-          return false;
+          isValid = false; // Set flag to false if validation fails
         }
 
         // Validate Email Address format
         let emailRegex = /\S+@\S+\.\S+/;
         if (!emailRegex.test(email)) {
           alert("Please enter a valid email address");
-          return false;
+          isValid = false; // Set flag to false if validation fails
         }
 
         // Validate Password and Confirm Password to have a minimum of 8 characters
         if (password.length < 8 || confirmPassword.length < 8) {
           alert("Minimum 8 characters required for password");
-          return false;
+          isValid = false; // Set flag to false if validation fails
         }
 
         // Check if Password and Confirm Password match
         if (password !== confirmPassword) {
           alert("Passwords do not match");
-          return false;
+          isValid = false; // Set flag to false if validation fails
         }
 
-        // If all validations pass, close the modal and perform any other necessary actions
-        closeModal();
+        // If any validation failed, stop account creation
+        if (!isValid) {
+          return; // Exit the function
+        }
 
-        // Additional actions after successful form submission can be added here
-        // For example: document.getElementById("MainForm").submit();
+        // If all validations pass, proceed with account creation
+        createUserWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            // User registered successfully
+            const user = userCredential.user;
+
+            // Store additional user data in the database
+            saveUserData(user.uid);
+          })
+          .catch((error) => {
+            // Handle errors here
+            alert(error.message);
+            console.error(error);
+          });
       });
     </script>
 
@@ -490,12 +513,22 @@
 
             // Store additional user data in the database
             saveUserData(user.uid);
+
+            // Close the modal after a short delay (e.g., 500 milliseconds)
+            setTimeout(() => {
+              closeModal();
+              resetFormFields();
+            }, 500);
           })
           .catch((error) => {
             // Handle errors here
             alert(error.message);
             console.error(error);
           });
+      }
+
+      function resetFormFields() {
+        document.getElementById("MainForm").reset();
       }
 
       function generateTimestamp() {
@@ -619,6 +652,7 @@
           <p><strong>Email:<input class="form-control" id ="" type="text" value="${userData.email}"></input></strong></p>
           <p><strong>Campus:<input class="form-control" id ="" type="text" value="${userData.campus}"></input></strong></p>
           <p><strong>Position:<input class="form-control" id ="" type="text" value="${userData.position}"></input></strong></p>
+          <p><strong>Contact Number:<input class="form-control" id ="" type="text" value="${userData.contactNumber}"></input></strong></p>
 
 
           <!-- Add more user details here as needed -->
