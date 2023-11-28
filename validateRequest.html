@@ -15,6 +15,10 @@
       rel="stylesheet"
       href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.15.4/css/ionicons.min.css"
+    />
 
     <style>
       .container {
@@ -28,88 +32,6 @@
         position: relative;
         bottom: 58px;
         right: 180px;
-      }
-
-      /* for modal */
-      .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-      }
-
-      .modal-content {
-        position: absolute;
-        top: 50%;
-        /* Position at the vertical center of the viewport */
-        left: 50%;
-        /* Position at the horizontal center of the viewport */
-        transform: translate(-50%, -50%);
-        /* Center the content */
-        max-width: 46%;
-        /* Limit the width of the content */
-        height: 100%;
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        overflow-y: auto;
-        /* Add scrollbar if content exceeds modal height */
-      }
-
-      .close {
-        position: relative;
-        top: -10px;
-        right: -440px;
-        font-size: 25px;
-        font-weight: bold;
-        cursor: pointer;
-      }
-
-      /* Styles for elements inside .container-popup */
-      .container-popup {
-        width: 500px;
-        padding: 20px;
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      .container-popup h2 {
-        text-align: center;
-      }
-
-      .container-popup label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-      }
-
-      .container-popup input,
-      .container-popup select {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-      }
-
-      .container-popup button {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
-        cursor: pointer;
-        width: 100%;
-      }
-
-      .container-popup button:hover {
-        background-color: #0056b3;
       }
 
       .custom-button {
@@ -147,10 +69,6 @@
         /* Place the container behind the main content */
       }
 
-      thead {
-        border: solid 1px black;
-      }
-
       .back-button:hover {
         background-color: #8c0000;
         /* Change background color on hover */
@@ -160,6 +78,10 @@
         /* Slightly scale up on hover */
       }
 
+      thead {
+        border: solid 1px black;
+      }
+
       .main {
         background-color: #e1e1e1;
         border-radius: 50% 0px 0px 50%;
@@ -167,6 +89,43 @@
 
       body {
         background-color: #e1e1e1;
+      }
+
+      #evntimgpic {
+        border: solid black;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+
+      label {
+        font-weight: bold;
+      }
+
+      .modal-content {
+        width: 130%;
+        position: relative;
+        right: 80px;
+      }
+
+      #newcnt {
+        position: relative;
+        right: 50%;
+        width: 200%;
+        max-height: 800px;
+        height: 540px;
+      }
+
+      /* Ensure the form elements are displayed in-line */
+      .form-row .form-group {
+        display: inline-block;
+        width: 47.2%; /* Adjust the width as per your layout needs */
+        margin-right: 5%; /* Adjust the spacing between elements */
+        vertical-align: top; /* Align elements at the top */
+      }
+
+      /* Clear margin for the last element in the row */
+      .form-row .form-group:last-child {
+        margin-right: 0;
       }
     </style>
   </head>
@@ -197,25 +156,22 @@
                 <th>Title</th>
                 <th>Civic Engagement</th>
                 <th>Campus</th>
-                <th>Date Requested</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr
-                class="clickable-row"
-                onclick="window.location.href='reqInfo.html';"
-              >
+              <tr class="clickable-row">
                 <td>1</td>
-                <td>Emergency Response</td>
-                <td>Relief Operation</td>
-                <td>Lipa</td>
-                <td>2023-09-03</td>
+                <td>Sustainable Environmental Cleaning</td>
+                <td>Clean Up Drive</td>
+                <td>JPLPC Malvar</td>
                 <td>
+                  <!-- Button to trigger modal -->
                   <button
                     class="btn btn-danger view-button"
                     data-toggle="modal"
-                    data-target="#exampleModalLong"
+                    data-target="#exampleModalLonggg"
+                    id="comactbtn"
                   >
                     View
                   </button>
@@ -223,13 +179,278 @@
               </tr>
             </tbody>
           </table>
+
+          <!-- Modal -->
+          <div
+            class="modal"
+            id="exampleModalLonggg"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLongggTitle"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongggTitle">
+                    Event Details
+                  </h5>
+                </div>
+                <div class="modal-body">
+                  <!-- 1. Image -->
+                  <div class="text-center">
+                    <img
+                      src="img/cleaning.jpg"
+                      alt="Event Image"
+                      class="img-fluid"
+                      id="evntimgpic"
+                    />
+                  </div>
+
+                  <!-- 2. Category -->
+                  <div class="form-group">
+                    <label for="category">Category:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="category"
+                      value="Clean Up Drive"
+                      readonly
+                    />
+                  </div>
+
+                  <!-- 3. Title -->
+                  <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="title"
+                      value="Sustainable Environmental Cleaning"
+                      readonly
+                    />
+                  </div>
+
+                  <!-- 4. Introduction -->
+                  <div class="form-group">
+                    <label for="introduction">Introduction:</label>
+                    <textarea
+                      class="form-control"
+                      id="introduction"
+                      rows="10"
+                      readonly
+                    >
+    Cleaning the environment is a vital responsibility that transcends personal and collective interests, embodying our commitment to safeguarding the planet and ensuring a sustainable future for generations to come. It involves the conscientious removal of pollutants, waste, and harmful elements from our surroundings,  promoting the restoration and preservation of natural ecosystems. Cleaning the environment is not limited to physical debris but extends to addressing broader issues such as air and water quality, deforestation, and climate change mitigation. It signifies our dedication to harmonious coexistence with nature, recognizing that a cleaner environment not only enhances our own well-being but also plays an essential role in protecting the intricate web of life on Earth and preserving the beauty and diversity of our planet.
+                 </textarea
+                    >
+                  </div>
+
+                  <!-- 5. Description -->
+                  <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea
+                      class="form-control"
+                      id="description"
+                      rows="10"
+                      readonly
+                    >
+                  Cleaning the environment is an indispensable endeavor crucial for sustaining life on our planet. It encompasses a wide array of practices aimed at preserving and restoring the natural balance of ecosystems. From managing waste and reducing pollution to conserving resources and promoting biodiversity, the scope of cleaning the environment is multifaceted. Recycling initiatives, adoption of renewable energy sources, reforestation efforts, and advocating for sustainable practices are integral components in the mission to create a cleaner, healthier environment. Moreover, educating communities about the significance of environmental stewardship fosters a collective responsibility towards preserving the Earth for future generations. By fostering a culture of consciousness and implementing innovative strategies, cleaning the environment stands as a vital cornerstone in securing a sustainable future for all life forms on our planet.</textarea
+                    >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="instruction">Instruction:</label>
+                    <textarea
+                      class="form-control"
+                      id="instruction"
+                      rows="10"
+                      readonly
+                    >
+1. Check-in and Briefing: Please arrive at the designated meeting point at least 15 minutes before the scheduled start time. Upon arrival, check in with our event coordinators who will provide you with necessary equipment such as gloves, trash bags, and any additional safety gear. You'll also receive a brief orientation outlining safety protocols and the areas assigned for cleanup.
+
+2. Assignment and Cleanup Process: Once briefed, you'll be assigned to a specific cleanup zone. Work in teams to cover the designated areas thoroughly. Collect and separate recyclable materials from general waste. Be mindful of safety: avoid picking up hazardous items and wear protective gear when handling sharp objects.
+
+3. Environmental Conservation: While collecting trash, take note of any environmental concerns (such as signs of habitat destruction, invasive species, or pollution sources) and report them to the event coordinators. If you come across any wildlife, maintain a safe distance and avoid disturbing their habitat.
+
+4. Proper Waste Disposal: When your assigned cleanup time is completed or your bags are full, return to the designated collection point. Make sure all waste bags are securely tied. Separate recyclables from non-recyclables as instructed. Our team will properly dispose of collected waste in accordance with local recycling and waste management regulations.
+
+5. Conclusion and Appreciation: At the end of the event, there will be a brief gathering to acknowledge everyone's hard work and dedication. We'll discuss the impact of our efforts and share any significant findings. Feel free to share your experiences and any insights gained during the cleanup.</textarea
+                    >
+                  </div>
+
+                  <!-- 6. Location -->
+                  <div class="form-group">
+                    <label for="location">Location:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="location"
+                      value="San Miguel Sto Tomas Batangas"
+                      readonly
+                    />
+                  </div>
+
+                  <!-- 7. Date -->
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="date">Start Date & Time:</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="date"
+                        value="10/12/2023 9:00 AM"
+                        readonly
+                      />
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="dateend">End Date & Time:</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="dateend"
+                        value="10/13/2023 4:00 PM"
+                        readonly
+                      />
+                    </div>
+                  </div>
+
+                  <!-- 8. Target Participant -->
+                  <div class="form-group">
+                    <label for="targetParticipant">Target Campus:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="targetcampus"
+                      value="JPLPC Malvar Campus"
+                      readonly
+                    />
+                  </div>
+
+                  <!-- 8. Target Participant -->
+                  <div class="form-group">
+                    <label for="targetParticipant">Target Participant:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="targetParticipant"
+                      value="200"
+                      readonly
+                    />
+                  </div>
+
+                  <!-- 9. Active Points -->
+                  <div class="form-group">
+                    <label for="activePoints">Active Points:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="activePoints"
+                      value="50"
+                      readonly
+                    />
+                  </div>
+
+                  <!-- 10. Facilitator's Name -->
+                  <div class="form-group">
+                    <label for="facilitatorsName">Facilitator's Name:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="facilitatorsName"
+                      value="Leonard S Briones"
+                      readonly
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="facilitatorsName"
+                      >Facilitator's Contact or Email:</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="facilitatorscontact"
+                      value="briones@gmail.com"
+                      readonly
+                    />
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    data-dismiss="modal"
+                  >
+                    Approved
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    data-dismiss="modal"
+                  >
+                    Decline
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <!-- Additional buttons or actions can be added here -->
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+    <script>
+      // Function to handle the new modal
+      document.addEventListener("DOMContentLoaded", function () {
+        var icon = document.getElementById("exampleModalIcon");
+        var modal = document.getElementById("exampleModalNew");
+        var closeButton = modal.querySelector(".btn-secondary");
+
+        // Function to show the modal
+        function showModal() {
+          if (modal) {
+            modal.style.display = "block";
+          }
+        }
+
+        // Function to close the modal
+        function closeModal() {
+          if (modal) {
+            modal.style.display = "none";
+          }
+        }
+
+        // Event listener for icon click to open modal
+        if (icon) {
+          icon.addEventListener("click", showModal);
+        }
+
+        // Event listener for close button click to close modal
+        if (closeButton) {
+          closeButton.addEventListener("click", closeModal);
+        }
+
+        // Event listener to close modal when clicking outside the modal
+        window.addEventListener("click", function (event) {
+          if (event.target === modal) {
+            closeModal();
+          }
+        });
+      });
+    </script>
+
     <script src="js/addAdmin.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <script>
       new DataTable("#example");
     </script>

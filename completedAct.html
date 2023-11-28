@@ -130,6 +130,24 @@
         max-height: 800px;
         height: 540px;
       }
+
+      /* Ensure the form elements are displayed in-line */
+      .form-row .form-group {
+        display: inline-block;
+        width: 47.2%; /* Adjust the width as per your layout needs */
+        margin-right: 5%; /* Adjust the spacing between elements */
+        vertical-align: top; /* Align elements at the top */
+      }
+
+      /* Clear margin for the last element in the row */
+      .form-row .form-group:last-child {
+        margin-right: 0;
+      }
+
+      #kulayan.thead-dark th {
+        background-color: black !important; /* Change to your preferred color */
+        color: white; /* Set text color to white for better contrast */
+      }
     </style>
   </head>
 
@@ -242,7 +260,12 @@
                   <!-- 4. Introduction -->
                   <div class="form-group">
                     <label for="introduction">Introduction:</label>
-                    <textarea class="form-control" id="introduction" rows="10">
+                    <textarea
+                      class="form-control"
+                      id="introduction"
+                      rows="10"
+                      readonly
+                    >
       Cleaning the environment is a vital responsibility that transcends personal and collective interests, embodying our commitment to safeguarding the planet and ensuring a sustainable future for generations to come. It involves the conscientious removal of pollutants, waste, and harmful elements from our surroundings,  promoting the restoration and preservation of natural ecosystems. Cleaning the environment is not limited to physical debris but extends to addressing broader issues such as air and water quality, deforestation, and climate change mitigation. It signifies our dedication to harmonious coexistence with nature, recognizing that a cleaner environment not only enhances our own well-being but also plays an essential role in protecting the intricate web of life on Earth and preserving the beauty and diversity of our planet.
                    </textarea
                     >
@@ -251,14 +274,24 @@
                   <!-- 5. Description -->
                   <div class="form-group">
                     <label for="description">Description:</label>
-                    <textarea class="form-control" id="description" rows="10">
+                    <textarea
+                      class="form-control"
+                      id="description"
+                      rows="10"
+                      readonly
+                    >
                     Cleaning the environment is an indispensable endeavor crucial for sustaining life on our planet. It encompasses a wide array of practices aimed at preserving and restoring the natural balance of ecosystems. From managing waste and reducing pollution to conserving resources and promoting biodiversity, the scope of cleaning the environment is multifaceted. Recycling initiatives, adoption of renewable energy sources, reforestation efforts, and advocating for sustainable practices are integral components in the mission to create a cleaner, healthier environment. Moreover, educating communities about the significance of environmental stewardship fosters a collective responsibility towards preserving the Earth for future generations. By fostering a culture of consciousness and implementing innovative strategies, cleaning the environment stands as a vital cornerstone in securing a sustainable future for all life forms on our planet.</textarea
                     >
                   </div>
 
                   <div class="form-group">
                     <label for="instruction">Instruction:</label>
-                    <textarea class="form-control" id="instruction" rows="10">
+                    <textarea
+                      class="form-control"
+                      id="instruction"
+                      rows="10"
+                      readonly
+                    >
 1. Check-in and Briefing: Please arrive at the designated meeting point at least 15 minutes before the scheduled start time. Upon arrival, check in with our event coordinators who will provide you with necessary equipment such as gloves, trash bags, and any additional safety gear. You'll also receive a brief orientation outlining safety protocols and the areas assigned for cleanup.
 
 2. Assignment and Cleanup Process: Once briefed, you'll be assigned to a specific cleanup zone. Work in teams to cover the designated areas thoroughly. Collect and separate recyclable materials from general waste. Be mindful of safety: avoid picking up hazardous items and wear protective gear when handling sharp objects.
@@ -279,17 +312,43 @@
                       class="form-control"
                       id="location"
                       value="San Miguel Sto Tomas Batangas"
+                      readonly
                     />
                   </div>
 
                   <!-- 7. Date -->
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="date">Start Date & Time:</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="date"
+                        value="10/12/2023 9:00 AM"
+                        readonly
+                      />
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="dateend">End Date & Time:</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="dateend"
+                        value="10/13/2023 4:00 PM"
+                        readonly
+                      />
+                    </div>
+                  </div>
+
+                  <!-- 8. Target Participant -->
                   <div class="form-group">
-                    <label for="date">Date:</label>
+                    <label for="targetParticipant">Target Campus:</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="date"
-                      value="10/12/2023 -- 10/12/2023 (7:00 A.M. - 4:00 P.M.)"
+                      id="targetcampus"
+                      value="JPLPC Malvar Campus"
+                      readonly
                     />
                   </div>
 
@@ -301,6 +360,7 @@
                       class="form-control"
                       id="targetParticipant"
                       value="200"
+                      readonly
                     />
                   </div>
 
@@ -312,6 +372,7 @@
                       class="form-control"
                       id="activePoints"
                       value="50"
+                      readonly
                     />
                   </div>
 
@@ -323,6 +384,19 @@
                       class="form-control"
                       id="facilitatorsName"
                       value="Leonard S Briones"
+                      readonly
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="facilitatorsName"
+                      >Facilitator's Contact or Email:</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="facilitatorscontact"
+                      value="briones@gmail.com"
+                      readonly
                     />
                   </div>
                 </div>
