@@ -57,14 +57,8 @@
     <div class="container-post">
       <h2 id="heder">Post an event</h2>
       <form>
-        <label for="title">Title:</label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          required
-          placeholder="Event title"
-        />
+        <label for="image">Upload Image:</label>
+        <input type="file" id="image" name="image" accept="image/*" required />
 
         <label for="campus">Civic Engagement:</label>
         <select id="campus" name="campus" required>
@@ -79,6 +73,33 @@
           <option value="san juan">Teaching Literacy</option>
         </select>
 
+        <label for="campus">Target Campus:</label>
+        <select id="campus" name="campus" required>
+          <option value="" disabled selected>Choose Campus</option>
+          <option value="ARASOF Nasugbu Campus">ARASOF Nasugbu Campus</option>
+          <option value="Balayan Campus">Balayan Campus</option>
+          <option value="JPLPC Malvar Campus">JPLPC Malvar Campus</option>
+          <option value="Lemery Campus">Lemery Campus</option>
+          <option value="Lipa Campus">Lipa Campus</option>
+          <option value="Lobo Campus">Lobo Campus</option>
+          <option value="Mabini Campus">Mabini Campus</option>
+          <option value="Pablo Borbon Campus I">Pablo Borbon Campus I</option>
+          <option value=" Pablo Borbon Campus II">
+            Pablo Borbon Campus II
+          </option>
+          <option value="Rosario Campus">Rosario Campus</option>
+          <option value="San Juan Campus">San Juan Campus</option>
+        </select>
+
+        <label for="title">Title:</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          required
+          placeholder="Event title"
+        />
+
         <label for="description">Description:</label>
         <textarea
           id="description"
@@ -88,28 +109,8 @@
           placeholder="Add text"
         ></textarea>
 
-        <div class="date-fields">
-          <label for="start_date">Start Date:</label>
-          <input
-            type="date"
-            id="start_date"
-            name="start_date"
-            required
-            style="width: 190px"
-          />
-
-          <label for="end_date">End Date:</label>
-          <input
-            type="date"
-            id="end_date"
-            name="end_date"
-            required
-            style="width: 190px"
-          />
-        </div>
-
         <!-- Google Maps Location Field -->
-        <div class="location-field">
+        <!-- <div class="location-field">
           <label for="location">Location:</label>
           <div class="location-input">
             <input
@@ -118,18 +119,15 @@
               name="location"
               placeholder="Set Location"
             />
-            <!--  <a
+             <a
               href="https://maps.google.com"
               target="_blank"
               class="set-location-button"
             >
               <ion-icon name="locate"></ion-icon>
-            </a> -->
+            </a>
           </div>
-        </div>
-
-        <label for="image">Upload Image:</label>
-        <input type="file" id="image" name="image" accept="image/*" required />
+        </div> -->
 
         <button id="postB" type="submit">Post</button>
         <button type="button" id="cancelButton">Cancel</button>
