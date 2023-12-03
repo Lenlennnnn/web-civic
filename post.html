@@ -50,6 +50,16 @@
         color: #dc3545;
         text-align: center;
       }
+      .form-row {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .form-group {
+        flex-basis: 48%; /* Adjust the width as needed */
+        display: flex;
+        flex-direction: column;
+      }
     </style>
   </head>
 
@@ -58,11 +68,17 @@
       <h2 id="heder">Post an event</h2>
       <form>
         <label for="image">Upload Image:</label>
-        <input type="file" id="image" name="image" accept="image/*" required />
+        <input
+          type="file"
+          id="imagepost"
+          name="image"
+          accept="image/*"
+          required
+        />
 
-        <label for="campus">Civic Engagement:</label>
-        <select id="campus" name="campus" required>
-          <option value="" disabled selected>Choose Category</option>
+        <label for="campus">Category:</label>
+        <select id="campuspost" name="campus" required>
+          <option value="" disabled selected>Civic Engagement</option>
           <option value="nasugbu">Tree Planting</option>
           <option value="balayan">Fund Raising</option>
           <option value="malvar">Donations</option>
@@ -72,6 +88,63 @@
           <option value="mabini">Seminar Training</option>
           <option value="san juan">Teaching Literacy</option>
         </select>
+
+        <label for="title">Title:</label>
+        <input
+          type="text"
+          id="titlepost"
+          name="title"
+          required
+          placeholder="Event title"
+        />
+
+        <label for="Introduction">Introduction:</label>
+        <textarea
+          id="Introductionpost"
+          name="Introduction"
+          rows="6"
+          required
+          placeholder="Add text"
+        ></textarea>
+        <label for="Description">Description:</label>
+        <textarea
+          id="Descriptionpost"
+          name="Description"
+          rows="6"
+          required
+          placeholder="Add text"
+        ></textarea>
+        <label for="Instruction">Instruction:</label>
+        <textarea
+          id="Instructionpost"
+          name="Instruction"
+          rows="6"
+          required
+          placeholder="Add text"
+        ></textarea>
+        <label for="Location">Location:</label>
+        <input
+          type="text"
+          id="Locationpost"
+          name="Location"
+          required
+          placeholder="Address"
+        />
+        <div class="form-row">
+          <div class="form-group">
+            <label for="startdate">Start Date & Time:</label>
+            <input
+              type="datetime-local"
+              id="startdate"
+              name="startdate"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="enddate">End Date & Time:</label>
+            <input type="datetime-local" id="enddate" name="enddate" required />
+          </div>
+        </div>
 
         <label for="campus">Target Campus:</label>
         <select id="campus" name="campus" required>
@@ -91,24 +164,40 @@
           <option value="San Juan Campus">San Juan Campus</option>
         </select>
 
-        <label for="title">Title:</label>
+        <label for="targparty">Target Participant:</label>
         <input
           type="text"
-          id="title"
-          name="title"
+          id="targparty"
+          name="targparty"
           required
-          placeholder="Event title"
+          placeholder="Insert count"
         />
-
-        <label for="description">Description:</label>
-        <textarea
-          id="description"
-          name="description"
-          rows="4"
+        <label for="actpts">Active Points:</label>
+        <input
+          type="text"
+          id="actpts"
+          name="actpts"
           required
-          placeholder="Add text"
-        ></textarea>
-
+          placeholder="Insert count"
+        />
+        <!-- Google Maps Location Field -->
+        <label for="facname">Facilitator's Name:</label>
+        <input
+          type="text"
+          id="facname"
+          name="facname"
+          required
+          placeholder="Insert name"
+        />
+        <!-- Google Maps Location Field -->
+        <label for="facnamecon">Facilitator's Email or Contact:</label>
+        <input
+          type="text"
+          id="facnamecon"
+          name="facnamecon"
+          required
+          placeholder="Insert Contact"
+        />
         <!-- Google Maps Location Field -->
         <!-- <div class="location-field">
           <label for="location">Location:</label>
