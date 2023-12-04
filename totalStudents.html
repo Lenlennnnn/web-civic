@@ -231,6 +231,78 @@
         width: 150px;
         height: 150px;
       }
+
+      /* Updated styles for the modified modal */
+      .modalrr {
+        display: none;
+        position: fixed;
+        z-index: 2;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 100000000000;
+      }
+
+      .modal-contentrr {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+      }
+
+      .closerr {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .closerr:hover,
+      .closerr:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      /* Style for form groups */
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      /* Style for labels */
+
+      /* Style for inputs */
+      input[type="date"] {
+        width: 100%;
+        padding: 8px;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+      }
+
+      /* Style for checkbox label */
+      .form-check-label {
+        font-weight: normal;
+      }
+
+      /* Style for checkbox input */
+      .form-check-input {
+        margin-right: 5px;
+      }
+
+      /* Style for banCheckbox label */
+      #banCheckbox {
+        margin-left: 5px;
+      }
+
+      #centerna {
+        position: relative;
+        left: 45%;
+        color: gray;
+      }
     </style>
   </head>
 
@@ -407,11 +479,11 @@
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-light"
+                class="btn btn-danger"
                 data-dismiss="modal"
-                id="editmodalbtn"
+                id="setmodalbtn"
               >
-                Edit
+                Set
               </button>
               <button
                 type="button"
@@ -424,7 +496,42 @@
             </div>
           </div>
         </div>
-        <div id="messageContainer"></div>
+      </div>
+      <!-- Modal -->
+      <div class="modalrr" id="myModalrr">
+        <div class="modal-contentrr">
+          <span class="closerr" id="closeModalrr"></span>
+          <h4>Options</h4>
+          <hr />
+          <form id="modalForm">
+            <h6>Set Duration</h6>
+            <div class="form-group">
+              <label for="startDate">Start Date:</label>
+              <input type="date" id="startDate" name="startDate" />
+            </div>
+            <div class="form-group">
+              <label for="endDate">End Date:</label>
+              <input type="date" id="endDate" name="endDate" />
+            </div>
+            <div class="form-check">
+              <p id="centerna">---or---</p>
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="banCheckbox"
+              />
+              <label class="form-check-label" for="banCheckbox"
+                >Delete this account permanently</label
+              >
+            </div>
+            <!-- Additional buttons or content can be added here -->
+          </form>
+          <hr />
+          <button type="button" class="btn btn-dark" id="closeButtonrr">
+            Ban User
+          </button>
+          <!-- Additional buttons or content can be added here -->
+        </div>
       </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
@@ -509,6 +616,52 @@
           // If all validations pass, close the modal and perform further actions
           closeModal();
         });
+
+      // JavaScript to trigger the modified modal
+      document
+        .getElementById("setmodalbtn")
+        .addEventListener("click", function () {
+          document.getElementById("myModalrr").style.display = "block";
+        });
+
+      // Close modified modal on clicking the close button or outside the modal
+      document
+        .getElementById("closeModalrr")
+        .addEventListener("click", function () {
+          document.getElementById("myModalrr").style.display = "none";
+        });
+
+      document
+        .getElementById("closeButtonrr")
+        .addEventListener("click", function () {
+          document.getElementById("myModalrr").style.display = "none";
+        });
+
+      window.addEventListener("click", function (event) {
+        if (event.target == document.getElementById("myModalrr")) {
+          document.getElementById("myModalrr").style.display = "none";
+        }
+      });
+
+      document
+        .getElementById("closeButtonrr")
+        .addEventListener("click", function () {
+          // Pop-up confirmation for 'Are you sure?'
+          if (confirm("Are you sure?")) {
+            // If 'Yes' is clicked, pop-up 'Success'
+            alert("Success");
+            // Close the modal or perform any other necessary actions
+            closeAllModals(); // Function to close all modals
+          }
+        });
+
+      // Function to close all modals
+      function closeAllModals() {
+        // Your code to close modals here
+        // For example, if you're using Bootstrap modals
+        // Close Bootstrap modal by ID
+        $("#exampleModal").modal("hide"); // Replace 'exampleModal' with your modal ID
+      }
     </script>
 
     <script type="module">
@@ -693,22 +846,22 @@
               modalBodyContent.innerHTML = `
           <div class="image-container"><img src="${userData.ImageProfile}" class="rounded-image"></div>
           <p><u><h5>Personal Information:</h5></u></p>
-          <p><strong>Name:<input class="form-control" id ="" type="text" value="${userData.firstname} ${userData.middlename} ${userData.lastname}"></input></strong></p>
-          <p><strong>Date of Birth:<input class="form-control" id ="" type="text" value="${userData.birthday}"></input></strong></p>
-          <p><strong>Gender:<input class="form-control" id ="" type="text" value="${userData.gender}"></input></strong></p>
-          <p><strong>Address:<input class="form-control" id ="" type="text" value="${userData.address}"></input></strong></p>
-          <p><strong>Personal Contact:<input class="form-control" id ="" type="text" value="${userData.phoneno}"></input></strong></p>
-          <p><strong>Emergency Contact:<input class="form-control" id ="" type="text" value="${userData.ContactEme}"></input></strong></p>
+          <p><strong>Name:<input class="form-control" id ="" type="text" value="${userData.firstname} ${userData.middlename} ${userData.lastname}" readonly></input></strong></p>
+          <p><strong>Date of Birth:<input class="form-control" id ="" type="text" value="${userData.birthday}" readonly ></input></strong></p>
+          <p><strong>Gender:<input class="form-control" id ="" type="text" value="${userData.gender}" readonly ></input></strong></p>
+          <p><strong>Address:<input class="form-control" id ="" type="text" value="${userData.address}" readonly ></input></strong></p>
+          <p><strong>Personal Contact:<input class="form-control" id ="" type="text" value="${userData.phoneno}" readonly ></input></strong></p>
+          <p><strong>Emergency Contact:<input class="form-control" id ="" type="text" value="${userData.ContactEme}" readonly ></input></strong></p>
           <p><u><h5>Academic Information:</h5></u></p>
-          <p><strong>Campus:<input class="form-control" id ="" type="text" value="${userData.campus}"></input></strong></p>
-          <p><strong>SR-Code:<input class="form-control" id ="" type="text" value="${userData.srcode}"></input></strong></p>
-          <p><strong>Email:<input class="form-control" id ="" type="text" value="${userData.email}"></input></strong></p>
-          <p><strong>Course:<input class="form-control" id ="" type="text" value="${userData.course}"></input></strong></p>
-          <p><strong>NSTP Program:<input class="form-control" id ="" type="text" value="${userData.nstp}"></input></strong></p>
-          <p><strong>User Type:<input class="form-control" id ="" type="text" value="${userData.userType}"></input></strong></p>
-          <p><strong>Current Engagement:<input class="form-control" id ="" type="text" value="${userData.CurrentEngagement}"></input></strong></p>
-          <p><strong>Finish Activity:<input class="form-control" id ="" type="text" value="${userData.finishactivity}"></input></strong></p>
-          <p><strong>Active Points:<input class="form-control" id ="" type="text" value="${userData.activepts}"></input></strong></p>
+          <p><strong>Campus:<input class="form-control" id ="" type="text" value="${userData.campus}" readonly ></input></strong></p>
+          <p><strong>SR-Code:<input class="form-control" id ="" type="text" value="${userData.srcode}" readonly ></input></strong></p>
+          <p><strong>Email:<input class="form-control" id ="" type="text" value="${userData.email}" readonly ></input></strong></p>
+          <p><strong>Course:<input class="form-control" id ="" type="text" value="${userData.course}" readonly ></input></strong></p>
+          <p><strong>NSTP Program:<input class="form-control" id ="" type="text" value="${userData.nstp}" readonly ></input></strong></p>
+          <p><strong>User Type:<input class="form-control" id ="" type="text" value="${userData.userType}" readonly ></input></strong></p>
+          <p><strong>Current Engagement:<input class="form-control" id ="" type="text" value="${userData.CurrentEngagement}" readonly ></input></strong></p>
+          <p><strong>Finish Activity:<input class="form-control" id ="" type="text" value="${userData.finishactivity}" readonly ></input></strong></p>
+          <p><strong>Active Points:<input class="form-control" id ="" type="text" value="${userData.activepts}" readonly ></input></strong></p>
 
           <!-- Add more user details here as needed -->
         `;

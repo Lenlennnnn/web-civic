@@ -15,6 +15,11 @@
       rel="stylesheet"
       href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"
     />
+    <!-- Add this line to include the Ionicons library -->
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
 
     <style>
       .container {
@@ -283,6 +288,137 @@
         background-color: #1e7e34;
         /* Darker hover color */
       }
+
+      /* Styles for the new modal container */
+      .modalzz {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      /* Styles for the new modal content */
+      .modal-contentzz {
+        background-color: white;
+        margin: 2% auto;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        max-width: 40%;
+      }
+
+      /* Styles for the new modal header */
+      .modal-headerzz {
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+        position: relative;
+      }
+
+      .modal-headerzz h2 {
+        margin-top: 0;
+      }
+
+      /* Styles for the new modal body */
+      .modal-bodyzz {
+        margin-top: 20px;
+      }
+
+      /* Styles for the new modal footer */
+      .modal-footerzz {
+        margin-top: 20px;
+        text-align: right;
+      }
+
+      /* Close button style for the new modal */
+      .closezz {
+        position: absolute;
+        top: 0;
+        right: 10px;
+        font-size: 30px;
+        cursor: pointer;
+      }
+
+      /* CSS for the smooth enlarge hover effect */
+      #hovste {
+        transition: transform 0.3s ease-in-out; /* Add a smooth transition effect */
+      }
+
+      #hovste:hover {
+        transform: scale(1.3); /* Change the scale factor as desired */
+      }
+
+      /* CSS for the new modal */
+      .modalxc {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-contentxc {
+        background-color: #fefefe;
+        margin: 4% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 600px;
+      }
+
+      .container-popupxc {
+        position: relative;
+      }
+
+      .modal-headerxc {
+        padding: 10px 15px;
+      }
+
+      .modal-bodyxc {
+        padding: 10px 15px;
+      }
+
+      .modal-footerxc {
+        padding: 10px 15px;
+
+        text-align: right;
+      }
+
+      /* CSS for the activity table inside the modal */
+      .activity-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+      }
+
+      .activity-table th,
+      .activity-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+
+      .activity-table th {
+        background-color: black;
+        font-weight: bold;
+        color: white;
+      }
+
+      .activity-table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      .activity-table tbody tr:hover {
+        background-color: #f1f1f1;
+      }
     </style>
   </head>
 
@@ -426,7 +562,9 @@
                 <td>johndoe@gmail.com</td>
                 <td>Lipa Campus</td>
                 <td>320</td>
-                <td><button class="btn btn-danger">View</button></td>
+                <td>
+                  <button class="btn btn-danger" id="viewmo">View</button>
+                </td>
               </tr>
               <tr>
                 <td>2</td>
@@ -584,6 +722,229 @@
           </table>
         </div>
       </div>
+      <div class="modalzz" id="viewModalzz">
+        <div class="modal-contentzz" id="viewModalContentzz">
+          <div class="container-popupzz">
+            <div class="modal-headerzz">
+              <span class="closezz" id="closeViewModalzz"
+                ><ion-icon name="footsteps" id="hovste"></ion-icon>
+              </span>
+              <h4>User Details</h4>
+            </div>
+            <div class="modal-bodyzz">
+              <img
+                src="img/dean2.jpg"
+                style="
+                  border-radius: 50%;
+                  border: 2px solid black;
+                  width: 150px;
+                  margin-left: 34%;
+                "
+              />
+              <div class="form-group">
+                <label for="name">Name:</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+              <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input
+                  type="text"
+                  id="dob"
+                  name="dob"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+              <div class="form-group">
+                <label for="address">Address:</label>
+                <input
+                  type="text"
+                  id="address"
+                  name="address"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+              <div class="form-group">
+                <label for="personalContact">Personal Contact:</label>
+                <input
+                  type="text"
+                  id="personalContact"
+                  name="personalContact"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+              <div class="form-group">
+                <label for="emergencyContact">Emergency Contact:</label>
+                <input
+                  type="text"
+                  id="emergencyContact"
+                  name="emergencyContact"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+              <div class="form-group">
+                <label for="campus">Campus:</label>
+                <input
+                  type="text"
+                  id="campus"
+                  name="campus"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+              <div class="form-group">
+                <label for="srCode">SR-Code:</label>
+                <input
+                  type="text"
+                  id="srCode"
+                  name="srCode"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+              <div class="form-group">
+                <label for="course">Course:</label>
+                <input
+                  type="text"
+                  id="course"
+                  name="course"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+              <div class="form-group">
+                <label for="nstpProgram">NSTP Program:</label>
+                <input
+                  type="text"
+                  id="nstpProgram"
+                  name="nstpProgram"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+              <div class="form-group">
+                <label for="userType">User Type:</label>
+                <input
+                  type="text"
+                  id="userType"
+                  name="userType"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+              <div class="form-group">
+                <label for="currentEngagement">Current Engagement:</label>
+                <input
+                  type="text"
+                  id="currentEngagement"
+                  name="currentEngagement"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+              <div class="form-group">
+                <label for="finishActivity">Finish Activity:</label>
+                <input
+                  type="text"
+                  id="finishActivity"
+                  name="finishActivity"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+              <div class="form-group">
+                <label for="activePoints">Active Points:</label>
+                <input
+                  type="text"
+                  id="activePoints"
+                  name="activePoints"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+            </div>
+
+            <hr />
+            <div class="modal-footerzz">
+              <!-- Footer content for the new modal -->
+              <button class="btn btn-secondary" id="closeViewModalBtnzz">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modalxc" id="newModalxc">
+        <div class="modal-contentxc" id="newModalContentxc">
+          <!-- Modal content goes here -->
+          <div class="container-popupxc">
+            <div class="modal-headerxc">
+              <span class="closexc" id="closeNewModalxc"></span>
+              <h4>Activity Log</h4>
+            </div>
+            <hr />
+            <div class="modal-bodyxc">
+              <!-- Content for the new modal -->
+              <table class="activity-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Activity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>2023-01-15</td>
+                    <td>Jherimy joined in the civic event</td>
+                  </tr>
+                  <tr>
+                    <td>2023-02-20</td>
+                    <td>Changed his password</td>
+                  </tr>
+                  <tr>
+                    <td>2023-03-10</td>
+                    <td>Jherimy receive 200 active points</td>
+                  </tr>
+                  <tr>
+                    <td>2023-04-05</td>
+                    <td>Jherimy got reported</td>
+                  </tr>
+                  <tr>
+                    <td>2023-05-18</td>
+                    <td>Jherimy sent a credentials</td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- Add your content here -->
+            </div>
+            <hr />
+            <div class="modal-footerxc">
+              <button class="btn btn-secondary" id="closeNewModalBtnxc">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <script src="js/addAdmin.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
@@ -618,6 +979,70 @@
 
       // Add an event listener for the "Post" button to close the modal
       postButton.addEventListener("click", closeModal);
+
+      // Function to open the view modal
+      const viewButtons = document.querySelectorAll("#example .btn-danger");
+      const viewModal = document.getElementById("viewModalzz");
+      const closeViewModal = document.getElementById("closeViewModalzz");
+      const closeViewModalBtn = document.getElementById("closeViewModalBtnzz");
+
+      viewButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          viewModal.style.display = "block";
+        });
+      });
+
+      // Function to close the view modal
+      function closeViewModalFunc() {
+        viewModal.style.display = "none";
+      }
+
+      closeViewModal.addEventListener("click", closeViewModalFunc);
+      closeViewModalBtn.addEventListener("click", closeViewModalFunc);
+
+      window.addEventListener("click", (event) => {
+        if (event.target === viewModal) {
+          closeViewModalFunc();
+        }
+      });
+
+      // Get the ion-icon element
+      const footstepsIcon = document.getElementById("hovste");
+
+      // Get the new modal and its close button
+      const newModal = document.getElementById("newModalxc");
+      const closeNewModal = document.getElementById("closeNewModalxc");
+      const closeNewModalBtn = document.getElementById("closeNewModalBtnxc");
+
+      // Function to open the new modal
+      function openNewModal() {
+        newModal.style.display = "block";
+      }
+
+      // Function to close the new modal
+      function closeNewModalFunc() {
+        newModal.style.display = "none";
+      }
+
+      // Event listener for the ion-icon click to open the new modal
+      footstepsIcon.addEventListener("click", openNewModal);
+
+      // Event listeners to close the new modal when clicking the close button or outside modal
+      closeNewModal.addEventListener("click", closeNewModalFunc);
+      closeNewModalBtn.addEventListener("click", closeNewModalFunc);
+      window.addEventListener("click", (event) => {
+        if (event.target === newModal) {
+          closeNewModalFunc();
+        }
+      });
+
+      // Function to prevent closing the modal when clicking the footsteps icon
+      function preventModalClose(event) {
+        event.stopPropagation(); // Prevent event from reaching parent elements
+      }
+
+      // Add an event listener to the footsteps icon to prevent modal closure
+      footstepsIcon.addEventListener("click", preventModalClose);
     </script>
   </body>
 </html>

@@ -188,6 +188,60 @@
         position: relative;
         left: 90%;
       }
+      /* Add this CSS to your stylesheet */
+      .text-semibold.media-heading.box-inline {
+        position: relative; /* Set position to relative for proper child positioning */
+        display: inline-block; /* Ensures the container takes up space */
+      }
+
+      .text-semibold.media-heading.box-inline img {
+        transition: transform 0.3s ease; /* Smooth transition effect */
+        cursor: pointer;
+      }
+
+      .text-semibold.media-heading.box-inline:hover img.enlarge-on-hover {
+        transform: scale(1.2); /* Increase the size by 20% on hover */
+      }
+      /* Add this CSS to your stylesheet */
+      .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(
+          0,
+          0,
+          0,
+          0.4
+        ); /* Black background with opacity */
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 2% auto; /* Center modal on screen */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 30%; /* Set the width */
+        height: 90%;
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
     </style>
   </head>
 
@@ -234,26 +288,29 @@
                   ><img
                     class="img-circle img-sm"
                     alt="Profile Picture"
-                    src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                    src="img/dean2.jpg"
                 /></a>
                 <div class="media-body">
                   <div class="mar-btm">
-                    <a
-                      href="#"
-                      class="btn-link text-semibold media-heading box-inline"
-                      >Lisa D.</a
-                    >
+                    <p class="text-semibold media-heading box-inline">
+                      Leonard Briones
+                      <img
+                        src="img/reportto.png"
+                        alt="Report"
+                        style="width: 15px"
+                        class="enlarge-on-hover"
+                        id="hoverreport"
+                      />
+                    </p>
+
                     <p class="text-muted text-sm">
                       <i class="fa fa-mobile fa-lg"></i> - From Mobile - 11 min
                       ago
                     </p>
                   </div>
                   <p>
-                    consectetuer adipiscing elit, sed diam nonummy nibh euismod
-                    tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut
-                    wisi enim ad minim veniam, quis nostrud exerci tation
-                    ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo
-                    consequat.
+                    Guys magkakaroon tayo ng malawakang event na gaganapin sa
+                    JPLPC Malvar Campus sa kabilang month!
                   </p>
                   <div class="pad-ver">
                     <div class="btn-group">
@@ -280,34 +337,34 @@
                         ><img
                           class="img-circle img-sm"
                           alt="Profile Picture"
-                          src="https://bootdey.com/img/Content/avatar/avatar2.png"
+                          src="img/jem.png"
                       /></a>
                       <div class="media-body">
                         <div class="mar-btm">
-                          <a
-                            href="#"
-                            class="btn-link text-semibold media-heading box-inline"
-                            >Bobby Marz</a
-                          >
+                          <p class="text-semibold media-heading box-inline">
+                            Jherimy Mallorca
+                            <img
+                              src="img/reportto.png"
+                              alt="Report"
+                              style="width: 15px"
+                              class="enlarge-on-hover"
+                              id="hoverreport"
+                            />
+                          </p>
                           <p class="text-muted text-sm">
                             <i class="fa fa-mobile fa-lg"></i> - From Mobile - 7
                             min ago
                           </p>
                         </div>
-                        <p>
-                          Sed diam nonummy nibh euismod tincidunt ut laoreet
-                          dolore magna aliquam erat volutpat. Ut wisi enim ad
-                          minim veniam, quis nostrud exerci tation ullamcorper
-                          suscipit lobortis nisl ut aliquip ex ea commodo
-                          consequat.
-                        </p>
+                        <p>Yesss. Dabest! Ok Let's Do this</p>
+
                         <div class="pad-ver">
                           <div class="btn-group">
                             <a
-                              class="btn btn-sm btn-default btn-hover-success active"
+                              class="btn btn-sm btn-default btn-hover-success"
                               href="#"
-                              ><i class="fa fa-thumbs-up"></i> You Like it</a
-                            >
+                              ><i class="fa fa-thumbs-up"></i>
+                            </a>
                             <a
                               class="btn btn-sm btn-default btn-hover-danger"
                               href="#"
@@ -328,25 +385,27 @@
                         ><img
                           class="img-circle img-sm"
                           alt="Profile Picture"
-                          src="https://bootdey.com/img/Content/avatar/avatar3.png"
+                          src="img/kert.png"
                         />
                       </a>
                       <div class="media-body">
                         <div class="mar-btm">
-                          <a
-                            href="#"
-                            class="btn-link text-semibold media-heading box-inline"
-                            >Lucy Moon</a
-                          >
+                          <p class="text-semibold media-heading box-inline">
+                            Kurt Arpilleda
+                            <img
+                              src="img/reportto.png"
+                              alt="Report"
+                              style="width: 15px"
+                              class="enlarge-on-hover"
+                              id="hoverreport"
+                            />
+                          </p>
                           <p class="text-muted text-sm">
-                            <i class="fa fa-globe fa-lg"></i> - From Web - 2 min
-                            ago
+                            <i class="fa fa-mobile fa-lg"></i> - From Mobile - 2
+                            min ago
                           </p>
                         </div>
-                        <p>
-                          Duis autem vel eum iriure dolor in hendrerit in
-                          vulputate ?
-                        </p>
+                        <p>Excited na ako! Hindi na ako makapag hintay!</p>
                         <div class="pad-ver">
                           <div class="btn-group">
                             <a
@@ -378,25 +437,27 @@
                   ><img
                     class="img-circle img-sm"
                     alt="Profile Picture"
-                    src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                    src="img/admin.jpg"
                 /></a>
                 <div class="media-body">
                   <div class="mar-btm">
-                    <a
-                      href="#"
-                      class="btn-link text-semibold media-heading box-inline"
-                      >John Doe</a
-                    >
+                    <p class="text-semibold media-heading box-inline">
+                      Malvar Admin
+                    </p>
                     <p class="text-muted text-sm">
-                      <i class="fa fa-mobile fa-lg"></i> - From Mobile - 11 min
-                      ago
+                      <i class="fa fa-desktop fa-lg"></i> - From Desktop - 11
+                      min ago
                     </p>
                   </div>
-                  <p>Lorem ipsum dolor sit amet.</p>
+                  <p>
+                    Announcement! Planting Trees in on Monday (December 20,
+                    2023)
+                  </p>
                   <img
                     class="img-responsive thumbnail"
-                    src="https://www.bootdey.com/image/400x300"
+                    src="img/cleaning.jpg"
                     alt="Image"
+                    style="width: 500px"
                   />
                   <div class="pad-ver">
                     <span class="tag tag-sm"
@@ -426,24 +487,26 @@
                         ><img
                           class="img-circle img-sm"
                           alt="Profile Picture"
-                          src="https://bootdey.com/img/Content/avatar/avatar2.png"
+                          src="img/jem.png"
                       /></a>
                       <div class="media-body">
                         <div class="mar-btm">
-                          <a
-                            href="#"
-                            class="btn-link text-semibold media-heading box-inline"
-                            >Maria Leanz</a
-                          >
+                          <p class="text-semibold media-heading box-inline">
+                            Jherimy Mallorca
+                            <img
+                              src="img/reportto.png"
+                              alt="Report"
+                              style="width: 15px"
+                              class="enlarge-on-hover"
+                              id="hoverreport"
+                            />
+                          </p>
                           <p class="text-muted text-sm">
-                            <i class="fa fa-globe fa-lg"></i> - From Web - 2 min
-                            ago
+                            <i class="fa fa-mobile fa-lg"></i> - From Mobile - 2
+                            min ago
                           </p>
                         </div>
-                        <p>
-                          Duis autem vel eum iriure dolor in hendrerit in
-                          vulputate ?
-                        </p>
+                        <p>Excited na akong sumali ulit sa civic event!</p>
                         <div>
                           <div class="btn-group">
                             <a
@@ -469,6 +532,100 @@
                 </div>
               </div>
             </div>
+            <!-- Modal Structure -->
+            <div id="reportModal" class="modal">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4>Report this account?</h4>
+                </div>
+                <div class="modal-body">
+                  <p style="color: #929292">Reasons below:</p>
+                  <form id="reportForm">
+                    <label for="spam">
+                      <input
+                        type="checkbox"
+                        id="spam"
+                        name="reportType"
+                        value="Spam"
+                      />
+                      Spam </label
+                    ><br />
+
+                    <label for="hateSpeech">
+                      <input
+                        type="checkbox"
+                        id="hateSpeech"
+                        name="reportType"
+                        value="Hate Speech"
+                      />
+                      Hate Speech </label
+                    ><br />
+
+                    <label for="falseInformation">
+                      <input
+                        type="checkbox"
+                        id="falseInformation"
+                        name="reportType"
+                        value="False Information"
+                      />
+                      False Information </label
+                    ><br />
+
+                    <label for="harassment">
+                      <input
+                        type="checkbox"
+                        id="harassment"
+                        name="reportType"
+                        value="Harassment"
+                      />
+                      Harassment </label
+                    ><br />
+
+                    <label for="notConnected">
+                      <input
+                        type="checkbox"
+                        id="notConnected"
+                        name="reportType"
+                        value="Not Connected"
+                      />
+                      Not Connected </label
+                    ><br />
+
+                    <label for="nudity">
+                      <input
+                        type="checkbox"
+                        id="nudity"
+                        name="reportType"
+                        value="Nudity"
+                      />
+                      Nudity </label
+                    ><br />
+
+                    <label for="violence">
+                      <input
+                        type="checkbox"
+                        id="violence"
+                        name="reportType"
+                        value="Violence"
+                      />
+                      Violence </label
+                    ><br />
+                  </form>
+                  <label for="other">
+                    Other
+                    <textarea
+                      name="reasons"
+                      id="other"
+                      cols="30"
+                      rows="5"
+                      style="padding: 5px"
+                    ></textarea>
+                  </label>
+                </div>
+
+                <button class="btn btn-primary" id="subrep">Submit</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -476,5 +633,81 @@
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript"></script>
+    <script>
+      // Get the modal
+      var modal = document.getElementById("reportModal");
+
+      // Get the submit button inside the modal
+      var submitButton = document.getElementById("subrep");
+
+      // Function to handle the submission process
+      function handleSubmission() {
+        // Get all checkboxes
+        var checkboxes = document.querySelectorAll('input[name="reportType"]');
+        var checked = false;
+
+        // Check if at least one checkbox is checked
+        checkboxes.forEach(function (checkbox) {
+          if (checkbox.checked) {
+            checked = true;
+          }
+        });
+
+        // If no checkbox is checked, show an alert and prevent submission
+        if (!checked) {
+          alert("Please choose a report before proceeding.");
+          return false;
+        }
+
+        // Display a confirmation prompt
+        var confirmation = confirm("Are you sure?");
+
+        // If the user clicks "Yes" in the confirmation prompt
+        if (confirmation) {
+          // Show a success message
+          alert("Successfully!");
+          // Close the modal
+          modal.style.display = "none";
+        }
+      }
+
+      // Check if the submit button exists
+      if (submitButton) {
+        // Add click event listener to the submit button
+        submitButton.addEventListener("click", handleSubmission);
+      }
+
+      // Function to close the modal when clicking outside
+      window.addEventListener("click", function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      });
+
+      // Add this JavaScript code
+      // Get the modal
+      var modal = document.getElementById("reportModal");
+
+      // Get the image element
+      var img = document.getElementById("hoverreport");
+
+      // When the user clicks the image, display the modal
+      img.onclick = function () {
+        modal.style.display = "block";
+      };
+
+      // Close the modal when the user clicks on the close button (×)
+      var closeBtn = document.getElementsByClassName("close")[0];
+      closeBtn.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      // Close the modal when the user clicks outside the modal
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+    </script>
   </body>
 </html>
