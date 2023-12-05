@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Management</title>
+    <link rel="icon" type="image/png" href="login/images/icons/civicon.png" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"
+    />
+    <style>
+      .container {
+        position: relative;
+        right: 235px;
+        width: 200%;
+        bottom: 40px;
+      }
+
+      .h1-group {
+        position: relative;
+        bottom: 58px;
+        right: 180px;
+      }
+
+      /* for modal */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        position: absolute;
+        top: 50%;
+        /* Position at the vertical center of the viewport */
+        left: 50%;
+        /* Position at the horizontal center of the viewport */
+        transform: translate(-50%, -50%);
+        /* Center the content */
+        max-width: 46%;
+        /* Limit the width of the content */
+        height: 100%;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        overflow-y: auto;
+        /* Add scrollbar if content exceeds modal height */
+      }
+
+      .close {
+        position: relative;
+        top: -10px;
+        right: -440px;
+        font-size: 25px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      /* Styles for elements inside .container-popup */
+      .container-popup {
+        width: 500px;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .container-popup h2 {
+        text-align: center;
+      }
+
+      .container-popup label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      .container-popup input,
+      .container-popup select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      .container-popup button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      .container-popup button:hover {
+        background-color: #0056b3;
+      }
+
+      .custom-button {
+        position: absolute;
+        top: 100px;
+        left: -165px;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+        /* Change cursor to pointer */
+        /* Other button styling properties */
+
+        /* Transition effect for hover */
+        transition: background-color 0.3s, color 0.3s, transform 0.3s;
+        z-index: 1;
+      }
+
+      .custom-button:hover {
+        background-color: #007bff;
+        /* Change background color on hover */
+        color: #fff;
+        /* Change text color on hover */
+        transform: translate(-50%, -50%) scale(1.05);
+        /* Scale up slightly on hover */
+      }
+
+      .upper-container {
+        width: 100%;
+        height: 50px;
+        background-color: #007bff;
+        /* Blue color */
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        /* Place the container behind the main content */
+      }
+
+      thead {
+        border: solid 1px black;
+      }
+
+      /* validation button */
+      #studentValidation {
+        position: relative;
+        bottom: 133px;
+        left: 1010px;
+      }
+
+      #valBtn {
+        background-color: #fd7e14;
+      }
+
+      .notification-link {
+        position: relative;
+        display: inline-block;
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -15px;
+        right: -10px;
+        background-color: red;
+        color: white;
+        border-radius: 50%;
+        padding: 5px 10px;
+        font-size: 12px;
+      }
+
+      .back-button:hover {
+        background-color: #8c0000;
+        /* Change background color on hover */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        /* Add shadow on hover */
+        transform: scale(1.1);
+        /* Slightly scale up on hover */
+      }
+
+      .main {
+        background-color: #e1e1e1;
+        border-radius: 50% 0px 0px 50%;
+      }
+
+      body {
+        background-color: #e1e1e1;
+      }
+
+      .radio-group {
+        display: flex;
+        align-items: center;
+        position: relative;
+        right: 80px;
+      }
+
+      .radio-group input[type="radio"] {
+        margin-right: -150px;
+        margin-top: 10px;
+        /* Adjust the margin as needed */
+      }
+
+      /* Optional: To align the labels properly with the radio buttons */
+      .radio-group label {
+        display: flex;
+        align-items: center;
+      }
+
+      .modal-dialog {
+        height: 600px;
+        max-width: 100%;
+      }
+      .image-container {
+        display: flex;
+        justify-content: center; /* Horizontally center */
+        align-items: center; /* Vertically center */
+        margin-bottom: 20px; /* Adjust margin as needed */
+      }
+
+      .rounded-image {
+        border-radius: 50%;
+        border: 2px solid black;
+        width: 150px;
+        height: 150px;
+      }
+
+      /* Updated styles for the modified modal */
+      .modalrr {
+        display: none;
+        position: fixed;
+        z-index: 2;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 100000000000;
+      }
+
+      .modal-contentrr {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+      }
+
+      .closerr {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .closerr:hover,
+      .closerr:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      /* Style for form groups */
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      /* Style for labels */
+
+      /* Style for inputs */
+      input[type="date"] {
+        width: 100%;
+        padding: 8px;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+      }
+
+      /* Style for checkbox label */
+      .form-check-label {
+        font-weight: normal;
+      }
+
+      /* Style for checkbox input */
+      .form-check-input {
+        margin-right: 5px;
+      }
+
+      /* Style for banCheckbox label */
+      #banCheckbox {
+        margin-left: 5px;
+      }
+
+      #centerna {
+        position: relative;
+        left: 45%;
+        color: gray;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="main">
+      <div class="topbar">
+        <a href="subdashboard.html">
+          <div class="back-button">
+            <ion-icon name="return-down-back-outline"></ion-icon>
+          </div>
+        </a>
+
+        <!-- ====== ionicons ======= -->
+        <script
+          type="module"
+          src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+        ></script>
+      </div>
+      <h1 class="h1-group">User Management</h1>
+      <a href="#" id="openModalBtn">
+        <button
+          type="button"
+          class="btn btn-primary custom-button"
+          id="adduserBtn"
+        >
+          Add Account
+        </button>
+      </a>
+      <!-- validate button -->
+      <a
+        href="validateStudent.html"
+        id="studentValidation"
+        class="notification-link"
+      >
+        <button type="button" class="btn btn-primary custom-button" id="valBtn">
+          Validation
+          <span class="notification-badge">new</span>
+        </button>
+      </a>
+
+      <div class="modal" id="myModal">
+        <div class="modal-content" id="modalContent">
+          <div class="container-popup">
+            <span class="close" id="closeModal">&times;</span>
+
+            <h2>Create User Account</h2>
+            <form>
+              <label for="firstname">First Name:</label>
+              <input
+                type="text"
+                id="firstname"
+                name="firstname"
+                required
+                placeholder="Your first name"
+              />
+
+              <label for="middlename">Middle Name:</label>
+              <input
+                type="text"
+                id="middlename"
+                name="lastname"
+                required
+                placeholder="Your middle name"
+              />
+
+              <label for="lastname">Last Name:</label>
+              <input
+                type="text"
+                id="lastname"
+                name="middlename"
+                required
+                placeholder="Your last name"
+              />
+
+              <label for="campus">Gender:</label>
+              <select id="gender" name="campus" required>
+                <option value="" disabled selected>Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+
+              <label for="campus">Campus:</label>
+              <select id="campus" name="campus" required>
+                <option value="" disabled selected>Select campus</option>
+                <option value="ARASOF Nasugbu Campus">
+                  ARASOF Nasugbu Campus
+                </option>
+                <option value="Balayan Campus">Balayan Campus</option>
+                <option value="JPLPC Malvar Campus">JPLPC Malvar Campus</option>
+                <option value="Lemery Campus">Lemery Campus</option>
+                <option value="Lipa Campus">Lipa Campus</option>
+                <option value="Lobo Campus">Lobo Campus</option>
+                <option value="Mabini Campus">Mabini Campus</option>
+                <option value="Pablo Borbon Campus I">
+                  Pablo Borbon Campus I
+                </option>
+                <option value="Pablo Borbon Campus II">
+                  Pablo Borbon Campus II
+                </option>
+                <option value="Rosario Campus">Rosario Campus</option>
+                <option value="San Juan Campus">San Juan Campus</option>
+              </select>
+
+              <label for="email">Email Address:</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                placeholder="example@email.com"
+              />
+
+              <label for="password">Password:</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                placeholder="Your password"
+              />
+              <label for="password">Confirm Password:</label>
+              <input
+                type="password"
+                id="confirmpassword"
+                name="password"
+                required
+                placeholder="Re-type password"
+              />
+
+              <button type="submit" id="createbtnacc">Create Account</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="container py-5">
+        <div class="row">
+          <table id="example" class="table table-striped" style="width: 100%">
+            <thead class="headerr">
+              <tr>
+                <th>UID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Campus</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="tbody1" style="font-size: 13px"></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="exampleModalLong"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLongTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5
+                class="modal-title"
+                id="user-details"
+                style="position: relative; left: 38%"
+              >
+                User Details
+              </h5>
+            </div>
+            <div class="modal-body" id="modalBodyContent">
+              <!-- User details will be populated here -->
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-dismiss="modal"
+                id="setmodalbtn"
+              >
+                Set
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+                id="closemodalbtn"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal -->
+      <div class="modalrr" id="myModalrr">
+        <div class="modal-contentrr">
+          <span class="closerr" id="closeModalrr"></span>
+          <h4>Options</h4>
+          <hr />
+          <form id="modalForm">
+            <h6>Ban Duration</h6>
+            <div class="form-group">
+              <label for="startDate">Start Date:</label>
+              <input type="date" id="startDate" name="startDate" />
+            </div>
+            <div class="form-group">
+              <label for="endDate">End Date:</label>
+              <input type="date" id="endDate" name="endDate" />
+            </div>
+            <div class="form-check">
+              <p id="centerna">---or---</p>
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="banCheckbox"
+              />
+              <label class="form-check-label" for="banCheckbox"
+                >Delete this account permanently</label
+              >
+            </div>
+            <!-- Additional buttons or content can be added here -->
+          </form>
+          <hr />
+          <button type="button" class="btn btn-dark" id="closeButtonrr">
+            Submit
+          </button>
+          <!-- Additional buttons or content can be added here -->
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="js/addAdmin.js"></script>
+
+    <script>
+      new DataTable("#example");
+    </script>
+    <script>
+      function closeModal() {
+        let modal = document.getElementById("myModal");
+        modal.style.display = "none";
+      }
+
+      document
+        .getElementById("createbtnacc")
+        .addEventListener("click", function (event) {
+          event.preventDefault(); // Prevents the form from submitting by default
+
+          let firstName = document.getElementById("firstname").value.trim();
+          let lastName = document.getElementById("lastname").value.trim();
+          let middleName = document.getElementById("middlename").value.trim();
+          let gender = document.getElementById("gender").value;
+          let campus = document.getElementById("campus").value;
+          let email = document.getElementById("email").value.trim();
+          let password = document.getElementById("password").value.trim();
+          let confirmPassword = document
+            .getElementById("confirmpassword")
+            .value.trim();
+
+          // Validate First Name, Middle Name, and Last Name to accept only letters
+          let nameRegex = /^[A-Za-z]+$/;
+          if (!nameRegex.test(firstName)) {
+            alert("Use letters only in First Name");
+            return false;
+          }
+
+          if (!nameRegex.test(lastName)) {
+            alert("Use letters only in Last Name");
+            return false;
+          }
+
+          if (!nameRegex.test(middleName)) {
+            alert("Use letters only in Middle Name");
+            return false;
+          }
+
+          // Validate Campus selection
+          if (campus === "") {
+            alert("Please select a Campus");
+            return false;
+          }
+
+          // Validate Gender selection
+          if (gender === "") {
+            alert("Please select a Gender");
+            return false;
+          }
+
+          // Validate Email Address format
+          let emailRegex = /\S+@\S+\.\S+/;
+          if (!emailRegex.test(email)) {
+            alert("Please enter a valid email address");
+            return false;
+          }
+
+          // Validate Password and Confirm Password to have a minimum of 8 characters
+          if (password.length < 8 || confirmPassword.length < 8) {
+            alert("Minimum 8 characters required for password");
+            return false;
+          }
+
+          // Check if Password and Confirm Password match
+          if (password !== confirmPassword) {
+            alert("Passwords do not match");
+            return false;
+          }
+
+          // If all validations pass, close the modal and perform further actions
+          closeModal();
+        });
+
+      // JavaScript to trigger the modified modal
+      document
+        .getElementById("setmodalbtn")
+        .addEventListener("click", function () {
+          document.getElementById("myModalrr").style.display = "block";
+        });
+
+      // Close modified modal on clicking the close button or outside the modal
+      document
+        .getElementById("closeModalrr")
+        .addEventListener("click", function () {
+          document.getElementById("myModalrr").style.display = "none";
+        });
+
+      document
+        .getElementById("closeButtonrr")
+        .addEventListener("click", function () {
+          document.getElementById("myModalrr").style.display = "none";
+        });
+
+      window.addEventListener("click", function (event) {
+        if (event.target == document.getElementById("myModalrr")) {
+          document.getElementById("myModalrr").style.display = "none";
+        }
+      });
+
+      document
+        .getElementById("closeButtonrr")
+        .addEventListener("click", function () {
+          // Pop-up confirmation for 'Are you sure?'
+          if (confirm("Are you sure?")) {
+            // If 'Yes' is clicked, pop-up 'Success'
+            alert("Success");
+            // Close the modal or perform any other necessary actions
+            closeAllModals(); // Function to close all modals
+          }
+        });
+
+      // Function to close all modals
+      function closeAllModals() {
+        // Your code to close modals here
+        // For example, if you're using Bootstrap modals
+        // Close Bootstrap modal by ID
+        $("#exampleModal").modal("hide"); // Replace 'exampleModal' with your modal ID
+      }
+    </script>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+        push,
+        set,
+        onValue,
+        onChildRemoved,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+        authDomain: "civicall-app-a54d1.firebaseapp.com",
+        databaseURL:
+          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "civicall-app-a54d1",
+        storageBucket: "civicall-app-a54d1.appspot.com",
+        messagingSenderId: "909514632764",
+        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+        measurementId: "G-0BVYE5XJGV",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const auth = getAuth(app);
+
+      let firstname = document.getElementById("firstname");
+      let middlename = document.getElementById("middlename");
+      let lastname = document.getElementById("lastname");
+      let password = document.getElementById("password");
+      let gender = document.getElementById("gender");
+      let campus = document.getElementById("campus");
+      let email = document.getElementById("email");
+      let submit = document.getElementById("createbtnacc"); // Update the submit button ID
+
+      submit.addEventListener("click", RegisterUser);
+
+      function RegisterUser(event) {
+        event.preventDefault();
+
+        createUserWithEmailAndPassword(auth, email.value, password.value)
+          .then((userCredential) => {
+            // User registered successfully
+            const user = userCredential.user;
+
+            // Store additional user data in the database
+            saveUserData(user.uid);
+          })
+          .catch((error) => {
+            // Handle errors here
+            alert(error.message);
+            console.error(error);
+          });
+      }
+
+      function generateTimestamp() {
+        const currentDate = new Date();
+        return currentDate.toISOString();
+      }
+
+      function saveUserData(userId) {
+        const dbRef = ref(db);
+        const userRef = ref(db, `Users/${userId}`);
+
+        // Set the user data in the database including the verificationStatus as "true"
+        set(userRef, {
+          firstname: firstname.value,
+          middlename: middlename.value,
+          lastname: lastname.value,
+          gender: gender.value,
+          campus: campus.value,
+          email: email.value,
+          CurrentEngagement: 0,
+          verificationStatus: true,
+          uid: userId,
+          ImageProfile: "",
+          timestamp: generateTimestamp(),
+          address: "",
+          birthday: "",
+          userType: "",
+          phoneno: "",
+          activepts: 0,
+          finishactivity: "",
+        })
+          .then(() => {
+            alert("User Added Successfully");
+            // You can add any additional actions after user creation if needed
+          })
+          .catch((error) => {
+            alert("Error: " + error);
+            console.error(error);
+          });
+      }
+
+      const UsersRef = ref(db, "Users");
+
+      const initializeDataTable = () => {
+        if ($.fn.DataTable.isDataTable("#example")) {
+          $("#example").DataTable().destroy();
+        }
+
+        const dataTable = $("#example").DataTable({
+          columns: [
+            { data: "userUID" },
+            { data: "fullname" },
+            { data: "email" },
+            { data: "campus" },
+            { data: "Action" },
+          ],
+        });
+
+        return dataTable;
+      };
+
+      const dataTable = initializeDataTable();
+
+      const populateDataTable = () => {
+        onValue(UsersRef, (snapshot) => {
+          const usersData = snapshot.val();
+
+          dataTable.clear();
+
+          if (usersData) {
+            Object.keys(usersData).forEach((userId) => {
+              const user = usersData[userId];
+              $("#example tbody").on(
+                "click",
+                "button.view-button",
+                function () {
+                  const userId = dataTable
+                    .row($(this).parents("tr"))
+                    .data().userUID;
+                  viewUserDetails(userId);
+                }
+              );
+              dataTable.row.add({
+                userUID: userId,
+                fullname: `${user.firstname} ${user.lastname}`,
+                email: user.email,
+                campus: user.campus,
+                Action:
+                  '<button class="btn btn-danger view-button" data-toggle="modal" data-target="#exampleModalLong">View</button>',
+              });
+            });
+
+            dataTable.draw();
+          } else {
+            console.log("No data available in Users collection.");
+            dataTable.clear().draw();
+          }
+        });
+
+        onChildRemoved(UsersRef, (removedSnapshot) => {
+          const removedUserId = removedSnapshot.key;
+
+          dataTable
+            .rows((idx, data) => data.userUID === removedUserId)
+            .remove()
+            .draw();
+        });
+      };
+      function viewUserDetails(userId) {
+        const userRef = ref(db, `Users/${userId}`);
+
+        get(userRef)
+          .then((snapshot) => {
+            const userData = snapshot.val();
+
+            console.log("ImageProfile URL:", userData.ImageProfile);
+
+            const modalBodyContent =
+              document.getElementById("modalBodyContent");
+
+            if (userData) {
+              modalBodyContent.innerHTML = `
+          <div class="image-container"><img src="${userData.ImageProfile}" class="rounded-image"></div>
+          <p><u><h5>Personal Information:</h5></u></p>
+          <p><strong>Name:<input class="form-control" id ="" type="text" value="${userData.firstname} ${userData.middlename} ${userData.lastname}" readonly></input></strong></p>
+          <p><strong>Date of Birth:<input class="form-control" id ="" type="text" value="${userData.birthday}" readonly ></input></strong></p>
+          <p><strong>Gender:<input class="form-control" id ="" type="text" value="${userData.gender}" readonly ></input></strong></p>
+          <p><strong>Address:<input class="form-control" id ="" type="text" value="${userData.address}" readonly ></input></strong></p>
+          <p><strong>Personal Contact:<input class="form-control" id ="" type="text" value="${userData.phoneno}" readonly ></input></strong></p>
+          <p><strong>Emergency Contact:<input class="form-control" id ="" type="text" value="${userData.ContactEme}" readonly ></input></strong></p>
+          <p><u><h5>Academic Information:</h5></u></p>
+          <p><strong>Campus:<input class="form-control" id ="" type="text" value="${userData.campus}" readonly ></input></strong></p>
+          <p><strong>SR-Code:<input class="form-control" id ="" type="text" value="${userData.srcode}" readonly ></input></strong></p>
+          <p><strong>Email:<input class="form-control" id ="" type="text" value="${userData.email}" readonly ></input></strong></p>
+          <p><strong>Course:<input class="form-control" id ="" type="text" value="${userData.course}" readonly ></input></strong></p>
+          <p><strong>NSTP Program:<input class="form-control" id ="" type="text" value="${userData.nstp}" readonly ></input></strong></p>
+          <p><strong>User Type:<input class="form-control" id ="" type="text" value="${userData.userType}" readonly ></input></strong></p>
+          <p><strong>Current Engagement:<input class="form-control" id ="" type="text" value="${userData.CurrentEngagement}" readonly ></input></strong></p>
+          <p><strong>Finish Activity:<input class="form-control" id ="" type="text" value="${userData.finishactivity}" readonly ></input></strong></p>
+          <p><strong>Active Points:<input class="form-control" id ="" type="text" value="${userData.activepts}" readonly ></input></strong></p>
+
+          <!-- Add more user details here as needed -->
+        `;
+            } else {
+              modalBodyContent.innerHTML = `<p>No user details found.</p>`;
+            }
+
+            // Show the modal
+            $("#exampleModalLong").modal("show");
+          })
+          .catch((error) => {
+            console.error("Error fetching user details:", error);
+          });
+        const closeButton = document.getElementById("closemodalbtn");
+
+        if (closeButton) {
+          closeButton.addEventListener("click", () => {
+            $("#exampleModalLong").modal("hide");
+          });
+        }
+
+        // Remove outside click close modal functionality
+        $("#exampleModalLong").modal({
+          backdrop: "static", // Prevents modal from closing when clicking outside
+          keyboard: false, // Disables the keyboard close functionality
+        });
+      }
+
+      populateDataTable();
+    </script>
+  </body>
+</html>

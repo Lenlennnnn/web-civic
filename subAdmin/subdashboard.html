@@ -5,13 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Civicall Admin Dashboard</title>
-    <link rel="icon" type="image/png" href="login/images/icons/civicicon.png" />
+    <link rel="icon" type="image/png" href="login/images/icons/civicon.png" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     />
     <link rel="stylesheet" href="css/dashboard.css" />
     <link rel="stylesheet" href="css/post.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.15.4/css/ionicons.min.css"
+    />
 
     <style>
       .dashboard {
@@ -313,7 +317,6 @@
       }
 
       .table-filter .filter-group {
-        float: right;
         margin-left: 15px;
       }
       .table-filter input,
@@ -409,8 +412,8 @@
 
       table.table .eventpic {
         margin: 0px;
-        width: 230px;
-        height: 130px;
+        width: 110px;
+        height: 70px;
         padding: 0px;
         border-radius: 3%;
       }
@@ -456,13 +459,16 @@
 
       #eventfilter {
         position: relative;
-        right: 145px;
+        right: 35px;
+        bottom: 65px;
+        float: left;
       }
 
       #campusfilter {
         position: relative;
-        right: 350px;
+        right: 60px;
         bottom: 65px;
+        float: left;
       }
 
       #searchfieldcontainer {
@@ -495,7 +501,6 @@
       .table-container {
         max-height: 400px;
         width: 100%; /* Set the desired height for the scrollable area */
-        overflow-y: auto; /* Enable vertical scrolling */
         position: relative;
         bottom: 60px;
       }
@@ -514,8 +519,276 @@
         text-align: left;
         border-bottom: 1px solid #ccc; /* Add a border for separation */
       }
+
+      /* Modal styles */
+      .modalupcom {
+        display: none; /* Hide the modal by default */
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+      }
+
+      .modal-contentupcom {
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        background-color: #fefefe;
+        margin: 15% auto; /* Center the modal vertically and horizontally */
+        padding: 20px;
+        border: 1px solid #888;
+        border-radius: 10px; /* Set border radius */
+        width: 80%;
+        height: 900px;
+        max-height: 90%; /* Set a maximum height for the modal content */
+        max-width: 900px; /* Set a maximum width for the modal */
+        transform: translate(-50%, -50%);
+        animation: modalFadeIn 0.5s ease-in-out forwards; /* Animation for fade-in */
+        overflow-y: auto; /* Enable vertical scrolling */
+      }
+
+      /* Customize the scrollbar */
+      .modal-contentupcom::-webkit-scrollbar {
+        width: 10px; /* Width of the scrollbar */
+      }
+
+      .modal-contentupcom::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Track color */
+        border-radius: 10px;
+      }
+
+      .modal-contentupcom::-webkit-scrollbar-thumb {
+        background: #888; /* Thumb color */
+        border-radius: 10px; /* Rounded corners for the thumb */
+      }
+
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+
+      #closemodalbtnupcom {
+        position: relative;
+        bottom: 10px;
+        right: 10px;
+        background-color: #6c757d;
+        color: #ffffff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      #closemodalbtnupcom:hover {
+        background-color: #565e64;
+      }
+
+      /* inside the modal content in upcomming */
+      .modal-contentupcom h2 {
+        /* Your existing styles */
+        text-align: center; /* Center align text inside the container */
+        margin-bottom: 20px;
+        text-decoration: underline;
+      }
+
+      #upcompostpic {
+        height: 250px;
+        width: 500px;
+        border: solid 2px black;
+        border-radius: 10px;
+        display: block; /* Ensures the image behaves as a block element */
+        margin: 0 auto; /* Sets margins to auto to horizontally center the image */
+      }
+
+      .eventpic {
+        border: black 2px solid;
+        cursor: default;
+      }
+
+      #iconto {
+        position: inherit;
+        top: 5px;
+      }
+      #titleto {
+        position: inherit;
+        top: 5px;
+        font-size: 20px;
+      }
+
+      #btnparaview {
+        background-color: #dc3545;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      #btnparaview:hover {
+        background-color: #9c232f; /* Darker color for hover */
+        transform: scale(1.1); /* Enlarge the button on hover */
+      }
+
+      /* Styling for the modal not functioning */
+      .modalevnts {
+        display: none; /* Hide the modal by default */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+      }
+
+      .modal-contentevnts {
+        background-color: #fff;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 70%;
+        max-width: 600px;
+        border-radius: 5px;
+      }
+
+      .modal-headerevnts,
+      .modal-bodyevnts,
+      .modal-footerevnts {
+        padding: 10px 0;
+      }
+
+      .modal-headerevnts {
+        border-bottom: 1px solid #ccc;
+      }
+
+      .modal-footerevnts {
+        border-top: 1px solid #ccc;
+        text-align: right;
+      }
+
+      #closeModalevnts {
+        background-color: #6c757d; /* Light color */
+        color: #fff; /* Text color */
+        /* Add any other necessary styling */
+      }
+
+      /* Darker hover effect */
+      #closeModalevnts:hover {
+        background-color: #495057; /* Darker color on hover */
+      }
+
+      #evntimgpicnew {
+        width: 555px;
+        border-radius: 5%;
+        border: black solid 2px;
+      }
+
+      #modalngatt {
+        position: relative;
+        left: 90%;
+        bottom: 15px;
+        font-size: 45px;
+        transition: transform 0.3s ease-in-out; /* Adding a transition for smoothness */
+        color: #28a745;
+        cursor: pointer;
+      }
+
+      #modalngatt:hover {
+        transform: scale(1.2); /* Enlarge the icon on hover */
+      }
+
+      .modal-headerevnts {
+        padding-top: 0%;
+        margin-top: 0%;
+        height: 35px;
+      }
+
+      .modal-contentevnts {
+        position: relative;
+        bottom: 150px;
+      }
+
+      #editmov {
+        position: relative;
+        bottom: 55px;
+      }
+
+      /* modal for att */
+      /* Styling for your specific modal IDs */
+      #myModalatt {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+      }
+
+      #myModalatt .modal-dialogatt {
+        position: relative;
+        width: auto;
+        max-width: 600px;
+        margin: 10% auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+      }
+
+      #myModalatt .modal-headeratt {
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+      }
+
+      #myModalatt .modal-titleatt {
+        margin: 0;
+      }
+
+      #myModalatt .modal-bodyatt {
+        padding: 20px 0;
+      }
+
+      #myModalatt .modal-footeratt {
+        border-top: 1px solid #ccc;
+        padding-top: 10px;
+        text-align: right;
+      }
+
+      #myModalatt .closeatt {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+      }
+
+      #myModalatt .btnatt {
+        padding: 8px 20px;
+        border-radius: 4px;
+        border: none;
+        color: #fff;
+        background-color: #dc3545;
+        cursor: pointer;
+      }
+
+      #myModalatt .btnatt:hover {
+        background-color: #c82333;
+      }
     </style>
   </head>
+
   <body>
     <!-- =============================================== Navigation ================================================ -->
     <div class="container1">
@@ -523,10 +796,17 @@
         <ul>
           <li>
             <a href="#">
-              <span class="icon">
-                <img src="img/logos.png" alt="" width="30px" height="30px" />
+              <span class="icon" id="iconto">
+                <img
+                  src="../login/images/icons/civicon.png"
+                  alt=""
+                  width="60px"
+                  height="60px"
+                />
               </span>
-              <span class="title">CIVICALL</span>
+              <span class="title" style="font-weight: 1000" id="titleto"
+                >CIVICALL</span
+              >
             </a>
           </li>
 
@@ -538,8 +818,9 @@
               <span class="title">Dashboard</span>
             </a>
           </li>
+
           <li>
-            <a href="https://calendar.google.com/calendar/u/0/r?pli=1">
+            <a href="login/schedules/index.html">
               <span class="icon">
                 <ion-icon name="calendar-outline"></ion-icon>
               </span>
@@ -561,20 +842,20 @@
           </li>
 
           <li>
-            <a href="reportMonitoring.html" class="page-transition">
-              <span class="icon">
-                <ion-icon name="document-text-outline"></ion-icon>
-              </span>
-              <span class="title">Reports </span>
-            </a>
-          </li>
-
-          <li>
             <a href="forum.html" id="openMessagesModal" class="page-transition">
               <span class="icon">
                 <ion-icon name="chatbubbles-outline"></ion-icon>
               </span>
               <span class="title">Forum</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="reportMonitoring.html" class="page-transition">
+              <span class="icon">
+                <ion-icon name="document-text-outline"></ion-icon>
+              </span>
+              <span class="title">Reports </span>
             </a>
           </li>
         </ul>
@@ -587,7 +868,7 @@
             <ion-icon name="menu-outline" class="hover-icon"></ion-icon>
           </div>
           <h1 class="dashboard">Dashboard</h1>
-          <!--  <div class="search">
+          <!-- <div class="search">
             <label>
               <input type="text" placeholder="Search here" class="bold-input" />
               <ion-icon name="search-outline" class="search-icon"></ion-icon>
@@ -648,10 +929,10 @@
                 &nbsp; My Account
               </a>
 
-              <a class="dropdown-item" href="feedback.html">
+              <!--     <a class="dropdown-item" href="feedback.html">
                 <ion-icon name="warning-outline" style="color: #888"></ion-icon>
                 &nbsp; Feedback Report
-              </a>
+              </a> -->
 
               <a class="dropdown-item" href="changePass.html">
                 <ion-icon name="lock-closed" style="color: #888"></ion-icon>
@@ -722,7 +1003,7 @@
               </div>
             </div>
           </a>
-          <a href="totalStudent.html" class="no-underline">
+          <a href="totalStudents.html" class="no-underline">
             <div class="card">
               <div>
                 <div class="numbers">2</div>
@@ -736,7 +1017,6 @@
           </a>
         </div>
 
-        <!-- =============================================== upcoming Events ================================================ -->
         <!-- =============================================== upcoming Events ================================================ -->
         <div class="upcoming">
           <div class="upcomingEvents">
@@ -796,16 +1076,33 @@
                           <label>Campus</label>
                           <select class="form-control">
                             <option value="" disabled selected>
-                              Choose Category
+                              Choose Campus
                             </option>
-                            <option value="nasugbu">Tree Planting</option>
-                            <option value="balayan">Fund Raising</option>
-                            <option value="malvar">Donations</option>
-                            <option value="lemery">Clean Up Drive</option>
-                            <option value="lipa">Feeding Program</option>
-                            <option value="lobo">Relief Operations</option>
-                            <option value="mabini">Seminar Training</option>
-                            <option value="san juan">Teaching Literacy</option>
+                            <option value="ARASOF Nasugbu Campus">
+                              ARASOF Nasugbu Campus
+                            </option>
+                            <option value="Balayan Campus">
+                              Balayan Campus
+                            </option>
+                            <option value="JPLPC Malvar Campus">
+                              JPLPC Malvar Campus
+                            </option>
+                            <option value="Lemery Campus">Lemery Campus</option>
+                            <option value="Lipa Campus">Lipa Campus</option>
+                            <option value="Lobo Campus">Lobo Campus</option>
+                            <option value="Mabini Campus">Mabini Campus</option>
+                            <option value="Pablo Borbon Campus I">
+                              Pablo Borbon Campus I
+                            </option>
+                            <option value=" Pablo Borbon Campus II">
+                              Pablo Borbon Campus II
+                            </option>
+                            <option value="Rosario Campus">
+                              Rosario Campus
+                            </option>
+                            <option value="San Juan Campus">
+                              San Juan Campus
+                            </option>
                           </select>
                         </div>
                       </div>
@@ -818,99 +1115,260 @@
                     >
                       <thead class="table-fix">
                         <tr>
-                          <th>No.</th>
+                          <th id="noid">No.</th>
                           <th>Event</th>
                           <th>Title</th>
                           <th>Category</th>
                           <th>Campus</th>
-                          <th>Date</th>
+                          <th>Date & Time</th>
                           <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td>1</td>
+                          <td id="numid">1</td>
                           <td>
                             <a href="#"
                               ><img
-                                src="img/linis.jpg"
+                                src="img/cleaning.jpg"
                                 class="eventpic"
                                 alt="Avatar"
+                                id="eventpicimg"
                             /></a>
                           </td>
-                          <td>Clean and Green</td>
-                          <td>Clean up Drive</td>
-                          <td>JPLPC Malvar</td>
-                          <td>2023/08/20</td>
-                          <td>
-                            <a href="upcomEventInfo.html">
-                              <button
-                                type="button"
-                                class="vieweventdet"
-                                title="View Details"
-                                data-toggle="tooltip"
-                              >
-                                View
-                              </button></a
-                            >
+                          <td id="titleid">Clean and Green</td>
+                          <td id="categoryid">Clean Up Drive</td>
+                          <td id="campusid">JPLPC Malvar</td>
+                          <td id="dateid">
+                            10/20/23 7:00 AM <br />
+                            10/20/23 4:00 PM
                           </td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>
-                            <a href="#"
-                              ><img
-                                src="img/linis.jpg"
-                                class="eventpic"
-                                alt="Avatar"
-                            /></a>
-                          </td>
-                          <td>Clean and Green</td>
-                          <td>Clean up Drive</td>
-                          <td>JPLPC Malvar</td>
-                          <td>2023/08/20</td>
-                          <td>
-                            <a href="upcomEventInfo.html">
-                              <button
-                                type="button"
-                                class="vieweventdet"
-                                title="View Details"
-                                data-toggle="tooltip"
-                              >
-                                View
-                              </button></a
-                            >
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td>
-                            <a href="#"
-                              ><img
-                                src="img/linis.jpg"
-                                class="eventpic"
-                                alt="Avatar"
-                            /></a>
-                          </td>
-                          <td>Clean and Green</td>
-                          <td>Clean up Drive</td>
-                          <td>JPLPC Malvar</td>
-                          <td>2023/08/20</td>
-                          <td>
-                            <a href="upcomEventInfo.html">
-                              <button
-                                type="button"
-                                class="vieweventdet"
-                                title="View Details"
-                                data-toggle="tooltip"
-                              >
-                                View
-                              </button></a
-                            >
+                          <td id="btnviewid">
+                            <a> <button id="btnparaview">View</button></a>
                           </td>
                         </tr>
                       </tbody>
                     </table>
+                    <!-- Updated Modal Structure -->
+                    <div id="eventModalupcom" class="modalupcom">
+                      <div class="modal-contentupcom">
+                        <!-- Content for displaying event details -->
+                        <h2>Event Details</h2>
+                        <div id="eventDetailsupcom"></div>
+
+                        <!-- Close button at bottom-right -->
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          id="closemodalbtnupcom"
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                    <!-- for not functioning purpose -->
+                    <div id="myModalevnts" class="modalevnts">
+                      <div class="modal-contentevnts">
+                        <div class="modal-headerevnts">
+                          <a href="attendance.html">
+                            <ion-icon
+                              name="person-circle"
+                              class="user-icon"
+                              id="modalngatt"
+                            ></ion-icon>
+                          </a>
+
+                          <h3 id="editmov">View Details</h3>
+                        </div>
+                        <div class="modal-bodyevnts">
+                          <!-- 1. Image -->
+                          <div class="text-center">
+                            <img
+                              src="img/cleaning.jpg"
+                              alt="Event Image"
+                              class="img-fluidnew"
+                              id="evntimgpicnew"
+                            />
+                          </div>
+
+                          <!-- 2. Category -->
+                          <div class="form-group">
+                            <label for="category">Category:</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="category"
+                              value="Clean Up Drive"
+                              readonly
+                            />
+                          </div>
+
+                          <!-- 3. Title -->
+                          <div class="form-group">
+                            <label for="title">Title:</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="title"
+                              value="Sustainable Environmental Cleaning"
+                              readonly
+                            />
+                          </div>
+
+                          <!-- 4. Introduction -->
+                          <div class="form-group">
+                            <label for="introduction">Introduction:</label>
+                            <textarea
+                              class="form-control"
+                              id="introduction"
+                              rows="10"
+                              readonly
+                            >
+      Cleaning the environment is a vital responsibility that transcends personal and collective interests, embodying our commitment to safeguarding the planet and ensuring a sustainable future for generations to come. It involves the conscientious removal of pollutants, waste, and harmful elements from our surroundings,  promoting the restoration and preservation of natural ecosystems. Cleaning the environment is not limited to physical debris but extends to addressing broader issues such as air and water quality, deforestation, and climate change mitigation. It signifies our dedication to harmonious coexistence with nature, recognizing that a cleaner environment not only enhances our own well-being but also plays an essential role in protecting the intricate web of life on Earth and preserving the beauty and diversity of our planet.
+                   </textarea
+                            >
+                          </div>
+
+                          <!-- 5. Description -->
+                          <div class="form-group">
+                            <label for="description">Description:</label>
+                            <textarea
+                              class="form-control"
+                              id="description"
+                              rows="10"
+                              readonly
+                            >
+                    Cleaning the environment is an indispensable endeavor crucial for sustaining life on our planet. It encompasses a wide array of practices aimed at preserving and restoring the natural balance of ecosystems. From managing waste and reducing pollution to conserving resources and promoting biodiversity, the scope of cleaning the environment is multifaceted. Recycling initiatives, adoption of renewable energy sources, reforestation efforts, and advocating for sustainable practices are integral components in the mission to create a cleaner, healthier environment. Moreover, educating communities about the significance of environmental stewardship fosters a collective responsibility towards preserving the Earth for future generations. By fostering a culture of consciousness and implementing innovative strategies, cleaning the environment stands as a vital cornerstone in securing a sustainable future for all life forms on our planet.</textarea
+                            >
+                          </div>
+
+                          <div class="form-group">
+                            <label for="instruction">Instruction:</label>
+                            <textarea
+                              class="form-control"
+                              id="instruction"
+                              rows="10"
+                              readonly
+                            >
+1. Check-in and Briefing: Please arrive at the designated meeting point at least 15 minutes before the scheduled start time. Upon arrival, check in with our event coordinators who will provide you with necessary equipment such as gloves, trash bags, and any additional safety gear. You'll also receive a brief orientation outlining safety protocols and the areas assigned for cleanup.
+
+2. Assignment and Cleanup Process: Once briefed, you'll be assigned to a specific cleanup zone. Work in teams to cover the designated areas thoroughly. Collect and separate recyclable materials from general waste. Be mindful of safety: avoid picking up hazardous items and wear protective gear when handling sharp objects.
+
+3. Environmental Conservation: While collecting trash, take note of any environmental concerns (such as signs of habitat destruction, invasive species, or pollution sources) and report them to the event coordinators. If you come across any wildlife, maintain a safe distance and avoid disturbing their habitat.
+
+4. Proper Waste Disposal: When your assigned cleanup time is completed or your bags are full, return to the designated collection point. Make sure all waste bags are securely tied. Separate recyclables from non-recyclables as instructed. Our team will properly dispose of collected waste in accordance with local recycling and waste management regulations.
+
+5. Conclusion and Appreciation: At the end of the event, there will be a brief gathering to acknowledge everyone's hard work and dedication. We'll discuss the impact of our efforts and share any significant findings. Feel free to share your experiences and any insights gained during the cleanup.</textarea
+                            >
+                          </div>
+
+                          <!-- 6. Location -->
+                          <div class="form-group">
+                            <label for="location">Location:</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="location"
+                              value="San Miguel Sto Tomas Batangas"
+                              readonly
+                            />
+                          </div>
+
+                          <!-- 7. Date -->
+                          <div class="form-row">
+                            <div class="form-group col-md-6">
+                              <label for="date">Start Date & Time:</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="date"
+                                value="10/12/2023 9:00 AM"
+                                readonly
+                              />
+                            </div>
+                            <div class="form-group col-md-6">
+                              <label for="dateend">End Date & Time:</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="dateend"
+                                value="10/13/2023 4:00 PM"
+                                readonly
+                              />
+                            </div>
+                          </div>
+
+                          <!-- 8. Target Participant -->
+                          <div class="form-group">
+                            <label for="targetParticipant"
+                              >Target Campus:</label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="targetcampus"
+                              value="JPLPC Malvar Campus"
+                              readonly
+                            />
+                          </div>
+
+                          <!-- 8. Target Participant -->
+                          <div class="form-group">
+                            <label for="targetParticipant"
+                              >Target Participant:</label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="targetParticipant"
+                              value="200"
+                              readonly
+                            />
+                          </div>
+
+                          <!-- 9. Active Points -->
+                          <div class="form-group">
+                            <label for="activePoints">Active Points:</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="activePoints"
+                              value="50"
+                              readonly
+                            />
+                          </div>
+
+                          <!-- 10. Facilitator's Name -->
+                          <div class="form-group">
+                            <label for="facilitatorsName"
+                              >Facilitator's Name:</label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="facilitatorsName"
+                              value="Leonard S Briones"
+                              readonly
+                            />
+                          </div>
+                          <div class="form-group">
+                            <label for="facilitatorsName"
+                              >Facilitator's Contact or Email:</label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="facilitatorscontact"
+                              value="briones@gmail.com"
+                              readonly
+                            />
+                          </div>
+                        </div>
+                        <div class="modal-footerevnts">
+                          <button id="closeModalevnts">Close</button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -991,19 +1449,69 @@
         // Re-check overflow on window resize
         window.addEventListener("resize", checkOverflow);
       }
+      // Function to close the "eventModalupcom" modal when the close button is clicked
+      function closeModalEventModal() {
+        const modal = document.getElementById("eventModalupcom");
+        modal.style.display = "none"; // Hide the modal
+      }
+
+      // Add click event listener to the close button of "eventModalupcom"
+      const closeModalButtonEventModal =
+        document.getElementById("closemodalbtnupcom");
+      closeModalButtonEventModal.addEventListener(
+        "click",
+        closeModalEventModal
+      );
+
+      /* for not functioning modal purpose */
+      /* For the second modal */
+
+      // Get the "myModalevnts" modal element
+      const modalEvnts = document.getElementById("myModalevnts");
+      // Get the button that opens the "myModalevnts" modal
+      const btnOpenModalEvnts = document.getElementById("btnparaview");
+      // Get the close button for "myModalevnts"
+      const closeModalBtnEvnts = document.getElementById("closeModalevnts");
+
+      // Function to open the "myModalevnts" modal
+      function openModalEvnts() {
+        modalEvnts.style.display = "block";
+      }
+
+      // Function to close the "myModalevnts" modal
+      function closeModalEvnts() {
+        modalEvnts.style.display = "none";
+      }
+
+      // Close the "myModalevnts" modal if clicked outside of it
+      window.addEventListener("click", function (event) {
+        if (event.target === modalEvnts) {
+          closeModalEvnts();
+        }
+      });
+
+      // Event listener for opening the "myModalevnts" modal
+      btnOpenModalEvnts.addEventListener("click", openModalEvnts);
+
+      // Event listener for closing the "myModalevnts" modal
+      closeModalBtnEvnts.addEventListener("click", closeModalEvnts);
     </script>
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
+
+    <script type="modules">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
       import {
         getDatabase,
         ref,
         get,
-      } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-database.js";
+        push,
+        set,
+        onValue,
+        onChildRemoved,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
       import {
         getAuth,
-        signInWithEmailAndPassword,
-      } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
-
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
       const firebaseConfig = {
         apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
         authDomain: "civicall-app-a54d1.firebaseapp.com",
@@ -1017,12 +1525,122 @@
       };
 
       const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
       const db = getDatabase(app);
-    </script>
+      const auth = getAuth(app);
 
+      const tableBody = document.querySelector("#tableevents tbody");
+      let rowNumber = 1; // Initialize row number
+
+      // Function to open the modal and display event details
+      function openEventModal(eventData) {
+        const modal = document.getElementById("eventModalupcom");
+        const eventDetailsContainer =
+          document.getElementById("eventDetailsupcom");
+
+        eventDetailsContainer.innerHTML = `
+      <img src="${eventData.image}" alt="Event Image" class="eventpic" id="upcompostpic" />
+      <p><strong>Title:<input class="form-control" id ="" type="text" value="${eventData.title}" readonly ></input></strong></p>
+      <p><strong>Category:<input class="form-control" id ="" type="text" value="${eventData.category}" readonly ></input></strong></p>
+      <p><strong>Campus:<input class="form-control" id ="" type="text" value="${eventData.campus}" readonly ></input></strong></p>
+      <p><strong>Location:<input class="form-control" id ="" type="text" value="${eventData.location}" readonly ></input></strong></p>
+      <p><strong>Start Date:<input class="form-control" id ="" type="text" value="${eventData.startDate}" readonly ></input></strong></p>
+      <p><strong>End Date:<input class="form-control" id ="" type="text" value="${eventData.endDate}" readonly ></input></strong></p>
+      <h3>Description</h3>
+      <p>&nbsp;</p>
+      <p><strong>Introduction:</strong></p>
+      <textarea class="form-control" rows="10" id="yourTextAreaId" readonly >${eventData.intro}</textarea>
+      <p><strong>Objectives:</strong></p>
+      <textarea class="form-control" rows="10" id="yourTextAreaId" readonly >${eventData.objective}</textarea>
+      <p><strong>Instruction:</strong></p>
+      <textarea class="form-control" rows="10" id="yourTextAreaId" readonly >${eventData.instruction}</textarea>
+      <p><strong>Target Participant:<input class="form-control" id ="" type="text" value="${eventData.targetparty}" readonly ></input></strong></p>
+      <p><strong>Payment Receipt:<input class="form-control" id ="" type="text" value="${eventData.paymentRecipient}" readonly ></input></strong></p>
+      <p><strong>Payment Method:<input class="form-control" id ="" type="text" value="${eventData.paymentMethod}" readonly ></input></strong></p>
+      <p><strong>Fund Collected:<input class="form-control" id ="" type="text" value="${eventData.fundcollected}" readonly ></input></strong></p>
+      <p><strong>Facilitators Name:<input class="form-control" id ="" type="text" value="${eventData.facilitatorsName}" readonly ></input></strong></p>
+      <p><strong>Facilitators Contractor Email:<input class="form-control" id ="" type="text" value="${eventData.facilitatorsContractorEmail}" readonly ></input></strong></p>
+      <p><strong>Active Points:<input class="form-control" id ="" type="text" value="${eventData.activepoints}" readonly ></input></strong></p>
+      <!-- Add other fields -->
+      <!-- Include other fields as needed -->
+      `;
+
+        // Show the modal
+        modal.style.display = "block";
+      }
+
+      // Event delegation for dynamically created buttons
+
+      document.addEventListener("click", function (event) {
+        if (event.target && event.target.classList.contains("vieweventdet")) {
+          const clickedRow = event.target.closest("tr");
+          const eventId = clickedRow.getAttribute("data-event-id"); // Assuming you have an attribute for the event ID in the table row
+
+          // Reference the specific event node in Firebase
+          const eventRef = ref(db, `Upload Engagement/${eventId}`);
+
+          // Retrieve the event data from Firebase
+          get(eventRef)
+            .then((snapshot) => {
+              if (snapshot.exists()) {
+                const eventData = snapshot.val();
+                openEventModal(eventData);
+              } else {
+                console.log("No data available");
+              }
+            })
+            .catch((error) => {
+              console.error("Error getting data:", error);
+            });
+        }
+      });
+      // Function to fetch and display data in the table
+      function displayEventData() {
+        const uploadEngagementRef = ref(db, "Upload Engagement");
+
+        onValue(uploadEngagementRef, (snapshot) => {
+          tableBody.innerHTML = ""; // Clear existing table data
+          rowNumber = 1; // Reset row number
+
+          snapshot.forEach((childSnapshot) => {
+            const uploadData = childSnapshot.val();
+            const {
+              campus,
+              category,
+              dateandtime,
+              title,
+              image,
+              location,
+              startDate,
+              endDate,
+              // Add other fields you want to retrieve from Firebase
+            } = uploadData;
+
+            const newRow = tableBody.insertRow();
+            newRow.innerHTML = `
+            <td>${rowNumber}</td>
+            <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
+            <td>${title}</td>
+            <td>${category}</td>
+            <td>${campus}</td>
+            <td>${startDate} ${endDate}</td>
+            <td>
+              <button type="button" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>
+            </td>
+          `;
+            newRow.setAttribute("data-event-id", childSnapshot.key); // Set the event ID as an attribute in the table row
+            rowNumber++;
+          });
+        });
+      }
+
+      displayEventData();
+    </script>
     <script src="js/dashboard.js"></script>
     <script src="js/post.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
     <!-- =============================================== ionicons ================================================ -->
     <script

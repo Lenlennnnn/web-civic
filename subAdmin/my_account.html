@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Account</title>
-    <link rel="icon" type="image/png" href="login/images/icons/civicicon.png" />
+    <link rel="icon" type="image/png" href="login/images/icons/civicon.png" />
     <link rel="stylesheet" href="css/dashboard.css" />
     <link rel="stylesheet" href="css/my_account.css" />
 
@@ -49,12 +49,12 @@
       }
 
       h1 {
-        margin-right: 10px;
+        margin-right: 30px;
         margin-top: 10px;
       }
 
       .admin-info {
-        margin-top: 96%;
+        margin-top: 82%;
       }
     </style>
   </head>
@@ -104,12 +104,12 @@
             <div class="input-container">
               <input
                 type="text"
-                id="account-id"
+                id="accountname"
                 name="account-id"
                 value="John D. Smith"
                 readonly
               />
-              <span class="edit-icon" onclick="enableEdit('account-id')"
+              <span class="edit-icon" onclick="enableEdit('accountname')"
                 >✎</span
               >
             </div>
@@ -119,12 +119,14 @@
             <div class="input-container">
               <input
                 type="text"
-                id="gender"
+                id="accountgender"
                 name="gender"
                 value="Male"
                 readonly
               />
-              <span class="edit-icon" onclick="enableEdit('gender')">✎</span>
+              <span class="edit-icon" onclick="enableEdit('accountgender')"
+                >✎</span
+              >
             </div>
           </div>
           <div class="form-group">
@@ -132,12 +134,14 @@
             <div class="input-container">
               <input
                 type="text"
-                id="bday"
+                id="accountbday"
                 name="bday"
-                value="Set Birthday"
+                value="January 22, 1990"
                 readonly
               />
-              <span class="edit-icon" onclick="enableEdit('bday')">✎</span>
+              <span class="edit-icon" onclick="enableEdit('accountbday')"
+                >✎</span
+              >
             </div>
           </div>
           <div class="form-group">
@@ -145,38 +149,29 @@
             <div class="input-container">
               <input
                 type="text"
-                id="cpnum"
+                id="accountcontact"
                 name="cpnum"
-                value="Set Contact Number"
+                value="09123456789"
                 readonly
               />
-              <span class="edit-icon" onclick="enableEdit('cpnum')">✎</span>
+              <span class="edit-icon" onclick="enableEdit('accountcontact')"
+                >✎</span
+              >
             </div>
           </div>
-          <div class="form-group">
-            <label for="cpnum">Account ID:</label>
-            <div class="input-container">
-              <input
-                type="text"
-                id="cpnum"
-                name="cpnum"
-                value="20-12345"
-                readonly
-              />
-            </div>
-          </div>
-
           <div class="form-group">
             <label for="email">Email Account:</label>
             <div class="input-container">
               <input
                 type="email"
-                id="email"
+                id="accountemail"
                 name="email"
                 value="20-12345@g.batstate-u.edu.ph"
                 readonly
               />
-              <span class="edit-icon" onclick="enableEdit('email')">✎</span>
+              <span class="edit-icon" onclick="enableEdit('accountemail')"
+                >✎</span
+              >
             </div>
           </div>
 
@@ -185,9 +180,9 @@
             <div class="input-container">
               <input
                 type="text"
-                id="campus"
+                id="accountcampus"
                 name="campus"
-                value="JPLPC Malvar Batangas"
+                value="Pablo Borbon Batangas"
                 readonly
               />
             </div>
@@ -197,41 +192,80 @@
             <div class="input-container">
               <input
                 type="text"
-                id="position"
+                id="accountposition"
                 name="position"
-                value="Input Position"
+                value="CICS Dean"
                 readonly
               />
-              <span class="edit-icon" onclick="enableEdit('position')">✎</span>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="socmed">Social Media:</label>
-            <div class="input-container">
-              <input
-                type="text"
-                id="socmed"
-                name="socmed"
-                value="Input Social"
-                readonly
-              />
-              <span class="edit-icon" onclick="enableEdit('socmed')">✎</span>
+              <span class="edit-icon" onclick="enableEdit('accountposition')"
+                >✎</span
+              >
             </div>
           </div>
         </div>
+        <script>
+          function enableEdit(fieldName) {
+            const field = document.getElementById(fieldName);
+            const inputContainer = field.parentElement;
+
+            inputContainer.classList.toggle("editing");
+            field.readOnly = !field.readOnly;
+          }
+        </script>
+        <script type="module">
+          import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
+          import {
+            getAuth,
+            signInWithEmailAndPassword,
+          } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+          import { getDatabase } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-database.js";
+
+          const firebaseConfig = {
+            apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+            authDomain: "civicall-app-a54d1.firebaseapp.com",
+            databaseURL:
+              "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "civicall-app-a54d1",
+            storageBucket: "civicall-app-a54d1.appspot.com",
+            messagingSenderId: "909514632764",
+            appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+            measurementId: "G-0BVYE5XJGV",
+          };
+
+          // Initialize Firebase app
+          const app = initializeApp(firebaseConfig);
+
+          // Get Firebase auth and database references
+          const auth = getAuth(app);
+          const db = getDatabase(app);
+
+          // Assume 'loggedInUserEmail' holds the email of the logged-in user after authentication
+
+          const userRef = db
+            .ref("SubAdminAcc")
+            .orderByChild("email")
+            .equalTo(loggedInUserEmail);
+
+          userRef.once("value", (snapshot) => {
+            snapshot.forEach((childSnapshot) => {
+              const userData = childSnapshot.val();
+
+              // Update the HTML elements with retrieved data
+              document.getElementById(
+                "accountname"
+              ).value = `${userData.firstname} ${userData.middlename} ${userData.lastname}`;
+              document.getElementById("accountgender").value = userData.gender;
+              document.getElementById("accountbday").value = userData.birthday;
+              document.getElementById("accountcontact").value =
+                userData.contactNumber;
+              document.getElementById("accountemail").value = userData.email;
+              document.getElementById("accountcampus").value = userData.campus;
+              document.getElementById("accountposition").value =
+                userData.position;
+            });
+          });
+        </script>
       </div>
     </div>
-    <script>
-      function enableEdit(fieldName) {
-        const field = document.getElementById(fieldName);
-        const inputContainer = field.parentElement;
-
-        // Toggle the "editing" class on the input container
-        inputContainer.classList.toggle("editing");
-
-        // Toggle the "readonly" attribute of the input field
-        field.readOnly = !field.readOnly;
-      }
-    </script>
   </body>
 </html>
