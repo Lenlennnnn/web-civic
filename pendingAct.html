@@ -190,6 +190,91 @@
                   </button>
                 </td>
               </tr>
+              <tr class="clickable-row">
+                <td>2</td>
+                <td>Volunteer Fair and Civic Engagement Expo</td>
+                <td>Relief Operations</td>
+                <td>Jherimy Ticong</td>
+                <td>
+                  <!-- Button to trigger modal -->
+                  <button
+                    class="btn btn-danger view-button"
+                    data-toggle="modal"
+                    data-target="#exampleModalLonggg"
+                    id="comactbtn"
+                  >
+                    View
+                  </button>
+                </td>
+              </tr>
+              <tr class="clickable-row">
+                <td>3</td>
+                <td>Neighborhood Watch Training Workshop</td>
+                <td>Seminar Training</td>
+                <td>Kurt Arpilleda</td>
+                <td>
+                  <!-- Button to trigger modal -->
+                  <button
+                    class="btn btn-danger view-button"
+                    data-toggle="modal"
+                    data-target="#exampleModalLonggg"
+                    id="comactbtn"
+                  >
+                    View
+                  </button>
+                </td>
+              </tr>
+              <tr class="clickable-row">
+                <td>4</td>
+                <td>Town Hall Meeting on Public Safety</td>
+                <td>Seminar Training</td>
+                <td>Bryant Arpilleda</td>
+                <td>
+                  <!-- Button to trigger modal -->
+                  <button
+                    class="btn btn-danger view-button"
+                    data-toggle="modal"
+                    data-target="#exampleModalLonggg"
+                    id="comactbtn"
+                  >
+                    View
+                  </button>
+                </td>
+              </tr>
+              <tr class="clickable-row">
+                <td>5</td>
+                <td>Citywide Recycling Initiative Launch</td>
+                <td>Clean Up Drive</td>
+                <td>Jherimy Ticong</td>
+                <td>
+                  <!-- Button to trigger modal -->
+                  <button
+                    class="btn btn-danger view-button"
+                    data-toggle="modal"
+                    data-target="#exampleModalLonggg"
+                    id="comactbtn"
+                  >
+                    View
+                  </button>
+                </td>
+              </tr>
+              <tr class="clickable-row">
+                <td>6</td>
+                <td>Community Clean-Up Day</td>
+                <td>Clean Up Drive</td>
+                <td>Jolina Mallorca</td>
+                <td>
+                  <!-- Button to trigger modal -->
+                  <button
+                    class="btn btn-danger view-button"
+                    data-toggle="modal"
+                    data-target="#exampleModalLonggg"
+                    id="comactbtn"
+                  >
+                    View
+                  </button>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -455,6 +540,29 @@
       document.getElementById("editctn").addEventListener("click", function () {
         toggleEditableFields();
       });
+
+      // Function to display the "Are you sure?" confirmation alert
+      function showConfirmationAlert() {
+        if (confirm("Are you sure?")) {
+          // If the user clicks 'Yes', display the success alert
+          showSuccessAlert();
+        }
+      }
+
+      // Function to display the "Success" alert
+      function showSuccessAlert() {
+        alert("Successfully");
+        // Close the modal after the 'OK' button in the success alert is clicked
+        $("#exampleModalIcon").closest(".modal").modal("hide");
+      }
+
+      // Click event listener for the Launch button
+      document
+        .getElementById("exampleModalIcon")
+        .addEventListener("click", function () {
+          // Show the confirmation alert when the Launch button is clicked
+          showConfirmationAlert();
+        });
     </script>
 
     <script src="js/addAdmin.js"></script>

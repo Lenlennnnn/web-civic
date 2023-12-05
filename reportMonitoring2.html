@@ -499,7 +499,8 @@
             <form>
               <label for="campus">Campus:</label>
               <select id="campus" name="campus" required>
-                <option value="" disabled selected>All campus</option>
+                <option value="" disabled selected>Select Campus</option>
+                <option value="BSU campuses">All Campuses</option>
                 <option value="nasugbu">ARASOF Nasugbu Campus</option>
                 <option value="balayan">Balayan Campus</option>
                 <option value="malvar">JPLPC Malvar Campus</option>
@@ -507,18 +508,15 @@
                 <option value="lipa">Lipa Campus</option>
                 <option value="lobo">Lobo Campus</option>
                 <option value="mabini">Mabini Campus</option>
-                <option value="poblacion">
-                  Pablo Borbon Campus 1(Poblacion)
-                </option>
-                <option value="alanginan">
-                  Pablo Borbon Campus 2(Alanginan)
-                </option>
+                <option value="poblacion">Pablo Borbon Campus I</option>
+                <option value="alanginan">Pablo Borbon Campus II</option>
                 <option value="rosario">Rosario Campus</option>
                 <option value="san juan">San Juan Campus</option>
               </select>
               <label for="campus">Year Level:</label>
               <select id="campus" name="campus" required>
                 <option value="" disabled selected>Select Level</option>
+                <option value="levels">All Levels</option>
                 <option value="level">First Year</option>
                 <option value="level">Second Year</option>
                 <option value="level">Third Year</option>
@@ -533,7 +531,6 @@
                 <option value="status">Recognition</option>
                 <option value="status">Declined</option>
                 <option value="status">Reported</option>
-                <option value="status">Suspended</option>
                 <option value="status">Banned</option>
                 <option value="status">Deleted</option>
               </select>
@@ -558,9 +555,9 @@
             <tbody>
               <tr>
                 <td>1</td>
-                <td>John Doe</td>
-                <td>johndoe@gmail.com</td>
-                <td>Lipa Campus</td>
+                <td>Jherimy Ticong</td>
+                <td>jemmy@gmail.com</td>
+                <td>JPLPC Malvar Campus</td>
                 <td>320</td>
                 <td>
                   <button class="btn btn-danger" id="viewmo">View</button>
@@ -733,11 +730,12 @@
             </div>
             <div class="modal-bodyzz">
               <img
-                src="img/dean2.jpg"
+                src="img/jem.png"
                 style="
                   border-radius: 50%;
                   border: 2px solid black;
                   width: 150px;
+                  height: 145px;
                   margin-left: 34%;
                 "
               />
@@ -748,6 +746,7 @@
                   id="name"
                   name="name"
                   class="form-control"
+                  value="Jherimy Ticong"
                   readonly
                 />
               </div>
@@ -758,6 +757,7 @@
                   id="dob"
                   name="dob"
                   class="form-control"
+                  value="04/12/01"
                   readonly
                 />
               </div>
@@ -768,6 +768,7 @@
                   id="address"
                   name="address"
                   class="form-control"
+                  value="San Bartolome Sto Tomas"
                   readonly
                 />
               </div>
@@ -778,6 +779,7 @@
                   id="personalContact"
                   name="personalContact"
                   class="form-control"
+                  value="09472264408"
                   readonly
                 />
               </div>
@@ -788,6 +790,7 @@
                   id="emergencyContact"
                   name="emergencyContact"
                   class="form-control"
+                  value="09678896657"
                   readonly
                 />
               </div>
@@ -798,6 +801,7 @@
                   id="campus"
                   name="campus"
                   class="form-control"
+                  value="JPLPC Malvar"
                   readonly
                 />
               </div>
@@ -808,6 +812,7 @@
                   id="srCode"
                   name="srCode"
                   class="form-control"
+                  value="20-65235"
                   readonly
                 />
               </div>
@@ -818,6 +823,7 @@
                   id="email"
                   name="email"
                   class="form-control"
+                  value="jemmy@gmail.com"
                   readonly
                 />
               </div>
@@ -828,6 +834,7 @@
                   id="course"
                   name="course"
                   class="form-control"
+                  value="Bachelor of Science in Information Technology"
                   readonly
                 />
               </div>
@@ -838,6 +845,7 @@
                   id="nstpProgram"
                   name="nstpProgram"
                   class="form-control"
+                  value="Civic Welfare Training Service"
                   readonly
                 />
               </div>
@@ -848,6 +856,7 @@
                   id="userType"
                   name="userType"
                   class="form-control"
+                  value="undergraduate"
                   readonly
                 />
               </div>
@@ -858,6 +867,7 @@
                   id="currentEngagement"
                   name="currentEngagement"
                   class="form-control"
+                  value="1"
                   readonly
                 />
               </div>
@@ -868,6 +878,7 @@
                   id="finishActivity"
                   name="finishActivity"
                   class="form-control"
+                  value="2"
                   readonly
                 />
               </div>
@@ -878,6 +889,7 @@
                   id="activePoints"
                   name="activePoints"
                   class="form-control"
+                  value="20"
                   readonly
                 />
               </div>

@@ -169,6 +169,40 @@
                   </button>
                 </td>
               </tr>
+              <tr class="clickable-row">
+                <td>2</td>
+                <td>Jherimy Ticong</td>
+                <td>Male</td>
+                <td>Literacy Training Service</td>
+                <td>
+                  <!-- Button to trigger modal -->
+                  <button
+                    class="btn btn-danger view-button"
+                    data-toggle="modal"
+                    data-target="#exampleModalLonggg"
+                    id="comactbtn"
+                  >
+                    View
+                  </button>
+                </td>
+              </tr>
+              <tr class="clickable-row">
+                <td>3</td>
+                <td>Kurt Arpilleda</td>
+                <td>Male</td>
+                <td>Reserve Officers' Training Corps</td>
+                <td>
+                  <!-- Button to trigger modal -->
+                  <button
+                    class="btn btn-danger view-button"
+                    data-toggle="modal"
+                    data-target="#exampleModalLonggg"
+                    id="comactbtn"
+                  >
+                    View
+                  </button>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -302,6 +336,7 @@
                     type="button"
                     class="btn btn-success"
                     data-dismiss="modal"
+                    id="approval"
                   >
                     Approved
                   </button>
@@ -309,6 +344,7 @@
                     type="button"
                     class="btn btn-danger"
                     data-dismiss="modal"
+                    id="declining"
                   >
                     Decline
                   </button>
@@ -375,6 +411,52 @@
           }
         });
       });
+
+      // Function to display the "Are you sure?" confirmation alert
+      function showConfirmationAlert() {
+        if (confirm("Are you sure?")) {
+          // If the user clicks 'Yes', display the success message
+          showSuccessMessage();
+        }
+      }
+
+      // Function to display the success message
+      function showSuccessMessage() {
+        alert("Successfully ");
+        // Close the modal after the 'OK' button in the alert is clicked
+        $("#approval").closest(".modal").modal("hide");
+      }
+
+      // Click event listener for the Approved button
+      document
+        .getElementById("approval")
+        .addEventListener("click", function () {
+          // Show the confirmation alert when the Approved button is clicked
+          showConfirmationAlert();
+        });
+
+      // Function to display the "Are you sure?" confirmation alert
+      function showConfirmationAlertDecline() {
+        if (confirm("Are you sure you want to decline?")) {
+          // If the user clicks 'Yes', display the decline message
+          showDeclineMessage();
+        }
+      }
+
+      // Function to display the decline message
+      function showDeclineMessage() {
+        alert("Declined.");
+        // Close the modal after the 'OK' button in the alert is clicked
+        $("#declining").closest(".modal").modal("hide");
+      }
+
+      // Click event listener for the Decline button
+      document
+        .getElementById("declining")
+        .addEventListener("click", function () {
+          // Show the confirmation alert when the Decline button is clicked
+          showConfirmationAlertDecline();
+        });
     </script>
 
     <script src="js/addAdmin.js"></script>

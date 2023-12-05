@@ -177,6 +177,91 @@
                   </button>
                 </td>
               </tr>
+              <tr class="clickable-row">
+                <td>2</td>
+                <td>Volunteer Fair and Civic Engagement Expo</td>
+                <td>Relief Operations</td>
+                <td>Lipa</td>
+                <td>
+                  <!-- Button to trigger modal -->
+                  <button
+                    class="btn btn-danger view-button"
+                    data-toggle="modal"
+                    data-target="#exampleModalLonggg"
+                    id="comactbtn"
+                  >
+                    View
+                  </button>
+                </td>
+              </tr>
+              <tr class="clickable-row">
+                <td>3</td>
+                <td>Neighborhood Watch Training Workshop</td>
+                <td>Seminar Training</td>
+                <td>JPLPC Malvar</td>
+                <td>
+                  <!-- Button to trigger modal -->
+                  <button
+                    class="btn btn-danger view-button"
+                    data-toggle="modal"
+                    data-target="#exampleModalLonggg"
+                    id="comactbtn"
+                  >
+                    View
+                  </button>
+                </td>
+              </tr>
+              <tr class="clickable-row">
+                <td>4</td>
+                <td>Town Hall Meeting on Public Safety</td>
+                <td>Seminar Training</td>
+                <td>Rosario</td>
+                <td>
+                  <!-- Button to trigger modal -->
+                  <button
+                    class="btn btn-danger view-button"
+                    data-toggle="modal"
+                    data-target="#exampleModalLonggg"
+                    id="comactbtn"
+                  >
+                    View
+                  </button>
+                </td>
+              </tr>
+              <tr class="clickable-row">
+                <td>5</td>
+                <td>Citywide Recycling Initiative Launch</td>
+                <td>Clean Up Drive</td>
+                <td>Nasugbu</td>
+                <td>
+                  <!-- Button to trigger modal -->
+                  <button
+                    class="btn btn-danger view-button"
+                    data-toggle="modal"
+                    data-target="#exampleModalLonggg"
+                    id="comactbtn"
+                  >
+                    View
+                  </button>
+                </td>
+              </tr>
+              <tr class="clickable-row">
+                <td>6</td>
+                <td>Community Clean-Up Day</td>
+                <td>Clean Up Drive</td>
+                <td>Balayan</td>
+                <td>
+                  <!-- Button to trigger modal -->
+                  <button
+                    class="btn btn-danger view-button"
+                    data-toggle="modal"
+                    data-target="#exampleModalLonggg"
+                    id="comactbtn"
+                  >
+                    View
+                  </button>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -380,6 +465,7 @@
                     type="button"
                     class="btn btn-success"
                     data-dismiss="modal"
+                    id="approval"
                   >
                     Approved
                   </button>
@@ -387,6 +473,7 @@
                     type="button"
                     class="btn btn-danger"
                     data-dismiss="modal"
+                    id="declining"
                   >
                     Decline
                   </button>
@@ -443,6 +530,52 @@
           }
         });
       });
+
+      // Function to display the "Are you sure?" confirmation alert
+      function showConfirmationAlert() {
+        if (confirm("Are you sure?")) {
+          // If the user clicks 'Yes', display the success message
+          showSuccessMessage();
+        }
+      }
+
+      // Function to display the success message
+      function showSuccessMessage() {
+        alert("Successfully ");
+        // Close the modal after the 'OK' button in the alert is clicked
+        $("#approval").closest(".modal").modal("hide");
+      }
+
+      // Click event listener for the Approved button
+      document
+        .getElementById("approval")
+        .addEventListener("click", function () {
+          // Show the confirmation alert when the Approved button is clicked
+          showConfirmationAlert();
+        });
+
+      // Function to display the "Are you sure?" confirmation alert
+      function showConfirmationAlertDecline() {
+        if (confirm("Are you sure you want to decline?")) {
+          // If the user clicks 'Yes', display the decline message
+          showDeclineMessage();
+        }
+      }
+
+      // Function to display the decline message
+      function showDeclineMessage() {
+        alert("Declined.");
+        // Close the modal after the 'OK' button in the alert is clicked
+        $("#declining").closest(".modal").modal("hide");
+      }
+
+      // Click event listener for the Decline button
+      document
+        .getElementById("declining")
+        .addEventListener("click", function () {
+          // Show the confirmation alert when the Decline button is clicked
+          showConfirmationAlertDecline();
+        });
     </script>
 
     <script src="js/addAdmin.js"></script>
