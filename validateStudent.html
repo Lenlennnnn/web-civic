@@ -119,6 +119,85 @@
         padding: 0;
         width: 100%;
       }
+
+      /* CSS for the decline reason modal */
+      .modalre {
+        display: none;
+        position: fixed;
+        z-index: 999999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      /* Modal content */
+      .modal-dialogre {
+        margin: 10% auto;
+        width: 50%;
+      }
+
+      .modal-contentre {
+        position: relative;
+        background-color: #fefefe;
+        border: 1px solid #888;
+        border-radius: 8px;
+        padding: 20px;
+      }
+
+      /* Modal header */
+      .modal-headerre {
+        padding: 15px;
+        border-bottom: 1px solid #e9ecef;
+      }
+
+      /* Modal body */
+      .modal-bodyre {
+        padding: 15px;
+      }
+
+      /* Modal title */
+      .modal-titlere {
+        margin: 0;
+        font-size: 1.25rem;
+      }
+
+      /* Modal footer */
+      .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        border-top: 1px solid #e9ecef;
+        padding: 15px;
+      }
+
+      /* Close button */
+      .closere {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        color: #000;
+        opacity: 0.5;
+      }
+      .closere:hover {
+        opacity: 1;
+        cursor: pointer;
+      }
+
+      /* Submit button */
+      #submitDeclineReasonre {
+        margin-right: 10px;
+      }
+
+      /* Textarea */
+      textarea.form-control {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        resize: vertical;
+      }
     </style>
   </head>
 
@@ -338,14 +417,9 @@
                     data-dismiss="modal"
                     id="approval"
                   >
-                    Approved
+                    Approve
                   </button>
-                  <button
-                    type="button"
-                    class="btn btn-danger"
-                    data-dismiss="modal"
-                    id="declining"
-                  >
+                  <button type="button" class="btn btn-danger" id="declining">
                     Decline
                   </button>
                   <button
@@ -378,6 +452,50 @@
                 </div>
                 <div class="modal-body">
                   <img src="img/COR.jpg" alt="" id="certito" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- New Modal -->
+          <div
+            class="modalre"
+            id="declineReasonModalre"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="declineReasonModalTitle"
+            aria-hidden="true"
+          >
+            <div class="modal-dialogre" role="document">
+              <div class="modal-contentre">
+                <div class="modal-headerre">
+                  <h5 class="modal-titlere" id="declineReasonModalTitlere">
+                    Decline Reason
+                  </h5>
+                </div>
+                <div class="modal-bodyre">
+                  <p>Please provide a reason for declining:</p>
+                  <textarea
+                    class="form-control"
+                    id="declineReasonInputre"
+                    rows="4"
+                  ></textarea>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="submitDeclineReasonre"
+                  >
+                    Submit
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
                 </div>
               </div>
             </div>
@@ -427,36 +545,52 @@
         $("#approval").closest(".modal").modal("hide");
       }
 
-      // Click event listener for the Approved button
+      // Function to handle the "Approved" button click and show the confirmation alert
       document
         .getElementById("approval")
         .addEventListener("click", function () {
-          // Show the confirmation alert when the Approved button is clicked
           showConfirmationAlert();
         });
 
       // Function to display the "Are you sure?" confirmation alert
-      function showConfirmationAlertDecline() {
-        if (confirm("Are you sure you want to decline?")) {
-          // If the user clicks 'Yes', display the decline message
-          showDeclineMessage();
+      function showConfirmationAlert() {
+        if (confirm("Are you sure?")) {
+          // If the user clicks 'Yes', display the success message
+          showSuccessMessage();
         }
       }
 
-      // Function to display the decline message
-      function showDeclineMessage() {
-        alert("Declined.");
-        // Close the modal after the 'OK' button in the alert is clicked
-        $("#declining").closest(".modal").modal("hide");
+      // Function to display the success message and hide the modals
+      function showSuccessMessage() {
+        alert("Successfully ");
+        // Close both modals after the 'OK' button in the alert is clicked
+        $("#exampleModalLonggg").modal("hide");
+        $("#declineReasonModalre").modal("hide");
       }
 
-      // Click event listener for the Decline button
+      // Function to handle the "Decline" button click and show the decline reason modal
       document
         .getElementById("declining")
         .addEventListener("click", function () {
-          // Show the confirmation alert when the Decline button is clicked
-          showConfirmationAlertDecline();
+          $("#declineReasonModalre").modal("show"); // Show the decline reason modal
         });
+
+      // Function to handle the "Cancel" button click to close the decline reason modal
+      document
+        .getElementById("submitDeclineReasonre")
+        .addEventListener("click", function () {
+          // Display an alert with "Success" message when the button is clicked
+          alert("Successfully Submitted");
+
+          // Close both modals after displaying the alert
+          $("#exampleModalLonggg").modal("hide");
+          $("#declineReasonModalre").modal("hide");
+        });
+
+      // Function to handle closing the decline reason modal when clicking outside the modal
+      $("#declineReasonModalre").on("hidden.bs.modal", function (e) {
+        // Optional: Any additional actions when the decline reason modal is closed
+      });
     </script>
 
     <script src="js/addAdmin.js"></script>

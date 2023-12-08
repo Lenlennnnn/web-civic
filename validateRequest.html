@@ -145,7 +145,7 @@
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
         ></script>
       </div>
-      <h1 class="h1-group">Request</h1>
+      <h1 class="h1-group">Event Request</h1>
 
       <div class="container py-5">
         <div class="row">
@@ -489,6 +489,49 @@
               </div>
             </div>
           </div>
+          <!-- New modal for decline confirmation -->
+          <div
+            class="modal"
+            id="declineConfirmationModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="declineConfirmationModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="declineConfirmationModalLabel">
+                    Decline Confirmation
+                  </h5>
+                </div>
+                <div class="modal-body">
+                  <p>Please provide a reason for declining:</p>
+                  <textarea
+                    class="form-control"
+                    id="declineReasonInputre"
+                    rows="4"
+                  ></textarea>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    id="confirmDecline"
+                  >
+                    Submit
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -554,28 +597,69 @@
           showConfirmationAlert();
         });
 
-      // Function to display the "Are you sure?" confirmation alert
-      function showConfirmationAlertDecline() {
-        if (confirm("Are you sure you want to decline?")) {
-          // If the user clicks 'Yes', display the decline message
-          showDeclineMessage();
+      // Function to handle the decline confirmation modal
+      document.addEventListener("DOMContentLoaded", function () {
+        var declineButton = document.getElementById("declining");
+        var declineConfirmationModal = document.getElementById(
+          "declineConfirmationModal"
+        );
+        var confirmDeclineButton = document.getElementById("confirmDecline");
+
+        // Function to show the decline confirmation modal
+        function showDeclineConfirmationModal() {
+          if (declineConfirmationModal) {
+            $(declineConfirmationModal).modal("show");
+          }
         }
-      }
 
-      // Function to display the decline message
-      function showDeclineMessage() {
-        alert("Declined.");
-        // Close the modal after the 'OK' button in the alert is clicked
-        $("#declining").closest(".modal").modal("hide");
-      }
+        // Event listener for the "Decline" button click
+        if (declineButton) {
+          declineButton.addEventListener("click", showDeclineConfirmationModal);
+        }
 
-      // Click event listener for the Decline button
-      document
-        .getElementById("declining")
-        .addEventListener("click", function () {
-          // Show the confirmation alert when the Decline button is clicked
-          showConfirmationAlertDecline();
-        });
+        // Event listener for the "Confirm Decline" button click
+        if (confirmDeclineButton) {
+          confirmDeclineButton.addEventListener("click", function () {
+            // Add your logic for handling the decline action here
+            // For example, you can trigger an action or send a request to decline the event
+            // Then, close the decline confirmation modal
+            $(declineConfirmationModal).modal("hide");
+            // Additional actions after declining can be added here
+          });
+        }
+      });
+
+      // Function to handle the decline confirmation modal
+      document.addEventListener("DOMContentLoaded", function () {
+        var declineButton = document.getElementById("declining");
+        var declineConfirmationModal = document.getElementById(
+          "declineConfirmationModal"
+        );
+        var confirmDeclineButton = document.getElementById("confirmDecline");
+
+        // Function to show the decline confirmation modal
+        function showDeclineConfirmationModal() {
+          if (declineConfirmationModal) {
+            $(declineConfirmationModal).modal("show");
+          }
+        }
+
+        // Event listener for the "Decline" button click
+        if (declineButton) {
+          declineButton.addEventListener("click", showDeclineConfirmationModal);
+        }
+
+        // Event listener for the "Confirm Decline" button click
+        if (confirmDeclineButton) {
+          confirmDeclineButton.addEventListener("click", function () {
+            // Show the success alert when the "Submit" button is clicked
+            alert("Submitted Successfully");
+
+            // Close the decline confirmation modal
+            $(declineConfirmationModal).modal("hide");
+          });
+        }
+      });
     </script>
 
     <script src="js/addAdmin.js"></script>

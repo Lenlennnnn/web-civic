@@ -51,7 +51,7 @@
         /* Center the content */
         max-width: 48%;
         /* Limit the width of the content */
-        height: 65%;
+        height: 80%;
         width: 80%;
         background-color: white;
         border-radius: 8px;
@@ -318,10 +318,22 @@
                 <option value="rosario">Rosario Campus</option>
                 <option value="san juan">San Juan Campus</option>
               </select>
+              <label for="campus">Event Category:</label>
+              <select id="campus" name="campus" required>
+                <option value="" disabled selected>Select Category</option>
+                <option value="nasugbu">Tree Planting</option>
+                <option value="balayan">Fund Raising</option>
+                <option value="malvar">Donations</option>
+                <option value="lemery">Clean Up Drive</option>
+                <option value="lipa">Feeding Program</option>
+                <option value="lobo">Relief Operations</option>
+                <option value="mabini">Seminar Training</option>
+                <option value="san juan">Teaching Literacy</option>
+              </select>
               <label for="campus">Event Status:</label>
               <select id="campus" name="campus" required>
                 <option value="" disabled selected>Select Status</option>
-                <option value="status">Requested</option>
+                <option value="status">Request</option>
                 <option value="status">Declined</option>
                 <option value="status">Pending</option>
                 <option value="status">Upcoming</option>
@@ -756,6 +768,23 @@
           }
         });
       });
+
+      // JavaScript function to close modal when clicking outside of it
+      function closeModalOnClickOutside() {
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.addEventListener("click", function (event) {
+          if (event.target === modal) {
+            modal.style.display = "none";
+          }
+        });
+      }
+
+      // Call the function to close modal when clicking outside of it
+      closeModalOnClickOutside();
+
       // Function to handle the new modal
       document.addEventListener("DOMContentLoaded", function () {
         var icon = document.getElementById("exampleModalIcon");
