@@ -198,30 +198,75 @@
           required
           placeholder="Insert Contact"
         />
-        <!-- Google Maps Location Field -->
-        <!-- <div class="location-field">
-          <label for="location">Location:</label>
-          <div class="location-input">
-            <input
-              type="text"
-              id="location"
-              name="location"
-              placeholder="Set Location"
-            />
-             <a
-              href="https://maps.google.com"
-              target="_blank"
-              class="set-location-button"
-            >
-              <ion-icon name="locate"></ion-icon>
-            </a>
-          </div>
-        </div> -->
 
         <button id="postB" type="submit">Post</button>
         <button type="button" id="cancelButton">Cancel</button>
       </form>
     </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const campusSelect = document.getElementById("campuspost");
+        const form = document.querySelector("form");
+        const paymentMethodLabel = document.createElement("label");
+        paymentMethodLabel.setAttribute("for", "paymentMethod");
+        paymentMethodLabel.textContent = "Payment Method:";
+        const paymentMethodSelect = document.createElement("select");
+        paymentMethodSelect.setAttribute("id", "paymentMethod");
+        paymentMethodSelect.setAttribute("name", "paymentMethod");
+        paymentMethodSelect.setAttribute("required", "true");
+        paymentMethodSelect.innerHTML = `
+        <option value="" disabled selected>Select Payment Method</option>
+        <option value="credit_card">Credit Card</option>
+        <option value="paypal">PayPal</option>
+        <option value="bank_transfer">Bank Transfer</option>
+        <!-- Add more options if needed -->
+      `;
+        const formButtons = document.querySelectorAll("button");
+        const inputFieldsContainer = document.createElement("div");
+
+        campusSelect.addEventListener("change", function () {
+          const selectedOption = campusSelect.value;
+
+          const existingPaymentMethodLabel =
+            document.getElementById("paymentMethod");
+
+          if (selectedOption === "balayan" || selectedOption === "malvar") {
+            if (!existingPaymentMethodLabel) {
+              form.insertBefore(paymentMethodLabel, formButtons[0]);
+              form.insertBefore(paymentMethodSelect, formButtons[0]);
+            }
+          } else {
+            if (existingPaymentMethodLabel) {
+              form.removeChild(paymentMethodLabel);
+              form.removeChild(paymentMethodSelect);
+            }
+          }
+
+          inputFieldsContainer.innerHTML = ""; // Clear previous input fields
+
+          if (selectedOption === "balayan" || selectedOption === "malvar") {
+            // Add input field for payment method
+            const paymentInputField = document.createElement("input");
+            paymentInputField.type = "text";
+            paymentInputField.placeholder = "Payment Method Input";
+            inputFieldsContainer.appendChild(paymentInputField);
+
+            // Append the input field container after the facilitator's email or contact field
+            const facnamecon = document.getElementById("facnamecon");
+            form.insertBefore(inputFieldsContainer, facnamecon.nextSibling);
+          } else {
+            const existingPaymentInputField =
+              inputFieldsContainer.querySelector('input[type="text"]');
+            if (existingPaymentInputField) {
+              inputFieldsContainer.removeChild(existingPaymentInputField);
+            }
+          }
+        });
+
+        // Trigger the change event on page load to check the initial selected value
+        campusSelect.dispatchEvent(new Event("change"));
+      });
+    </script>
     <script src="js/post.js"></script>
   </body>
 </html>
