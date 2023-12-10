@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Add Input Fields Dynamically</title>
+    <style>
+      /* Add your CSS styles here */
+    </style>
+  </head>
+  <body>
+    <div id="inputContainer">
+      <!-- Input fields will be added here -->
+    </div>
+    <button id="addButton">Add Input Field</button>
+
+    <script>
+      // JavaScript code to add input fields
+      document
+        .getElementById("addButton")
+        .addEventListener("click", function () {
+          var inputContainer = document.getElementById("inputContainer");
+          var inputField = document.createElement("input");
+          inputField.type = "text";
+          inputContainer.appendChild(inputField);
+        });
+    </script>
+  </body>
+</html>

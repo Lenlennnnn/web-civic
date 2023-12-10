@@ -126,7 +126,6 @@
       }
 
       .custom-button:hover {
-        background-color: #007bff;
         /* Change background color on hover */
         color: #fff;
         /* Change text color on hover */
@@ -303,6 +302,125 @@
         left: 45%;
         color: gray;
       }
+
+      #addgrBtn {
+        margin-left: 20%;
+      }
+
+      /* CSS for updated modal */
+      .modalm {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      .modal-contentm {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 70%;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        position: relative;
+      }
+
+      .closem {
+        color: #aaa;
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .closem:hover,
+      .closem:focus {
+        color: black;
+        text-decoration: none;
+      }
+
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: -5px;
+        margin-left: -5px;
+      }
+
+      .col {
+        flex: 0 0 50%; /* Two columns each taking 50% width */
+        max-width: 50%;
+        padding-right: 5px;
+        padding-left: 5px;
+        margin-bottom: 10px;
+      }
+
+      #emlabel,
+      #passlabel {
+        display: block;
+        margin-bottom: 5px;
+        text-align: left;
+      }
+
+      #emailInput,
+      #passwordInput {
+        width: 100%;
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+      }
+
+      #subac {
+        margin-top: 10px;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      #subac:hover {
+        background-color: #0056b3;
+      }
+
+      /* Styles for the email input fields */
+      .emailInput {
+        width: 103.4%;
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        margin-left: -8px;
+      }
+
+      /* Styles for the password input fields */
+      .passwordInput {
+        width: 103.4%;
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        margin-left: 4px;
+      }
+
+      /* Styles for the email label */
+      .emailLabel {
+        margin-left: -7px;
+      }
+
+      /* Styles for the password label */
+      .passwordLabel {
+        margin-left: 5px;
+      }
     </style>
   </head>
 
@@ -331,6 +449,15 @@
           Add Account
         </button>
       </a>
+
+      <button
+        type="button"
+        class="btn btn-secondary custom-button"
+        id="addgrBtn"
+      >
+        Add Multiple Accounts
+      </button>
+
       <!-- validate button -->
       <a
         href="validateStudent.html"
@@ -342,6 +469,39 @@
           <span class="notification-badge">new</span>
         </button>
       </a>
+      <div class="modalm" id="myModalm">
+        <div class="modal-contentm" id="modalcentm">
+          <span class="closem" onclick="closeModal()">&times;</span>
+          <h4>Add Multiple Accounts</h4>
+          <hr />
+          <button type="button" id="addrow" class="btn btn-dark">
+            Add row
+          </button>
+          <form id="formadd">
+            <div class="row" id="inputrow">
+              <div class="col">
+                <label for="emailInput" id="emlabel">Email:</label>
+                <input
+                  type="email"
+                  id="emailInput"
+                  name="email"
+                  placeholder="Enter your email..."
+                />
+              </div>
+              <div class="col">
+                <label for="passwordInput" id="passlabel">Password:</label>
+                <input
+                  type="password"
+                  id="passwordInput"
+                  name="password"
+                  placeholder="Enter your password..."
+                />
+              </div>
+            </div>
+            <button type="submit" id="subac">Submit</button>
+          </form>
+        </div>
+      </div>
 
       <div class="modal" id="myModal">
         <div class="modal-content" id="modalContent">
@@ -661,6 +821,121 @@
         // For example, if you're using Bootstrap modals
         // Close Bootstrap modal by ID
         $("#exampleModal").modal("hide"); // Replace 'exampleModal' with your modal ID
+      }
+
+      // JavaScript to handle modal display
+      const addgrBtn = document.getElementById("addgrBtn");
+      const modal = document.getElementById("myModalm");
+
+      addgrBtn.addEventListener("click", function () {
+        modal.style.display = "block";
+      });
+
+      function closeModal() {
+        modal.style.display = "none";
+      }
+
+      // Close the modal if user clicks outside the modal content
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+
+      let counter = 1; // Initialize a counter for unique IDs
+
+      // Function to add a new row of input fields
+      function addRow() {
+        var inputRow = document.getElementById("inputrow");
+        var newRow = document.createElement("div");
+        newRow.className = "row"; // Assign the "row" class
+
+        var newColEmail = document.createElement("div");
+        newColEmail.className = "col";
+        var emailLabel = document.createElement("label");
+        emailLabel.setAttribute("for", "emailInput" + counter);
+        emailLabel.innerText = "Email:";
+        emailLabel.classList.add("emailLabel"); // Add class for email label styling
+        var emailInput = document.createElement("input");
+        emailInput.setAttribute("type", "email");
+        emailInput.setAttribute("name", "email" + counter);
+        emailInput.setAttribute("placeholder", "Enter your email...");
+        emailInput.id = "emailInput" + counter; // Unique ID for email input
+        emailInput.classList.add("emailInput"); // Add class for styling
+
+        var newColPassword = document.createElement("div");
+        newColPassword.className = "col";
+        var passLabel = document.createElement("label");
+        passLabel.setAttribute("for", "passwordInput" + counter);
+        passLabel.innerText = "Password:";
+        passLabel.classList.add("passwordLabel"); // Add class for password label styling
+        var passInput = document.createElement("input");
+        passInput.setAttribute("type", "password");
+        passInput.setAttribute("name", "password" + counter);
+        passInput.setAttribute("placeholder", "Enter your password...");
+        passInput.id = "passwordInput" + counter; // Unique ID for password input
+        passInput.classList.add("passwordInput"); // Add class for styling
+
+        // Increment counter for the next set of inputs
+        counter++;
+
+        // Append elements to their respective parents
+        newColEmail.appendChild(emailLabel);
+        newColEmail.appendChild(emailInput);
+        newColPassword.appendChild(passLabel);
+        newColPassword.appendChild(passInput);
+
+        // Append columns to the new row
+        newRow.appendChild(newColEmail);
+        newRow.appendChild(newColPassword);
+
+        // Append the new row to the container
+        inputRow.appendChild(newRow);
+      }
+
+      // Add an event listener to the "Add row" button
+      document
+        .getElementById("addrow")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          addRow();
+        });
+
+      document
+        .getElementById("subac")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+
+          // Confirmation alert
+          if (confirm("Are you sure?")) {
+            // If 'Yes' is clicked, show success message
+            alert("Successfully");
+
+            // Remove added rows, reset form, and close modal
+            removeAddedRows(); // Function to remove added rows
+          }
+        });
+
+      // Function to remove added rows, reset form, and close modal
+      function removeAddedRows() {
+        var inputRow = document.getElementById("inputrow");
+        // Remove all added rows in the inputRow container
+        while (inputRow.firstChild) {
+          inputRow.removeChild(inputRow.firstChild);
+        }
+
+        // Reset the form
+        var form = document.getElementById("formadd");
+        form.reset(); // Reset the form
+
+        // Close the specific modal
+        closeSpecificModal(); // Function to close a specific modal
+      }
+
+      // Function to close a specific modal by updating display property
+      function closeSpecificModal() {
+        var modal = document.getElementById("myModalm");
+        modal.style.display = "none";
       }
     </script>
 
