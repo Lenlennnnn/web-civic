@@ -79,16 +79,23 @@
         <label for="campus">Category:</label>
         <select id="campuspost" name="campus" required>
           <option value="" disabled selected>Civic Engagement</option>
-          <option value="nasugbu">Tree Planting</option>
-          <option value="balayan">Fund Raising</option>
-          <option value="malvar">Donations</option>
-          <option value="lemery">Clean Up Drive</option>
-          <option value="lipa">Feeding Program</option>
-          <option value="lobo">Relief Operations</option>
-          <option value="mabini">Seminar Training</option>
-          <option value="san juan">Teaching Literacy</option>
+          <option value="treeplanting">Tree Planting</option>
+          <option value="fundraising" id="fund">Fund Raising</option>
+          <option value="donations" id="donation">Donations</option>
+          <option value="cleanupdrive">Clean Up Drive</option>
+          <option value="feedingprogram">Feeding Program</option>
+          <option value="reliefoperation">Relief Operations</option>
+          <option value="seminatraining">Seminar Training</option>
+          <option value="teachingliteracy">Teaching Literacy</option>
         </select>
-
+        <div id="additionalFields" style="display: none">
+          <label for="additionalField1">Payment Method:</label>
+          <select id="additionalField1" name="additionalField1">
+            <option value="GCash">GCash</option>
+            <option value="PayMaya">Pay Maya</option>
+            <option value="PayPal">PayPal</option>
+          </select>
+        </div>
         <label for="title">Title:</label>
         <input
           type="text"
@@ -205,66 +212,21 @@
     </div>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const campusSelect = document.getElementById("campuspost");
-        const form = document.querySelector("form");
-        const paymentMethodLabel = document.createElement("label");
-        paymentMethodLabel.setAttribute("for", "paymentMethod");
-        paymentMethodLabel.textContent = "Payment Method:";
-        const paymentMethodSelect = document.createElement("select");
-        paymentMethodSelect.setAttribute("id", "paymentMethod");
-        paymentMethodSelect.setAttribute("name", "paymentMethod");
-        paymentMethodSelect.setAttribute("required", "true");
-        paymentMethodSelect.innerHTML = `
-        <option value="" disabled selected>Select Payment Method</option>
-        <option value="credit_card">Credit Card</option>
-        <option value="paypal">PayPal</option>
-        <option value="bank_transfer">Bank Transfer</option>
-        <!-- Add more options if needed -->
-      `;
-        const formButtons = document.querySelectorAll("button");
-        const inputFieldsContainer = document.createElement("div");
+        var campusSelect = document.getElementById("campuspost");
+        var additionalFieldsDiv = document.getElementById("additionalFields");
 
         campusSelect.addEventListener("change", function () {
-          const selectedOption = campusSelect.value;
+          var selectedOption = campusSelect.value;
 
-          const existingPaymentMethodLabel =
-            document.getElementById("paymentMethod");
-
-          if (selectedOption === "balayan" || selectedOption === "malvar") {
-            if (!existingPaymentMethodLabel) {
-              form.insertBefore(paymentMethodLabel, formButtons[0]);
-              form.insertBefore(paymentMethodSelect, formButtons[0]);
-            }
+          if (
+            selectedOption === "fundraising" ||
+            selectedOption === "donations"
+          ) {
+            additionalFieldsDiv.style.display = "block"; // Show the additional fields
           } else {
-            if (existingPaymentMethodLabel) {
-              form.removeChild(paymentMethodLabel);
-              form.removeChild(paymentMethodSelect);
-            }
-          }
-
-          inputFieldsContainer.innerHTML = ""; // Clear previous input fields
-
-          if (selectedOption === "balayan" || selectedOption === "malvar") {
-            // Add input field for payment method
-            const paymentInputField = document.createElement("input");
-            paymentInputField.type = "text";
-            paymentInputField.placeholder = "Payment Method Input";
-            inputFieldsContainer.appendChild(paymentInputField);
-
-            // Append the input field container after the facilitator's email or contact field
-            const facnamecon = document.getElementById("facnamecon");
-            form.insertBefore(inputFieldsContainer, facnamecon.nextSibling);
-          } else {
-            const existingPaymentInputField =
-              inputFieldsContainer.querySelector('input[type="text"]');
-            if (existingPaymentInputField) {
-              inputFieldsContainer.removeChild(existingPaymentInputField);
-            }
+            additionalFieldsDiv.style.display = "none"; // Hide the additional fields
           }
         });
-
-        // Trigger the change event on page load to check the initial selected value
-        campusSelect.dispatchEvent(new Event("change"));
       });
     </script>
     <script src="js/post.js"></script>

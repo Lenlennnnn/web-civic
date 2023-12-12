@@ -331,10 +331,7 @@
       .table-filter .btn {
         height: 34px;
       }
-      .table-filter label {
-        font-weight: normal;
-        margin-left: 10px;
-      }
+
       .table-filter select,
       .table-filter input {
         display: inline-block;
@@ -786,6 +783,58 @@
       #myModalatt .btnatt:hover {
         background-color: #c82333;
       }
+
+      .modalpo {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 99999999;
+        overflow: auto; /* Ito ang binago: ginamit na 'overflow: auto' dito */
+      }
+
+      .modal-contentpo {
+        background-color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        text-align: center;
+        width: 50%;
+        max-height: 100%; /* Pwedeng idagdag ito para hindi lumampas sa 80% ng viewport height */
+        overflow-y: auto; /* Dagdag na 'overflow-y: auto' para sa vertical scrollbar kung lumalampas ang laman ng modal sa height nito */
+      }
+
+      .closepo {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .closepo:hover,
+      .closepo:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .modal-contentpo #lblpt,
+      .modal-contentpo #hederrr {
+        display: block; /* Change display property to block or as needed */
+        /* Add any necessary styles for visibility */
+      }
+
+      /* For close button */
+      .closepo {
+        display: block; /* Ensure close button is visible */
+        /* Add any necessary styles for visibility */
+      }
     </style>
   </head>
 
@@ -1043,9 +1092,285 @@
                       </div>
                       <div class="col-sm-8">
                         <a href="#" class="btn" id="openPostModal">Post</a>
-                        <div id="modalContainer" class="modal">
-                          <div class="modal-content">
-                            <!-- Content from post.html will be loaded here -->
+                        <div class="modalpo" id="postModalpo">
+                          <div class="modal-contentpo">
+                            <span class="closepo" id="closeModalpo"></span>
+                            <h2 id="hederrr" style="color: #dc3545">
+                              Post an event
+                            </h2>
+                            <form>
+                              <label
+                                for="image"
+                                id="lblpt"
+                                style="color: black; text-align: left"
+                                >Upload Image:</label
+                              >
+                              <input
+                                type="file"
+                                id="imagepost"
+                                name="image"
+                                accept="image/*"
+                                required
+                              />
+
+                              <label
+                                for="campus"
+                                id="lblpt"
+                                style="color: black; text-align: left"
+                                >Category:</label
+                              >
+                              <select id="campuspost" name="campus" required>
+                                <option value="" disabled selected>
+                                  Civic Engagement
+                                </option>
+                                <option value="treeplanting">
+                                  Tree Planting
+                                </option>
+                                <option value="fundraising" id="fund">
+                                  Fund Raising
+                                </option>
+                                <option value="donations" id="donation">
+                                  Donations
+                                </option>
+                                <option value="cleanupdrive">
+                                  Clean Up Drive
+                                </option>
+                                <option value="feedingprogram">
+                                  Feeding Program
+                                </option>
+                                <option value="reliefoperation">
+                                  Relief Operations
+                                </option>
+                                <option value="seminatraining">
+                                  Seminar Training
+                                </option>
+                                <option value="teachingliteracy">
+                                  Teaching Literacy
+                                </option>
+                              </select>
+                              <label
+                                for="title"
+                                id="lblpt"
+                                style="color: black; text-align: left"
+                                >Title:</label
+                              >
+                              <input
+                                type="text"
+                                id="titlepost"
+                                name="title"
+                                required
+                                placeholder="Event title"
+                              />
+
+                              <label
+                                for="Introduction"
+                                id="lblpt"
+                                style="color: black; text-align: left"
+                                >Introduction:</label
+                              >
+                              <textarea
+                                id="Introductionpost"
+                                name="Introduction"
+                                rows="6"
+                                required
+                                placeholder="Add text"
+                              ></textarea>
+                              <label
+                                for="Description"
+                                id="lblpt"
+                                style="color: black; text-align: left"
+                                >Description:</label
+                              >
+                              <textarea
+                                id="Descriptionpost"
+                                name="Description"
+                                rows="6"
+                                required
+                                placeholder="Add text"
+                              ></textarea>
+                              <label
+                                for="Instruction"
+                                id="lblpt"
+                                style="color: black; text-align: left"
+                                >Instruction:</label
+                              >
+                              <textarea
+                                id="Instructionpost"
+                                name="Instruction"
+                                rows="6"
+                                required
+                                placeholder="Add text"
+                              ></textarea>
+                              <label
+                                for="Location"
+                                id="lblpt"
+                                style="color: black; text-align: left"
+                                >Location:</label
+                              >
+                              <input
+                                type="text"
+                                id="Locationpost"
+                                name="Location"
+                                required
+                                placeholder="Address"
+                              />
+                              <div class="form-row">
+                                <div class="form-group">
+                                  <label
+                                    for="startdate"
+                                    id="lblpt"
+                                    style="color: black; text-align: left"
+                                    >Start Date & Time:</label
+                                  >
+                                  <input
+                                    type="datetime-local"
+                                    id="startdate"
+                                    name="startdate"
+                                    required
+                                  />
+                                </div>
+                                <div class="form-group">
+                                  <label
+                                    for="enddate"
+                                    id="lblpt"
+                                    style="color: black; text-align: left"
+                                    >End Date & Time:</label
+                                  >
+                                  <input
+                                    type="datetime-local"
+                                    id="enddate"
+                                    name="enddate"
+                                    required
+                                  />
+                                </div>
+                              </div>
+
+                              <label
+                                for="campus"
+                                id="lblpt"
+                                style="color: black; text-align: left"
+                                >Target Campus:</label
+                              >
+                              <select id="campus" name="campus" required>
+                                <option value="" disabled selected>
+                                  Choose Campus
+                                </option>
+                                <option value="ARASOF Nasugbu Campus">
+                                  ARASOF Nasugbu Campus
+                                </option>
+                                <option value="Balayan Campus">
+                                  Balayan Campus
+                                </option>
+                                <option value="JPLPC Malvar Campus">
+                                  JPLPC Malvar Campus
+                                </option>
+                                <option value="Lemery Campus">
+                                  Lemery Campus
+                                </option>
+                                <option value="Lipa Campus">Lipa Campus</option>
+                                <option value="Lobo Campus">Lobo Campus</option>
+                                <option value="Mabini Campus">
+                                  Mabini Campus
+                                </option>
+                                <option value="Pablo Borbon Campus I">
+                                  Pablo Borbon Campus I
+                                </option>
+                                <option value=" Pablo Borbon Campus II">
+                                  Pablo Borbon Campus II
+                                </option>
+                                <option value="Rosario Campus">
+                                  Rosario Campus
+                                </option>
+                                <option value="San Juan Campus">
+                                  San Juan Campus
+                                </option>
+                              </select>
+
+                              <label
+                                for="targparty"
+                                id="lblpt"
+                                style="color: black; text-align: left"
+                                >Target Participant:</label
+                              >
+                              <input
+                                type="text"
+                                id="targparty"
+                                name="targparty"
+                                required
+                                placeholder="Insert count"
+                              />
+                              <label
+                                for="actpts"
+                                id="lblpt"
+                                style="color: black; text-align: left"
+                                >Active Points:</label
+                              >
+                              <input
+                                type="text"
+                                id="actpts"
+                                name="actpts"
+                                required
+                                placeholder="Insert count"
+                              />
+                              <!-- Google Maps Location Field -->
+                              <label
+                                for="facname"
+                                id="lblpt"
+                                style="color: black; text-align: left"
+                                >Facilitator's Name:</label
+                              >
+                              <input
+                                type="text"
+                                id="facname"
+                                name="facname"
+                                required
+                                placeholder="Insert name"
+                              />
+                              <!-- Google Maps Location Field -->
+                              <label
+                                for="facnamecon"
+                                id="lblpt"
+                                style="color: black; text-align: left"
+                                >Facilitator's Email or Contact:</label
+                              >
+                              <input
+                                type="text"
+                                id="facnamecon"
+                                name="facnamecon"
+                                required
+                                placeholder="Insert Contact"
+                              />
+                              <div id="additionalFields" style="display: none">
+                                <label
+                                  for="additionalField1"
+                                  id="lblpt"
+                                  style="color: black; text-align: left"
+                                  >Payment Method:</label
+                                >
+                                <select
+                                  id="additionalField1"
+                                  name="additionalField1"
+                                >
+                                  <option value="Select" disabled selected>
+                                    Select:
+                                  </option>
+                                  <option value="GCash">GCash</option>
+                                  <option value="PayMaya">Pay Maya</option>
+                                  <option value="PayPal">PayPal</option>
+                                </select>
+                              </div>
+
+                              <button
+                                id="postB"
+                                type="submit"
+                                style="margin-left: 70%"
+                              >
+                                Post
+                              </button>
+                              <button type="button" id="cancelButton">
+                                Cancel
+                              </button>
+                            </form>
                           </div>
                         </div>
                       </div>
@@ -1393,6 +1718,18 @@
     </div>
     <!-- =============================================== Scripts ================================================ -->
     <script>
+      document
+        .getElementById("openPostModal")
+        .addEventListener("click", function () {
+          document.getElementById("postModalpo").style.display = "block";
+        });
+
+      document
+        .getElementById("closeModalpo")
+        .addEventListener("click", function () {
+          document.getElementById("postModalpo").style.display = "none";
+        });
+
       // Get the notification icon and dropdown content
       const notificationIcon = document.getElementById("notificationIcon");
       const notificationDropdown = document.getElementById(
@@ -1509,6 +1846,35 @@
 
       // Event listener for closing the "myModalevnts" modal
       closeModalBtnEvnts.addEventListener("click", closeModalEvnts);
+
+      document.addEventListener("DOMContentLoaded", function () {
+        var campusSelect = document.getElementById("campuspost");
+        var additionalFieldsDiv = document.getElementById("additionalFields");
+
+        campusSelect.addEventListener("change", function () {
+          var selectedOption = campusSelect.value;
+
+          if (
+            selectedOption === "fundraising" ||
+            selectedOption === "donations"
+          ) {
+            additionalFieldsDiv.style.display = "block"; // Show the additional fields
+          } else {
+            additionalFieldsDiv.style.display = "none"; // Hide the additional fields
+          }
+        });
+      });
+
+      // Get the close button element
+      const closeModalButton = document.getElementById("cancelButton");
+
+      // Get the modal element
+      const modal = document.getElementById("postModalpo");
+
+      // Add click event listener to the close button
+      closeModalButton.addEventListener("click", function () {
+        modal.style.display = "none"; // Set the modal display to none to close it
+      });
     </script>
 
     <script src="js/dashboard.js"></script>
