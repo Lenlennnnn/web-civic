@@ -424,7 +424,7 @@ The Post is not functioning</textarea
               >
               <footer>
                 <button id="saveButton" style="margin-left: 72%">Done</button>
-                <button class="close2s">Cancel</button>
+                <button class="close2s" id="cancbtn">Cancel</button>
               </footer>
             </div>
           </div>
@@ -521,6 +521,32 @@ The Post is not functioning</textarea
               modal2.style.display = "none";
             }
           };
+        });
+        // Get the cancel button element for modal2
+        var cancelButtonModal2 = document.getElementById("cancbtn");
+
+        // Get the modal2 element
+        var modal2 = document.getElementById("myModal2");
+
+        // Add click event listener to the cancel button for modal2
+        cancelButtonModal2.addEventListener("click", function () {
+          // Hide modal2 by modifying its style display property
+          modal2.style.display = "none";
+        });
+
+        // Get the save button element
+        var saveButton = document.getElementById("saveButton");
+
+        // Get the modal2 element
+        var modal2 = document.getElementById("myModal2");
+
+        // Add click event listener to the save button
+        saveButton.addEventListener("click", function () {
+          // Show an alert with "Success" message
+          alert("Success");
+
+          // After clicking OK on the alert, hide modal2
+          modal2.style.display = "none";
         });
       </script>
       <!-- ====== ionicons ======= -->
