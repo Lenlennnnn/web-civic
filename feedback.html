@@ -86,8 +86,8 @@
         font-size: 21px;
       }
 
-      h2,
-      p {
+      #namenila,
+      h2 {
         color: white;
         margin: 20px;
       }
@@ -139,6 +139,136 @@
 
         right: -10px;
       }
+
+      /* The Modal (background) */
+      .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+      }
+
+      /* Modal Content */
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 75%; /* Could be more or less, depending on screen size */
+      }
+
+      /* Close button */
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        position: absolute;
+        left: 86%;
+        top: 30%;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      /* CSS for the table */
+      #sampleTable {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      #sampleTable th,
+      #sampleTable td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+
+      #sampleTable th {
+        background-color: black;
+        color: white;
+      }
+
+      #sampleTable tbody tr:hover {
+        background-color: #f5f5f5;
+        cursor: pointer;
+      }
+
+      /* CSS for the second modal */
+      .modal2 {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content2 {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+      }
+
+      .close2 {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .close2:hover,
+      .close2:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      #saveButton {
+        background-color: #28a745; /* Change to your desired shade of green */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      }
+
+      #saveButton:hover {
+        background-color: #218838; /* Darker shade of green on hover */
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .close2s {
+        /* Add your styles for the Cancel button here */
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      }
+
+      .close2s:hover {
+        background-color: #bd2130;
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
     </style>
   </head>
 
@@ -150,11 +280,11 @@
         </div>
       </a>
       <div class="report-container">
-        <!-- <div class="retainer">
-                <a href="viewReport.html">
-                    <button class="report-button">View Reports <span class="notification-badge">1</span></button>
-                </a>
-            </div> -->
+        <div class="retainer">
+          <button class="report-button" id="reportbtnv">
+            View Reports <span class="notification-badge">1</span>
+          </button>
+        </div>
 
         <br />
         <br />
@@ -176,7 +306,7 @@
               <ion-icon name="star" class="yellow-star"></ion-icon>
               <ion-icon name="star" class="yellow-star"></ion-icon>
               <ion-icon name="star" class="yellow-star"></ion-icon>
-              <p>Excellent</p>
+              <p id="namenila">Excellent</p>
             </div>
           </a>
 
@@ -192,7 +322,7 @@
               <ion-icon name="star" class="yellow-star"></ion-icon>
               <ion-icon name="star-outline" class="yellow-star"></ion-icon>
 
-              <p>Great</p>
+              <p id="namenila">Great</p>
             </div>
           </a>
           <!-- Third Feedback Container -->
@@ -207,7 +337,7 @@
               <ion-icon name="star-outline" class="yellow-star"></ion-icon>
               <ion-icon name="star-outline" class="yellow-star"></ion-icon>
 
-              <p>Good</p>
+              <p id="namenila">Good</p>
             </div>
           </a>
           <!-- Fourth Feedback Container -->
@@ -222,7 +352,7 @@
               <ion-icon name="star-outline" class="yellow-star"></ion-icon>
               <ion-icon name="star-outline" class="yellow-star"></ion-icon>
 
-              <p>Fair</p>
+              <p id="namenila">Fair</p>
             </div>
           </a>
           <!-- Fifth Feedback Container -->
@@ -237,11 +367,162 @@
               <ion-icon name="star-outline" class="yellow-star"></ion-icon>
               <ion-icon name="star-outline" class="yellow-star"></ion-icon>
 
-              <p>Poor</p>
+              <p id="namenila">Poor</p>
             </div>
           </a>
         </div>
       </div>
+      <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close" id="closetbl">&times;</span>
+
+          <!-- Sample table with 3 rows and 4 columns -->
+          <table id="sampleTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Campus</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="modalTrigger">
+                <td>1</td>
+                <td>Leonard Briones</td>
+                <td>20-64543@g.batstate-u.edu.ph</td>
+                <td>JPLPC Malvar</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Kurt Mallorca</td>
+                <td>20-64577@g.batstate-u.edu.ph</td>
+                <td>Lipa</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Jherimy Ticong</td>
+                <td>20-64908@g.batstate-u.edu.ph</td>
+                <td>Nasugbu</td>
+              </tr>
+            </tbody>
+          </table>
+          <div id="myModal2" class="modal2">
+            <!-- Modal content -->
+            <div class="modal-content2">
+              <span class="close2"></span>
+              <h5 style="margin-bottom: 5px">Leonard Briones</h5>
+              <textarea
+                readonly
+                rows="8"
+                cols="50"
+                id="modalTextarea"
+                style="width: 100%; padding: 10px"
+              >
+The Post is not functioning</textarea
+              >
+              <footer>
+                <button id="saveButton" style="margin-left: 72%">Done</button>
+                <button class="close2s">Cancel</button>
+              </footer>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        // Get the modal element
+        var modal = document.getElementById("myModal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("reportbtnv");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function () {
+          modal.style.display = "block";
+        };
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+          modal.style.display = "none";
+        };
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        };
+
+        // Get all the rows in the table
+        var table = document.getElementById("sampleTable");
+        var rows = table.getElementsByTagName("tr");
+
+        // Iterate through each row and add a click event listener
+        for (var i = 0; i < rows.length; i++) {
+          rows[i].addEventListener("click", function () {
+            // Do something when a row is clicked, for example, log the row data
+            console.log("Row clicked: " + this.innerText);
+            // You can modify this to perform actions based on the clicked row
+          });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+          // Get the first modal element
+          var modal = document.getElementById("myModal");
+
+          // Get the trigger row for the first modal
+          var triggerRow = document.querySelector(".modalTrigger");
+
+          // Get the close button for the first modal
+          var closeButton = document.querySelector("#closetbl");
+
+          // When the trigger row for the first modal is clicked, open the modal
+          triggerRow.addEventListener("click", function () {
+            modal.style.display = "block";
+          });
+
+          // When the close button for the first modal is clicked, close the modal
+          closeButton.onclick = function () {
+            modal.style.display = "none";
+          };
+
+          // Get the second modal element
+          var modal2 = document.getElementById("myModal2");
+
+          // Get the trigger rows for the second modal
+          var triggerRows2 = document.querySelectorAll(".modalTrigger");
+
+          // Get the close button for the second modal
+          var closeButton2 = document.querySelector(".close2");
+
+          // Loop through all trigger rows for the second modal and add click event listeners
+          triggerRows2.forEach(function (triggerRow) {
+            triggerRow.addEventListener("click", function () {
+              modal2.style.display = "block";
+            });
+          });
+
+          // When the close button for the second modal is clicked, close the modal
+          closeButton2.onclick = function () {
+            modal2.style.display = "none";
+          };
+
+          // When the user clicks anywhere outside of the second modal, close it
+          window.onclick = function (event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
+            }
+            if (event.target == modal2) {
+              modal2.style.display = "none";
+            }
+          };
+        });
+      </script>
       <!-- ====== ionicons ======= -->
       <script
         type="module"
