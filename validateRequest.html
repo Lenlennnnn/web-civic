@@ -177,91 +177,6 @@
                   </button>
                 </td>
               </tr>
-              <tr class="clickable-row">
-                <td>2</td>
-                <td>Volunteer Fair and Civic Engagement Expo</td>
-                <td>Relief Operations</td>
-                <td>Lipa</td>
-                <td>
-                  <!-- Button to trigger modal -->
-                  <button
-                    class="btn btn-danger view-button"
-                    data-toggle="modal"
-                    data-target="#exampleModalLonggg"
-                    id="comactbtn"
-                  >
-                    View
-                  </button>
-                </td>
-              </tr>
-              <tr class="clickable-row">
-                <td>3</td>
-                <td>Neighborhood Watch Training Workshop</td>
-                <td>Seminar Training</td>
-                <td>JPLPC Malvar</td>
-                <td>
-                  <!-- Button to trigger modal -->
-                  <button
-                    class="btn btn-danger view-button"
-                    data-toggle="modal"
-                    data-target="#exampleModalLonggg"
-                    id="comactbtn"
-                  >
-                    View
-                  </button>
-                </td>
-              </tr>
-              <tr class="clickable-row">
-                <td>4</td>
-                <td>Town Hall Meeting on Public Safety</td>
-                <td>Seminar Training</td>
-                <td>Rosario</td>
-                <td>
-                  <!-- Button to trigger modal -->
-                  <button
-                    class="btn btn-danger view-button"
-                    data-toggle="modal"
-                    data-target="#exampleModalLonggg"
-                    id="comactbtn"
-                  >
-                    View
-                  </button>
-                </td>
-              </tr>
-              <tr class="clickable-row">
-                <td>5</td>
-                <td>Citywide Recycling Initiative Launch</td>
-                <td>Clean Up Drive</td>
-                <td>Nasugbu</td>
-                <td>
-                  <!-- Button to trigger modal -->
-                  <button
-                    class="btn btn-danger view-button"
-                    data-toggle="modal"
-                    data-target="#exampleModalLonggg"
-                    id="comactbtn"
-                  >
-                    View
-                  </button>
-                </td>
-              </tr>
-              <tr class="clickable-row">
-                <td>6</td>
-                <td>Community Clean-Up Day</td>
-                <td>Clean Up Drive</td>
-                <td>Balayan</td>
-                <td>
-                  <!-- Button to trigger modal -->
-                  <button
-                    class="btn btn-danger view-button"
-                    data-toggle="modal"
-                    data-target="#exampleModalLonggg"
-                    id="comactbtn"
-                  >
-                    View
-                  </button>
-                </td>
-              </tr>
             </tbody>
           </table>
 
@@ -577,7 +492,7 @@
       // Function to display the "Are you sure?" confirmation alert
       function showConfirmationAlert() {
         if (confirm("Are you sure?")) {
-          // If the user clicks 'Yes', display the success message
+          // If the event clicks 'Yes', display the success message
           showSuccessMessage();
         }
       }
@@ -671,6 +586,151 @@
 
     <script>
       new DataTable("#example");
+    </script>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+        push,
+        set,
+        onValue,
+        onChildRemoved,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+        authDomain: "civicall-app-a54d1.firebaseapp.com",
+        databaseURL:
+          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "civicall-app-a54d1",
+        storageBucket: "civicall-app-a54d1.appspot.com",
+        messagingSenderId: "909514632764",
+        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+        measurementId: "G-0BVYE5XJGV",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const auth = getAuth(app);
+
+      const uploadevnt = ref(db, "Upload Engagement");
+
+      const initializeDataTable = () => {
+        if ($.fn.DataTable.isDataTable("#example")) {
+          $("#example").DataTable().destroy();
+        }
+
+        const dataTable = $("#example").DataTable({
+          columns: [
+            { data: "eventUID" },
+            { data: "title" },
+            { data: "category" },
+            { data: "campus" },
+            { data: "Action" },
+          ],
+        });
+
+        return dataTable;
+      };
+
+      const dataTable = initializeDataTable();
+
+      const populateDataTable = () => {
+        onValue(uploadevnt, (snapshot) => {
+          const eventsData = snapshot.val();
+
+          dataTable.clear();
+
+          if (eventsData) {
+            Object.keys(eventsData).forEach((eventId) => {
+              const event = eventsData[eventId];
+              $("#example tbody").on(
+                "click",
+                "button.view-button",
+                function () {
+                  const eventId = dataTable
+                    .row($(this).parents("tr"))
+                    .data().eventUID;
+                  vieweventDetails(eventId);
+                }
+              );
+              dataTable.row.add({
+                eventUID: eventId,
+                title: event.title,
+                email: event.category,
+                campus: event.campus,
+                Action:
+                  '<button class="btn btn-danger view-button" data-toggle="modal" data-target="#exampleModalLongggTitle">View</button>',
+              });
+            });
+
+            dataTable.draw();
+          } else {
+            console.log("No data available in event collection.");
+            dataTable.clear().draw();
+          }
+        });
+
+        onChildRemoved(uploadevnt, (removedSnapshot) => {
+          const removedeventId = removedSnapshot.key;
+
+          dataTable
+            .rows((idx, data) => data.eventUID === removedeventId)
+            .remove()
+            .draw();
+        });
+      };
+      function vieweventDetails(eventId) {
+        const eventRef = ref(db, `Upload Engagement/${eventId}`);
+
+        get(eventRef)
+          .then((snapshot) => {
+            const eventData = snapshot.val();
+
+            console.log("ImageProfile URL:", eventData.ImageProfile);
+
+            const modalBodyContent =
+              document.getElementById("modalBodyContent");
+
+            if (eventData) {
+              modalBodyContent.innerHTML = `
+
+    <p><strong>Campus:<input class="form-control" id ="" type="text" value="${eventData.campus}" readonly ></input></strong></p>
+
+    <!-- Add more event details here as needed -->
+  `;
+            } else {
+              modalBodyContent.innerHTML = `<p>No event details found.</p>`;
+            }
+
+            // Show the modal
+            $("#exampleModalLong").modal("show");
+          })
+          .catch((error) => {
+            console.error("Error fetching event details:", error);
+          });
+        const closeButton = document.getElementById("closemodalbtn");
+
+        if (closeButton) {
+          closeButton.addEventListener("click", () => {
+            $("#exampleModalLong").modal("hide");
+          });
+        }
+
+        // Remove outside click close modal functionality
+        $("#exampleModalLong").modal({
+          backdrop: "static", // Prevents modal from closing when clicking outside
+          keyboard: false, // Disables the keyboard close functionality
+        });
+      }
+
+      populateDataTable();
     </script>
   </body>
 </html>
