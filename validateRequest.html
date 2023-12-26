@@ -691,19 +691,17 @@
 
             if (eventData) {
               // Update the modal elements with Firebase data
-              document.getElementById("category").value = eventData.category;
-              document.getElementById("title").value = eventData.title;
-              // Update other fields similarly with respective IDs
+              document.getElementById("category").value =
+                eventData.category || ""; // Replace 'category' with the corresponding key
+              document.getElementById("title").value = eventData.title || ""; // Replace 'title' with the corresponding key
 
               // Show the modal
               $("#exampleModalLonggg").modal("show");
             } else {
-              console.log("No event details found.");
+              console.log("No event details found for ID:", eventId);
             }
           })
-          .catch((error) => {
-            console.error("Error fetching event details:", error);
-          });
+          .catch(handleFirebaseError);
       }
 
       $(document).on("click", ".view-button", function () {
