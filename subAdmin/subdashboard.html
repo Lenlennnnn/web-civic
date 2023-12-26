@@ -1497,6 +1497,7 @@
       closeModalBtnEvnts.addEventListener("click", closeModalEvnts);
     </script>
 
+<<<<<<< HEAD
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
       import {
@@ -1523,118 +1524,151 @@
         appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
         measurementId: "G-0BVYE5XJGV",
       };
+=======
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+  import {
+    getDatabase,
+    ref,
+    get,
+    push,
+    set,
+    onValue,
+    onChildRemoved,
+  } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+  } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+    authDomain: "civicall-app-a54d1.firebaseapp.com",
+    databaseURL:
+      "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "civicall-app-a54d1",
+    storageBucket: "civicall-app-a54d1.appspot.com",
+    messagingSenderId: "909514632764",
+    appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+    measurementId: "G-0BVYE5XJGV",
+  };
+>>>>>>> origin/KurtBranch
 
-      const app = initializeApp(firebaseConfig);
-      const db = getDatabase(app);
-      const auth = getAuth(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const auth = getAuth(app);
 
-      const tableBody = document.querySelector("#tableevents tbody");
-      let rowNumber = 1; // Initialize row number
+  const tableBody = document.querySelector("#tableevents tbody");
+  let rowNumber = 1; // Initialize row number
 
-      // Function to open the modal and display event details
-      function openEventModal(eventData) {
-        const modal = document.getElementById("eventModalupcom");
-        const eventDetailsContainer =
-          document.getElementById("eventDetailsupcom");
+  // Function to open the modal and display event details
+  function openEventModal(eventData) {
+    const modal = document.getElementById("eventModalupcom");
+    const eventDetailsContainer =
+      document.getElementById("eventDetailsupcom");
 
-        eventDetailsContainer.innerHTML = `
-      <img src="${eventData.image}" alt="Event Image" class="eventpic" id="upcompostpic" />
-      <p><strong>Title:<input class="form-control" id ="" type="text" value="${eventData.title}" readonly ></input></strong></p>
-      <p><strong>Category:<input class="form-control" id ="" type="text" value="${eventData.category}" readonly ></input></strong></p>
-      <p><strong>Campus:<input class="form-control" id ="" type="text" value="${eventData.campus}" readonly ></input></strong></p>
-      <p><strong>Location:<input class="form-control" id ="" type="text" value="${eventData.location}" readonly ></input></strong></p>
-      <p><strong>Start Date:<input class="form-control" id ="" type="text" value="${eventData.startDate}" readonly ></input></strong></p>
-      <p><strong>End Date:<input class="form-control" id ="" type="text" value="${eventData.endDate}" readonly ></input></strong></p>
-      <h3>Description</h3>
-      <p>&nbsp;</p>
-      <p><strong>Introduction:</strong></p>
-      <textarea class="form-control" rows="10" id="yourTextAreaId" readonly >${eventData.intro}</textarea>
-      <p><strong>Objectives:</strong></p>
-      <textarea class="form-control" rows="10" id="yourTextAreaId" readonly >${eventData.objective}</textarea>
-      <p><strong>Instruction:</strong></p>
-      <textarea class="form-control" rows="10" id="yourTextAreaId" readonly >${eventData.instruction}</textarea>
-      <p><strong>Target Participant:<input class="form-control" id ="" type="text" value="${eventData.targetparty}" readonly ></input></strong></p>
-      <p><strong>Payment Receipt:<input class="form-control" id ="" type="text" value="${eventData.paymentRecipient}" readonly ></input></strong></p>
-      <p><strong>Payment Method:<input class="form-control" id ="" type="text" value="${eventData.paymentMethod}" readonly ></input></strong></p>
-      <p><strong>Fund Collected:<input class="form-control" id ="" type="text" value="${eventData.fundcollected}" readonly ></input></strong></p>
-      <p><strong>Facilitators Name:<input class="form-control" id ="" type="text" value="${eventData.facilitatorsName}" readonly ></input></strong></p>
-      <p><strong>Facilitators Contractor Email:<input class="form-control" id ="" type="text" value="${eventData.facilitatorsContractorEmail}" readonly ></input></strong></p>
-      <p><strong>Active Points:<input class="form-control" id ="" type="text" value="${eventData.activepoints}" readonly ></input></strong></p>
-      <!-- Add other fields -->
-      <!-- Include other fields as needed -->
-      `;
+    eventDetailsContainer.innerHTML = `
+  <img src="${eventData.image}" alt="Event Image" class="eventpic" id="upcompostpic" />
+  <p><strong>Title:<input class="form-control" id ="" type="text" value="${eventData.title}" readonly ></input></strong></p>
+  <p><strong>Category:<input class="form-control" id ="" type="text" value="${eventData.category}" readonly ></input></strong></p>
+  <p><strong>Campus:<input class="form-control" id ="" type="text" value="${eventData.campus}" readonly ></input></strong></p>
+  <p><strong>Location:<input class="form-control" id ="" type="text" value="${eventData.location}" readonly ></input></strong></p>
+  <p><strong>Start Date:<input class="form-control" id ="" type="text" value="${eventData.startDate}" readonly ></input></strong></p>
+  <p><strong>End Date:<input class="form-control" id ="" type="text" value="${eventData.endDate}" readonly ></input></strong></p>
+  <h3>Description</h3>
+  <p>&nbsp;</p>
+  <p><strong>Introduction:</strong></p>
+  <textarea class="form-control" rows="10" id="yourTextAreaId" readonly >${eventData.intro}</textarea>
+  <p><strong>Objectives:</strong></p>
+  <textarea class="form-control" rows="10" id="yourTextAreaId" readonly >${eventData.objective}</textarea>
+  <p><strong>Instruction:</strong></p>
+  <textarea class="form-control" rows="10" id="yourTextAreaId" readonly >${eventData.instruction}</textarea>
+  <p><strong>Target Participant:<input class="form-control" id ="" type="text" value="${eventData.targetparty}" readonly ></input></strong></p>
+  <p><strong>Payment Receipt:<input class="form-control" id ="" type="text" value="${eventData.paymentRecipient}" readonly ></input></strong></p>
+  <p><strong>Payment Method:<input class="form-control" id ="" type="text" value="${eventData.paymentMethod}" readonly ></input></strong></p>
+  <p><strong>Fund Collected:<input class="form-control" id ="" type="text" value="${eventData.fundcollected}" readonly ></input></strong></p>
+  <p><strong>Facilitators Name:<input class="form-control" id ="" type="text" value="${eventData.facilitatorsName}" readonly ></input></strong></p>
+  <p><strong>Facilitators Contractor Email:<input class="form-control" id ="" type="text" value="${eventData.facilitatorsContractorEmail}" readonly ></input></strong></p>
+  <p><strong>Active Points:<input class="form-control" id ="" type="text" value="${eventData.activepoints}" readonly ></input></strong></p>
+  <!-- Add other fields -->
+  <!-- Include other fields as needed -->
+  `;
 
-        // Show the modal
-        modal.style.display = "block";
-      }
+    // Show the modal
+    modal.style.display = "block";
+  }
 
-      // Event delegation for dynamically created buttons
+  // Event delegation for dynamically created buttons
 
-      document.addEventListener("click", function (event) {
-        if (event.target && event.target.classList.contains("vieweventdet")) {
-          const clickedRow = event.target.closest("tr");
-          const eventId = clickedRow.getAttribute("data-event-id"); // Assuming you have an attribute for the event ID in the table row
+  document.addEventListener("click", function (event) {
+    if (event.target && event.target.classList.contains("vieweventdet")) {
+      const clickedRow = event.target.closest("tr");
+      const eventId = clickedRow.getAttribute("data-event-id"); // Assuming you have an attribute for the event ID in the table row
 
-          // Reference the specific event node in Firebase
-          const eventRef = ref(db, `Upload Engagement/${eventId}`);
+      // Reference the specific event node in Firebase
+      const eventRef = ref(db, `Upload Engagement/${eventId}`);
 
-          // Retrieve the event data from Firebase
-          get(eventRef)
-            .then((snapshot) => {
-              if (snapshot.exists()) {
-                const eventData = snapshot.val();
-                openEventModal(eventData);
-              } else {
-                console.log("No data available");
-              }
-            })
-            .catch((error) => {
-              console.error("Error getting data:", error);
-            });
-        }
-      });
-      // Function to fetch and display data in the table
-      function displayEventData() {
-        const uploadEngagementRef = ref(db, "Upload Engagement");
-
-        onValue(uploadEngagementRef, (snapshot) => {
-          tableBody.innerHTML = ""; // Clear existing table data
-          rowNumber = 1; // Reset row number
-
-          snapshot.forEach((childSnapshot) => {
-            const uploadData = childSnapshot.val();
-            const {
-              campus,
-              category,
-              dateandtime,
-              title,
-              image,
-              location,
-              startDate,
-              endDate,
-              // Add other fields you want to retrieve from Firebase
-            } = uploadData;
-
-            const newRow = tableBody.insertRow();
-            newRow.innerHTML = `
-            <td>${rowNumber}</td>
-            <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
-            <td>${title}</td>
-            <td>${category}</td>
-            <td>${campus}</td>
-            <td>${startDate} ${endDate}</td>
-            <td>
-              <button type="button" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>
-            </td>
-          `;
-            newRow.setAttribute("data-event-id", childSnapshot.key); // Set the event ID as an attribute in the table row
-            rowNumber++;
-          });
+      // Retrieve the event data from Firebase
+      get(eventRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            const eventData = snapshot.val();
+            openEventModal(eventData);
+          } else {
+            console.log("No data available");
+          }
+        })
+        .catch((error) => {
+          console.error("Error getting data:", error);
         });
-      }
+    }
+  });
+  // Function to fetch and display data in the table
+  function displayEventData() {
+  const uploadEngagementRef = ref(db, "Upload Engagement");
 
-      displayEventData();
-    </script>
+  onValue(uploadEngagementRef, (snapshot) => {
+    tableBody.innerHTML = ""; // Clear existing table data
+    rowNumber = 1; // Reset row number
+
+    snapshot.forEach((childSnapshot) => {
+      const uploadData = childSnapshot.val();
+      
+      // Check if the verificationStatus child exists and is true
+      if (uploadData.hasOwnProperty("verificationStatus") && uploadData.verificationStatus === true) {
+        const {
+          campus,
+          category, 
+          dateandtime,
+          title,
+          image,
+          location,
+          startDate,
+          endDate,
+          // Add other fields you want to retrieve from Firebase
+        } = uploadData;
+
+        const newRow = tableBody.insertRow();
+        newRow.innerHTML = `
+          <td>${rowNumber}</td>
+          <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
+          <td>${title}</td>
+          <td>${category}</td>
+          <td>${campus}</td>
+          <td>${startDate} ${endDate}</td>
+          <td>
+            <button type="button" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>
+          </td>
+        `;
+        newRow.setAttribute("data-event-id", childSnapshot.key); // Set the event ID as an attribute in the table row
+        rowNumber++;
+      }
+    });
+  });
+}
+
+
+  displayEventData();
+</script>
     <script src="js/dashboard.js"></script>
     <script src="js/post.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>

@@ -948,7 +948,7 @@
                 <div class="small text-gray-500">December 12, 2023</div>
                 <span class="font-weight-bold"
                   >20-12345 John Lui Coro has a request event for you to approve
-                  by kurt</span
+                  by kur</span
                 >
               </div>
             </a>
@@ -1876,7 +1876,220 @@
         modal.style.display = "none"; // Set the modal display to none to close it
       });
     </script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+        push,
+        set,
+        onValue,
+        onChildRemoved,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+        authDomain: "civicall-app-a54d1.firebaseapp.com",
+        databaseURL:
+          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "civicall-app-a54d1",
+        storageBucket: "civicall-app-a54d1.appspot.com",
+        messagingSenderId: "909514632764",
+        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+        measurementId: "G-0BVYE5XJGV",
+      };
 
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const auth = getAuth(app);
+
+      const tableBody = document.querySelector("#tableevents tbody");
+      let rowNumber = 1; // Initialize row number
+
+      // Function to open the modal and display event details
+      function openEventModal(eventData) {
+        const modal = document.getElementById("eventModalupcom");
+        const eventDetailsContainer =
+          document.getElementById("eventDetailsupcom");
+
+        // Function to determine whether to show payment fields
+        function shouldShowPaymentFields(category) {
+          return category === "Fund Raising" || category === "Donations";
+        }
+
+        // Function to generate HTML for payment fields
+        function generatePaymentFieldsHTML(eventData) {
+          if (shouldShowPaymentFields(eventData.category)) {
+            return `
+        <p><strong>Payment Receipt:</strong>
+          <input class="form-control" id="payRecip" type="text" value="${eventData.paymentRecipient}" readonly>
+        </p>
+        <p><strong>Payment Method:</strong>
+          <input class="form-control" id="payMeth" type="text" value="${eventData.paymentMethod}" readonly>
+        </p>
+      `;
+          }
+          return ""; // Empty string if payment fields should not be shown
+        }
+
+        eventDetailsContainer.innerHTML = `
+    <img src="${
+      eventData.image
+    }" alt="Event Image" class="eventpic" id="upcompostpic" />
+    <p><strong>Title:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.title
+      }" readonly>
+    </p>
+    <p><strong>Category:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.category
+      }" readonly>
+    </p>
+    <p><strong>Campus:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.campus
+      }" readonly>
+    </p>
+    <p><strong>Location:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.location
+      }" readonly>
+    </p>
+    <p><strong>Start Date:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.startDate
+      }" readonly>
+    </p>
+    <p><strong>End Date:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.endDate
+      }" readonly>
+    </p>
+    <h3>Description</h3>
+    <p>&nbsp;</p>
+    <p><strong>Introduction:</strong></p>
+    <textarea class="form-control" rows="10" id="yourTextAreaId" readonly>${
+      eventData.intro
+    }</textarea>
+    <p><strong>Objectives:</strong></p>
+    <textarea class="form-control" rows="10" id="yourTextAreaId" readonly>${
+      eventData.objective
+    }</textarea>
+    <p><strong>Instruction:</strong></p>
+    <textarea class="form-control" rows="10" id="yourTextAreaId" readonly>${
+      eventData.instruction
+    }</textarea>
+    <p><strong>Target Participant:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.targetparty
+      }" readonly>
+    </p>
+    ${generatePaymentFieldsHTML(eventData)}
+    <p><strong>Fund Collected:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.fundcollected
+      }" readonly>
+    </p>
+    <p><strong>Facilitators Name:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.facilitatorsName
+      }" readonly>
+    </p>
+    <p><strong>Facilitators Contractor Email:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.facilitatorsContractorEmail
+      }" readonly>
+    </p>
+    <p><strong>Active Points:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.activepoints
+      }" readonly>
+    </p>
+  `;
+
+        // Show the modal
+        modal.style.display = "block";
+      }
+
+      // Event delegation for dynamically created buttons
+
+      document.addEventListener("click", function (event) {
+        if (event.target && event.target.classList.contains("vieweventdet")) {
+          const clickedRow = event.target.closest("tr");
+          const eventId = clickedRow.getAttribute("data-event-id"); // Assuming you have an attribute for the event ID in the table row
+
+          // Reference the specific event node in Firebase
+          const eventRef = ref(db, `Upload Engagement/${eventId}`);
+
+          // Retrieve the event data from Firebase
+          get(eventRef)
+            .then((snapshot) => {
+              if (snapshot.exists()) {
+                const eventData = snapshot.val();
+                openEventModal(eventData);
+              } else {
+                console.log("No data available");
+              }
+            })
+            .catch((error) => {
+              console.error("Error getting data:", error);
+            });
+        }
+      });
+      // Function to fetch and display data in the table
+      function displayEventData() {
+        const uploadEngagementRef = ref(db, "Upload Engagement");
+
+        onValue(uploadEngagementRef, (snapshot) => {
+          tableBody.innerHTML = ""; // Clear existing table data
+          rowNumber = 1; // Reset row number
+
+          snapshot.forEach((childSnapshot) => {
+            const uploadData = childSnapshot.val();
+
+            // Check if the verificationStatus child exists and is true
+            if (
+              uploadData.hasOwnProperty("verificationStatus") &&
+              uploadData.verificationStatus === true
+            ) {
+              const {
+                campus,
+                category,
+                dateandtime,
+                title,
+                image,
+                location,
+                startDate,
+                endDate,
+                // Add other fields you want to retrieve from Firebase
+              } = uploadData;
+
+              const newRow = tableBody.insertRow();
+              newRow.innerHTML = `
+          <td>${rowNumber}</td>
+          <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
+          <td>${title}</td>
+          <td>${category}</td>
+          <td>${campus}</td>
+          <td>${startDate} ${endDate}</td>
+          <td>
+            <button type="button" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>
+          </td>
+        `;
+              newRow.setAttribute("data-event-id", childSnapshot.key); // Set the event ID as an attribute in the table row
+              rowNumber++;
+            }
+          });
+        });
+      }
+
+      displayEventData();
+    </script>
     <script src="js/dashboard.js"></script>
     <script src="js/post.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
