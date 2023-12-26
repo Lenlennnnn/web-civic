@@ -682,50 +682,34 @@
             .draw();
         });
       };
-      function vieweventDetails(eventId) {
+      function viewEventDetails(eventId) {
         const eventRef = ref(db, `Upload Engagement/${eventId}`);
 
         get(eventRef)
           .then((snapshot) => {
             const eventData = snapshot.val();
 
-            console.log("ImageProfile URL:", eventData.ImageProfile);
-
-            const modalBodyContent =
-              document.getElementById("modalBodyContent");
-
             if (eventData) {
-              modalBodyContent.innerHTML = `
+              // Update the modal elements with Firebase data
+              document.getElementById("category").value = eventData.category;
+              document.getElementById("title").value = eventData.title;
+              // Update other fields similarly with respective IDs
 
-    <p><strong>Campus:<input class="form-control" id ="" type="text" value="${eventData.campus}" readonly ></input></strong></p>
-
-    <!-- Add more event details here as needed -->
-  `;
+              // Show the modal
+              $("#exampleModalLonggg").modal("show");
             } else {
-              modalBodyContent.innerHTML = `<p>No event details found.</p>`;
+              console.log("No event details found.");
             }
-
-            // Show the modal
-            $("#exampleModalLong").modal("show");
           })
           .catch((error) => {
             console.error("Error fetching event details:", error);
           });
-        const closeButton = document.getElementById("closemodalbtn");
-
-        if (closeButton) {
-          closeButton.addEventListener("click", () => {
-            $("#exampleModalLong").modal("hide");
-          });
-        }
-
-        // Remove outside click close modal functionality
-        $("#exampleModalLong").modal({
-          backdrop: "static", // Prevents modal from closing when clicking outside
-          keyboard: false, // Disables the keyboard close functionality
-        });
       }
 
+      $(document).on("click", ".view-button", function () {
+        const eventId = $(this).closest("tr").find("td:first").text();
+        viewEventDetails(eventId);
+      });
       populateDataTable();
     </script>
   </body>
