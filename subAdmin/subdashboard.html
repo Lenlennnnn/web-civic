@@ -1537,31 +1537,100 @@
         const eventDetailsContainer =
           document.getElementById("eventDetailsupcom");
 
+        // Function to determine whether to show payment fields
+        function shouldShowPaymentFields(category) {
+          return category === "Fund Raising" || category === "Donations";
+        }
+
+        // Function to generate HTML for payment fields
+        function generatePaymentFieldsHTML(eventData) {
+          if (shouldShowPaymentFields(eventData.category)) {
+            return `
+        <p><strong>Payment Receipt:</strong>
+          <input class="form-control" id="payRecip" type="text" value="${eventData.paymentRecipient}" readonly>
+        </p>
+        <p><strong>Payment Method:</strong>
+          <input class="form-control" id="payMeth" type="text" value="${eventData.paymentMethod}" readonly>
+        </p>
+      `;
+          }
+          return ""; // Empty string if payment fields should not be shown
+        }
+
         eventDetailsContainer.innerHTML = `
-  <img src="${eventData.image}" alt="Event Image" class="eventpic" id="upcompostpic" />
-  <p><strong>Title:<input class="form-control" id ="" type="text" value="${eventData.title}" readonly ></input></strong></p>
-  <p><strong>Category:<input class="form-control" id ="" type="text" value="${eventData.category}" readonly ></input></strong></p>
-  <p><strong>Campus:<input class="form-control" id ="" type="text" value="${eventData.campus}" readonly ></input></strong></p>
-  <p><strong>Location:<input class="form-control" id ="" type="text" value="${eventData.location}" readonly ></input></strong></p>
-  <p><strong>Start Date:<input class="form-control" id ="" type="text" value="${eventData.startDate}" readonly ></input></strong></p>
-  <p><strong>End Date:<input class="form-control" id ="" type="text" value="${eventData.endDate}" readonly ></input></strong></p>
-  <h3>Description</h3>
-  <p>&nbsp;</p>
-  <p><strong>Introduction:</strong></p>
-  <textarea class="form-control" rows="10" id="yourTextAreaId" readonly >${eventData.intro}</textarea>
-  <p><strong>Objectives:</strong></p>
-  <textarea class="form-control" rows="10" id="yourTextAreaId" readonly >${eventData.objective}</textarea>
-  <p><strong>Instruction:</strong></p>
-  <textarea class="form-control" rows="10" id="yourTextAreaId" readonly >${eventData.instruction}</textarea>
-  <p><strong>Target Participant:<input class="form-control" id ="" type="text" value="${eventData.targetparty}" readonly ></input></strong></p>
-  <p><strong>Payment Receipt:<input class="form-control" id ="" type="text" value="${eventData.paymentRecipient}" readonly ></input></strong></p>
-  <p><strong>Payment Method:<input class="form-control" id ="" type="text" value="${eventData.paymentMethod}" readonly ></input></strong></p>
-  <p><strong>Fund Collected:<input class="form-control" id ="" type="text" value="${eventData.fundcollected}" readonly ></input></strong></p>
-  <p><strong>Facilitators Name:<input class="form-control" id ="" type="text" value="${eventData.facilitatorsName}" readonly ></input></strong></p>
-  <p><strong>Facilitators Contractor Email:<input class="form-control" id ="" type="text" value="${eventData.facilitatorsContractorEmail}" readonly ></input></strong></p>
-  <p><strong>Active Points:<input class="form-control" id ="" type="text" value="${eventData.activepoints}" readonly ></input></strong></p>
-  <!-- Add other fields -->
-  <!-- Include other fields as needed -->
+    <img src="${
+      eventData.image
+    }" alt="Event Image" class="eventpic" id="upcompostpic" />
+    <p><strong>Title:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.title
+      }" readonly>
+    </p>
+    <p><strong>Category:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.category
+      }" readonly>
+    </p>
+    <p><strong>Campus:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.campus
+      }" readonly>
+    </p>
+    <p><strong>Location:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.location
+      }" readonly>
+    </p>
+    <p><strong>Start Date:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.startDate
+      }" readonly>
+    </p>
+    <p><strong>End Date:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.endDate
+      }" readonly>
+    </p>
+    <h3>Description</h3>
+    <p>&nbsp;</p>
+    <p><strong>Introduction:</strong></p>
+    <textarea class="form-control" rows="10" id="yourTextAreaId" readonly>${
+      eventData.intro
+    }</textarea>
+    <p><strong>Objectives:</strong></p>
+    <textarea class="form-control" rows="10" id="yourTextAreaId" readonly>${
+      eventData.objective
+    }</textarea>
+    <p><strong>Instruction:</strong></p>
+    <textarea class="form-control" rows="10" id="yourTextAreaId" readonly>${
+      eventData.instruction
+    }</textarea>
+    <p><strong>Target Participant:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.targetparty
+      }" readonly>
+    </p>
+    ${generatePaymentFieldsHTML(eventData)}
+    <p><strong>Fund Collected:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.fundcollected
+      }" readonly>
+    </p>
+    <p><strong>Facilitators Name:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.facilitatorsName
+      }" readonly>
+    </p>
+    <p><strong>Facilitators Contractor Email:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.facilitatorsContractorEmail
+      }" readonly>
+    </p>
+    <p><strong>Active Points:</strong>
+      <input class="form-control" id="" type="text" value="${
+        eventData.activepoints
+      }" readonly>
+    </p>
   `;
 
         // Show the modal
