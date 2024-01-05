@@ -418,10 +418,7 @@
     <script src="js/main.js"></script>
     <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
     <!-- Add an event listener to the button -->
-    <script>
-    
-
-    </script>
+  
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
@@ -497,7 +494,16 @@
           );
         }
       });
+      document.getElementById("usernamefield").addEventListener("keydown", handleEnterKey);
+document.getElementById("passwordfield").addEventListener("keydown", handleEnterKey);
 
+// Function to handle Enter key press
+function handleEnterKey(event) {
+    if (event.key === "Enter") {
+        // Trigger the click event on the login button
+        loginBtn.click();
+    }
+}
       let firstname = document.getElementById("firstname");
       let middlename = document.getElementById("middlename");
       let lastname = document.getElementById("lastname");

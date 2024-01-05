@@ -26,15 +26,40 @@
         password
       </p>
       <div class="reset-method">
-        <input type="text" placeholder="Email or Phone Number" />
-        <button class="send-button">Send</button>
-      </div>
-      <div class="reset-method">
-        <input type="text" placeholder="Insert code" />
-        <a href="newPassword.html">
-          <button class="proceed-button">Proceed</button></a
-        >
+        <input type="text" id="emailInput" placeholder="Enter your Email" />
+        <button class="proceed-button" id="buttonReset" >Proceed</button>
       </div>
     </div>
+    <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+  import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+        push,
+        set,
+        onValue,
+        onChildRemoved,
+        orderByChild,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+  
+    
+      const firebaseConfig = {
+        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+        authDomain: "civicall-app-a54d1.firebaseapp.com",
+        databaseURL: "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "civicall-app-a54d1",
+        storageBucket: "civicall-app-a54d1.appspot.com",
+        messagingSenderId: "909514632764",
+        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+        measurementId: "G-0BVYE5XJGV",
+      };
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const auth = getAuth(app);
+
+
+    </script>
   </body>
 </html>

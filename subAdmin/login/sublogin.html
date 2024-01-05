@@ -184,6 +184,16 @@
           );
         }
       });
+           document.getElementById("usernamefield").addEventListener("keydown", handleEnterKey);
+document.getElementById("passwordfield").addEventListener("keydown", handleEnterKey);
+
+// Function to handle Enter key press
+function handleEnterKey(event) {
+    if (event.key === "Enter") {
+        // Trigger the click event on the login button
+        loginBtn.click();
+    }
+}
     </script>
   </body>
 </html>
