@@ -335,7 +335,7 @@
             <div class="modal-content-second">
               <div class="container-popup-second">
                 <span class="close-second" id="closeSecondModal">&times;</span>
-                <h2>Create Super-Admin Account</h2>
+                <h2>Create Super Admin Account</h2>
                 <form id="MainForm">
                   <label for="firstname">First Name:</label>
                   <input
@@ -536,7 +536,10 @@ function RegisterUser(event) {
         alert("Please input all the fields");
         return;
     }
-
+    if (!validateName(firstnameValue) || !validateName(middlenameValue) || !validateName(lastnameValue)) {
+        alert("Please input valid names without numbers or special characters.");
+        return;
+    }
     // Password validation: should be alpha-numeric and at least 8 characters
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
     if (!passwordRegex.test(passwordValue)) {
@@ -549,7 +552,10 @@ function RegisterUser(event) {
         alert("Passwords do not match. Please re-type your password.");
         return;
     }
-
+function validateName(name) {
+    const nameRegex = /^[A-Za-z.'-, ]+$/;
+    return nameRegex.test(name);
+}
     // Continue with user registration
     createUserWithEmailAndPassword(auth, emailValue, passwordValue)
         .then((userCredential) => {

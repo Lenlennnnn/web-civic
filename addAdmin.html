@@ -293,14 +293,15 @@
                 required
                 placeholder="Your password"
               />
-              <label for="password">Confirm Password:</label>
+              <label for="confirmpassword">Confirm Password:</label>
               <input
                 type="password"
                 id="confirmpassword"
-                name="password"
+                name="confirmpassword"
                 required
                 placeholder="Re-type password"
               />
+              
 
               <button type="button" id="subbtn">Create Account</button>
             </form>
@@ -372,78 +373,6 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="js/addAdmin.js"></script>
-    <script>
-      // Function to close the modal
-      function closeModal() {
-        let modal = document.getElementById("myModal");
-        modal.style.display = "none";
-      }
-
-      document.getElementById("subbtn").addEventListener("click", function () {
-        let firstName = document.getElementById("firstname").value.trim();
-        let lastName = document.getElementById("lastname").value.trim();
-        let middleName = document.getElementById("middlename").value.trim();
-        let gender = document.getElementById("gender").value;
-        let campus = document.getElementById("campus").value;
-        let email = document.getElementById("email").value.trim();
-        let password = document.getElementById("password").value.trim();
-        let confirmPassword = document
-          .getElementById("confirmpassword")
-          .value.trim();
-
-        let isValid = true; // Flag to track validation status
-
-        // Validate First Name, Middle Name, and Last Name to accept only letters
-        let nameRegex = /^[A-Za-z]+$/;
-        if (
-          !nameRegex.test(firstName) ||
-          !nameRegex.test(lastName) ||
-          !nameRegex.test(middleName)
-        ) {
-          alert("Use letters only in your name ");
-          isValid = false; // Set flag to false if validation fails
-        }
-
-        // Validate Email Address format
-        let emailRegex = /\S+@\S+\.\S+/;
-        if (!emailRegex.test(email)) {
-          alert("Please enter a valid email address");
-          isValid = false; // Set flag to false if validation fails
-        }
-
-        // Validate Password and Confirm Password to have a minimum of 8 characters
-        if (password.length < 8 || confirmPassword.length < 8) {
-          alert("Minimum 8 characters required for password");
-          isValid = false; // Set flag to false if validation fails
-        }
-
-        // Check if Password and Confirm Password match
-        if (password !== confirmPassword) {
-          alert("Passwords do not match");
-          isValid = false; // Set flag to false if validation fails
-        }
-
-        // If any validation failed, stop account creation
-        if (!isValid) {
-          return; // Exit the function
-        }
-
-        // If all validations pass, proceed with account creation
-        createUserWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            // User registered successfully
-            const user = userCredential.user;
-
-            // Store additional user data in the database
-            saveUserData(user.uid);
-          })
-          .catch((error) => {
-            // Handle errors here
-            alert(error.message);
-            console.error(error);
-          });
-      });
-    </script>
 
     <script
       type="module"
@@ -503,29 +432,102 @@
 
       submit.addEventListener("click", RegisterAdmin);
 
-      function RegisterAdmin(event) {
-        event.preventDefault();
+      document.getElementById("MainForm").addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    // Prevent the default behavior (form submission) to avoid a page reload
+    event.preventDefault();
 
-        createUserWithEmailAndPassword(auth, email.value, password.value)
-          .then((userCredential) => {
-            // User registered successfully
-            const user = userCredential.user;
+    // Trigger the click event of the submit button
+    document.getElementById("subbtn").click();
+  }
+});
+function RegisterAdmin(event) {
+  event.preventDefault();
+  if (!areAllFieldsFilled()) {
+    alert("Please fill out all the fields.");
+    return;
+  }
+  const firstNameValue = firstname.value;
+  if (!isValidName(firstNameValue)) {
+    alert("Invalid first name. Please enter a valid name.");
+    return;
+  }
 
-            // Store additional user data in the database
-            saveUserData(user.uid);
+  // Validate middle name
+  const middleNameValue = middlename.value;
+  if (!isValidName(middleNameValue)) {
+    alert("Invalid middle name. Please enter a valid name.");
+    return;
+  }
 
-            // Close the modal after a short delay (e.g., 500 milliseconds)
-            setTimeout(() => {
-              closeModal();
-              resetFormFields();
-            }, 500);
-          })
-          .catch((error) => {
-            // Handle errors here
-            alert(error.message);
-            console.error(error);
-          });
-      }
+  // Validate last name
+  const lastNameValue = lastname.value;
+  if (!isValidName(lastNameValue)) {
+    alert("Invalid last name. Please enter a valid name.");
+    return;
+  }
+  // Get the password and confirmation password input values
+  const passwordValue = password.value;
+  const confirmPasswordValue = confirmpassword.value;
+
+  // Password validation criteria (alphanumeric and minimum length of 8)
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
+
+  // Check if the password meets the criteria
+  if (!passwordRegex.test(passwordValue)) {
+    alert("Password must be alphanumeric and have a minimum length of 8 characters.");
+    return;
+  }
+
+  // Check if the confirmation password matches the password
+  if (passwordValue !== confirmPasswordValue) {
+    alert("Confirmation password does not match the password.");
+    return;
+  }
+
+  function isValidName(name) {
+  // Allow letters, spaces, dot (.), comma (,), and hyphen (-)
+  const nameRegex = /^[A-Za-z.,-\s]+$/;
+  return nameRegex.test(name);
+}
+createUserWithEmailAndPassword(auth, email.value, passwordValue)
+    .then((userCredential) => {
+      // User registered successfully
+      const user = userCredential.user;
+
+      // Store additional user data in the database
+      saveUserData(user.uid);
+
+      // Close the modal after a short delay (e.g., 500 milliseconds)
+      setTimeout(() => {
+        closeModal();
+        resetFormFields();
+      }, 500);
+    })
+    .catch((error) => {
+      // Handle errors here
+      alert(error.message);
+      console.error(error);
+    });
+}
+
+function areAllFieldsFilled() {
+  // Define an array of field elements
+  const fieldElements = [
+    firstname,
+    middlename,
+    lastname,
+    password,
+    gender,
+    campus,
+    email,
+    confirmpassword, // Assuming confirmpassword is declared somewhere
+  ];
+
+  // Check if any field is empty
+  return fieldElements.every((field) => field.value.trim() !== "");
+}
+
 
       function resetFormFields() {
         document.getElementById("MainForm").reset();
