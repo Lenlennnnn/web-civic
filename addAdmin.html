@@ -470,8 +470,7 @@ function RegisterAdmin(event) {
   const passwordValue = password.value;
   const confirmPasswordValue = confirmpassword.value;
 
-  // Password validation criteria (alphanumeric and minimum length of 8)
-  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
+  const passwordRegex = /^(?=.*[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
 
   // Check if the password meets the criteria
   if (!passwordRegex.test(passwordValue)) {
@@ -657,7 +656,7 @@ function areAllFieldsFilled() {
           <p><strong>Contact Number:<input class="form-control" id ="" type="text" value="${userData.contactNumber}" readonly></input></strong></p>
 
 
-          <!-- Add more user details here as needed -->
+    
         `;
             } else {
               modalBodyContent.innerHTML = `<p>No user details found.</p>`;

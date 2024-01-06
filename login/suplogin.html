@@ -540,8 +540,9 @@ function RegisterUser(event) {
         alert("Please input valid names without numbers or special characters.");
         return;
     }
-    // Password validation: should be alpha-numeric and at least 8 characters
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
+ 
+    const passwordRegex = /^(?=.*[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
+
     if (!passwordRegex.test(passwordValue)) {
         alert("Password must be alpha-numeric and have a minimum length of 8 characters.");
         return;
