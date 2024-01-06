@@ -11,14 +11,19 @@
   <body>
     <div class="header-container">
       <div class="header-left">CIVICALL</div>
+      <div class="header-right">
+        <a href="#" class="back-button" onclick="goBack()">Back</a>
       </div>
+    </div>
+    
+    
     </div>
 
     <div class="reset-container">
       <h1>Reset your password</h1>
       <hr />
       <p>
-        Please insert your Email or Phonee number to get the code to reset your
+        Please insert your Email Address to get an email to reset your
         password
       </p>
     <!-- Inside the reset-container div -->
@@ -28,11 +33,18 @@
     <button class="proceed-button" id="buttonReset">Proceed</button>
   </div>
 </form>
-
     </div>
+    <script>
+      function goBack() {
+        window.history.back();
+      }
+    </script>
+    
     <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-  import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+    import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+    import { update } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+
       import {
         getDatabase,
         ref,
@@ -75,8 +87,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebas
         const users = snapshot.val();
 
         // Check if the email exists in the SuperAdminAcc node
-        const emailExists = Object.values(users).some(user => user.email === email);
-
+        const emailExists = Object.values(users).some(user => user.email.toLowerCase() === email.toLowerCase());
         resolve(emailExists);
       });
     });
@@ -90,15 +101,16 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebas
           alert("Password reset email sent. Please check your email.");
 
           // Update the Realtime Database with the user's email
-          const user = auth.currentUser;
+         // Update the Realtime Database with the user's email
+const user = auth.currentUser;
+if (user) {
+  const uid = user.uid;
+  const dbRef = ref(db, `SuperAdminAcc/${uid}`);
+  update(dbRef, { email });
+} else {
+  console.error("User not found.");
+}
 
-          if (user) {
-            const uid = user.uid;
-            const dbRef = ref(db, `SuperAdminAcc/${uid}`);
-            set(dbRef, { email });
-          } else {
-            console.error("User not found.");
-          }
         })
         .catch((error) => {
           console.error("Error sending password reset email:", error.message);
@@ -112,7 +124,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebas
     alert("Please enter your email address.");
   }
 });
-
+document.getElementById("emailInput").addEventListener("keyup", function (event) {
+    if (event.key === "Enter") {
+      // Simulate a click on the buttonReset
+      document.getElementById("buttonReset").click();
+    }
+  });
 
 
     </script>

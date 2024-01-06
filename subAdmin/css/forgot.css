@@ -118,3 +118,23 @@ body {
   background-color: green;
   transform: scale(1.05); /* Slightly scale up on hover */
 }
+.header-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.back-button {
+  cursor: pointer;
+  text-decoration: none;
+  color: white; /* Choose a suitable color */
+}
