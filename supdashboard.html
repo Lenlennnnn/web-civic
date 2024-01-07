@@ -1169,21 +1169,21 @@
                                 >Introduction:</label
                               >
                               <textarea
-                                id="Introductionpost"
+                                id="introductionPost"
                                 name="Introduction"
                                 rows="6"
                                 required
                                 placeholder="Add text"
                               ></textarea>
                               <label
-                                for="Description"
+                                for="Objective"
                                 id="lblpt"
                                 style="color: black; text-align: left"
-                                >Description:</label
+                                >Objective:</label
                               >
                               <textarea
-                                id="Descriptionpost"
-                                name="Description"
+                                id="objectivePost"
+                                name="Objective"
                                 rows="6"
                                 required
                                 placeholder="Add text"
@@ -1195,7 +1195,7 @@
                                 >Instruction:</label
                               >
                               <textarea
-                                id="Instructionpost"
+                                id="instructionPost"
                                 name="Instruction"
                                 rows="6"
                                 required
@@ -2057,6 +2057,7 @@
     ></script>
 
     <script type="module">
+      import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
       import {
         getDatabase,
@@ -2069,8 +2070,8 @@
       } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
       import {
         getAuth,
-        createUserWithEmailAndPassword,
-      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+      } 
+      from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
       const firebaseConfig2 = {
         apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
         authDomain: "civicall-app-a54d1.firebaseapp.com",
@@ -2087,109 +2088,87 @@
       const db2 = getDatabase(app2);
       const auth2 = getAuth(app2);
 
-      document
-        .getElementById("openPostModal")
-        .addEventListener("click", function () {
-          document.getElementById("postModalpo").style.display = "block";
-        });
+      document.getElementById("openPostModal").addEventListener("click", function () {
+    document.getElementById("postModalpo").style.display = "block";
+  });
 
-      document
-        .getElementById("closeModalpo")
-        .addEventListener("click", function () {
-          document.getElementById("postModalpo").style.display = "none";
-        });
-
-// Add click event listener to the close button
-closeModalButton.addEventListener("click", function () {
-  modal.style.display = "none"; // Set the modal display to none to close it
-});
-function submitForm() {
-
-  const title = document.getElementById("titlepost").value;
-const intro = document.getElementById("Introductionpost").value;
-const description = document.getElementById("Descriptionpost").value;
-const image = document.getElementById("imagepost").value;
-const campus = document.getElementById("campuspost").value;
-const startDate = document.getElementById("startdate").value;
-const endDate = document.getElementById("enddate").value;
-const targetParty = parseInt(document.getElementById("targparty").value, 10);
-const activePoints = parseInt(document.getElementById("actpts").value, 10);
-const location = document.getElementById("Locationpost").value;
-const facilitatorsName = document.getElementById("facname").value;
-const facilitatorsContactEmail = document.getElementById("facnamecon").value;
-
-    // Define the data structure
-    const eventData = {
-      Participants: {},
-      Ratings: {},
-      TransparencyImage: {},
-      activepoints: 0,
-      campus: "",
-      category: "",
-      facilitatorsContactorEmail: "",
-      endDate: "",
-      facilitatorsName: "",
-      fundcollected: 0.0,
-      image: "",
-      instruction: "",
-      intro: "",
-      location: "",
-      objective: "",
-      paymentMethod: "",
-      paymentRecipient: "",
-      startDate: "",
-      targetparty: 0,
-      title: "",
-      uploadersUID: "",
-      verificationStatus: true,
-    };
-
-    eventData.title = title;
-eventData.intro = intro;
-eventData.description = description;
-eventData.image = image;
-eventData.campus = campus;
-eventData.startDate = startDate;
-eventData.endDate = endDate;
-eventData.targetparty = targetParty;
-eventData.activepoints = activePoints;
-eventData.location = location;
-eventData.facilitatorsName = facilitatorsName;
-eventData.facilitatorsContactorEmail = facilitatorsContactEmail;
-
-    // Get a reference to the "Upload Engagement" node
-    const uploadEngagementRef = ref(db2, "Upload Engagement");
-
-    // Push the data to the database
-    const newEventRef = push(uploadEngagementRef);
-    set(newEventRef, eventData);
-
-    // Optionally, you can add a callback to handle success or error
-    set(newEventRef, eventData, (error) => {
-      if (error) {
-        console.error("Error posting data:", error);
-      } else {
-        console.log("Data posted successfully!");
-      }
-    });
-  }
-
-  // Add event listener for the "Post" button
   document.getElementById("postB").addEventListener("click", submitForm);
+
 
   // Add event listener to close the modal
   document.getElementById("closeModalpo").addEventListener("click", function () {
     document.getElementById("postModalpo").style.display = "none";
   });
 
-// Add click event listener to the close button
-const closeModalButton = document.getElementById("cancelButton");
-const modal = document.getElementById("postModalpo");
-closeModalButton.addEventListener("click", function () {
-  modal.style.display = "none"; // Set the modal display to none to close it
-});
+  function submitForm() {
+    // Get data from the form fields
+    const title = document.getElementById("titlepost").value;
+    const category = document.getElementById("campuspost").value;
+    const image = document.getElementById("imagepost").value;
+    const startDate = document.getElementById("startdate").value;
+    const endDate = document.getElementById("enddate").value;
+    const introduction = document.getElementById("introductionPost").value;
+    const objective = document.getElementById("objectivePost").value;
+    const instruction = document.getElementById("instructionPost").value;
+    const location = document.getElementById("Locationpost").value;
+    const targetCampus = document.getElementById("campus").value;
+    const targetParticipant = document.getElementById("targparty").value;
+    const activePoints = document.getElementById("actpts").value;
+    const facilitatorsName = document.getElementById("facname").value;
+    const facilitatorsContactOrEmail = document.getElementById("facnamecon").value;
 
+    // Get the current user's UID
+    const currentUser = auth2.currentUser;
+    const uploadersUID = currentUser ? currentUser.uid : "";
+
+    // Prepare data for upload
+    const eventData = {
+      uploadersUID: uploadersUID,
+      title: title,
+      category: category,
+      image: image,
+      startDate: startDate,
+      endDate: endDate,
+      location: location,
+      intro: introduction,
+      objective:objective,
+      instruction:instruction,
+      fundcollected:0,
+      verificationStatus: true,
+      campus: targetCampus,
+      targetparty: targetParticipant,
+      activepoints: activePoints,
+      facilitatorsName: facilitatorsName,
+      facilitatorsContactorEmail: facilitatorsContactOrEmail,
+      // ... (add other properties as needed)
+    };
+
+    // Upload data to the Firebase Realtime Database
+    const newEventRef = push(ref(db2, 'Upload Engagement'));
+set(newEventRef, eventData)
+  .then(() => {
+    console.log('Event data uploaded successfully');
+    alert('Event data uploaded successfully'); // Add this line for the alert
+    // Optionally, you can close the modal or perform other actions here
+  })
+  .catch((error) => {
+    console.error('Error uploading event data:', error);
+    alert('Error uploading event data. Please try again.'); // Add this line for error alert
+  });
+
+  }
+
+  // Add an event listener to detect changes in authentication state
+  onAuthStateChanged(auth2, (user) => {
+    // You can handle authentication state changes here
+    if (user) {
+      console.log('User is logged in:', user);
+    } else {
+      console.log('User is logged out');
+    }
+  });
 </script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.15.4/css/ionicons.min.css">
 
   </body>
 </html>
