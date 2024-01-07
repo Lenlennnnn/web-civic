@@ -1718,17 +1718,7 @@
     </div>
     <!-- =============================================== Scripts ================================================ -->
     <script>
-      document
-        .getElementById("openPostModal")
-        .addEventListener("click", function () {
-          document.getElementById("postModalpo").style.display = "block";
-        });
-
-      document
-        .getElementById("closeModalpo")
-        .addEventListener("click", function () {
-          document.getElementById("postModalpo").style.display = "none";
-        });
+    
 
       // Get the notification icon and dropdown content
       const notificationIcon = document.getElementById("notificationIcon");
@@ -1865,16 +1855,7 @@
         });
       });
 
-      // Get the close button element
-      const closeModalButton = document.getElementById("cancelButton");
-
-      // Get the modal element
-      const modal = document.getElementById("postModalpo");
-
-      // Add click event listener to the close button
-      closeModalButton.addEventListener("click", function () {
-        modal.style.display = "none"; // Set the modal display to none to close it
-      });
+     
     </script>
  <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
@@ -2074,5 +2055,141 @@
       nomodule
       src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
     ></script>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+        push,
+        set,
+        onValue,
+        onChildRemoved,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+      const firebaseConfig2 = {
+        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+        authDomain: "civicall-app-a54d1.firebaseapp.com",
+        databaseURL:
+          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "civicall-app-a54d1",
+        storageBucket: "civicall-app-a54d1.appspot.com",
+        messagingSenderId: "909514632764",
+        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+        measurementId: "G-0BVYE5XJGV",
+      };
+    
+      const app2 = initializeApp(firebaseConfig2);
+      const db2 = getDatabase(app2);
+      const auth2 = getAuth(app2);
+
+      document
+        .getElementById("openPostModal")
+        .addEventListener("click", function () {
+          document.getElementById("postModalpo").style.display = "block";
+        });
+
+      document
+        .getElementById("closeModalpo")
+        .addEventListener("click", function () {
+          document.getElementById("postModalpo").style.display = "none";
+        });
+
+// Add click event listener to the close button
+closeModalButton.addEventListener("click", function () {
+  modal.style.display = "none"; // Set the modal display to none to close it
+});
+function submitForm() {
+
+  const title = document.getElementById("titlepost").value;
+const intro = document.getElementById("Introductionpost").value;
+const description = document.getElementById("Descriptionpost").value;
+const image = document.getElementById("imagepost").value;
+const campus = document.getElementById("campuspost").value;
+const startDate = document.getElementById("startdate").value;
+const endDate = document.getElementById("enddate").value;
+const targetParty = parseInt(document.getElementById("targparty").value, 10);
+const activePoints = parseInt(document.getElementById("actpts").value, 10);
+const location = document.getElementById("Locationpost").value;
+const facilitatorsName = document.getElementById("facname").value;
+const facilitatorsContactEmail = document.getElementById("facnamecon").value;
+
+    // Define the data structure
+    const eventData = {
+      Participants: {},
+      Ratings: {},
+      TransparencyImage: {},
+      activepoints: 0,
+      campus: "",
+      category: "",
+      facilitatorsContactorEmail: "",
+      endDate: "",
+      facilitatorsName: "",
+      fundcollected: 0.0,
+      image: "",
+      instruction: "",
+      intro: "",
+      location: "",
+      objective: "",
+      paymentMethod: "",
+      paymentRecipient: "",
+      startDate: "",
+      targetparty: 0,
+      title: "",
+      uploadersUID: "",
+      verificationStatus: true,
+    };
+
+    eventData.title = title;
+eventData.intro = intro;
+eventData.description = description;
+eventData.image = image;
+eventData.campus = campus;
+eventData.startDate = startDate;
+eventData.endDate = endDate;
+eventData.targetparty = targetParty;
+eventData.activepoints = activePoints;
+eventData.location = location;
+eventData.facilitatorsName = facilitatorsName;
+eventData.facilitatorsContactorEmail = facilitatorsContactEmail;
+
+    // Get a reference to the "Upload Engagement" node
+    const uploadEngagementRef = ref(db2, "Upload Engagement");
+
+    // Push the data to the database
+    const newEventRef = push(uploadEngagementRef);
+    set(newEventRef, eventData);
+
+    // Optionally, you can add a callback to handle success or error
+    set(newEventRef, eventData, (error) => {
+      if (error) {
+        console.error("Error posting data:", error);
+      } else {
+        console.log("Data posted successfully!");
+      }
+    });
+  }
+
+  // Add event listener for the "Post" button
+  document.getElementById("postB").addEventListener("click", submitForm);
+
+  // Add event listener to close the modal
+  document.getElementById("closeModalpo").addEventListener("click", function () {
+    document.getElementById("postModalpo").style.display = "none";
+  });
+
+// Add click event listener to the close button
+const closeModalButton = document.getElementById("cancelButton");
+const modal = document.getElementById("postModalpo");
+closeModalButton.addEventListener("click", function () {
+  modal.style.display = "none"; // Set the modal display to none to close it
+});
+
+</script>
+
   </body>
 </html>
