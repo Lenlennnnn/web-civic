@@ -1105,7 +1105,7 @@
                             <form>
                         
                           
-                              <input type="image" id="imagepost" name="image" src="https://pbs.twimg.com/media/Fcj7ErdaUAAwHTX.png" alt="Upload Image" width="400" height="400" />
+                              <input type="image" id="imagepost" name="image" alt="Upload Image" width="400" height="400" hidden/>
 
                               <label
                               for="image"
@@ -1121,37 +1121,37 @@
                               required
                             />
                               <label
-                                for="campus"
+                                for="category"
                                 id="lblpt"
                                 style="color: black; text-align: left"
                                 >Category:</label
                               >
-                              <select id="campuspost" name="campus" required>
+                              <select id="category" name="category" required>
                                 <option value="" disabled selected>
                                   Choose a Category
                                 </option>
-                                <option value="treeplanting">
+                                <option value="Tree Planting">
                                   Tree Planting
                                 </option>
-                                <option value="fundraising" id="fund">
+                                <option value="Fund Raising" id="fund">
                                   Fund Raising
                                 </option>
-                                <option value="donations" id="donation">
-                                  Donations
+                                <option value="Donation" id="donation">
+                                  Donation
                                 </option>
-                                <option value="cleanupdrive">
+                                <option value="Clean Up Drive">
                                   Clean Up Drive
                                 </option>
-                                <option value="feedingprogram">
+                                <option value="Feeding Program">
                                   Feeding Program
                                 </option>
-                                <option value="reliefoperation">
+                                <option value="Relief Operation">
                                   Relief Operations
                                 </option>
-                                <option value="seminatraining">
+                                <option value="Seminar Training">
                                   Seminar Training
                                 </option>
-                                <option value="teachingliteracy">
+                                <option value="Teaching Literacy">
                                   Teaching Literacy
                                 </option>
                               </select>
@@ -1326,8 +1326,7 @@
                             pattern="[0-9]+"
                             oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                           />
-                          
-                              <!-- Google Maps Location Field -->
+                         
                               <label
                                 for="facname"
                                 id="lblpt"
@@ -1355,25 +1354,18 @@
                                 required
                                 placeholder="Insert Contact"
                               />
-                              <div id="additionalFields" style="display: none">
-                                <label
-                                  for="additionalField1"
-                                  id="lblpt"
-                                  style="color: black; text-align: left"
-                                  >Payment Method:</label
-                                >
-                                <select
-                                  id="additionalField1"
-                                  name="additionalField1"
-                                >
-                                  <option value="Select" disabled selected>
-                                    Select:
-                                  </option>
-                                  <option value="GCash">GCash</option>
-                                  <option value="PayMaya">Pay Maya</option>
-                                  <option value="PayPal">PayPal</option>
-                                </select>
-                              </div>
+
+                              <label for="paymentMethod" id="paymentLabel" style="color: black; text-align: left; display: none;">Payment Method:</label>
+                              <select id="paymentMethod" name="paymentMethod" style="display: none;">
+                                <option value="Select" disabled selected>Select:</option>
+                                <option value="GCash">GCash</option>
+                                <option value="PayMaya">PayMaya</option>
+                                <option value="PayPal">PayPal</option>
+                              </select>
+                              
+                              <label for="recipient" id="recipientLabel" style="color: black; text-align: left; display: none;">Payment Recipient:</label>
+                              <input type="text" id="recipient" name="recipient" required placeholder="Provide the Recipient Number" style="display: none;">
+                              
 
                               <button id="postB" type="button" style="margin-left: 70%" onclick="submitForm()">
                                 Post
@@ -2102,7 +2094,7 @@ document.getElementById("cancelButton").addEventListener("click", function () {
   document.getElementById("closeModalpo").addEventListener("click", function () {
     document.getElementById("postModalpo").style.display = "none";
   });
-document.getElementById("filePost").addEventListener("change", function () {
+  document.getElementById("filePost").addEventListener("change", function () {
     // Get the file input element
     const fileInput = document.getElementById("filePost");
 
@@ -2111,27 +2103,37 @@ document.getElementById("filePost").addEventListener("change", function () {
 
     // Check if a file is selected
     if (fileInput.files && fileInput.files[0]) {
-      const reader = new FileReader();
+        const reader = new FileReader();
 
-      reader.onload = function (e) {
-        // Update the image source with the selected file's data
-        imagePreview.src = e.target.result;
-      };
+        reader.onload = function (e) {
+            // Update the image source with the selected file's data
+            imagePreview.src = e.target.result;
 
-      // Read the selected file as a data URL
-      reader.readAsDataURL(fileInput.files[0]);
+            // Show the image
+            imagePreview.removeAttribute("hidden");
+        };
+
+        // Read the selected file as a data URL
+        reader.readAsDataURL(fileInput.files[0]);
+    } else {
+        // Hide the image if no file is selected
+        imagePreview.setAttribute("hidden", "true");
     }
-  });
+});
+
+
   async function submitForm() {
   // Get data from the form fields
   const title = document.getElementById("titlepost").value;
-  const category = document.getElementById("campuspost").value;
+  const category = document.getElementById("category").value;
   const startDate = formatDate(document.getElementById("startdate").value);
   const endDate = formatDate(document.getElementById("enddate").value);
   const introduction = document.getElementById("introductionPost").value;
   const objective = document.getElementById("objectivePost").value;
   const instruction = document.getElementById("instructionPost").value;
   const location = document.getElementById("Locationpost").value;
+  const recipient= document.getElementById("recipient").value;
+  const paymentMethod= document.getElementById("paymentMethod").value;
   const targetCampus = document.getElementById("campus").value;
   const activePoints = parseInt(document.getElementById("actpts").value);
   const targetParticipant = parseInt(document.getElementById("targparty").value);
@@ -2154,8 +2156,8 @@ document.getElementById("filePost").addEventListener("change", function () {
     objective: objective,
     instruction: instruction,
     fundcollected: 0,
-    paymentMethod:"", 
-    paymentRecipient:"",
+    paymentMethod: paymentMethod, 
+    paymentRecipient:recipient,
     verificationStatus: true,
     campus: targetCampus,
     targetparty: targetParticipant,
@@ -2247,7 +2249,7 @@ document.getElementById("filePost").addEventListener("change", function () {
 function clearFormFields() {
   // Clear all form fields here
   document.getElementById("titlepost").value = "";
-  document.getElementById("campuspost").value = "";
+  document.getElementById("category").value = "";
   document.getElementById("startdate").value = "";
   document.getElementById("enddate").value = "";
   document.getElementById("introductionPost").value = "";
@@ -2260,13 +2262,23 @@ function clearFormFields() {
   document.getElementById("facname").value = "";
   document.getElementById("facnamecon").value = "";
   document.getElementById("filePost").value = "";
-  document.getElementById("imagepost").src = ""; 
+  document.getElementById("imagepost").src = "";
+
+  // Hide the imagepost element
+  document.getElementById("imagepost").setAttribute("hidden", "true");
+
+  // Hide payment-related elements
+  document.getElementById("paymentLabel").style.display = "none";
+  document.getElementById("paymentMethod").style.display = "none";
+  document.getElementById("recipientLabel").style.display = "none";
+  document.getElementById("recipient").style.display = "none";
 }
+
 function validateForm() {
   // List of required field IDs
   const requiredFields = [
     "titlepost",
-    "campuspost",
+    "category",
     "startdate",
     "enddate",
     "introductionPost",
@@ -2290,7 +2302,38 @@ function validateForm() {
     }
   }
 
-  return true; // Return true if all required fields are filled in
+  // Get the selected category value
+  const selectedCategory = document.getElementById("category").value;
+
+  // Additional validation for "Fund Raising" or "Donation" category
+  if (selectedCategory === "Fund Raising" || selectedCategory === "Donation") {
+    const paymentMethod = document.getElementById("paymentMethod").value.trim();
+    const recipient = document.getElementById("recipient").value.trim();
+
+    // Check if payment-related fields are filled in
+    if (paymentMethod === "" || recipient === "") {
+      alert('Please fill in all required fields for payment.');
+      return false;
+    }
+  }
+
+  // Get the date and time inputs
+  const startdate = new Date(document.getElementById("startdate").value);
+  const enddate = new Date(document.getElementById("enddate").value);
+
+  // Check if startdate is in the future
+  const now = new Date();
+  if (startdate <= now) {
+    alert("Please select a start date and time in the future.");
+    return false;
+  }
+
+  if (enddate <= startdate) {
+    alert("Please select an end date and time greater than the start date and time.");
+    return false;
+  }
+
+  return true; // Return true if all required fields are filled in and dates are valid
 }
 
   // Add an event listener to detect changes in authentication state
@@ -2302,6 +2345,33 @@ function validateForm() {
       console.log('User is logged out');
     }
   });
+// Add event listener to campuspost element
+document.getElementById("category").addEventListener("change", function () {
+  // Get the selected value from campuspost
+  const selectedValue = this.value;
+
+  // Get payment-related elements
+  const paymentLabel = document.getElementById("paymentLabel");
+  const paymentMethod = document.getElementById("paymentMethod");
+  const recipientLabel = document.getElementById("recipientLabel");
+  const recipient = document.getElementById("recipient");
+
+  // Check the selected value and update visibility accordingly
+  if (selectedValue === "Fund Raising" || selectedValue === "Donation") {
+    // Show payment-related elements
+    paymentLabel.style.display = "block";
+    paymentMethod.style.display = "block";
+    recipientLabel.style.display = "block";
+    recipient.style.display = "block";
+  } else {
+    // Hide payment-related elements
+    paymentLabel.style.display = "none";
+    paymentMethod.style.display = "none";
+    recipientLabel.style.display = "none";
+    recipient.style.display = "none";
+  }
+});
+
 </script>
 
 
