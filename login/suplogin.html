@@ -522,6 +522,12 @@ function handleEnterKey(event) {
 function RegisterUser(event) {
     event.preventDefault();
 
+    const confirmed = window.confirm("Are you sure you want to create this account?");
+  
+  if (!confirmed) {
+    // If the user cancels the confirmation, do nothing
+    return;
+  }
     // Get the values of the input fields
     const firstnameValue = firstname.value.trim();
     const middlenameValue = middlename.value.trim();

@@ -16,8 +16,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.15.4/css/ionicons.min.css"
     />
-
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.15.4/css/ionicons.min.css" />
     <style>
       .dashboard {
         color: #a90011;
@@ -1069,10 +1068,9 @@
           <a href="totalStudents.html" class="no-underline">
             <div class="card">
               <div>
-                <div class="numbers">2</div>
+                <div class="numbers" id="totalNum">Loading...</div>
                 <div class="cardName">Total<br />Users</div>
               </div>
-
               <div class="iconBx">
                 <ion-icon name="accessibility-outline"></ion-icon>
               </div>
@@ -1404,14 +1402,14 @@
                             <option value="" disabled selected>
                               Choose Category
                             </option>
-                            <option value="nasugbu">Tree Planting</option>
-                            <option value="balayan">Fund Raising</option>
-                            <option value="malvar">Donations</option>
-                            <option value="lemery">Clean Up Drive</option>
-                            <option value="lipa">Feeding Program</option>
-                            <option value="lobo">Relief Operations</option>
-                            <option value="mabini">Seminar Training</option>
-                            <option value="san juan">Teaching Literacy</option>
+                            <option value="Tree Planting">Tree Planting</option>
+                            <option value="Fund Raising">Fund Raising</option>
+                            <option value="Donation">Donation</option>
+                            <option value="Clean Up Drive">Clean Up Drive</option>
+                            <option value="Feeding Program">Feeding Program</option>
+                            <option value="Relief Operation">Relief Operation</option>
+                            <option value="Seminar Training">Seminar Training</option>
+                            <option value="Teaching Literacy">Teaching Literacy</option>
                           </select>
                         </div>
                         <div class="filter-group" id="campusfilter">
@@ -1822,6 +1820,7 @@
       closeModalBtnEvnts.addEventListener("click", closeModalEvnts);
 
     </script>
+  
  <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
   import {
@@ -1864,7 +1863,7 @@
 
   // Function to determine whether to show payment fields
   function shouldShowPaymentFields(category) {
-    return category === "Fund Raising" || category === "Donations";
+    return category === "Fund Raising" || category === "Donation";
   }
 
   // Function to generate HTML for payment fields
@@ -2373,6 +2372,53 @@ document.getElementById("category").addEventListener("change", function () {
 });
 
 </script>
+<script type="module">
+  // Import necessary Firebase modules
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+
+  // Firebase configuration
+  const firebaseConfig3 = {
+    apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+    authDomain: "civicall-app-a54d1.firebaseapp.com",
+    databaseURL: "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "civicall-app-a54d1",
+    storageBucket: "civicall-app-a54d1.appspot.com",
+    messagingSenderId: "909514632764",
+    appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+    measurementId: "G-0BVYE5XJGV",
+  };
+
+  // Initialize Firebase app
+  const app3 = initializeApp(firebaseConfig3);
+  const db3 = getDatabase(app3);
+
+  // Reference to the "Users" node in the database
+  const usersRef = ref(db3, 'Users');
+
+  // Function to format the user count
+  const formatUserCount = (count) => {
+    if (count >= 1000000) {
+      return (count / 1000000).toFixed(1) + 'M';
+    } else if (count >= 10000) {
+      return (count / 1000).toFixed(1) + 'k';
+    } else {
+      return count.toString();
+    }
+  };
+
+  // Function to update the total user count in the HTML element
+  const updateTotalUsers = (snapshot) => {
+    const totalUsers = snapshot.size; // Use size property for version 8 or above
+    const formattedCount = formatUserCount(totalUsers);
+    const totalNumElement = document.getElementById('totalNum');
+    totalNumElement.textContent = formattedCount;
+  };
+
+  // Listen for changes in the "Users" node and update the total count
+  onValue(usersRef, updateTotalUsers);
+</script>
+
 
 
   </body>
