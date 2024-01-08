@@ -17,6 +17,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.15.4/css/ionicons.min.css"
     />
 
+
     <style>
       .dashboard {
         color: #a90011;
@@ -1094,25 +1095,31 @@
                         <a href="#" class="btn" id="openPostModal">Post</a>
                         <div class="modalpo" id="postModalpo">
                           <div class="modal-contentpo">
-                            <span class="closepo" id="closeModalpo"></span>
+                            <span class="closepo" id="closeModalpo">
+                              <ion-icon name="close"></ion-icon>
+                            </span>
+                            
                             <h2 id="hederrr" style="color: #dc3545">
                               Post an event
                             </h2>
                             <form>
-                              <label
-                                for="image"
-                                id="lblpt"
-                                style="color: black; text-align: left"
-                                >Upload Image:</label
-                              >
-                              <input
-                                type="file"
-                                id="imagepost"
-                                name="image"
-                                accept="image/*"
-                                required
-                              />
+                        
+                          
+                              <input type="image" id="imagepost" name="image" src="https://parade.com/.image/t_share/MTkwNTgxMjYwODE5NzY5MjEy/modern-family.jpg" alt="Upload Image" width="400" height="400" />
 
+                              <label
+                              for="image"
+                              id="lblpt"
+                              style="color: black; text-align: left"
+                              >Upload Image:</label
+                            >
+                              <input
+                              type="file"
+                              id="filePost"
+                              name="image"
+                              accept="image/*"
+                              required
+                            />
                               <label
                                 for="campus"
                                 id="lblpt"
@@ -1718,8 +1725,6 @@
     </div>
     <!-- =============================================== Scripts ================================================ -->
     <script>
-    
-
       // Get the notification icon and dropdown content
       const notificationIcon = document.getElementById("notificationIcon");
       const notificationDropdown = document.getElementById(
@@ -1790,24 +1795,6 @@
         // Re-check overflow on window resize
         window.addEventListener("resize", checkOverflow);
       }
-      // Function to close the "eventModalupcom" modal when the close button is clicked
-      function closeModalEventModal() {
-        const modal = document.getElementById("eventModalupcom");
-        modal.style.display = "none"; // Hide the modal
-      }
-
-      // Add click event listener to the close button of "eventModalupcom"
-      const closeModalButtonEventModal =
-        document.getElementById("closemodalbtnupcom");
-      closeModalButtonEventModal.addEventListener(
-        "click",
-        closeModalEventModal
-      );
-
-      /* for not functioning modal purpose */
-      /* For the second modal */
-
-      // Get the "myModalevnts" modal element
       const modalEvnts = document.getElementById("myModalevnts");
       // Get the button that opens the "myModalevnts" modal
       const btnOpenModalEvnts = document.getElementById("btnparaview");
@@ -1837,25 +1824,6 @@
       // Event listener for closing the "myModalevnts" modal
       closeModalBtnEvnts.addEventListener("click", closeModalEvnts);
 
-      document.addEventListener("DOMContentLoaded", function () {
-        var campusSelect = document.getElementById("campuspost");
-        var additionalFieldsDiv = document.getElementById("additionalFields");
-
-        campusSelect.addEventListener("change", function () {
-          var selectedOption = campusSelect.value;
-
-          if (
-            selectedOption === "fundraising" ||
-            selectedOption === "donations"
-          ) {
-            additionalFieldsDiv.style.display = "block"; // Show the additional fields
-          } else {
-            additionalFieldsDiv.style.display = "none"; // Hide the additional fields
-          }
-        });
-      });
-
-     
     </script>
  <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
@@ -1967,7 +1935,18 @@
   modal.style.display = "block";
 }
 
-  // Event delegation for dynamically created buttons
+function closeModalEventModal() {
+        const modal = document.getElementById("eventModalupcom");
+        modal.style.display = "none"; // Hide the modal
+      }
+
+      // Add click event listener to the close button of "eventModalupcom"
+      const closeModalButtonEventModal =
+        document.getElementById("closemodalbtnupcom");
+      closeModalButtonEventModal.addEventListener(
+        "click",
+        closeModalEventModal
+      );
 
   document.addEventListener("click", function (event) {
     if (event.target && event.target.classList.contains("vieweventdet")) {
@@ -2071,7 +2050,15 @@
       import {
         getAuth,
       } 
+  
       from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+      import {
+      getStorage,
+      ref as storageRef,
+      uploadBytes,
+      getDownloadURL,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-storage.js";
+
       const firebaseConfig2 = {
         apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
         authDomain: "civicall-app-a54d1.firebaseapp.com",
@@ -2087,76 +2074,156 @@
       const app2 = initializeApp(firebaseConfig2);
       const db2 = getDatabase(app2);
       const auth2 = getAuth(app2);
+      const storage2 = getStorage(app2); 
 
       document.getElementById("openPostModal").addEventListener("click", function () {
     document.getElementById("postModalpo").style.display = "block";
   });
 
   document.getElementById("postB").addEventListener("click", submitForm);
-
+// Add event listener to close the modal when Cancel button is clicked
+document.getElementById("cancelButton").addEventListener("click", function () {
+    document.getElementById("postModalpo").style.display = "none";
+});
 
   // Add event listener to close the modal
   document.getElementById("closeModalpo").addEventListener("click", function () {
     document.getElementById("postModalpo").style.display = "none";
   });
+document.getElementById("filePost").addEventListener("change", function () {
+    // Get the file input element
+    const fileInput = document.getElementById("filePost");
 
+    // Get the image element
+    const imagePreview = document.getElementById("imagepost");
+
+    // Check if a file is selected
+    if (fileInput.files && fileInput.files[0]) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        // Update the image source with the selected file's data
+        imagePreview.src = e.target.result;
+      };
+
+      // Read the selected file as a data URL
+      reader.readAsDataURL(fileInput.files[0]);
+    }
+  });
   function submitForm() {
-    // Get data from the form fields
-    const title = document.getElementById("titlepost").value;
-    const category = document.getElementById("campuspost").value;
-    const image = document.getElementById("imagepost").value;
-    const startDate = document.getElementById("startdate").value;
-    const endDate = document.getElementById("enddate").value;
-    const introduction = document.getElementById("introductionPost").value;
-    const objective = document.getElementById("objectivePost").value;
-    const instruction = document.getElementById("instructionPost").value;
-    const location = document.getElementById("Locationpost").value;
-    const targetCampus = document.getElementById("campus").value;
-    const targetParticipant = document.getElementById("targparty").value;
-    const activePoints = document.getElementById("actpts").value;
-    const facilitatorsName = document.getElementById("facname").value;
-    const facilitatorsContactOrEmail = document.getElementById("facnamecon").value;
+  // Get data from the form fields
+  const title = document.getElementById("titlepost").value;
+  const category = document.getElementById("campuspost").value;
+  const startDate = formatDate(document.getElementById("startdate").value);
+  const endDate = formatDate(document.getElementById("enddate").value);
+  const introduction = document.getElementById("introductionPost").value;
+  const objective = document.getElementById("objectivePost").value;
+  const instruction = document.getElementById("instructionPost").value;
+  const location = document.getElementById("Locationpost").value;
+  const targetCampus = document.getElementById("campus").value;
+  const activePoints = parseInt(document.getElementById("actpts").value);
+  const targetParticipant = parseInt(document.getElementById("targparty").value);
+  const facilitatorsName = document.getElementById("facname").value;
+  const facilitatorsContactOrEmail = document.getElementById("facnamecon").value;
 
-    // Get the current user's UID
-    const currentUser = auth2.currentUser;
-    const uploadersUID = currentUser ? currentUser.uid : "";
+  // Get the current user's UID
+  const currentUser = auth2.currentUser;
+  const uploadersUID = currentUser ? currentUser.uid : "";
 
-    // Prepare data for upload
-    const eventData = {
-      uploadersUID: uploadersUID,
-      title: title,
-      category: category,
-      image: image,
-      startDate: startDate,
-      endDate: endDate,
-      location: location,
-      intro: introduction,
-      objective:objective,
-      instruction:instruction,
-      fundcollected:0,
-      verificationStatus: true,
-      campus: targetCampus,
-      targetparty: targetParticipant,
-      activepoints: activePoints,
-      facilitatorsName: facilitatorsName,
-      facilitatorsContactorEmail: facilitatorsContactOrEmail,
-      // ... (add other properties as needed)
-    };
+  // Prepare data for upload
+  const eventData = {
+    uploadersUID: uploadersUID,
+    title: title,
+    category: category,
+    startDate: startDate,
+    endDate: endDate,
+    location: location,
+    intro: introduction,
+    objective: objective,
+    instruction: instruction,
+    fundcollected: 0,
+    paymentMethod:"", 
+    paymentRecipient:"",
+    verificationStatus: true,
+    campus: targetCampus,
+    targetparty: targetParticipant,
+    activepoints: activePoints,
+    facilitatorsName: facilitatorsName,
+    facilitatorsContactorEmail: facilitatorsContactOrEmail,
+    // ... (add other properties as needed)
+  };
+
+  // Get the file input element
+  const fileInput = document.getElementById("filePost");
+
+  function formatDate(dateTime) {
+  const options = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  };
+  return new Date(dateTime).toLocaleString("en-US", options).replace(/,/g, '');
+}
+  // Check if a file is selected
+  if (fileInput.files && fileInput.files[0]) {
+    const file = fileInput.files[0];
+    const timestamp = new Date().getTime();
+const storagePath = `Poster Civic Images/${timestamp}_${file.name}`; // Using timestamp as part of the file name
+const storageRefPath = storageRef(storage2, storagePath);
+
+
+    // Upload file to Firebase Storage
+    uploadBytes(storageRefPath, file)
+      .then((snapshot) => {
+        console.log('File uploaded successfully');
+        return getDownloadURL(snapshot.ref);
+      })
+      .then((downloadURL) => {
+        // Add the downloadURL to the "image" property in eventData
+        eventData.image = downloadURL;
+
+        // Upload data to the Firebase Realtime Database
+        const newEventRef = push(ref(db2, 'Upload Engagement'));
+        set(newEventRef, eventData)
+          .then(() => {
+            console.log('Event data uploaded successfully');
+            alert('Event data uploaded successfully'); // Add this line for the alert
+            // Optionally, you can close the modal or perform other actions here
+          })
+          .catch((error) => {
+            console.error('Error uploading event data:', error);
+            alert('Error uploading event data. Please try again.'); // Add this line for error alert
+          });
+
+        // Optionally, reset the file input and image preview after successful upload
+        fileInput.value = "";
+        document.getElementById("imagepost").src = ""; // Set image preview to an empty source
+      })
+      .catch((error) => {
+        console.error('Error uploading file:', error);
+        alert('Error uploading file. Please try again.'); // Add this line for error alert
+      });
+  } else {
+    // If no file is selected, proceed to upload other data without the file-related steps
 
     // Upload data to the Firebase Realtime Database
     const newEventRef = push(ref(db2, 'Upload Engagement'));
-set(newEventRef, eventData)
-  .then(() => {
-    console.log('Event data uploaded successfully');
-    alert('Event data uploaded successfully'); // Add this line for the alert
-    // Optionally, you can close the modal or perform other actions here
-  })
-  .catch((error) => {
-    console.error('Error uploading event data:', error);
-    alert('Error uploading event data. Please try again.'); // Add this line for error alert
-  });
-
+    set(newEventRef, eventData)
+      .then(() => {
+        console.log('Event data uploaded successfully');
+        alert('Event data uploaded successfully'); // Add this line for the alert
+        // Optionally, you can close the modal or perform other actions here
+      })
+      .catch((error) => {
+        console.error('Error uploading event data:', error);
+        alert('Error uploading event data. Please try again.'); // Add this line for error alert
+      });
   }
+}
+
 
   // Add an event listener to detect changes in authentication state
   onAuthStateChanged(auth2, (user) => {
@@ -2168,7 +2235,7 @@ set(newEventRef, eventData)
     }
   });
 </script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.15.4/css/ionicons.min.css">
+
 
   </body>
 </html>
