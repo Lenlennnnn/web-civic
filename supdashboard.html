@@ -1300,25 +1300,33 @@
                                 >Target Participant:</label
                               >
                               <input
-                                type="text"
-                                id="targparty"
-                                name="targparty"
-                                required
-                                placeholder="Insert count"
-                              />
+                              type="text"
+                              id="targparty"
+                              name="targparty"
+                              required
+                              placeholder="Please enter only numbers"
+                              pattern="[0-9]+"
+                              oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                            />
+                            
+                            
                               <label
                                 for="actpts"
                                 id="lblpt"
                                 style="color: black; text-align: left"
                                 >Active Points:</label
                               >
-                              <input
-                                type="text"
-                                id="actpts"
-                                name="actpts"
-                                required
-                                placeholder="Insert count"
-                              />
+                      
+                            <input
+                            type="text"
+                            id="actpts"
+                            name="actpts"
+                            required
+                            placeholder="Please enter only numbers"
+                            pattern="[0-9]+"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                          />
+                          
                               <!-- Google Maps Location Field -->
                               <label
                                 for="facname"
@@ -1367,13 +1375,10 @@
                                 </select>
                               </div>
 
-                              <button
-                                id="postB"
-                                type="submit"
-                                style="margin-left: 70%"
-                              >
+                              <button id="postB" type="button" style="margin-left: 70%" onclick="submitForm()">
                                 Post
                               </button>
+                              
                               <button type="button" id="cancelButton">
                                 Cancel
                               </button>
@@ -2079,8 +2084,15 @@ function closeModalEventModal() {
       document.getElementById("openPostModal").addEventListener("click", function () {
     document.getElementById("postModalpo").style.display = "block";
   });
+  document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById("postB").addEventListener("click", function () {
+    // Display a confirmation dialog
+    if (confirm("Are you sure you want to submit the form?")) {
+        submitForm();
+    }
+});
+});
 
-  document.getElementById("postB").addEventListener("click", submitForm);
 // Add event listener to close the modal when Cancel button is clicked
 document.getElementById("cancelButton").addEventListener("click", function () {
     document.getElementById("postModalpo").style.display = "none";
@@ -2110,7 +2122,7 @@ document.getElementById("filePost").addEventListener("change", function () {
       reader.readAsDataURL(fileInput.files[0]);
     }
   });
-  function submitForm() {
+  async function submitForm() {
   // Get data from the form fields
   const title = document.getElementById("titlepost").value;
   const category = document.getElementById("campuspost").value;
@@ -2156,6 +2168,12 @@ document.getElementById("filePost").addEventListener("change", function () {
   // Get the file input element
   const fileInput = document.getElementById("filePost");
 
+  if (!validateForm()) {
+    // Display alert if validation fails
+    alert('Please fill in all required fields.');
+    return;
+  }
+
   function formatDate(dateTime) {
   const options = {
     year: "numeric",
@@ -2171,9 +2189,8 @@ document.getElementById("filePost").addEventListener("change", function () {
   if (fileInput.files && fileInput.files[0]) {
     const file = fileInput.files[0];
     const timestamp = new Date().getTime();
-const storagePath = `Poster Civic Images/${timestamp}_${file.name}`; // Using timestamp as part of the file name
-const storageRefPath = storageRef(storage2, storagePath);
-
+    const storagePath = `Poster Civic Images/${timestamp}_${file.name}`; // Using timestamp as part of the file name
+    const storageRefPath = storageRef(storage2, storagePath);
 
     // Upload file to Firebase Storage
     uploadBytes(storageRefPath, file)
@@ -2190,40 +2207,91 @@ const storageRefPath = storageRef(storage2, storagePath);
         set(newEventRef, eventData)
           .then(() => {
             console.log('Event data uploaded successfully');
-            alert('Event data uploaded successfully'); // Add this line for the alert
-            // Optionally, you can close the modal or perform other actions here
+            alert('Event data uploaded successfully');
+
+            // Clear form fields
+            clearFormFields();
+
+            // Dismiss the modal
+            document.getElementById("postModalpo").style.display = "none";
           })
           .catch((error) => {
             console.error('Error uploading event data:', error);
-            alert('Error uploading event data. Please try again.'); // Add this line for error alert
+            alert('Error uploading event data. Please try again.');
           });
-
-        // Optionally, reset the file input and image preview after successful upload
-        fileInput.value = "";
-        document.getElementById("imagepost").src = ""; // Set image preview to an empty source
       })
       .catch((error) => {
         console.error('Error uploading file:', error);
-        alert('Error uploading file. Please try again.'); // Add this line for error alert
+        alert('Error uploading file. Please try again.');
       });
-  } else {
-    // If no file is selected, proceed to upload other data without the file-related steps
-
-    // Upload data to the Firebase Realtime Database
+  }else {
     const newEventRef = push(ref(db2, 'Upload Engagement'));
     set(newEventRef, eventData)
       .then(() => {
         console.log('Event data uploaded successfully');
-        alert('Event data uploaded successfully'); // Add this line for the alert
-        // Optionally, you can close the modal or perform other actions here
+        alert('Event data uploaded successfully');
+
+        // Clear form fields
+        clearFormFields();
+
+        // Dismiss the modal
+        document.getElementById("postModalpo").style.display = "none";
       })
       .catch((error) => {
         console.error('Error uploading event data:', error);
-        alert('Error uploading event data. Please try again.'); // Add this line for error alert
+        alert('Error uploading event data. Please try again.');
       });
   }
 }
 
+function clearFormFields() {
+  // Clear all form fields here
+  document.getElementById("titlepost").value = "";
+  document.getElementById("campuspost").value = "";
+  document.getElementById("startdate").value = "";
+  document.getElementById("enddate").value = "";
+  document.getElementById("introductionPost").value = "";
+  document.getElementById("objectivePost").value = "";
+  document.getElementById("instructionPost").value = "";
+  document.getElementById("Locationpost").value = "";
+  document.getElementById("campus").value = "";
+  document.getElementById("actpts").value = "";
+  document.getElementById("targparty").value = "";
+  document.getElementById("facname").value = "";
+  document.getElementById("facnamecon").value = "";
+  document.getElementById("filePost").value = "";
+  document.getElementById("imagepost").src = ""; 
+}
+function validateForm() {
+  // List of required field IDs
+  const requiredFields = [
+    "titlepost",
+    "campuspost",
+    "startdate",
+    "enddate",
+    "introductionPost",
+    "objectivePost",
+    "instructionPost",
+    "Locationpost",
+    "campus",
+    "actpts",
+    "targparty",
+    "filePost",
+    "facname",
+    "facnamecon",
+    // Add more field IDs as needed
+  ];
+
+  // Check if all required fields are filled in
+  for (const fieldId of requiredFields) {
+    const fieldValue = document.getElementById(fieldId).value.trim();
+    if (fieldValue === "") {
+      return false; // Return false if any required field is empty
+    }
+  }
+
+  return true; // Return true if all required fields are filled in
+}
 
   // Add an event listener to detect changes in authentication state
   onAuthStateChanged(auth2, (user) => {
