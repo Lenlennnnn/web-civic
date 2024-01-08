@@ -308,16 +308,19 @@
 
       /* CSS for updated modal */
       .modalm {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.4);
-      }
+  display: none;
+  position: fixed;
+  z-index: 1;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 50%; /* You can adjust the width as needed */
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0);
+}
+
 
       .modal-contentm {
         background-color: #fefefe;
@@ -367,10 +370,9 @@
         text-align: left;
       }
 
-      #emailInput,
-      #passwordInput {
+      #emailInput {
         width: 100%;
-        padding: 8px;
+        padding: 10px;
         border-radius: 4px;
         border: 1px solid #ccc;
         box-sizing: border-box;
@@ -402,14 +404,7 @@
       }
 
       /* Styles for the password input fields */
-      .passwordInput {
-        width: 103.4%;
-        padding: 8px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-        margin-left: 4px;
-      }
+   
 
       /* Styles for the email label */
       .emailLabel {
@@ -470,7 +465,7 @@
       </a>
       <div class="modalm" id="myModalm">
         <div class="modal-contentm" id="modalcentm">
-          <span class="closem" onclick="closeModal()">&times;</span>
+         <span class="closem" id="closeModalEx">&times;</span>
           <h4>Add Multiple Accounts</h4>
           <hr />
           <button type="button" id="addrow" class="btn btn-dark">
@@ -478,24 +473,7 @@
           </button>
           <form id="formadd">
             <div class="row" id="inputrow">
-              <div class="col">
-                <label for="emailInput" id="emlabel">Email:</label>
-                <input
-                  type="email"
-                  id="emailInput"
-                  name="email"
-                  placeholder="Enter your email..."
-                />
-              </div>
-              <div class="col">
-                <label for="passwordInput" id="passlabel">Password:</label>
-                <input
-                  type="password"
-                  id="passwordInput"
-                  name="password"
-                  placeholder="Enter your password..."
-                />
-              </div>
+          
             </div>
             <button type="submit" id="subac">Submit</button>
           </form>
@@ -783,239 +761,7 @@
     <script>
       new DataTable("#example");
     </script>
-    <script>
-      function closeModal() {
-        let modal = document.getElementById("myModal");
-        modal.style.display = "none";
-      }
 
-      document
-        .getElementById("createbtnacc")
-        .addEventListener("click", function (event) {
-          event.preventDefault(); // Prevents the form from submitting by default
-
-          let firstName = document.getElementById("firstname").value.trim();
-          let lastName = document.getElementById("lastname").value.trim();
-          let middleName = document.getElementById("middlename").value.trim();
-          let gender = document.getElementById("gender").value;
-          let campus = document.getElementById("campus").value;
-          let email = document.getElementById("email").value.trim();
-          let password = document.getElementById("password").value.trim();
-          let confirmPassword = document
-            .getElementById("confirmpassword")
-            .value.trim();
-
-          // Validate First Name, Middle Name, and Last Name to accept only letters
-          let nameRegex = /^[A-Za-z]+$/;
-          if (!nameRegex.test(firstName)) {
-            alert("Use letters only in First Name");
-            return false;
-          }
-
-          if (!nameRegex.test(lastName)) {
-            alert("Use letters only in Last Name");
-            return false;
-          }
-
-          if (!nameRegex.test(middleName)) {
-            alert("Use letters only in Middle Name");
-            return false;
-          }
-
-          // Validate Campus selection
-          if (campus === "") {
-            alert("Please select a Campus");
-            return false;
-          }
-
-          // Validate Gender selection
-          if (gender === "") {
-            alert("Please select a Gender");
-            return false;
-          }
-
-          // Validate Email Address format
-          let emailRegex = /\S+@\S+\.\S+/;
-          if (!emailRegex.test(email)) {
-            alert("Please enter a valid email address");
-            return false;
-          }
-
-          // Validate Password and Confirm Password to have a minimum of 8 characters
-          if (password.length < 8 || confirmPassword.length < 8) {
-            alert("Minimum 8 characters required for password");
-            return false;
-          }
-
-          // Check if Password and Confirm Password match
-          if (password !== confirmPassword) {
-            alert("Passwords do not match");
-            return false;
-          }
-
-          // If all validations pass, close the modal and perform further actions
-          closeModal();
-        });
-
-      // JavaScript to trigger the modified modal
-      document
-        .getElementById("setmodalbtn")
-        .addEventListener("click", function () {
-          document.getElementById("myModalrr").style.display = "block";
-        });
-
-      // Close modified modal on clicking the close button or outside the modal
-      document
-        .getElementById("closeModalrr")
-        .addEventListener("click", function () {
-          document.getElementById("myModalrr").style.display = "none";
-        });
-
-      document;
-
-      // JavaScript to handle modal display
-      const addgrBtn = document.getElementById("addgrBtn");
-      const modal = document.getElementById("myModalm");
-
-      addgrBtn.addEventListener("click", function () {
-        modal.style.display = "block";
-      });
-
-      function closeModal() {
-        modal.style.display = "none";
-      }
-
-      // Close the modal if user clicks outside the modal content
-      window.onclick = function (event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-      };
-
-      let counter = 1; // Initialize a counter for unique IDs
-
-      // Function to add a new row of input fields
-      function addRow() {
-        var inputRow = document.getElementById("inputrow");
-        var newRow = document.createElement("div");
-        newRow.className = "row"; // Assign the "row" class
-
-        var newColEmail = document.createElement("div");
-        newColEmail.className = "col";
-        var emailLabel = document.createElement("label");
-        emailLabel.setAttribute("for", "emailInput" + counter);
-        emailLabel.innerText = "Email:";
-        emailLabel.classList.add("emailLabel"); // Add class for email label styling
-        var emailInput = document.createElement("input");
-        emailInput.setAttribute("type", "email");
-        emailInput.setAttribute("name", "email" + counter);
-        emailInput.setAttribute("placeholder", "Enter your email...");
-        emailInput.id = "emailInput" + counter; // Unique ID for email input
-        emailInput.classList.add("emailInput"); // Add class for styling
-
-        var newColPassword = document.createElement("div");
-        newColPassword.className = "col";
-        var passLabel = document.createElement("label");
-        passLabel.setAttribute("for", "passwordInput" + counter);
-        passLabel.innerText = "Password:";
-        passLabel.classList.add("passwordLabel"); // Add class for password label styling
-        var passInput = document.createElement("input");
-        passInput.setAttribute("type", "password");
-        passInput.setAttribute("name", "password" + counter);
-        passInput.setAttribute("placeholder", "Enter your password...");
-        passInput.id = "passwordInput" + counter; // Unique ID for password input
-        passInput.classList.add("passwordInput"); // Add class for styling
-
-        // Increment counter for the next set of inputs
-        counter++;
-
-        // Append elements to their respective parents
-        newColEmail.appendChild(emailLabel);
-        newColEmail.appendChild(emailInput);
-        newColPassword.appendChild(passLabel);
-        newColPassword.appendChild(passInput);
-
-        // Append columns to the new row
-        newRow.appendChild(newColEmail);
-        newRow.appendChild(newColPassword);
-
-        // Append the new row to the container
-        inputRow.appendChild(newRow);
-      }
-
-      // Add an event listener to the "Add row" button
-      document
-        .getElementById("addrow")
-        .addEventListener("click", function (event) {
-          event.preventDefault();
-          addRow();
-        });
-
-      document
-        .getElementById("subac")
-        .addEventListener("click", function (event) {
-          event.preventDefault();
-
-          // Confirmation alert
-          if (confirm("Are you sure?")) {
-            // If 'Yes' is clicked, show success message
-            alert("Successfully");
-
-            // Remove added rows, reset form, and close modal
-            removeAddedRows(); // Function to remove added rows
-          }
-        });
-
-      // Function to remove added rows, reset form, and close modal
-      function removeAddedRows() {
-        var inputRow = document.getElementById("inputrow");
-        // Remove all added rows in the inputRow container
-        while (inputRow.firstChild) {
-          inputRow.removeChild(inputRow.firstChild);
-        }
-
-        // Reset the form
-        var form = document.getElementById("formadd");
-        form.reset(); // Reset the form
-
-        // Close the specific modal
-        closeSpecificModal(); // Function to close a specific modal
-      }
-
-      // Function to close a specific modal by updating display property
-      function closeSpecificModal() {
-        var modal = document.getElementById("myModalm");
-        modal.style.display = "none";
-      }
-      // Close the modal when the Close button is clicked
-      document
-        .getElementById("closeButtonrr")
-        .addEventListener("click", function () {
-          var modal = document.getElementById("myModalrr");
-          modal.style.display = "none";
-        });
-
-      document
-        .getElementById("precoedButtonrr")
-        .addEventListener("click", function () {
-          // Display a confirmation dialog when clicking the Proceed button
-          if (confirm("Are you sure?")) {
-            // If 'Yes' is clicked, show success message
-            alert("Success");
-
-            // Close all open modals
-            closeAllModals();
-          }
-        });
-
-      // Function to close all open modals
-      function closeAllModals() {
-        var modals = document.querySelectorAll(".modalrr");
-        modals.forEach(function (modal) {
-          modal.style.display = "none";
-        });
-      }
-    </script>
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
@@ -1062,6 +808,35 @@
       function RegisterUser(event) {
         event.preventDefault();
 
+        const passwordValue = password.value;
+        const confirmPasswordValue = confirmpassword.value;
+
+        if (
+    !firstname.value ||
+    !middlename.value ||
+    !lastname.value ||
+    !password.value ||
+    !confirmpassword.value ||
+    !gender.value ||
+    !campus.value ||
+    !email.value
+  ) {
+    alert("Please fill in all the fields.");
+    return;
+  }
+
+        if (!validateName(firstname.value) || !validateName(middlename.value) || !validateName(lastname.value)) {
+    alert("Invalid name format. Only alphabets, commas, hyphens, periods, and spaces are allowed.");
+    return;
+  }
+ if (!validatePassword(passwordValue)) {
+        alert("Invalid password format. Password must be alphanumeric or symbols and have a minimum length of 8 characters.");
+        return;
+    }
+    if (passwordValue !== confirmPasswordValue) {
+        alert("Passwords do not match. Please make sure the passwords match.");
+        return;
+    }
         createUserWithEmailAndPassword(auth, email.value, password.value)
           .then((userCredential) => {
             // User registered successfully
@@ -1076,11 +851,29 @@
             console.error(error);
           });
       }
+      function validatePassword(password) {
 
-      function generateTimestamp() {
-        const currentDate = new Date();
-        return currentDate.toISOString();
-      }
+    const regex = /^(?=.*[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
+    return regex.test(password);
+}
+      function validateName(name) {
+
+  const regex = /^[A-Za-z,-.\s]+$/;
+  return regex.test(name);
+}
+function generateTimestamp() {
+  const currentDate = new Date();
+  const options = {
+    timeZone: 'Asia/Manila',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  };
+  return currentDate.toLocaleString('en-US', options).replace(',', '');
+}
 
       function saveUserData(userId) {
         const dbRef = ref(db);
@@ -1101,6 +894,10 @@
           timestamp: generateTimestamp(),
           address: "",
           birthday: "",
+          course: "",
+          srcode: "",
+          lastLogin: "",
+          yearandSection: "",
           userType: "",
           phoneno: "",
           activepts: 0,
@@ -1244,6 +1041,294 @@
       }
 
       populateDataTable();
+    
+    </script>
+
+      <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+    import {
+      getDatabase,
+      ref,
+      get,
+      push,
+      set,
+      onValue,
+      onChildRemoved,
+    } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+    } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+    const firebaseConfig2 = {
+      apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+      authDomain: "civicall-app-a54d1.firebaseapp.com",
+      databaseURL:
+        "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "civicall-app-a54d1",
+      storageBucket: "civicall-app-a54d1.appspot.com",
+      messagingSenderId: "909514632764",
+      appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+      measurementId: "G-0BVYE5XJGV",
+    };
+
+    const app2 = initializeApp(firebaseConfig2);
+    const db2 = getDatabase(app2);
+    const auth2 = getAuth(app2);
+
+
+      document
+        .getElementById("setmodalbtn")
+        .addEventListener("click", function () {
+          document.getElementById("myModalrr").style.display = "block";
+        });
+
+      // Close modified modal on clicking the close button or outside the modal
+      document
+        .getElementById("closeModalrr")
+        .addEventListener("click", function () {
+          document.getElementById("myModalrr").style.display = "none";
+        });
+
+      document;
+
+      // JavaScript to handle modal display
+      const addgrBtn = document.getElementById("addgrBtn");
+      const modal = document.getElementById("myModalm");
+
+      addgrBtn.addEventListener("click", function () {
+        modal.style.display = "block";
+      });
+
+      function closeModal() {
+        modal.style.display = "none";
+      }
+
+      // Close the modal if user clicks outside the modal content
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+
+      let counter = 1; // Initialize a counter for unique IDs
+
+      // Function to add a new row of input fields
+      function addRow() {
+        var inputRow = document.getElementById("inputrow");
+        var newRow = document.createElement("div");
+        newRow.className = "row"; // Assign the "row" class
+
+        var newColEmail = document.createElement("div");
+        newColEmail.className = "col";
+        var emailLabel = document.createElement("label");
+        emailLabel.setAttribute("for", "emailInput" + counter);
+        emailLabel.innerText = "Email:";
+        emailLabel.classList.add("emailLabel"); // Add class for email label styling
+        var emailInput = document.createElement("input");
+        emailInput.setAttribute("type", "email");
+        emailInput.setAttribute("name", "email" + counter);
+        emailInput.setAttribute("placeholder", "Enter your email...");
+        emailInput.id = "emailInput" + counter; // Unique ID for email input
+        emailInput.classList.add("emailInput"); // Add class for styling
+
+        // Increment counter for the next set of inputs
+        counter++;
+
+        // Append elements to their respective parents
+        newColEmail.appendChild(emailLabel);
+        newColEmail.appendChild(emailInput);
+    
+
+        // Append columns to the new row
+        newRow.appendChild(newColEmail);
+
+        // Append the new row to the container
+        inputRow.appendChild(newRow);
+      }
+
+      // Add an event listener to the "Add row" button
+      document
+        .getElementById("addrow")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          addRow();
+        });
+
+        document.getElementById("subac").addEventListener("click", function (event) {
+    event.preventDefault();
+
+    // Check if at least one email is provided
+    var inputRow = document.getElementById("inputrow");
+    var emailInputs = inputRow.getElementsByClassName("emailInput");
+    var hasEmail = Array.from(emailInputs).some(function (emailInput) {
+        return emailInput.value.trim() !== "";
+    });
+
+    if (!hasEmail) {
+        alert("Put an Email First");
+        return; // Stop further processing
+    }
+
+    // Confirmation alert
+    if (confirm("Are you sure you want to register these users?")) {
+        // Register users
+        registerUsers();
+    }
+});
+
+
+function registerUsers() {
+    var inputRow = document.getElementById("inputrow");
+    var emailInputs = inputRow.getElementsByClassName("emailInput");
+
+    // Fetch default password from the Realtime Database
+    var defaultPassRef = ref(db2, "defaultPass/pass");
+    get(defaultPassRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            var defaultPassword = snapshot.val();
+            // Iterate through each email input
+            Array.from(emailInputs).forEach(function (emailInput) {
+                var email = emailInput.value.trim();
+
+                if (email !== "") {
+                    // Register the user with the fetched default password
+                    registerUser(email, defaultPassword);
+                }
+            });
+            removeAddedRows();
+        } else {
+            alert("Error fetching default password.");
+        }
+    });
+}
+
+
+function registerUser(email, password) {
+    // Check if the email already exists
+    checkIfEmailExists(email).then(function (emailExists) {
+        if (!emailExists) {
+            // Email does not exist, proceed with registration
+            createUserWithEmailAndPassword(auth2, email, password)
+                .then((userCredential) => {
+                    // User registered successfully
+                    var user = userCredential.user;
+                    alert("User with email " + email + " registered successfully!");
+                    saveUserData(user.uid, email);
+                })
+                .catch((error) => {
+                    // Handle errors during registration
+                    alert("Error registering user: " + error.message);
+                });
+        } else {
+            // Email already exists, show alert
+            alert("Email " + email + " already exists!");
+        }
+    });
+}
+
+function checkIfEmailExists(email) {
+    // Check if the email already exists in the database
+    var usersRef = ref(db2, "Users");
+    return get(usersRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            var users = snapshot.val();
+            return Object.values(users).some((user) => user.email === email);
+        }
+        return false;
+    });
+}
+function generateTimestamp() {
+  const currentDate = new Date();
+  const options = {
+    timeZone: 'Asia/Manila',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  };
+  return currentDate.toLocaleString('en-US', options).replace(',', '');
+}
+function saveUserData(uid, email) {
+    // Save additional user data to the database
+    var usersRef = ref(db2, "Users/" + uid);
+    set(usersRef, {
+        CurrentEngagement: 0,
+        ImageProfile: "",
+        activepts: 0,
+        address: "",
+        birthday: "",
+        campus: "",
+        course:"",
+        yearandSection:"",
+        email: email,
+        firstname: "",
+        finishactivity: 0,
+        gender: "",
+        lastname: "",
+        lastLogin: "",
+        middle: "",
+        phoneno: "",
+        timestamp: generateTimestamp(),
+        uid: uid,
+        userType: "",
+        srcode:"",
+        verificationStatus: true,
+    });
+}
+
+      // Function to remove added rows, reset form, and close modal
+      function removeAddedRows() {
+        var inputRow = document.getElementById("inputrow");
+        // Remove all added rows in the inputRow container
+        while (inputRow.firstChild) {
+          inputRow.removeChild(inputRow.firstChild);
+        }
+
+        // Reset the form
+        var form = document.getElementById("formadd");
+        form.reset(); // Reset the form
+
+        // Close the specific modal
+        closeSpecificModal(); // Function to close a specific modal
+      }
+
+      // Function to close a specific modal by updating display property
+      function closeSpecificModal() {
+        var modal = document.getElementById("myModalm");
+        modal.style.display = "none";
+      }
+      // Close the modal when the Close button is clicked
+      document
+        .getElementById("closeButtonrr")
+        .addEventListener("click", function () {
+          var modal = document.getElementById("myModalrr");
+          modal.style.display = "none";
+        });
+
+      document
+        .getElementById("precoedButtonrr")
+        .addEventListener("click", function () {
+          // Display a confirmation dialog when clicking the Proceed button
+          if (confirm("Are you sure?")) {
+            // If 'Yes' is clicked, show success message
+            alert("Success");
+
+            // Close all open modals
+            closeAllModals();
+          }
+        });
+  document.getElementById("closeModalEx").addEventListener("click", function () {
+        closeSpecificModal();
+    });
+      // Function to close all open modals
+      function closeAllModals() {
+        var modals = document.querySelectorAll(".modalrr");
+        modals.forEach(function (modal) {
+          modal.style.display = "none";
+        });
+      }
     </script>
   </body>
 </html>
