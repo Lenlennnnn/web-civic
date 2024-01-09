@@ -22,6 +22,11 @@
     <link rel="stylesheet" type="text/css" href="css/util.css" />
     <link rel="stylesheet" type="text/css" href="css/main.css" />
     <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+
     <style>
       .txt2 {
         text-decoration: underline;
@@ -239,10 +244,45 @@
         border: 1px solid white;
       }
       .txt1 {
-  margin-left: 270px; 
-  text-decoration: underline;
-}
+        margin-left: 270px;
+        text-decoration: underline;
+      }
 
+      .password-container {
+        position: relative;
+        display: inline-block;
+      }
+
+      .input100 {
+        padding-right: 30px; /* Adjust as needed based on icon size */
+      }
+
+      .toggle-password {
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
+
+      /* Additional styling for the icon, adjust as needed */
+      #passwordIcon,
+      #passwordIconconfirm,
+      #passnaicon {
+        color: #aaa;
+      }
+
+      #passwordIconconfirm {
+        position: absolute;
+        right: 20px;
+        top: 330px;
+      }
+
+      #passnaicon {
+        position: absolute;
+        right: 20px;
+        top: 217px;
+      }
     </style>
   </head>
 
@@ -289,11 +329,13 @@
                 placeholder="Enter password"
                 id="passwordfield"
               />
+              <span id="togglePassword" class="toggle-password">
+                <i id="passwordIcon" class="fas fa-eye"></i>
+              </span>
               <span class="focus-input100"></span>
             </div>
 
             <div class="flex-sb-m w-full p-b-30">
-    
               <div>
                 <a href="../forgot.html" class="txt1"> Forgot Password? </a>
               </div>
@@ -384,19 +426,26 @@
                   <input
                     type="password"
                     id="password"
+                    class="passna"
                     name="password"
                     required
                     placeholder="Your password"
                   />
-                  
-                  <label for="password">Confirm Password:</label>
+                  <span class="toggle-password">
+                    <i id="passnaicon" class="fas fa-eye toggle-icon"></i>
+                  </span>
+
+                  <label for="confirmpassword">Confirm Password:</label>
                   <input
                     type="password"
                     id="confirmpassword"
-                    name="password"
+                    name="confirmpassword"
                     required
                     placeholder="Re-type password"
                   />
+                  <span id="toggleConfirmPassword" class="toggle-password">
+                    <i id="passwordIconconfirm" class="fas fa-eye"></i>
+                  </span>
 
                   <button type="button" id="subbtn">Create Account</button>
                 </form>
@@ -412,7 +461,56 @@
     <script src="js/main.js"></script>
     <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
     <!-- Add an event listener to the button -->
-  
+
+    <script>
+      // Function to toggle password visibility
+      function togglePasswordVisibility(passwordFields, passwordIcons) {
+        passwordFields.forEach((field, index) => {
+          const passwordIcon = passwordIcons[index];
+          if (field.type === "password") {
+            field.type = "text";
+            passwordIcon.classList.remove("fa-eye");
+            passwordIcon.classList.add("fa-eye-slash");
+          } else {
+            field.type = "password";
+            passwordIcon.classList.remove("fa-eye-slash");
+            passwordIcon.classList.add("fa-eye");
+          }
+        });
+      }
+
+      // Toggle password visibility for 'password' field
+      const passwordField = document.getElementById("passwordfield");
+      const togglePassword = document.getElementById("togglePassword");
+      const passwordIcon = document.getElementById("passwordIcon");
+
+      togglePassword.addEventListener("click", function () {
+        togglePasswordVisibility([passwordField], [passwordIcon]);
+      });
+
+      // Toggle password visibility for 'confirm password' field
+      const confirmPasswordField = document.getElementById("confirmpassword");
+      const toggleConfirmPassword = document.getElementById(
+        "toggleConfirmPassword"
+      );
+      const confirmPasswordIcon = document.getElementById(
+        "passwordIconconfirm"
+      );
+
+      toggleConfirmPassword.addEventListener("click", function () {
+        togglePasswordVisibility([confirmPasswordField], [confirmPasswordIcon]);
+      });
+
+      // Toggle password visibility for fields with class "passna"
+      const toggleIcons = document.querySelectorAll(".toggle-icon");
+      const passwordFields = document.querySelectorAll(".passna");
+
+      toggleIcons.forEach((icon, index) => {
+        icon.addEventListener("click", () => {
+          togglePasswordVisibility([passwordFields[index]], [icon]);
+        });
+      });
+    </script>
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
@@ -488,16 +586,20 @@
           );
         }
       });
-      document.getElementById("usernamefield").addEventListener("keydown", handleEnterKey);
-document.getElementById("passwordfield").addEventListener("keydown", handleEnterKey);
+      document
+        .getElementById("usernamefield")
+        .addEventListener("keydown", handleEnterKey);
+      document
+        .getElementById("passwordfield")
+        .addEventListener("keydown", handleEnterKey);
 
-// Function to handle Enter key press
-function handleEnterKey(event) {
-    if (event.key === "Enter") {
-        // Trigger the click event on the login button
-        loginBtn.click();
-    }
-}
+      // Function to handle Enter key press
+      function handleEnterKey(event) {
+        if (event.key === "Enter") {
+          // Trigger the click event on the login button
+          loginBtn.click();
+        }
+      }
       let firstname = document.getElementById("firstname");
       let middlename = document.getElementById("middlename");
       let lastname = document.getElementById("lastname");
@@ -506,21 +608,28 @@ function handleEnterKey(event) {
       let email = document.getElementById("email");
       let submit = document.getElementById("subbtn");
 
-   submit.addEventListener("click", RegisterUser);
+      submit.addEventListener("click", RegisterUser);
 
-// Add an event listener for keydown on input fields
-[firstname, middlename, lastname, gender, email, password, confirmpassword].forEach((inputField) => {
-    inputField.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
+      // Add an event listener for keydown on input fields
+      [
+        firstname,
+        middlename,
+        lastname,
+        gender,
+        email,
+        password,
+        confirmpassword,
+      ].forEach((inputField) => {
+        inputField.addEventListener("keydown", function (event) {
+          if (event.key === "Enter") {
             // Trigger the click event on the submit button
             submit.click();
-        }
-    });
-});
+          }
+        });
+      });
 
-
-function RegisterUser(event) {
-    event.preventDefault();
+      function RegisterUser(event) {
+        event.preventDefault();
 
     const confirmed = window.confirm("Are you sure you want to create this account?");
   
@@ -528,56 +637,73 @@ function RegisterUser(event) {
     // If the user cancels the confirmation, do nothing
     return;
   }
-    // Get the values of the input fields
-    const firstnameValue = firstname.value.trim();
-    const middlenameValue = middlename.value.trim();
-    const lastnameValue = lastname.value.trim();
-    const genderValue = gender.value;
-    const emailValue = email.value.trim();
-    const passwordValue = password.value.trim();
-    const confirmPasswordValue = confirmpassword.value.trim();
+        // Get the values of the input fields
+        const firstnameValue = firstname.value.trim();
+        const middlenameValue = middlename.value.trim();
+        const lastnameValue = lastname.value.trim();
+        const genderValue = gender.value;
+        const emailValue = email.value.trim();
+        const passwordValue = password.value.trim();
+        const confirmPasswordValue = confirmpassword.value.trim();
 
-    // Check if any field is empty
-    if (!firstnameValue || !middlenameValue || !lastnameValue || !genderValue || !emailValue || !passwordValue || !confirmPasswordValue) {
-        alert("Please input all the fields");
-        return;
-    }
-    if (!validateName(firstnameValue) || !validateName(middlenameValue) || !validateName(lastnameValue)) {
-        alert("Please input valid names without numbers or special characters.");
-        return;
-    }
- 
-    const passwordRegex = /^(?=.*[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
+        // Check if any field is empty
+        if (
+          !firstnameValue ||
+          !middlenameValue ||
+          !lastnameValue ||
+          !genderValue ||
+          !emailValue ||
+          !passwordValue ||
+          !confirmPasswordValue
+        ) {
+          alert("Please input all the fields");
+          return;
+        }
+        if (
+          !validateName(firstnameValue) ||
+          !validateName(middlenameValue) ||
+          !validateName(lastnameValue)
+        ) {
+          alert(
+            "Please input valid names without numbers or special characters."
+          );
+          return;
+        }
 
-    if (!passwordRegex.test(passwordValue)) {
-        alert("Password must be alpha-numeric and have a minimum length of 8 characters.");
-        return;
-    }
+        const passwordRegex =
+          /^(?=.*[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
 
-    // Check if the password and confirm password match
-    if (passwordValue !== confirmPasswordValue) {
-        alert("Passwords do not match. Please re-type your password.");
-        return;
-    }
-function validateName(name) {
-    const nameRegex = /^[A-Za-z.'-, ]+$/;
-    return nameRegex.test(name);
-}
-    // Continue with user registration
-    createUserWithEmailAndPassword(auth, emailValue, passwordValue)
-        .then((userCredential) => {
+        if (!passwordRegex.test(passwordValue)) {
+          alert(
+            "Password must be alpha-numeric and have a minimum length of 8 characters."
+          );
+          return;
+        }
+
+        // Check if the password and confirm password match
+        if (passwordValue !== confirmPasswordValue) {
+          alert("Passwords do not match. Please re-type your password.");
+          return;
+        }
+        function validateName(name) {
+          const nameRegex = /^[A-Za-z.'-, ]+$/;
+          return nameRegex.test(name);
+        }
+        // Continue with user registration
+        createUserWithEmailAndPassword(auth, emailValue, passwordValue)
+          .then((userCredential) => {
             // User registered successfully
             const user = userCredential.user;
 
             // Store additional user data in the database
             saveUserData(user.uid);
-        })
-        .catch((error) => {
+          })
+          .catch((error) => {
             // Handle errors here
             alert(error.message);
             console.error(error);
-        });
-}
+          });
+      }
 
       function saveUserData(userId) {
         const dbRef = ref(db);
@@ -606,8 +732,8 @@ function validateName(name) {
             console.error(error);
           });
       }
-        // Get the modal elements
-        const modal = document.getElementById("myModalsupreg");
+      // Get the modal elements
+      const modal = document.getElementById("myModalsupreg");
       const openModalBtn = document.getElementById("openModalBtnsupreg");
       const closeModalBtn = document.getElementById("closeModalsupreg");
       const proceedBtn = document.getElementById("proceedBtn");
@@ -619,86 +745,86 @@ function validateName(name) {
       });
 
       // Close the modal
-    // Close the modal
-closeModalBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-    clearInputFields();
-});
+      // Close the modal
+      closeModalBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+        clearInputFields();
+      });
 
-// Function to clear input fields
-function clearInputFields() {
-    document.getElementById("textNumberField").value = "";
-}
-
+      // Function to clear input fields
+      function clearInputFields() {
+        document.getElementById("textNumberField").value = "";
+      }
 
       // Close the modal when clicking outside the modal content
       window.addEventListener("click", (event) => {
         if (event.target === modal) {
           modal.style.display = "none";
-           clearInputFields();
+          clearInputFields();
         }
       });
       const textNumberField = document.getElementById("textNumberField");
 
-textNumberField.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        // Trigger the click event on the proceedBtn
-        proceedBtn.click();
-    }
-});
-      // Functionality when clicking the Proceed button in the first modal
-      proceedBtn.addEventListener("click", async () => {
-  const textNumberValue = document.getElementById("textNumberField").value;
-  clearInputFields();
-  try {
-    // Fetch the correct code from Firebase
-    const codeSnapshot = await get(ref(db, "security/code"));
-    const correctCode = codeSnapshot.val();
-
-    // Check if the entered value matches the correct code
-    if (textNumberValue === correctCode) {
-      // Hide the first modal
-      modal.style.display = "none";
-
-      // Show the second modal
-      secondModal.style.display = "block";
-
-      // Add functionality to close the second modal
-      const closeSecondModalBtn = document.getElementById("closeSecondModal");
-    // Close the second modal
-closeSecondModalBtn.addEventListener("click", () => {
-    secondModal.style.display = "none";
-    clearSecondModalFields();
-});
-
-// Function to clear input fields in the second modal
-function clearSecondModalFields() {
-    document.getElementById("firstname").value = "";
-    document.getElementById("middlename").value = "";
-    document.getElementById("lastname").value = "";
-    document.getElementById("gender").value = "";
-    document.getElementById("email").value = "";
-    document.getElementById("password").value = "";
-    document.getElementById("confirmpassword").value = "";
-}
-
-
-      // Close the second modal if clicking outside the modal content
-      window.addEventListener("click", (event) => {
-        if (event.target === secondModal) {
-          secondModal.style.display = "none";
-          clearSecondModalFields();
+      textNumberField.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+          // Trigger the click event on the proceedBtn
+          proceedBtn.click();
         }
       });
-    } else {
-      // Optionally, provide feedback for an incorrect input value
-      alert("Incorrect input. Please enter the correct code.");
-    }
-  } catch (error) {
-    console.error("Firebase error:", error);
-    alert("An error occurred. Please try again later.");
-  }
-});
+      // Functionality when clicking the Proceed button in the first modal
+      proceedBtn.addEventListener("click", async () => {
+        const textNumberValue =
+          document.getElementById("textNumberField").value;
+        clearInputFields();
+        try {
+          // Fetch the correct code from Firebase
+          const codeSnapshot = await get(ref(db, "security/code"));
+          const correctCode = codeSnapshot.val();
+
+          // Check if the entered value matches the correct code
+          if (textNumberValue === correctCode) {
+            // Hide the first modal
+            modal.style.display = "none";
+
+            // Show the second modal
+            secondModal.style.display = "block";
+
+            // Add functionality to close the second modal
+            const closeSecondModalBtn =
+              document.getElementById("closeSecondModal");
+            // Close the second modal
+            closeSecondModalBtn.addEventListener("click", () => {
+              secondModal.style.display = "none";
+              clearSecondModalFields();
+            });
+
+            // Function to clear input fields in the second modal
+            function clearSecondModalFields() {
+              document.getElementById("firstname").value = "";
+              document.getElementById("middlename").value = "";
+              document.getElementById("lastname").value = "";
+              document.getElementById("gender").value = "";
+              document.getElementById("email").value = "";
+              document.getElementById("password").value = "";
+              document.getElementById("confirmpassword").value = "";
+            }
+
+            // Close the second modal if clicking outside the modal content
+            window.addEventListener("click", (event) => {
+              if (event.target === secondModal) {
+                secondModal.style.display = "none";
+                clearSecondModalFields();
+              }
+            });
+          } else {
+            // Optionally, provide feedback for an incorrect input value
+            alert("Incorrect input. Please enter the correct code.");
+          }
+        } catch (error) {
+          console.error("Firebase error:", error);
+          alert("An error occurred. Please try again later.");
+        }
+      });
     </script>
   </body>
 </html>
