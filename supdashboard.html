@@ -17,7 +17,6 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.15.4/css/ionicons.min.css"
     />
 
-
     <style>
       .dashboard {
         color: #a90011;
@@ -793,7 +792,7 @@
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5);
-        z-index: 99999999;
+        z-index: 2;
         overflow: auto; /* Ito ang binago: ginamit na 'overflow: auto' dito */
       }
 
@@ -806,8 +805,8 @@
         padding: 20px;
         text-align: center;
         width: 50%;
-        max-height: 100%; /* Pwedeng idagdag ito para hindi lumampas sa 80% ng viewport height */
-        overflow-y: auto; /* Dagdag na 'overflow-y: auto' para sa vertical scrollbar kung lumalampas ang laman ng modal sa height nito */
+        max-height: 100%;
+        overflow-y: auto;
       }
 
       .closepo {
@@ -835,6 +834,100 @@
       .closepo {
         display: block; /* Ensure close button is visible */
         /* Add any necessary styles for visibility */
+      }
+
+      #choscho {
+        background-color: #333; /* Dark background color */
+        color: #fff; /* Text color */
+        border: 1px solid #333; /* Dark border */
+        padding: 8px 16px; /* Adjust padding as needed */
+        cursor: pointer; /* Change cursor on hover */
+        transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+      }
+
+      #choscho:hover {
+        background-color: #555; /* Darker background color on hover */
+        border-color: #555; /* Darker border color on hover */
+        color: #fff; /* Text color on hover */
+      }
+
+      #myModalnm {
+        z-index: 999999999;
+      }
+
+      .modal-contentnm {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 40%;
+        z-index: 3;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .closenm {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .closenm:hover,
+      .closenm:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .checkboxna {
+        position: relative;
+        top: 10px;
+        right: 220px;
+      }
+
+      .labelnato {
+        position: relative;
+        left: 50px;
+        margin: -20px;
+      }
+
+      #okButton {
+        margin-left: 85%;
+      }
+
+      #okButton {
+        background-color: black;
+        /* Other button styles */
+      }
+
+      #okButton:hover {
+        background-color: darkgray; /* Change background color on hover */
+        /* Additional styles for hover state */
+      }
+
+      /* Select All button */
+      #selectAllBtnn {
+        background-color: darkgray;
+        /* Other button styles */
+      }
+
+      #selectAllBtnn:hover {
+        background-color: lightgray; /* Change background color on hover */
+        /* Additional styles for hover state */
+      }
+
+      /* Deselect All button */
+      #deselectAllBtnn {
+        background-color: gray;
+        /* Other button styles */
+      }
+
+      #deselectAllBtnn:hover {
+        background-color: silver; /* Change background color on hover */
+        /* Additional styles for hover state */
       }
     </style>
   </head>
@@ -927,12 +1020,7 @@
             <ion-icon name="menu-outline" class="hover-icon"></ion-icon>
           </div>
           <h1 class="dashboard">Dashboard</h1>
-          <!-- <div class="search">
-            <label>
-              <input type="text" placeholder="Search here" class="bold-input" />
-              <ion-icon name="search-outline" class="search-icon"></ion-icon>
-            </label>
-          </div> -->
+
           <!-- =============================================== Dropdown fields ================================================ -->
           <span class="badge">3+</span>
           <ion-icon
@@ -948,8 +1036,8 @@
               <div class="divOne">
                 <div class="small text-gray-500">December 12, 2023</div>
                 <span class="font-weight-bold"
-                  >20-12345 John Lui Coro has a request event for you to
-                  approve by kur</span
+                  >20-12345 John Lui Coro has a request event for you to approve
+                  by kur</span
                 >
               </div>
             </a>
@@ -1098,28 +1186,34 @@
                             <span class="closepo" id="closeModalpo">
                               <ion-icon name="close"></ion-icon>
                             </span>
-                            
+
                             <h2 id="hederrr" style="color: #dc3545">
                               Post an event
                             </h2>
                             <form>
-                        
-                          
-                              <input type="image" id="imagepost" name="image" src="https://pbs.twimg.com/media/Fcj7ErdaUAAwHTX.png" alt="Upload Image" width="400" height="400" />
+                              <input
+                                type="image"
+                                id="imagepost"
+                                name="image"
+                                src="https://pbs.twimg.com/media/Fcj7ErdaUAAwHTX.png"
+                                alt="Upload Image"
+                                width="400"
+                                height="400"
+                              />
 
                               <label
-                              for="image"
-                              id="lblpt"
-                              style="color: black; text-align: left"
-                              >Upload Image:</label
-                            >
+                                for="image"
+                                id="lblpt"
+                                style="color: black; text-align: left"
+                                >Upload Image:</label
+                              >
                               <input
-                              type="file"
-                              id="filePost"
-                              name="image"
-                              accept="image/*"
-                              required
-                            />
+                                type="file"
+                                id="filePost"
+                                name="image"
+                                accept="image/*"
+                                required
+                              />
                               <label
                                 for="campus"
                                 id="lblpt"
@@ -1258,40 +1352,12 @@
                                 style="color: black; text-align: left"
                                 >Target Campus:</label
                               >
-                              <select id="campus" name="campus" required>
-                                <option value="" disabled selected>
-                                  Choose Campus
-                                </option>
-                                <option value="ARASOF Nasugbu Campus">
-                                  ARASOF Nasugbu Campus
-                                </option>
-                                <option value="Balayan Campus">
-                                  Balayan Campus
-                                </option>
-                                <option value="JPLPC Malvar Campus">
-                                  JPLPC Malvar Campus
-                                </option>
-                                <option value="Lemery Campus">
-                                  Lemery Campus
-                                </option>
-                                <option value="Lipa Campus">Lipa Campus</option>
-                                <option value="Lobo Campus">Lobo Campus</option>
-                                <option value="Mabini Campus">
-                                  Mabini Campus
-                                </option>
-                                <option value="Pablo Borbon Campus I">
-                                  Pablo Borbon Campus I
-                                </option>
-                                <option value=" Pablo Borbon Campus II">
-                                  Pablo Borbon Campus II
-                                </option>
-                                <option value="Rosario Campus">
-                                  Rosario Campus
-                                </option>
-                                <option value="San Juan Campus">
-                                  San Juan Campus
-                                </option>
-                              </select>
+                              <button
+                                id="choscho"
+                                style="position: relative; right: 250px"
+                              >
+                                Select
+                              </button>
 
                               <label
                                 for="targparty"
@@ -1300,33 +1366,32 @@
                                 >Target Participant:</label
                               >
                               <input
-                              type="text"
-                              id="targparty"
-                              name="targparty"
-                              required
-                              placeholder="Please enter only numbers"
-                              pattern="[0-9]+"
-                              oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-                            />
-                            
-                            
+                                type="text"
+                                id="targparty"
+                                name="targparty"
+                                required
+                                placeholder="Please enter only numbers"
+                                pattern="[0-9]+"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                              />
+
                               <label
                                 for="actpts"
                                 id="lblpt"
                                 style="color: black; text-align: left"
                                 >Active Points:</label
                               >
-                      
-                            <input
-                            type="text"
-                            id="actpts"
-                            name="actpts"
-                            required
-                            placeholder="Please enter only numbers"
-                            pattern="[0-9]+"
-                            oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-                          />
-                          
+
+                              <input
+                                type="text"
+                                id="actpts"
+                                name="actpts"
+                                required
+                                placeholder="Please enter only numbers"
+                                pattern="[0-9]+"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                              />
+
                               <!-- Google Maps Location Field -->
                               <label
                                 for="facname"
@@ -1375,10 +1440,15 @@
                                 </select>
                               </div>
 
-                              <button id="postB" type="button" style="margin-left: 70%" onclick="submitForm()">
+                              <button
+                                id="postB"
+                                type="button"
+                                style="margin-left: 70%"
+                                onclick="submitForm()"
+                              >
                                 Post
                               </button>
-                              
+
                               <button type="button" id="cancelButton">
                                 Cancel
                               </button>
@@ -1727,6 +1797,128 @@
           </div>
         </div>
       </div>
+      <div id="myModalnm" class="modal">
+        <div class="modal-contentnm">
+          <span class="closenm">&times;</span>
+          <div class="modal-bodyat">
+            <button id="selectAllBtnn">Select All</button>
+            <button id="deselectAllBtnn">Deselect All</button><br />
+            <hr style="margin: 10px" />
+            <form id="campusForm">
+              <input
+                type="checkbox"
+                id="arasof"
+                class="checkboxna"
+                name="campus"
+                value="ARASOF Nasugbu Campus"
+              />
+              <label for="arasof" class="labelnato">ARASOF Nasugbu Campus</label
+              ><br />
+
+              <input
+                type="checkbox"
+                id="balayan"
+                class="checkboxna"
+                name="campus"
+                value="Balayan Campus"
+              />
+              <label for="balayan" class="labelnato">Balayan Campus</label
+              ><br />
+
+              <input
+                type="checkbox"
+                id="jplpc"
+                class="checkboxna"
+                name="campus"
+                value="JPLPC Malvar Campus"
+              />
+              <label for="jplpc" class="labelnato">JPLPC Malvar Campus</label
+              ><br />
+
+              <input
+                type="checkbox"
+                id="lemery"
+                class="checkboxna"
+                name="campus"
+                value="Lemery Campus"
+              />
+              <label for="lemery" class="labelnato">Lemery Campus</label><br />
+
+              <input
+                type="checkbox"
+                id="lipa"
+                class="checkboxna"
+                name="campus"
+                value="Lipa Campus"
+              />
+              <label for="lipa" class="labelnato">Lipa Campus</label><br />
+
+              <input
+                type="checkbox"
+                id="lobo"
+                class="checkboxna"
+                name="campus"
+                value="Lobo Campus"
+              />
+              <label for="lobo" class="labelnato">Lobo Campus</label><br />
+
+              <input
+                type="checkbox"
+                id="mabini"
+                class="checkboxna"
+                name="campus"
+                value="Mabini Campus"
+              />
+              <label for="mabini" class="labelnato">Mabini Campus</label><br />
+
+              <input
+                type="checkbox"
+                id="pablo1"
+                class="checkboxna"
+                name="campus"
+                value="Pablo Borbon Campus I"
+              />
+              <label for="pablo1" class="labelnato">Pablo Borbon Campus I</label
+              ><br />
+
+              <input
+                type="checkbox"
+                id="pablo2"
+                class="checkboxna"
+                name="campus"
+                value="Pablo Borbon Campus II"
+              />
+              <label for="pablo2" class="labelnato"
+                >Pablo Borbon Campus II</label
+              ><br />
+
+              <input
+                type="checkbox"
+                id="rosario"
+                class="checkboxna"
+                name="campus"
+                value="Rosario Campus"
+              />
+              <label for="rosario" class="labelnato">Rosario Campus</label
+              ><br />
+
+              <input
+                type="checkbox"
+                id="sanjuan"
+                class="checkboxna"
+                name="campus"
+                value="San Juan Campus"
+              />
+              <label for="sanjuan" class="labelnato">San Juan Campus</label
+              ><br />
+            </form>
+
+            <hr style="margin: 10px" />
+          </div>
+
+          <button id="okButton">Ok</button>
+        </div>
+      </div>
     </div>
     <!-- =============================================== Scripts ================================================ -->
     <script>
@@ -1829,56 +2021,116 @@
       // Event listener for closing the "myModalevnts" modal
       closeModalBtnEvnts.addEventListener("click", closeModalEvnts);
 
+      // Get the modified modal and the button
+      var modal = document.getElementById("myModalnm");
+      var btn = document.getElementById("choscho");
+
+      // Get the close button inside the modified modal
+      var span = document.getElementsByClassName("closenm")[0];
+
+      // Function to open the modified modal when the button is clicked
+      btn.onclick = function () {
+        modal.style.display = "block";
+      };
+
+      // Function to close the modified modal when the close button (X) is clicked
+      span.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      // Function to close the modified modal when clicking outside the modal content
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+
+      // Get the modal element
+      var modal = document.getElementById("myModalnm");
+
+      // Get the Ok button inside the modal
+      var okButton = document.getElementById("okButton");
+
+      // When the Ok button is clicked, close the modal
+      okButton.addEventListener("click", function () {
+        modal.style.display = "none";
+      });
+
+      // Function to handle Select All button click
+      function selectAll() {
+        var checkboxes = document.querySelectorAll(".checkboxna");
+        checkboxes.forEach(function (checkbox) {
+          checkbox.checked = true;
+        });
+      }
+
+      // Function to handle Deselect All button click
+      function deselectAll() {
+        var checkboxes = document.querySelectorAll(".checkboxna");
+        checkboxes.forEach(function (checkbox) {
+          checkbox.checked = false;
+        });
+      }
+
+      // Get the Select All button
+      var selectAllBtn = document.getElementById("selectAllBtnn");
+
+      // Get the Deselect All button
+      var deselectAllBtn = document.getElementById("deselectAllBtnn");
+
+      // Add click event listeners to buttons
+      selectAllBtn.addEventListener("click", selectAll);
+      deselectAllBtn.addEventListener("click", deselectAll);
     </script>
- <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-  import {
-    getDatabase,
-    ref,
-    get,
-    push,
-    set,
-    onValue,
-    onChildRemoved,
-  } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
-  import {
-    getAuth,
-    createUserWithEmailAndPassword,
-  } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
-  const firebaseConfig = {
-    apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
-    authDomain: "civicall-app-a54d1.firebaseapp.com",
-    databaseURL:
-      "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "civicall-app-a54d1",
-    storageBucket: "civicall-app-a54d1.appspot.com",
-    messagingSenderId: "909514632764",
-    appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
-    measurementId: "G-0BVYE5XJGV",
-  };
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+        push,
+        set,
+        onValue,
+        onChildRemoved,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+        authDomain: "civicall-app-a54d1.firebaseapp.com",
+        databaseURL:
+          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "civicall-app-a54d1",
+        storageBucket: "civicall-app-a54d1.appspot.com",
+        messagingSenderId: "909514632764",
+        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+        measurementId: "G-0BVYE5XJGV",
+      };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-  const auth = getAuth(app);
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const auth = getAuth(app);
 
-  const tableBody = document.querySelector("#tableevents tbody");
-  let rowNumber = 1; // Initialize row number
+      const tableBody = document.querySelector("#tableevents tbody");
+      let rowNumber = 1; // Initialize row number
 
-  // Function to open the modal and display event details
-  function openEventModal(eventData) {
-  const modal = document.getElementById("eventModalupcom");
-  const eventDetailsContainer =
-    document.getElementById("eventDetailsupcom");
+      // Function to open the modal and display event details
+      function openEventModal(eventData) {
+        const modal = document.getElementById("eventModalupcom");
+        const eventDetailsContainer =
+          document.getElementById("eventDetailsupcom");
 
-  // Function to determine whether to show payment fields
-  function shouldShowPaymentFields(category) {
-    return category === "Fund Raising" || category === "Donations";
-  }
+        // Function to determine whether to show payment fields
+        function shouldShowPaymentFields(category) {
+          return category === "Fund Raising" || category === "Donations";
+        }
 
-  // Function to generate HTML for payment fields
-  function generatePaymentFieldsHTML(eventData) {
-    if (shouldShowPaymentFields(eventData.category)) {
-      return `
+        // Function to generate HTML for payment fields
+        function generatePaymentFieldsHTML(eventData) {
+          if (shouldShowPaymentFields(eventData.category)) {
+            return `
         <p><strong>Payment Receipt:</strong>
           <input class="form-control" id="payRecip" type="text" value="${eventData.paymentRecipient}" readonly>
         </p>
@@ -1886,61 +2138,91 @@
           <input class="form-control" id="payMeth" type="text" value="${eventData.paymentMethod}" readonly>
         </p>
       `;
-    }
-    return ''; // Empty string if payment fields should not be shown
-  }
+          }
+          return ""; // Empty string if payment fields should not be shown
+        }
 
-  eventDetailsContainer.innerHTML = `
-    <img src="${eventData.image}" alt="Event Image" class="eventpic" id="upcompostpic" />
+        eventDetailsContainer.innerHTML = `
+    <img src="${
+      eventData.image
+    }" alt="Event Image" class="eventpic" id="upcompostpic" />
     <p><strong>Title:</strong>
-      <input class="form-control" id="" type="text" value="${eventData.title}" readonly>
+      <input class="form-control" id="" type="text" value="${
+        eventData.title
+      }" readonly>
     </p>
     <p><strong>Category:</strong>
-      <input class="form-control" id="" type="text" value="${eventData.category}" readonly>
+      <input class="form-control" id="" type="text" value="${
+        eventData.category
+      }" readonly>
     </p>
     <p><strong>Campus:</strong>
-      <input class="form-control" id="" type="text" value="${eventData.campus}" readonly>
+      <input class="form-control" id="" type="text" value="${
+        eventData.campus
+      }" readonly>
     </p>
     <p><strong>Location:</strong>
-      <input class="form-control" id="" type="text" value="${eventData.location}" readonly>
+      <input class="form-control" id="" type="text" value="${
+        eventData.location
+      }" readonly>
     </p>
     <p><strong>Start Date:</strong>
-      <input class="form-control" id="" type="text" value="${eventData.startDate}" readonly>
+      <input class="form-control" id="" type="text" value="${
+        eventData.startDate
+      }" readonly>
     </p>
     <p><strong>End Date:</strong>
-      <input class="form-control" id="" type="text" value="${eventData.endDate}" readonly>
+      <input class="form-control" id="" type="text" value="${
+        eventData.endDate
+      }" readonly>
     </p>
     <h3>Description</h3>
     <p>&nbsp;</p>
     <p><strong>Introduction:</strong></p>
-    <textarea class="form-control" rows="10" id="yourTextAreaId" readonly>${eventData.intro}</textarea>
+    <textarea class="form-control" rows="10" id="yourTextAreaId" readonly>${
+      eventData.intro
+    }</textarea>
     <p><strong>Objectives:</strong></p>
-    <textarea class="form-control" rows="10" id="yourTextAreaId" readonly>${eventData.objective}</textarea>
+    <textarea class="form-control" rows="10" id="yourTextAreaId" readonly>${
+      eventData.objective
+    }</textarea>
     <p><strong>Instruction:</strong></p>
-    <textarea class="form-control" rows="10" id="yourTextAreaId" readonly>${eventData.instruction}</textarea>
+    <textarea class="form-control" rows="10" id="yourTextAreaId" readonly>${
+      eventData.instruction
+    }</textarea>
     <p><strong>Target Participant:</strong>
-      <input class="form-control" id="" type="text" value="${eventData.targetparty}" readonly>
+      <input class="form-control" id="" type="text" value="${
+        eventData.targetparty
+      }" readonly>
     </p>
     ${generatePaymentFieldsHTML(eventData)}
     <p><strong>Fund Collected:</strong>
-      <input class="form-control" id="" type="text" value="${eventData.fundcollected}" readonly>
+      <input class="form-control" id="" type="text" value="${
+        eventData.fundcollected
+      }" readonly>
     </p>
     <p><strong>Facilitators Name:</strong>
-      <input class="form-control" id="" type="text" value="${eventData.facilitatorsName}" readonly>
+      <input class="form-control" id="" type="text" value="${
+        eventData.facilitatorsName
+      }" readonly>
     </p>
     <p><strong>Facilitators Contractor Email:</strong>
-      <input class="form-control" id="" type="text" value="${eventData.facilitatorsContractorEmail}" readonly>
+      <input class="form-control" id="" type="text" value="${
+        eventData.facilitatorsContractorEmail
+      }" readonly>
     </p>
     <p><strong>Active Points:</strong>
-      <input class="form-control" id="" type="text" value="${eventData.activepoints}" readonly>
+      <input class="form-control" id="" type="text" value="${
+        eventData.activepoints
+      }" readonly>
     </p>
   `;
 
-  // Show the modal
-  modal.style.display = "block";
-}
+        // Show the modal
+        modal.style.display = "block";
+      }
 
-    function closeModalEventModal() {
+      function closeModalEventModal() {
         const modal = document.getElementById("eventModalupcom");
         modal.style.display = "none"; // Hide the modal
       }
@@ -1953,56 +2235,59 @@
         closeModalEventModal
       );
 
-  document.addEventListener("click", function (event) {
-    if (event.target && event.target.classList.contains("vieweventdet")) {
-      const clickedRow = event.target.closest("tr");
-      const eventId = clickedRow.getAttribute("data-event-id"); // Assuming you have an attribute for the event ID in the table row
+      document.addEventListener("click", function (event) {
+        if (event.target && event.target.classList.contains("vieweventdet")) {
+          const clickedRow = event.target.closest("tr");
+          const eventId = clickedRow.getAttribute("data-event-id"); // Assuming you have an attribute for the event ID in the table row
 
-      // Reference the specific event node in Firebase
-      const eventRef = ref(db, `Upload Engagement/${eventId}`);
+          // Reference the specific event node in Firebase
+          const eventRef = ref(db, `Upload Engagement/${eventId}`);
 
-      // Retrieve the event data from Firebase
-      get(eventRef)
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            const eventData = snapshot.val();
-            openEventModal(eventData);
-          } else {
-            console.log("No data available");
-          }
-        })
-        .catch((error) => {
-          console.error("Error getting data:", error);
-        });
-    }
-  });
-  // Function to fetch and display data in the table
-  function displayEventData() {
-  const uploadEngagementRef = ref(db, "Upload Engagement");
+          // Retrieve the event data from Firebase
+          get(eventRef)
+            .then((snapshot) => {
+              if (snapshot.exists()) {
+                const eventData = snapshot.val();
+                openEventModal(eventData);
+              } else {
+                console.log("No data available");
+              }
+            })
+            .catch((error) => {
+              console.error("Error getting data:", error);
+            });
+        }
+      });
+      // Function to fetch and display data in the table
+      function displayEventData() {
+        const uploadEngagementRef = ref(db, "Upload Engagement");
 
-  onValue(uploadEngagementRef, (snapshot) => {
-    tableBody.innerHTML = ""; // Clear existing table data
-    rowNumber = 1; // Reset row number
+        onValue(uploadEngagementRef, (snapshot) => {
+          tableBody.innerHTML = ""; // Clear existing table data
+          rowNumber = 1; // Reset row number
 
-    snapshot.forEach((childSnapshot) => {
-      const uploadData = childSnapshot.val();
-      
-      // Check if the verificationStatus child exists and is true
-      if (uploadData.hasOwnProperty("verificationStatus") && uploadData.verificationStatus === true) {
-        const {
-          campus,
-          category, 
-          dateandtime,
-          title,
-          image,
-          location,
-          startDate,
-          endDate,
-          // Add other fields you want to retrieve from Firebase
-        } = uploadData;
+          snapshot.forEach((childSnapshot) => {
+            const uploadData = childSnapshot.val();
 
-        const newRow = tableBody.insertRow();
-        newRow.innerHTML = `
+            // Check if the verificationStatus child exists and is true
+            if (
+              uploadData.hasOwnProperty("verificationStatus") &&
+              uploadData.verificationStatus === true
+            ) {
+              const {
+                campus,
+                category,
+                dateandtime,
+                title,
+                image,
+                location,
+                startDate,
+                endDate,
+                // Add other fields you want to retrieve from Firebase
+              } = uploadData;
+
+              const newRow = tableBody.insertRow();
+              newRow.innerHTML = `
           <td>${rowNumber}</td>
           <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
           <td>${title}</td>
@@ -2013,16 +2298,15 @@
             <button type="button" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>
           </td>
         `;
-        newRow.setAttribute("data-event-id", childSnapshot.key); // Set the event ID as an attribute in the table row
-        rowNumber++;
+              newRow.setAttribute("data-event-id", childSnapshot.key); // Set the event ID as an attribute in the table row
+              rowNumber++;
+            }
+          });
+        });
       }
-    });
-  });
-}
 
-
-  displayEventData();
-</script>
+      displayEventData();
+    </script>
     <script src="js/dashboard.js"></script>
     <script src="js/post.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
@@ -2052,16 +2336,12 @@
         onValue,
         onChildRemoved,
       } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+      import { getAuth } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
       import {
-        getAuth,
-      } 
-  
-      from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
-      import {
-      getStorage,
-      ref as storageRef,
-      uploadBytes,
-      getDownloadURL,
+        getStorage,
+        ref as storageRef,
+        uploadBytes,
+        getDownloadURL,
       } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-storage.js";
 
       const firebaseConfig2 = {
@@ -2075,235 +2355,248 @@
         appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
         measurementId: "G-0BVYE5XJGV",
       };
-    
+
       const app2 = initializeApp(firebaseConfig2);
       const db2 = getDatabase(app2);
       const auth2 = getAuth(app2);
-      const storage2 = getStorage(app2); 
+      const storage2 = getStorage(app2);
 
-      document.getElementById("openPostModal").addEventListener("click", function () {
-    document.getElementById("postModalpo").style.display = "block";
-  });
-  document.addEventListener("DOMContentLoaded", function() {
-  document.getElementById("postB").addEventListener("click", function () {
-    // Display a confirmation dialog
-    if (confirm("Are you sure you want to submit the form?")) {
-        submitForm();
-    }
-});
-});
-
-// Add event listener to close the modal when Cancel button is clicked
-document.getElementById("cancelButton").addEventListener("click", function () {
-    document.getElementById("postModalpo").style.display = "none";
-});
-
-  // Add event listener to close the modal
-  document.getElementById("closeModalpo").addEventListener("click", function () {
-    document.getElementById("postModalpo").style.display = "none";
-  });
-document.getElementById("filePost").addEventListener("change", function () {
-    // Get the file input element
-    const fileInput = document.getElementById("filePost");
-
-    // Get the image element
-    const imagePreview = document.getElementById("imagepost");
-
-    // Check if a file is selected
-    if (fileInput.files && fileInput.files[0]) {
-      const reader = new FileReader();
-
-      reader.onload = function (e) {
-        // Update the image source with the selected file's data
-        imagePreview.src = e.target.result;
-      };
-
-      // Read the selected file as a data URL
-      reader.readAsDataURL(fileInput.files[0]);
-    }
-  });
-  async function submitForm() {
-  // Get data from the form fields
-  const title = document.getElementById("titlepost").value;
-  const category = document.getElementById("campuspost").value;
-  const startDate = formatDate(document.getElementById("startdate").value);
-  const endDate = formatDate(document.getElementById("enddate").value);
-  const introduction = document.getElementById("introductionPost").value;
-  const objective = document.getElementById("objectivePost").value;
-  const instruction = document.getElementById("instructionPost").value;
-  const location = document.getElementById("Locationpost").value;
-  const targetCampus = document.getElementById("campus").value;
-  const activePoints = parseInt(document.getElementById("actpts").value);
-  const targetParticipant = parseInt(document.getElementById("targparty").value);
-  const facilitatorsName = document.getElementById("facname").value;
-  const facilitatorsContactOrEmail = document.getElementById("facnamecon").value;
-
-  // Get the current user's UID
-  const currentUser = auth2.currentUser;
-  const uploadersUID = currentUser ? currentUser.uid : "";
-
-  // Prepare data for upload
-  const eventData = {
-    uploadersUID: uploadersUID,
-    title: title,
-    category: category,
-    startDate: startDate,
-    endDate: endDate,
-    location: location,
-    intro: introduction,
-    objective: objective,
-    instruction: instruction,
-    fundcollected: 0,
-    paymentMethod:"", 
-    paymentRecipient:"",
-    verificationStatus: true,
-    campus: targetCampus,
-    targetparty: targetParticipant,
-    activepoints: activePoints,
-    facilitatorsName: facilitatorsName,
-    facilitatorsContactorEmail: facilitatorsContactOrEmail,
-    // ... (add other properties as needed)
-  };
-
-  // Get the file input element
-  const fileInput = document.getElementById("filePost");
-
-  if (!validateForm()) {
-    // Display alert if validation fails
-    alert('Please fill in all required fields.');
-    return;
-  }
-
-  function formatDate(dateTime) {
-  const options = {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-  };
-  return new Date(dateTime).toLocaleString("en-US", options).replace(/,/g, '');
-}
-  // Check if a file is selected
-  if (fileInput.files && fileInput.files[0]) {
-    const file = fileInput.files[0];
-    const timestamp = new Date().getTime();
-    const storagePath = `Poster Civic Images/${timestamp}_${file.name}`; // Using timestamp as part of the file name
-    const storageRefPath = storageRef(storage2, storagePath);
-
-    // Upload file to Firebase Storage
-    uploadBytes(storageRefPath, file)
-      .then((snapshot) => {
-        console.log('File uploaded successfully');
-        return getDownloadURL(snapshot.ref);
-      })
-      .then((downloadURL) => {
-        // Add the downloadURL to the "image" property in eventData
-        eventData.image = downloadURL;
-
-        // Upload data to the Firebase Realtime Database
-        const newEventRef = push(ref(db2, 'Upload Engagement'));
-        set(newEventRef, eventData)
-          .then(() => {
-            console.log('Event data uploaded successfully');
-            alert('Event data uploaded successfully');
-
-            // Clear form fields
-            clearFormFields();
-
-            // Dismiss the modal
-            document.getElementById("postModalpo").style.display = "none";
-          })
-          .catch((error) => {
-            console.error('Error uploading event data:', error);
-            alert('Error uploading event data. Please try again.');
-          });
-      })
-      .catch((error) => {
-        console.error('Error uploading file:', error);
-        alert('Error uploading file. Please try again.');
+      document
+        .getElementById("openPostModal")
+        .addEventListener("click", function () {
+          document.getElementById("postModalpo").style.display = "block";
+        });
+      document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("postB").addEventListener("click", function () {
+          // Display a confirmation dialog
+          if (confirm("Are you sure you want to submit the form?")) {
+            submitForm();
+          }
+        });
       });
-  }else {
-    const newEventRef = push(ref(db2, 'Upload Engagement'));
-    set(newEventRef, eventData)
-      .then(() => {
-        console.log('Event data uploaded successfully');
-        alert('Event data uploaded successfully');
 
-        // Clear form fields
-        clearFormFields();
+      // Add event listener to close the modal when Cancel button is clicked
+      document
+        .getElementById("cancelButton")
+        .addEventListener("click", function () {
+          document.getElementById("postModalpo").style.display = "none";
+        });
 
-        // Dismiss the modal
-        document.getElementById("postModalpo").style.display = "none";
-      })
-      .catch((error) => {
-        console.error('Error uploading event data:', error);
-        alert('Error uploading event data. Please try again.');
+      // Add event listener to close the modal
+      document
+        .getElementById("closeModalpo")
+        .addEventListener("click", function () {
+          document.getElementById("postModalpo").style.display = "none";
+        });
+      document
+        .getElementById("filePost")
+        .addEventListener("change", function () {
+          // Get the file input element
+          const fileInput = document.getElementById("filePost");
+
+          // Get the image element
+          const imagePreview = document.getElementById("imagepost");
+
+          // Check if a file is selected
+          if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+              // Update the image source with the selected file's data
+              imagePreview.src = e.target.result;
+            };
+
+            // Read the selected file as a data URL
+            reader.readAsDataURL(fileInput.files[0]);
+          }
+        });
+      async function submitForm() {
+        // Get data from the form fields
+        const title = document.getElementById("titlepost").value;
+        const category = document.getElementById("campuspost").value;
+        const startDate = formatDate(
+          document.getElementById("startdate").value
+        );
+        const endDate = formatDate(document.getElementById("enddate").value);
+        const introduction = document.getElementById("introductionPost").value;
+        const objective = document.getElementById("objectivePost").value;
+        const instruction = document.getElementById("instructionPost").value;
+        const location = document.getElementById("Locationpost").value;
+        const targetCampus = document.getElementById("campus").value;
+        const activePoints = parseInt(document.getElementById("actpts").value);
+        const targetParticipant = parseInt(
+          document.getElementById("targparty").value
+        );
+        const facilitatorsName = document.getElementById("facname").value;
+        const facilitatorsContactOrEmail =
+          document.getElementById("facnamecon").value;
+
+        // Get the current user's UID
+        const currentUser = auth2.currentUser;
+        const uploadersUID = currentUser ? currentUser.uid : "";
+
+        // Prepare data for upload
+        const eventData = {
+          uploadersUID: uploadersUID,
+          title: title,
+          category: category,
+          startDate: startDate,
+          endDate: endDate,
+          location: location,
+          intro: introduction,
+          objective: objective,
+          instruction: instruction,
+          fundcollected: 0,
+          paymentMethod: "",
+          paymentRecipient: "",
+          verificationStatus: true,
+          campus: targetCampus,
+          targetparty: targetParticipant,
+          activepoints: activePoints,
+          facilitatorsName: facilitatorsName,
+          facilitatorsContactorEmail: facilitatorsContactOrEmail,
+          // ... (add other properties as needed)
+        };
+
+        // Get the file input element
+        const fileInput = document.getElementById("filePost");
+
+        if (!validateForm()) {
+          // Display alert if validation fails
+          alert("Please fill in all required fields.");
+          return;
+        }
+
+        function formatDate(dateTime) {
+          const options = {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+          };
+          return new Date(dateTime)
+            .toLocaleString("en-US", options)
+            .replace(/,/g, "");
+        }
+        // Check if a file is selected
+        if (fileInput.files && fileInput.files[0]) {
+          const file = fileInput.files[0];
+          const timestamp = new Date().getTime();
+          const storagePath = `Poster Civic Images/${timestamp}_${file.name}`; // Using timestamp as part of the file name
+          const storageRefPath = storageRef(storage2, storagePath);
+
+          // Upload file to Firebase Storage
+          uploadBytes(storageRefPath, file)
+            .then((snapshot) => {
+              console.log("File uploaded successfully");
+              return getDownloadURL(snapshot.ref);
+            })
+            .then((downloadURL) => {
+              // Add the downloadURL to the "image" property in eventData
+              eventData.image = downloadURL;
+
+              // Upload data to the Firebase Realtime Database
+              const newEventRef = push(ref(db2, "Upload Engagement"));
+              set(newEventRef, eventData)
+                .then(() => {
+                  console.log("Event data uploaded successfully");
+                  alert("Event data uploaded successfully");
+
+                  // Clear form fields
+                  clearFormFields();
+
+                  // Dismiss the modal
+                  document.getElementById("postModalpo").style.display = "none";
+                })
+                .catch((error) => {
+                  console.error("Error uploading event data:", error);
+                  alert("Error uploading event data. Please try again.");
+                });
+            })
+            .catch((error) => {
+              console.error("Error uploading file:", error);
+              alert("Error uploading file. Please try again.");
+            });
+        } else {
+          const newEventRef = push(ref(db2, "Upload Engagement"));
+          set(newEventRef, eventData)
+            .then(() => {
+              console.log("Event data uploaded successfully");
+              alert("Event data uploaded successfully");
+
+              // Clear form fields
+              clearFormFields();
+
+              // Dismiss the modal
+              document.getElementById("postModalpo").style.display = "none";
+            })
+            .catch((error) => {
+              console.error("Error uploading event data:", error);
+              alert("Error uploading event data. Please try again.");
+            });
+        }
+      }
+
+      function clearFormFields() {
+        // Clear all form fields here
+        document.getElementById("titlepost").value = "";
+        document.getElementById("campuspost").value = "";
+        document.getElementById("startdate").value = "";
+        document.getElementById("enddate").value = "";
+        document.getElementById("introductionPost").value = "";
+        document.getElementById("objectivePost").value = "";
+        document.getElementById("instructionPost").value = "";
+        document.getElementById("Locationpost").value = "";
+        document.getElementById("campus").value = "";
+        document.getElementById("actpts").value = "";
+        document.getElementById("targparty").value = "";
+        document.getElementById("facname").value = "";
+        document.getElementById("facnamecon").value = "";
+        document.getElementById("filePost").value = "";
+        document.getElementById("imagepost").src = "";
+      }
+      function validateForm() {
+        // List of required field IDs
+        const requiredFields = [
+          "titlepost",
+          "campuspost",
+          "startdate",
+          "enddate",
+          "introductionPost",
+          "objectivePost",
+          "instructionPost",
+          "Locationpost",
+          "campus",
+          "actpts",
+          "targparty",
+          "filePost",
+          "facname",
+          "facnamecon",
+          // Add more field IDs as needed
+        ];
+
+        // Check if all required fields are filled in
+        for (const fieldId of requiredFields) {
+          const fieldValue = document.getElementById(fieldId).value.trim();
+          if (fieldValue === "") {
+            return false; // Return false if any required field is empty
+          }
+        }
+
+        return true; // Return true if all required fields are filled in
+      }
+
+      // Add an event listener to detect changes in authentication state
+      onAuthStateChanged(auth2, (user) => {
+        // You can handle authentication state changes here
+        if (user) {
+          console.log("User is logged in:", user);
+        } else {
+          console.log("User is logged out");
+        }
       });
-  }
-}
-
-function clearFormFields() {
-  // Clear all form fields here
-  document.getElementById("titlepost").value = "";
-  document.getElementById("campuspost").value = "";
-  document.getElementById("startdate").value = "";
-  document.getElementById("enddate").value = "";
-  document.getElementById("introductionPost").value = "";
-  document.getElementById("objectivePost").value = "";
-  document.getElementById("instructionPost").value = "";
-  document.getElementById("Locationpost").value = "";
-  document.getElementById("campus").value = "";
-  document.getElementById("actpts").value = "";
-  document.getElementById("targparty").value = "";
-  document.getElementById("facname").value = "";
-  document.getElementById("facnamecon").value = "";
-  document.getElementById("filePost").value = "";
-  document.getElementById("imagepost").src = ""; 
-}
-function validateForm() {
-  // List of required field IDs
-  const requiredFields = [
-    "titlepost",
-    "campuspost",
-    "startdate",
-    "enddate",
-    "introductionPost",
-    "objectivePost",
-    "instructionPost",
-    "Locationpost",
-    "campus",
-    "actpts",
-    "targparty",
-    "filePost",
-    "facname",
-    "facnamecon",
-    // Add more field IDs as needed
-  ];
-
-  // Check if all required fields are filled in
-  for (const fieldId of requiredFields) {
-    const fieldValue = document.getElementById(fieldId).value.trim();
-    if (fieldValue === "") {
-      return false; // Return false if any required field is empty
-    }
-  }
-
-  return true; // Return true if all required fields are filled in
-}
-
-  // Add an event listener to detect changes in authentication state
-  onAuthStateChanged(auth2, (user) => {
-    // You can handle authentication state changes here
-    if (user) {
-      console.log('User is logged in:', user);
-    } else {
-      console.log('User is logged out');
-    }
-  });
-</script>
-
-
+    </script>
   </body>
 </html>

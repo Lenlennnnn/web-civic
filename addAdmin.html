@@ -15,6 +15,10 @@
       rel="stylesheet"
       href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
     <style>
       .container {
         position: relative;
@@ -188,6 +192,26 @@
         width: 150px;
         height: 150px;
       }
+
+      .toggle-password {
+        position: absolute;
+        right: 14%;
+        top: 114.5%;
+        cursor: pointer;
+      }
+
+      /* Additional styling for the icon, adjust as needed */
+      #passwordIcon,
+      #confirmPasswordIcon {
+        color: #aaa;
+      }
+
+      #toggleConfirmPassword {
+        position: absolute;
+        right: 14%;
+        top: 129%;
+        cursor: pointer;
+      }
     </style>
   </head>
 
@@ -293,6 +317,10 @@
                 required
                 placeholder="Your password"
               />
+              <span id="togglePassword" class="toggle-password">
+                <i id="passwordIcon" class="fas fa-eye"></i>
+              </span>
+
               <label for="confirmpassword">Confirm Password:</label>
               <input
                 type="password"
@@ -301,8 +329,9 @@
                 required
                 placeholder="Re-type password"
               />
-              
-
+              <span id="toggleConfirmPassword" class="toggle-password">
+                <i id="confirmPasswordIcon" class="fas fa-eye"></i>
+              </span>
               <button type="button" id="subbtn">Create Account</button>
             </form>
           </div>
@@ -368,6 +397,44 @@
         aria-hidden="true"
       ></div>
     </div>
+
+    <script>
+      const passwordField = document.getElementById("password");
+      const togglePassword = document.getElementById("togglePassword");
+      const passwordIcon = document.getElementById("passwordIcon");
+
+      togglePassword.addEventListener("click", function () {
+        if (passwordField.type === "password") {
+          passwordField.type = "text";
+          passwordIcon.classList.remove("fa-eye");
+          passwordIcon.classList.add("fa-eye-slash");
+        } else {
+          passwordField.type = "password";
+          passwordIcon.classList.remove("fa-eye-slash");
+          passwordIcon.classList.add("fa-eye");
+        }
+      });
+
+      const confirmPasswordField = document.getElementById("confirmpassword");
+      const toggleConfirmPassword = document.getElementById(
+        "toggleConfirmPassword"
+      );
+      const confirmPasswordIcon = document.getElementById(
+        "confirmPasswordIcon"
+      );
+
+      toggleConfirmPassword.addEventListener("click", function () {
+        if (confirmPasswordField.type === "password") {
+          confirmPasswordField.type = "text";
+          confirmPasswordIcon.classList.remove("fa-eye");
+          confirmPasswordIcon.classList.add("fa-eye-slash");
+        } else {
+          confirmPasswordField.type = "password";
+          confirmPasswordIcon.classList.remove("fa-eye-slash");
+          confirmPasswordIcon.classList.add("fa-eye");
+        }
+      });
+    </script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -432,101 +499,105 @@
 
       submit.addEventListener("click", RegisterAdmin);
 
-      document.getElementById("MainForm").addEventListener("keydown", function (event) {
-  if (event.key === "Enter") {
-    // Prevent the default behavior (form submission) to avoid a page reload
-    event.preventDefault();
+      document
+        .getElementById("MainForm")
+        .addEventListener("keydown", function (event) {
+          if (event.key === "Enter") {
+            // Prevent the default behavior (form submission) to avoid a page reload
+            event.preventDefault();
 
-    // Trigger the click event of the submit button
-    document.getElementById("subbtn").click();
-  }
-});
-function RegisterAdmin(event) {
-  event.preventDefault();
-  if (!areAllFieldsFilled()) {
-    alert("Please fill out all the fields.");
-    return;
-  }
-  const firstNameValue = firstname.value;
-  if (!isValidName(firstNameValue)) {
-    alert("Invalid first name. Please enter a valid name.");
-    return;
-  }
+            // Trigger the click event of the submit button
+            document.getElementById("subbtn").click();
+          }
+        });
+      function RegisterAdmin(event) {
+        event.preventDefault();
+        if (!areAllFieldsFilled()) {
+          alert("Please fill out all the fields.");
+          return;
+        }
+        const firstNameValue = firstname.value;
+        if (!isValidName(firstNameValue)) {
+          alert("Invalid first name. Please enter a valid name.");
+          return;
+        }
 
-  // Validate middle name
-  const middleNameValue = middlename.value;
-  if (!isValidName(middleNameValue)) {
-    alert("Invalid middle name. Please enter a valid name.");
-    return;
-  }
+        // Validate middle name
+        const middleNameValue = middlename.value;
+        if (!isValidName(middleNameValue)) {
+          alert("Invalid middle name. Please enter a valid name.");
+          return;
+        }
 
-  // Validate last name
-  const lastNameValue = lastname.value;
-  if (!isValidName(lastNameValue)) {
-    alert("Invalid last name. Please enter a valid name.");
-    return;
-  }
-  // Get the password and confirmation password input values
-  const passwordValue = password.value;
-  const confirmPasswordValue = confirmpassword.value;
+        // Validate last name
+        const lastNameValue = lastname.value;
+        if (!isValidName(lastNameValue)) {
+          alert("Invalid last name. Please enter a valid name.");
+          return;
+        }
+        // Get the password and confirmation password input values
+        const passwordValue = password.value;
+        const confirmPasswordValue = confirmpassword.value;
 
-  const passwordRegex = /^(?=.*[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
+        const passwordRegex =
+          /^(?=.*[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
 
-  // Check if the password meets the criteria
-  if (!passwordRegex.test(passwordValue)) {
-    alert("Password must be alphanumeric and have a minimum length of 8 characters.");
-    return;
-  }
+        // Check if the password meets the criteria
+        if (!passwordRegex.test(passwordValue)) {
+          alert(
+            "Password must be alphanumeric and have a minimum length of 8 characters."
+          );
+          return;
+        }
 
-  // Check if the confirmation password matches the password
-  if (passwordValue !== confirmPasswordValue) {
-    alert("Confirmation password does not match the password.");
-    return;
-  }
+        // Check if the confirmation password matches the password
+        if (passwordValue !== confirmPasswordValue) {
+          alert("Confirmation password does not match the password.");
+          return;
+        }
 
-  function isValidName(name) {
-  // Allow letters, spaces, dot (.), comma (,), and hyphen (-)
-  const nameRegex = /^[A-Za-z.,-\s]+$/;
-  return nameRegex.test(name);
-}
-createUserWithEmailAndPassword(auth, email.value, passwordValue)
-    .then((userCredential) => {
-      // User registered successfully
-      const user = userCredential.user;
+        function isValidName(name) {
+          // Allow letters, spaces, dot (.), comma (,), and hyphen (-)
+          const nameRegex = /^[A-Za-z.,-\s]+$/;
+          return nameRegex.test(name);
+        }
+        createUserWithEmailAndPassword(auth, email.value, passwordValue)
+          .then((userCredential) => {
+            // User registered successfully
+            const user = userCredential.user;
 
-      // Store additional user data in the database
-      saveUserData(user.uid);
+            // Store additional user data in the database
+            saveUserData(user.uid);
 
-      // Close the modal after a short delay (e.g., 500 milliseconds)
-      setTimeout(() => {
-        closeModal();
-        resetFormFields();
-      }, 500);
-    })
-    .catch((error) => {
-      // Handle errors here
-      alert(error.message);
-      console.error(error);
-    });
-}
+            // Close the modal after a short delay (e.g., 500 milliseconds)
+            setTimeout(() => {
+              closeModal();
+              resetFormFields();
+            }, 500);
+          })
+          .catch((error) => {
+            // Handle errors here
+            alert(error.message);
+            console.error(error);
+          });
+      }
 
-function areAllFieldsFilled() {
-  // Define an array of field elements
-  const fieldElements = [
-    firstname,
-    middlename,
-    lastname,
-    password,
-    gender,
-    campus,
-    email,
-    confirmpassword, // Assuming confirmpassword is declared somewhere
-  ];
+      function areAllFieldsFilled() {
+        // Define an array of field elements
+        const fieldElements = [
+          firstname,
+          middlename,
+          lastname,
+          password,
+          gender,
+          campus,
+          email,
+          confirmpassword, // Assuming confirmpassword is declared somewhere
+        ];
 
-  // Check if any field is empty
-  return fieldElements.every((field) => field.value.trim() !== "");
-}
-
+        // Check if any field is empty
+        return fieldElements.every((field) => field.value.trim() !== "");
+      }
 
       function resetFormFields() {
         document.getElementById("MainForm").reset();
@@ -656,7 +727,7 @@ function areAllFieldsFilled() {
           <p><strong>Contact Number:<input class="form-control" id ="" type="text" value="${userData.contactNumber}" readonly></input></strong></p>
 
 
-    
+
         `;
             } else {
               modalBodyContent.innerHTML = `<p>No user details found.</p>`;

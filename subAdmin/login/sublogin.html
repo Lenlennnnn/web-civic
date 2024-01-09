@@ -22,6 +22,10 @@
     <link rel="stylesheet" type="text/css" href="css/util.css" />
     <link rel="stylesheet" type="text/css" href="css/main.css" />
     <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
     <style>
       .txt2 {
         text-decoration: underline;
@@ -35,9 +39,30 @@
         color: aqua;
       }
       .txt1 {
-  margin-left: 270px; 
-  text-decoration: underline;
-}
+        margin-left: 270px;
+        text-decoration: underline;
+      }
+      .password-container {
+        position: relative;
+        display: inline-block;
+      }
+
+      .input100 {
+        padding-right: 30px; /* Adjust as needed based on icon size */
+      }
+
+      .toggle-password {
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
+
+      /* Additional styling for the icon, adjust as needed */
+      #passwordIcon {
+        color: #aaa;
+      }
     </style>
   </head>
 
@@ -84,11 +109,13 @@
                 placeholder="Enter password"
                 id="passwordfield"
               />
+              <span id="togglePassword" class="toggle-password">
+                <i id="passwordIcon" class="fas fa-eye"></i>
+              </span>
               <span class="focus-input100"></span>
             </div>
 
             <div class="flex-sb-m w-full p-b-30">
-        
               <div>
                 <a href="../forgot.html" class="txt1"> Forgot Password? </a>
               </div>
@@ -106,7 +133,23 @@
     <!--===============================================================================================-->
     <script src="js/main.js"></script>
     <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script>
+      const passwordField = document.getElementById("passwordfield");
+      const togglePassword = document.getElementById("togglePassword");
+      const passwordIcon = document.getElementById("passwordIcon");
 
+      togglePassword.addEventListener("click", function () {
+        if (passwordField.type === "password") {
+          passwordField.type = "text";
+          passwordIcon.classList.remove("fa-eye");
+          passwordIcon.classList.add("fa-eye-slash");
+        } else {
+          passwordField.type = "password";
+          passwordIcon.classList.remove("fa-eye-slash");
+          passwordIcon.classList.add("fa-eye");
+        }
+      });
+    </script>
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
       import {
@@ -177,16 +220,20 @@
           );
         }
       });
-           document.getElementById("usernamefield").addEventListener("keydown", handleEnterKey);
-document.getElementById("passwordfield").addEventListener("keydown", handleEnterKey);
+      document
+        .getElementById("usernamefield")
+        .addEventListener("keydown", handleEnterKey);
+      document
+        .getElementById("passwordfield")
+        .addEventListener("keydown", handleEnterKey);
 
-// Function to handle Enter key press
-function handleEnterKey(event) {
-    if (event.key === "Enter") {
-        // Trigger the click event on the login button
-        loginBtn.click();
-    }
-}
+      // Function to handle Enter key press
+      function handleEnterKey(event) {
+        if (event.key === "Enter") {
+          // Trigger the click event on the login button
+          loginBtn.click();
+        }
+      }
     </script>
   </body>
 </html>

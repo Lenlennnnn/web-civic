@@ -15,6 +15,11 @@
       rel="stylesheet"
       href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+
     <style>
       .container {
         position: relative;
@@ -308,19 +313,18 @@
 
       /* CSS for updated modal */
       .modalm {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  margin: auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 50%; /* You can adjust the width as needed */
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0);
-}
-
+        display: none;
+        position: fixed;
+        z-index: 1;
+        margin: auto;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 50%; /* You can adjust the width as needed */
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0);
+      }
 
       .modal-contentm {
         background-color: #fefefe;
@@ -404,7 +408,6 @@
       }
 
       /* Styles for the password input fields */
-   
 
       /* Styles for the email label */
       .emailLabel {
@@ -414,6 +417,26 @@
       /* Styles for the password label */
       .passwordLabel {
         margin-left: 5px;
+      }
+
+      .toggle-password {
+        position: absolute;
+        right: 13%;
+        top: 114.5%;
+        cursor: pointer;
+      }
+
+      /* Additional styling for the icon, adjust as needed */
+      #icon,
+      #confirmIcon {
+        color: #aaa;
+      }
+
+      #toggleConfirmPassword {
+        position: absolute;
+        right: 13%;
+        top: 129%;
+        cursor: pointer;
       }
     </style>
   </head>
@@ -465,16 +488,14 @@
       </a>
       <div class="modalm" id="myModalm">
         <div class="modal-contentm" id="modalcentm">
-         <span class="closem" id="closeModalEx">&times;</span>
+          <span class="closem" id="closeModalEx">&times;</span>
           <h4>Add Multiple Accounts</h4>
           <hr />
           <button type="button" id="addrow" class="btn btn-dark">
             Add row
           </button>
           <form id="formadd">
-            <div class="row" id="inputrow">
-          
-            </div>
+            <div class="row" id="inputrow" style="width: 205%"></div>
             <button type="submit" id="subac">Submit</button>
           </form>
         </div>
@@ -560,6 +581,9 @@
                 required
                 placeholder="Your password"
               />
+              <span id="togglePassword" class="toggle-password">
+                <i id="icon" class="fas fa-eye"></i>
+              </span>
               <label for="password">Confirm Password:</label>
               <input
                 type="password"
@@ -568,6 +592,9 @@
                 required
                 placeholder="Re-type password"
               />
+              <span id="toggleConfirmPassword" class="toggle-password">
+                <i id="confirmIcon" class="fas fa-eye"></i>
+              </span>
 
               <button type="submit" id="createbtnacc">Create Account</button>
             </form>
@@ -762,6 +789,41 @@
       new DataTable("#example");
     </script>
 
+    <script>
+      const passwordField = document.getElementById("password");
+      const togglePassword = document.getElementById("togglePassword");
+      const icon = document.getElementById("icon");
+
+      togglePassword.addEventListener("click", function () {
+        if (passwordField.type === "password") {
+          passwordField.type = "text";
+          icon.classList.remove("fa-eye");
+          icon.classList.add("fa-eye-slash");
+        } else {
+          passwordField.type = "password";
+          icon.classList.remove("fa-eye-slash");
+          icon.classList.add("fa-eye");
+        }
+      });
+
+      const confirmPasswordField = document.getElementById("confirmpassword");
+      const toggleConfirmPassword = document.getElementById(
+        "toggleConfirmPassword"
+      );
+      const confirmIcon = document.getElementById("confirmIcon");
+
+      toggleConfirmPassword.addEventListener("click", function () {
+        if (confirmPasswordField.type === "password") {
+          confirmPasswordField.type = "text";
+          confirmIcon.classList.remove("fa-eye");
+          confirmIcon.classList.add("fa-eye-slash");
+        } else {
+          confirmPasswordField.type = "password";
+          confirmIcon.classList.remove("fa-eye-slash");
+          confirmIcon.classList.add("fa-eye");
+        }
+      });
+    </script>
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
@@ -812,31 +874,41 @@
         const confirmPasswordValue = confirmpassword.value;
 
         if (
-    !firstname.value ||
-    !middlename.value ||
-    !lastname.value ||
-    !password.value ||
-    !confirmpassword.value ||
-    !gender.value ||
-    !campus.value ||
-    !email.value
-  ) {
-    alert("Please fill in all the fields.");
-    return;
-  }
+          !firstname.value ||
+          !middlename.value ||
+          !lastname.value ||
+          !password.value ||
+          !confirmpassword.value ||
+          !gender.value ||
+          !campus.value ||
+          !email.value
+        ) {
+          alert("Please fill in all the fields.");
+          return;
+        }
 
-        if (!validateName(firstname.value) || !validateName(middlename.value) || !validateName(lastname.value)) {
-    alert("Invalid name format. Only alphabets, commas, hyphens, periods, and spaces are allowed.");
-    return;
-  }
- if (!validatePassword(passwordValue)) {
-        alert("Invalid password format. Password must be alphanumeric or symbols and have a minimum length of 8 characters.");
-        return;
-    }
-    if (passwordValue !== confirmPasswordValue) {
-        alert("Passwords do not match. Please make sure the passwords match.");
-        return;
-    }
+        if (
+          !validateName(firstname.value) ||
+          !validateName(middlename.value) ||
+          !validateName(lastname.value)
+        ) {
+          alert(
+            "Invalid name format. Only alphabets, commas, hyphens, periods, and spaces are allowed."
+          );
+          return;
+        }
+        if (!validatePassword(passwordValue)) {
+          alert(
+            "Invalid password format. Password must be alphanumeric or symbols and have a minimum length of 8 characters."
+          );
+          return;
+        }
+        if (passwordValue !== confirmPasswordValue) {
+          alert(
+            "Passwords do not match. Please make sure the passwords match."
+          );
+          return;
+        }
         createUserWithEmailAndPassword(auth, email.value, password.value)
           .then((userCredential) => {
             // User registered successfully
@@ -852,28 +924,26 @@
           });
       }
       function validatePassword(password) {
-
-    const regex = /^(?=.*[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
-    return regex.test(password);
-}
+        const regex = /^(?=.*[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
+        return regex.test(password);
+      }
       function validateName(name) {
-
-  const regex = /^[A-Za-z,-.\s]+$/;
-  return regex.test(name);
-}
-function generateTimestamp() {
-  const currentDate = new Date();
-  const options = {
-    timeZone: 'Asia/Manila',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  };
-  return currentDate.toLocaleString('en-US', options).replace(',', '');
-}
+        const regex = /^[A-Za-z,-.\s]+$/;
+        return regex.test(name);
+      }
+      function generateTimestamp() {
+        const currentDate = new Date();
+        const options = {
+          timeZone: "Asia/Manila",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        };
+        return currentDate.toLocaleString("en-US", options).replace(",", "");
+      }
 
       function saveUserData(userId) {
         const dbRef = ref(db);
@@ -1041,40 +1111,38 @@ function generateTimestamp() {
       }
 
       populateDataTable();
-    
     </script>
 
-      <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-    import {
-      getDatabase,
-      ref,
-      get,
-      push,
-      set,
-      onValue,
-      onChildRemoved,
-    } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-    } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
-    const firebaseConfig2 = {
-      apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
-      authDomain: "civicall-app-a54d1.firebaseapp.com",
-      databaseURL:
-        "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "civicall-app-a54d1",
-      storageBucket: "civicall-app-a54d1.appspot.com",
-      messagingSenderId: "909514632764",
-      appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
-      measurementId: "G-0BVYE5XJGV",
-    };
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+        push,
+        set,
+        onValue,
+        onChildRemoved,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+      const firebaseConfig2 = {
+        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+        authDomain: "civicall-app-a54d1.firebaseapp.com",
+        databaseURL:
+          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "civicall-app-a54d1",
+        storageBucket: "civicall-app-a54d1.appspot.com",
+        messagingSenderId: "909514632764",
+        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+        measurementId: "G-0BVYE5XJGV",
+      };
 
-    const app2 = initializeApp(firebaseConfig2);
-    const db2 = getDatabase(app2);
-    const auth2 = getAuth(app2);
-
+      const app2 = initializeApp(firebaseConfig2);
+      const db2 = getDatabase(app2);
+      const auth2 = getAuth(app2);
 
       document
         .getElementById("setmodalbtn")
@@ -1127,7 +1195,7 @@ function generateTimestamp() {
         var emailInput = document.createElement("input");
         emailInput.setAttribute("type", "email");
         emailInput.setAttribute("name", "email" + counter);
-        emailInput.setAttribute("placeholder", "Enter your email...");
+        emailInput.setAttribute("placeholder", "Enter your email");
         emailInput.id = "emailInput" + counter; // Unique ID for email input
         emailInput.classList.add("emailInput"); // Add class for styling
 
@@ -1137,7 +1205,6 @@ function generateTimestamp() {
         // Append elements to their respective parents
         newColEmail.appendChild(emailLabel);
         newColEmail.appendChild(emailInput);
-    
 
         // Append columns to the new row
         newRow.appendChild(newColEmail);
@@ -1154,129 +1221,129 @@ function generateTimestamp() {
           addRow();
         });
 
-        document.getElementById("subac").addEventListener("click", function (event) {
-    event.preventDefault();
+      document
+        .getElementById("subac")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
 
-    // Check if at least one email is provided
-    var inputRow = document.getElementById("inputrow");
-    var emailInputs = inputRow.getElementsByClassName("emailInput");
-    var hasEmail = Array.from(emailInputs).some(function (emailInput) {
-        return emailInput.value.trim() !== "";
-    });
+          // Check if at least one email is provided
+          var inputRow = document.getElementById("inputrow");
+          var emailInputs = inputRow.getElementsByClassName("emailInput");
+          var hasEmail = Array.from(emailInputs).some(function (emailInput) {
+            return emailInput.value.trim() !== "";
+          });
 
-    if (!hasEmail) {
-        alert("Put an Email First");
-        return; // Stop further processing
-    }
+          if (!hasEmail) {
+            alert("Put an Email First");
+            return; // Stop further processing
+          }
 
-    // Confirmation alert
-    if (confirm("Are you sure you want to register these users?")) {
-        // Register users
-        registerUsers();
-    }
-});
+          // Confirmation alert
+          if (confirm("Are you sure you want to register these users?")) {
+            // Register users
+            registerUsers();
+          }
+        });
 
+      function registerUsers() {
+        var inputRow = document.getElementById("inputrow");
+        var emailInputs = inputRow.getElementsByClassName("emailInput");
 
-function registerUsers() {
-    var inputRow = document.getElementById("inputrow");
-    var emailInputs = inputRow.getElementsByClassName("emailInput");
-
-    // Fetch default password from the Realtime Database
-    var defaultPassRef = ref(db2, "defaultPass/pass");
-    get(defaultPassRef).then((snapshot) => {
-        if (snapshot.exists()) {
+        // Fetch default password from the Realtime Database
+        var defaultPassRef = ref(db2, "defaultPass/pass");
+        get(defaultPassRef).then((snapshot) => {
+          if (snapshot.exists()) {
             var defaultPassword = snapshot.val();
             // Iterate through each email input
             Array.from(emailInputs).forEach(function (emailInput) {
-                var email = emailInput.value.trim();
+              var email = emailInput.value.trim();
 
-                if (email !== "") {
-                    // Register the user with the fetched default password
-                    registerUser(email, defaultPassword);
-                }
+              if (email !== "") {
+                // Register the user with the fetched default password
+                registerUser(email, defaultPassword);
+              }
             });
             removeAddedRows();
-        } else {
+          } else {
             alert("Error fetching default password.");
-        }
-    });
-}
+          }
+        });
+      }
 
-
-function registerUser(email, password) {
-    // Check if the email already exists
-    checkIfEmailExists(email).then(function (emailExists) {
-        if (!emailExists) {
+      function registerUser(email, password) {
+        // Check if the email already exists
+        checkIfEmailExists(email).then(function (emailExists) {
+          if (!emailExists) {
             // Email does not exist, proceed with registration
             createUserWithEmailAndPassword(auth2, email, password)
-                .then((userCredential) => {
-                    // User registered successfully
-                    var user = userCredential.user;
-                    alert("User with email " + email + " registered successfully!");
-                    saveUserData(user.uid, email);
-                })
-                .catch((error) => {
-                    // Handle errors during registration
-                    alert("Error registering user: " + error.message);
-                });
-        } else {
+              .then((userCredential) => {
+                // User registered successfully
+                var user = userCredential.user;
+                alert("User with email " + email + " registered successfully!");
+                saveUserData(user.uid, email);
+              })
+              .catch((error) => {
+                // Handle errors during registration
+                alert("Error registering user: " + error.message);
+              });
+          } else {
             // Email already exists, show alert
             alert("Email " + email + " already exists!");
-        }
-    });
-}
+          }
+        });
+      }
 
-function checkIfEmailExists(email) {
-    // Check if the email already exists in the database
-    var usersRef = ref(db2, "Users");
-    return get(usersRef).then((snapshot) => {
-        if (snapshot.exists()) {
+      function checkIfEmailExists(email) {
+        // Check if the email already exists in the database
+        var usersRef = ref(db2, "Users");
+        return get(usersRef).then((snapshot) => {
+          if (snapshot.exists()) {
             var users = snapshot.val();
             return Object.values(users).some((user) => user.email === email);
-        }
-        return false;
-    });
-}
-function generateTimestamp() {
-  const currentDate = new Date();
-  const options = {
-    timeZone: 'Asia/Manila',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  };
-  return currentDate.toLocaleString('en-US', options).replace(',', '');
-}
-function saveUserData(uid, email) {
-    // Save additional user data to the database
-    var usersRef = ref(db2, "Users/" + uid);
-    set(usersRef, {
-        CurrentEngagement: 0,
-        ImageProfile: "",
-        activepts: 0,
-        address: "",
-        birthday: "",
-        campus: "",
-        course:"",
-        yearandSection:"",
-        email: email,
-        firstname: "",
-        finishactivity: 0,
-        gender: "",
-        lastname: "",
-        lastLogin: "",
-        middle: "",
-        phoneno: "",
-        timestamp: generateTimestamp(),
-        uid: uid,
-        userType: "",
-        srcode:"",
-        verificationStatus: true,
-    });
-}
+          }
+          return false;
+        });
+      }
+      function generateTimestamp() {
+        const currentDate = new Date();
+        const options = {
+          timeZone: "Asia/Manila",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        };
+        return currentDate.toLocaleString("en-US", options).replace(",", "");
+      }
+      function saveUserData(uid, email) {
+        // Save additional user data to the database
+        var usersRef = ref(db2, "Users/" + uid);
+        set(usersRef, {
+          CurrentEngagement: 0,
+          ImageProfile: "",
+          activepts: 0,
+          address: "",
+          birthday: "",
+          campus: "",
+          course: "",
+          yearandSection: "",
+          email: email,
+          firstname: "",
+          finishactivity: 0,
+          gender: "",
+          lastname: "",
+          lastLogin: "",
+          middle: "",
+          phoneno: "",
+          timestamp: generateTimestamp(),
+          uid: uid,
+          userType: "",
+          srcode: "",
+          verificationStatus: true,
+        });
+      }
 
       // Function to remove added rows, reset form, and close modal
       function removeAddedRows() {
@@ -1319,9 +1386,11 @@ function saveUserData(uid, email) {
             closeAllModals();
           }
         });
-  document.getElementById("closeModalEx").addEventListener("click", function () {
-        closeSpecificModal();
-    });
+      document
+        .getElementById("closeModalEx")
+        .addEventListener("click", function () {
+          closeSpecificModal();
+        });
       // Function to close all open modals
       function closeAllModals() {
         var modals = document.querySelectorAll(".modalrr");
