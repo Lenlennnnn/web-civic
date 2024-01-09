@@ -1400,7 +1400,7 @@
                           <label>Category</label>
                           <select class="form-control">
                             <option value="" disabled selected>
-                              Choose Category
+                              Filter Category
                             </option>
                             <option value="Tree Planting">Tree Planting</option>
                             <option value="Fund Raising">Fund Raising</option>
@@ -1416,7 +1416,7 @@
                           <label>Campus</label>
                           <select class="form-control">
                             <option value="" disabled selected>
-                              Choose Campus
+                              Filter Campus
                             </option>
                             <option value="ARASOF Nasugbu Campus">
                               ARASOF Nasugbu Campus
@@ -2407,16 +2407,26 @@ document.getElementById("category").addEventListener("change", function () {
     }
   };
 
-  // Function to update the total user count in the HTML element
-  const updateTotalUsers = (snapshot) => {
-    const totalUsers = snapshot.size; // Use size property for version 8 or above
-    const formattedCount = formatUserCount(totalUsers);
-    const totalNumElement = document.getElementById('totalNum');
-    totalNumElement.textContent = formattedCount;
-  };
+const updateTotalVerifiedUsers = (snapshot) => {
+  const users = snapshot.val();
+  let totalVerifiedUsers = 0;
 
-  // Listen for changes in the "Users" node and update the total count
-  onValue(usersRef, updateTotalUsers);
+  // Iterate through the users and count only those with verificationStatus set to true
+  for (const userId in users) {
+    const user = users[userId];
+    if (user && user.verificationStatus === true) {
+      totalVerifiedUsers++;
+    }
+  }
+
+  // Format and update the total user count in the HTML element
+  const formattedCount = formatUserCount(totalVerifiedUsers);
+  const totalNumElement = document.getElementById('totalNum');
+  totalNumElement.textContent = formattedCount;
+};
+
+// Listen for changes in the "Users" node and update the total verified user count
+onValue(usersRef, updateTotalVerifiedUsers);
 </script>
 
 
