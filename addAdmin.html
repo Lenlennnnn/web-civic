@@ -52,7 +52,7 @@
         /* Position at the horizontal center of the viewport */
         transform: translate(-50%, -50%);
         /* Center the content */
-        max-width: 46%;
+        max-width: 35%;
         /* Limit the width of the content */
         height: 100%;
         background-color: white;
@@ -208,10 +208,24 @@
 
       #toggleConfirmPassword {
         position: absolute;
-        right: 14%;
-        top: 129%;
-        cursor: pointer;
+  right: 10px;
+  top: 40%;
+  transform: translateY(-50%);
+  cursor: pointer;
       }
+      
+      .password-container {
+  position: relative;
+}
+.toggle-password {
+  position: absolute;
+  right: 10px; 
+  top: 40%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+
     </style>
   </head>
 
@@ -310,28 +324,33 @@
               />
 
               <label for="password">Password:</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                required
-                placeholder="Your password"
-              />
-              <span id="togglePassword" class="toggle-password">
-                <i id="passwordIcon" class="fas fa-eye"></i>
-              </span>
+<div class="password-container">
+  <input
+    type="password"
+    id="password"
+    name="password"
+    required
+    placeholder="Your password"
+  />
+  <span id="togglePassword" class="toggle-password">
+    <i id="passwordIcon" class="fas fa-eye"></i>
+  </span>
+</div>
 
-              <label for="confirmpassword">Confirm Password:</label>
-              <input
-                type="password"
-                id="confirmpassword"
-                name="confirmpassword"
-                required
-                placeholder="Re-type password"
-              />
-              <span id="toggleConfirmPassword" class="toggle-password">
-                <i id="confirmPasswordIcon" class="fas fa-eye"></i>
-              </span>
+<label for="password">Confirm Password:</label>
+<div class="password-container">
+  <input
+    type="password"
+    id="confirmpassword"
+    name="password"
+    required
+    placeholder="Re-type password"
+  />
+  <span id="toggleConfirmPassword" class="toggle-password">
+    <i id="confirmPasswordIcon" class="fas fa-eye"></i>
+  </span>
+</div>
+
               <button type="button" id="subbtn">Create Account</button>
             </form>
           </div>
