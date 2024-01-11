@@ -250,6 +250,7 @@
 
       .password-container {
         position: relative;
+        width: 100%;
         display: inline-block;
       }
 
@@ -257,7 +258,7 @@
         padding-right: 30px; /* Adjust as needed based on icon size */
       }
 
-      .toggle-password {
+      .toggle-passwordCreate {
         position: absolute;
         right: 5px;
         top: 50%;
@@ -283,6 +284,21 @@
         right: 20px;
         top: 217px;
       }
+
+      #icon{
+        color: #aaa;
+      }
+
+      .password-container {
+  position: relative;
+}
+.toggle-password {
+  position: absolute;
+  right: 10px; 
+  top: 45%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
     </style>
   </head>
 
@@ -358,15 +374,17 @@
 
                 <!-- Header -->
                 <h2>Enter Code</h2>
-
-                <!-- Textfield for text and number input -->
+                <div class="password-container">
                 <input
                   type="password"
-                  id="textNumberField"
-                  name="textNumberField"
+                  id="textNumberFieldCode"
+                  name="textNumberFieldCode"
                   required
                 />
-
+                <span id="togglePasswordCode" class="toggle-password" onclick="togglePasswordCode()">
+                  <i id="icon" class="fas fa-eye"></i>
+                </span>
+              </div>
                 <!-- Proceed Button -->
                 <button type="button" id="proceedBtn">Proceed</button>
               </div>
@@ -431,7 +449,7 @@
                     required
                     placeholder="Your password"
                   />
-                  <span class="toggle-password">
+                  <span class="toggle-passwordCreate">
                     <i id="passnaicon" class="fas fa-eye toggle-icon"></i>
                   </span>
 
@@ -443,7 +461,7 @@
                     required
                     placeholder="Re-type password"
                   />
-                  <span id="toggleConfirmPassword" class="toggle-password">
+                  <span id="toggleConfirmPassword" class="toggle-passwordCreate">
                     <i id="passwordIconconfirm" class="fas fa-eye"></i>
                   </span>
 
@@ -510,6 +528,20 @@
           togglePasswordVisibility([passwordFields[index]], [icon]);
         });
       });
+      function togglePasswordCode() {
+      var passwordField = document.getElementById("textNumberFieldCode");
+      var toggleIcon = document.getElementById("icon");
+
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+        toggleIcon.classList.remove("fa-eye");
+        toggleIcon.classList.add("fa-eye-slash");
+      } else {
+        passwordField.type = "password";
+        toggleIcon.classList.remove("fa-eye-slash");
+        toggleIcon.classList.add("fa-eye");
+      }
+    }
     </script>
 
     <script type="module">
@@ -753,7 +785,7 @@
 
       // Function to clear input fields
       function clearInputFields() {
-        document.getElementById("textNumberField").value = "";
+        document.getElementById("textNumberFieldCode").value = "";
       }
 
       // Close the modal when clicking outside the modal content
@@ -763,7 +795,7 @@
           clearInputFields();
         }
       });
-      const textNumberField = document.getElementById("textNumberField");
+      const textNumberField = document.getElementById("textNumberFieldCode");
 
       textNumberField.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
@@ -774,7 +806,7 @@
       // Functionality when clicking the Proceed button in the first modal
       proceedBtn.addEventListener("click", async () => {
         const textNumberValue =
-          document.getElementById("textNumberField").value;
+          document.getElementById("textNumberFieldCode").value;
         clearInputFields();
         try {
           // Fetch the correct code from Firebase

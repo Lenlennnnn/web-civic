@@ -836,18 +836,18 @@
         /* Add any necessary styles for visibility */
       }
 
-      #choscho {
-        background-color: #333; /* Dark background color */
-        color: #fff; /* Text color */
-        border: 1px solid #333; /* Dark border */
+      #campusTarget {
+        background-color: #fff; /* Dark background color */
+        color: black; /* Text color */
+        border: 1px solid #ccc; /* Dark border */
         padding: 8px 16px; /* Adjust padding as needed */
         cursor: pointer; /* Change cursor on hover */
         transition: background-color 0.3s, color 0.3s; /* Smooth transition */
       }
 
-      #choscho:hover {
-        background-color: #555; /* Darker background color on hover */
-        border-color: #555; /* Darker border color on hover */
+      #campusTarget:hover {
+        background-color: #aaa; /* Darker background color on hover */
+        border-color: #aaa; /* Darker border color on hover */
         color: #fff; /* Text color on hover */
       }
 
@@ -885,7 +885,7 @@
       .checkboxna {
         position: relative;
         top: 10px;
-        right: 220px;
+        right: 290px;
       }
 
       .labelnato {
@@ -1339,25 +1339,29 @@
                                 </div>
                               </div>
 
+                              <div class="form-group">
                               <label
-                                for="campus"
+                                for="campusTarget"
                                 id="lblpt"
                                 style="color: black; text-align: left"
                                 >Target Campus:</label
                               >
-                              <button
-                                id="choscho"
-                                style="position: relative; right: 250px"
-                              >
-                                Select
-                              </button>
-
+            
+                              <input
+                              type="text"
+                              id="campusTarget"
+                              name="campusTarget"
+                              required
+                              placeholder="Enter Campus"
+                            />
                               <label
                                 for="targparty"
                                 id="lblpt"
                                 style="color: black; text-align: left"
                                 >Target Participant:</label
                               >
+                            </div>
+
                               <input
                                 type="text"
                                 id="targparty"
@@ -1384,18 +1388,6 @@
                                 pattern="[0-9]+"
                                 oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                               />
-
-                              <!-- Google Maps Location Field -->
-                      
-                            <input
-                            type="text"
-                            id="actpts"
-                            name="actpts"
-                            required
-                            placeholder="Please enter only numbers"
-                            pattern="[0-9]+"
-                            oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-                          />
                          
                               <label
                                 for="facname"
@@ -1437,14 +1429,8 @@
                               <input type="text" id="recipient" name="recipient" required placeholder="Provide the Recipient Number" style="display: none;">
                               
 
-                              <button
-                                id="postB"
-                                type="button"
-                                style="margin-left: 70%"
-                                onclick="submitForm()"
-                              >
-                                Post
-                              </button>
+                              <button id="postBtn" type="button" style="margin-left: 70%">Post</button>
+
 
                               <button type="button" id="cancelButton">
                                 Cancel
@@ -2020,7 +2006,7 @@
 
       // Get the modified modal and the button
       var modal = document.getElementById("myModalnm");
-      var btn = document.getElementById("choscho");
+      var btn = document.getElementById("campusTarget");
 
       // Get the close button inside the modified modal
       var span = document.getElementsByClassName("closenm")[0];
@@ -2359,64 +2345,16 @@
       const auth2 = getAuth(app2);
       const storage2 = getStorage(app2);
 
-      document
-        .getElementById("openPostModal")
-        .addEventListener("click", function () {
-          document.getElementById("postModalpo").style.display = "block";
-        });
-      document.addEventListener("DOMContentLoaded", function () {
-        document.getElementById("postB").addEventListener("click", function () {
-          // Display a confirmation dialog
-          if (confirm("Are you sure you want to submit the form?")) {
-            submitForm();
-          }
-        });
-      });
-
-      // Add event listener to close the modal when Cancel button is clicked
-      document
-        .getElementById("cancelButton")
-        .addEventListener("click", function () {
-          document.getElementById("postModalpo").style.display = "none";
-        });
-
-      // Add event listener to close the modal
-      document
-        .getElementById("closeModalpo")
-        .addEventListener("click", function () {
-          document.getElementById("postModalpo").style.display = "none";
-        });
-        document
-        .getElementById("filePost")
-        .addEventListener("change", function () {
-          // Get the file input element
-          const fileInput = document.getElementById("filePost");
-
-          // Get the image element
-          const imagePreview = document.getElementById("imagepost");
-
-          // Check if a file is selected
-          if (fileInput.files && fileInput.files[0]) {
-              const reader = new FileReader();
-
-              reader.onload = function (e) {
-                  // Update the image source with the selected file's data
-                  imagePreview.src = e.target.result;
-
-            // Show the image
-            imagePreview.removeAttribute("hidden");
-              };
-
-              // Read the selected file as a data URL
-              reader.readAsDataURL(fileInput.files[0]);
+      onAuthStateChanged(auth2, (user) => {
+    // You can handle authentication state changes here
+    if (user) {
+      console.log("User is logged in:", user);
     } else {
-        // Hide the image if no file is selected
-        imagePreview.setAttribute("hidden", "true");
-          }
-      });
+      console.log("User is logged out");
+    }
+  });
 
-
-      async function submitForm() {
+      function submitForm() {
         // Get data from the form fields
         const title = document.getElementById("titlepost").value;
         const category = document.getElementById("category").value;
@@ -2430,7 +2368,7 @@
         const location = document.getElementById("Locationpost").value;
   const recipient= document.getElementById("recipient").value;
   const paymentMethod= document.getElementById("paymentMethod").value;
-        const targetCampus = document.getElementById("campus").value;
+        const targetCampus = document.getElementById("campusTarget").value;
         const activePoints = parseInt(document.getElementById("actpts").value);
         const targetParticipant = parseInt(
           document.getElementById("targparty").value
@@ -2546,18 +2484,95 @@
             });
         }
       }
+    document.addEventListener("DOMContentLoaded", function () {
+  const imagePreview = document.getElementById("imagepost"); // Declare imagePreview here
+
+  document.getElementById("openPostModal").addEventListener("click", function () {
+    document.getElementById("postModalpo").style.display = "block";
+  });
+
+  document.getElementById("postBtn").addEventListener("click", function () {
+    if (confirm("Are you sure you want to submit the form?")) {
+      submitForm();
+    }
+  });
+
+
+  // Add event listener to close the modal when Cancel button is clicked
+  document.getElementById("cancelButton").addEventListener("click", function () {
+    document.getElementById("postModalpo").style.display = "none";
+  });
+
+  // Add event listener to close the modal
+  document.getElementById("closeModalpo").addEventListener("click", function () {
+    document.getElementById("postModalpo").style.display = "none";
+  });
+
+  document.getElementById("filePost").addEventListener("change", function () {
+    // Get the file input element
+    const fileInput = document.getElementById("filePost");
+
+    // Check if a file is selected
+    if (fileInput.files && fileInput.files[0]) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        // Update the image source with the selected file's data
+        imagePreview.src = e.target.result;
+
+        // Show the image
+        imagePreview.removeAttribute("hidden");
+      };
+
+      // Read the selected file as a data URL
+      reader.readAsDataURL(fileInput.files[0]);
+    } else {
+      // Hide the image if no file is selected
+      imagePreview.setAttribute("hidden", "true");
+    }
+  });
+
+  // Add event listener to campuspost element
+  document.getElementById("category").addEventListener("change", function () {
+    // Get the selected value from campuspost
+    const selectedValue = this.value;
+
+    // Get payment-related elements
+    const paymentLabel = document.getElementById("paymentLabel");
+    const paymentMethod = document.getElementById("paymentMethod");
+    const recipientLabel = document.getElementById("recipientLabel");
+    const recipient = document.getElementById("recipient");
+
+    // Check the selected value and update visibility accordingly
+    if (selectedValue === "Fund Raising" || selectedValue === "Donation") {
+      // Show payment-related elements
+      paymentLabel.style.display = "block";
+      paymentMethod.style.display = "block";
+      recipientLabel.style.display = "block";
+      recipient.style.display = "block";
+    } else {
+      // Hide payment-related elements
+      paymentLabel.style.display = "none";
+      paymentMethod.style.display = "none";
+      recipientLabel.style.display = "none";
+      recipient.style.display = "none";
+    }
+  });
+});
+
+   
 
       function clearFormFields() {
         // Clear all form fields here
         document.getElementById("titlepost").value = "";
-        document.getElementById("campuspost").value = "";
+        document.getElementById("category").value = "";
         document.getElementById("startdate").value = "";
         document.getElementById("enddate").value = "";
         document.getElementById("introductionPost").value = "";
         document.getElementById("objectivePost").value = "";
         document.getElementById("instructionPost").value = "";
         document.getElementById("Locationpost").value = "";
-        document.getElementById("campus").value = "";
+        document.getElementById("campusTarget").value = "";
         document.getElementById("actpts").value = "";
         document.getElementById("targparty").value = "";
         document.getElementById("facname").value = "";
@@ -2566,44 +2581,68 @@
         document.getElementById("imagepost").src = "";
       }
       function validateForm() {
-        // List of required field IDs
-        const requiredFields = [
-          "titlepost",
-          "campuspost",
-          "startdate",
-          "enddate",
-          "introductionPost",
-          "objectivePost",
-          "instructionPost",
-          "Locationpost",
-          "campus",
-          "actpts",
-          "targparty",
-          "filePost",
-          "facname",
-          "facnamecon",
-          // Add more field IDs as needed
-        ];
+  // List of required field IDs
+  const requiredFields = [
+    "titlepost",
+    "category",
+    "startdate",
+    "enddate",
+    "introductionPost",
+    "objectivePost",
+    "instructionPost",
+    "Locationpost",
+    "campusTarget",
+    "actpts",
+    "targparty",
+    "filePost",
+    "facname",
+    "facnamecon",
+    // Add more field IDs as needed
+  ];
 
-        // Check if all required fields are filled in
-        for (const fieldId of requiredFields) {
-          const fieldValue = document.getElementById(fieldId).value.trim();
-          if (fieldValue === "") {
-            return false; // Return false if any required field is empty
-          }
-        }
+  // Check if all required fields are filled in
+  for (const fieldId of requiredFields) {
+    const fieldElement = document.getElementById(fieldId);
 
-        // Get the selected category value
+    // Check if the element exists before accessing its value
+    if (!fieldElement) {
+      console.error(`Element with ID '${fieldId}' not found.`);
+      return false;
+    }
+
+    const fieldValue = fieldElement.value.trim();
+    if (fieldValue === "") {
+      return false; // Return false if any required field is empty
+    }
+  }
+
+  // Get the selected category value
   const selectedCategory = document.getElementById("category").value;
 
   // Additional validation for "Fund Raising" or "Donation" category
   if (selectedCategory === "Fund Raising" || selectedCategory === "Donation") {
-    const paymentMethod = document.getElementById("paymentMethod").value.trim();
-    const recipient = document.getElementById("recipient").value.trim();
+    const paymentMethod = document.getElementById("paymentMethod");
+
+    // Check if the element exists before accessing its value
+    if (!paymentMethod) {
+      console.error("Element with ID 'paymentMethod' not found.");
+      return false;
+    }
+
+    const paymentMethodValue = paymentMethod.value.trim();
+    const recipient = document.getElementById("recipient");
+
+    // Check if the element exists before accessing its value
+    if (!recipient) {
+      console.error("Element with ID 'recipient' not found.");
+      return false;
+    }
+
+    const recipientValue = recipient.value.trim();
 
     // Check if payment-related fields are filled in
-    if (paymentMethod === "" || recipient === "") {
-      alert('Please fill in all required fields for payment.');
+    if (paymentMethodValue === "" || recipientValue === "") {
+      alert("Please fill in all required fields for payment.");
       return false;
     }
   }
@@ -2612,56 +2651,22 @@
   const startdate = new Date(document.getElementById("startdate").value);
   const enddate = new Date(document.getElementById("enddate").value);
 
-  // Check if startdate is in the future
   const now = new Date();
-  if (startdate <= now) {
+  if (startdate && startdate <= now) {
     alert("Please select a start date and time in the future.");
     return false;
   }
 
-  if (enddate <= startdate) {
-    alert("Please select an end date and time greater than the start date and time.");
+  if (enddate && enddate <= startdate) {
+    alert(
+      "Please select an end date and time greater than the start date and time."
+    );
     return false;
   }
 
-  return true; // Return true if all required fields are filled in and dates are valid
-      }
+  return true;
+}
 
-      // Add an event listener to detect changes in authentication state
-      onAuthStateChanged(auth2, (user) => {
-        // You can handle authentication state changes here
-        if (user) {
-          console.log("User is logged in:", user);
-        } else {
-          console.log("User is logged out");
-        }
-      });
-    // Add event listener to campuspost element
-document.getElementById("category").addEventListener("change", function () {
-  // Get the selected value from campuspost
-  const selectedValue = this.value;
-
-  // Get payment-related elements
-  const paymentLabel = document.getElementById("paymentLabel");
-  const paymentMethod = document.getElementById("paymentMethod");
-  const recipientLabel = document.getElementById("recipientLabel");
-  const recipient = document.getElementById("recipient");
-
-  // Check the selected value and update visibility accordingly
-  if (selectedValue === "Fund Raising" || selectedValue === "Donation") {
-    // Show payment-related elements
-    paymentLabel.style.display = "block";
-    paymentMethod.style.display = "block";
-    recipientLabel.style.display = "block";
-    recipient.style.display = "block";
-  } else {
-    // Hide payment-related elements
-    paymentLabel.style.display = "none";
-    paymentMethod.style.display = "none";
-    recipientLabel.style.display = "none";
-    recipient.style.display = "none";
-  }
-});
 
 </script>
 <script type="module">
