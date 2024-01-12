@@ -1352,6 +1352,7 @@
                               id="campusTarget"
                               name="campusTarget"
                               required
+                              readonly
                               placeholder="Enter Campus"
                             />
                               <label
@@ -2440,31 +2441,46 @@
               return getDownloadURL(snapshot.ref);
             })
             .then((downloadURL) => {
-              // Add the downloadURL to the "image" property in eventData
-              eventData.image = downloadURL;
+  // Add the downloadURL to the "image" property in eventData
+  eventData.image = downloadURL;
 
-              // Upload data to the Firebase Realtime Database
-              const newEventRef = push(ref(db2, "Upload Engagement"));
-              set(newEventRef, eventData)
-                .then(() => {
-                  console.log("Event data uploaded successfully");
-                  alert("Event data uploaded successfully");
+  // Upload data to the Firebase Realtime Database
+  const newEventRef = push(ref(db2, "Upload Engagement"));
+  set(newEventRef, eventData)
+    .then(() => {
+      console.log("Event data uploaded successfully");
+      alert("Event data uploaded successfully");
 
-                  // Clear form fields
-                  clearFormFields();
+     document.getElementById("campusTarget").value = "";
+      document.getElementById("imagepost").setAttribute("hidden", "true");
 
-                  // Dismiss the modal
-                  document.getElementById("postModalpo").style.display = "none";
-                })
-                .catch((error) => {
-                  console.error("Error uploading event data:", error);
-                  alert("Error uploading event data. Please try again.");
-                });
-            })
-            .catch((error) => {
-              console.error("Error uploading file:", error);
-              alert("Error uploading file. Please try again.");
-            });
+      // Hide payment-related elements
+      const paymentLabel = document.getElementById("paymentLabel");
+      const paymentMethod = document.getElementById("paymentMethod");
+      const recipientLabel = document.getElementById("recipientLabel");
+      const recipient = document.getElementById("recipient");
+
+      if (paymentLabel && paymentMethod && recipientLabel && recipient) {
+        paymentLabel.style.display = "none";
+        paymentMethod.style.display = "none";
+        recipientLabel.style.display = "none";
+        recipient.style.display = "none";
+      }
+
+      clearFormFields();
+      clearCheckBoxes();
+      // Dismiss the modal
+      document.getElementById("postModalpo").style.display = "none";
+    })
+    .catch((error) => {
+      console.error("Error uploading event data:", error);
+      alert("Error uploading event data. Please try again.");
+    });
+})
+.catch((error) => {
+  console.error("Error uploading file:", error);
+  alert("Error uploading file. Please try again.");
+});
         } else {
           const newEventRef = push(ref(db2, "Upload Engagement"));
           set(newEventRef, eventData)
@@ -2472,7 +2488,7 @@
               console.log("Event data uploaded successfully");
               alert("Event data uploaded successfully");
 
-              // Clear form fields
+              clearCheckBoxes();
               clearFormFields();
 
               // Dismiss the modal
@@ -2558,10 +2574,42 @@
       recipient.style.display = "none";
     }
   });
+
+  var okButton = document.getElementById("okButton");
+
+// When the Ok button is clicked, close the modal and update campusTarget
+okButton.addEventListener("click", function () {
+    // Close the "myModalnm" modal
+    modal.style.display = "none";
+
+    // Get the form elements and campusTarget element
+    var campusForm = document.getElementById("campusForm");
+    var campusTarget = document.getElementById("campusTarget");
+
+    // Get the selected campuses
+    var selectedCampuses = [];
+    var checkboxes = campusForm.querySelectorAll(".checkboxna:checked");
+    checkboxes.forEach(function (checkbox) {
+        selectedCampuses.push(checkbox.value);
+    });
+
+    // Update the campusTarget element with the selected campuses
+    campusTarget.value = selectedCampuses.join(", ");
+});
+
 });
 
    
+function clearCheckBoxes() {
+    // Get the form elements in the "myModalnm" modal
+    const campusForm = document.getElementById("campusForm");
 
+    // Clear all checkboxes
+    const checkboxes = campusForm.querySelectorAll(".checkboxna:checked");
+    checkboxes.forEach((checkbox) => {
+        checkbox.checked = false;
+    });
+}
       function clearFormFields() {
         // Clear all form fields here
         document.getElementById("titlepost").value = "";
