@@ -2752,15 +2752,23 @@ function clearCheckBoxes() {
     }
   };
 
-const updateTotalVerifiedUsers = (snapshot) => {
+  const updateTotalVerifiedUsers = (snapshot) => {
   const users = snapshot.val();
   let totalVerifiedUsers = 0;
+  const oneYearAgo = new Date();
+  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
   // Iterate through the users and count only those with verificationStatus set to true
   for (const userId in users) {
     const user = users[userId];
+
+    // Check if user exists and has verificationStatus set to true
     if (user && user.verificationStatus === true) {
-      totalVerifiedUsers++;
+      // Check if lastLogin is within the last year
+      const lastLoginTimestamp = new Date(user.lastLogin);
+      if (lastLoginTimestamp > oneYearAgo) {
+        totalVerifiedUsers++;
+      }
     }
   }
 
@@ -2769,6 +2777,7 @@ const updateTotalVerifiedUsers = (snapshot) => {
   const totalNumElement = document.getElementById('totalNum');
   totalNumElement.textContent = formattedCount;
 };
+
 
 // Listen for changes in the "Users" node and update the total verified user count
 onValue(usersRef, updateTotalVerifiedUsers);

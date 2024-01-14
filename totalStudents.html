@@ -158,7 +158,7 @@
       #studentValidation {
         position: relative;
         bottom: 133px;
-        left: 1010px;
+        left: 1000px;
       }
 
       #valBtn {
@@ -224,14 +224,14 @@
       }
       .image-container {
         display: flex;
-        justify-content: center; /* Horizontally center */
-        align-items: center; /* Vertically center */
-        margin-bottom: 20px; /* Adjust margin as needed */
+        justify-content: center;
+        align-items: center; 
+        margin-bottom: 20px;
       }
 
       .rounded-image {
         border-radius: 50%;
-        border: 2px solid black;
+        border: 1px solid #ccc;
         width: 150px;
         height: 150px;
       }
@@ -442,6 +442,15 @@
   transform: translateY(-50%);
   cursor: pointer;
 }
+#archiveUser {
+  position: relative;
+  bottom: 133px;
+  left: 1180px; /* Adjust the left position as needed */
+}
+
+#archiveBtn {
+  background-color: #007bff; /* Adjust the background color as needed */
+}
 
     </style>
   </head>
@@ -488,9 +497,19 @@
       >
         <button type="button" class="btn btn-primary custom-button" id="valBtn">
           Validation
-          <span class="notification-badge">new</span>
+          <!-- <span class="notification-badge">new</span> -->
         </button>
       </a>
+      <a
+      href="archiveUser.html"
+      id="archiveUser"
+      class="notification-link"
+    >
+      <button type="button" class="btn btn-primary custom-button" id="archiveBtn">
+        Archive
+        <!-- <span class="notification-badge">new</span> -->
+      </button>
+    </a>
       <div class="modalm" id="myModalm">
         <div class="modal-contentm" id="modalcentm">
           <span class="closem" id="closeModalEx">&times;</span>
@@ -656,6 +675,15 @@
               >
                 Set
               </button>
+
+              <button
+              type="button"
+              class="btn btn-danger"
+              data-dismiss="modal"
+              id="editBtn"
+            >
+              Edit
+            </button>
               <button
                 type="button"
                 class="btn btn-secondary"
@@ -974,15 +1002,17 @@
           verificationStatus: true,
           uid: userId,
           ImageProfile: "",
+          ContactEme: "",
           timestamp: generateTimestamp(),
           address: "",
           birthday: "",
           course: "",
           srcode: "",
-          lastLogin: "",
+          lastLogin: generateTimestamp(),
           yearandSection: "",
           userType: "",
           phoneno: "",
+          nstp: "",
           activepts: 0,
           finishactivity: "",
         })
@@ -999,70 +1029,87 @@
       const UsersRef = ref(db, "Users");
 
       const initializeDataTable = () => {
-        if ($.fn.DataTable.isDataTable("#example")) {
-          $("#example").DataTable().destroy();
-        }
+  if ($.fn.DataTable.isDataTable("#example")) {
+    $("#example").DataTable().destroy();
+  }
 
-        const dataTable = $("#example").DataTable({
-          columns: [
-            { data: "userUID" },
-            { data: "fullname" },
-            { data: "email" },
-            { data: "campus" },
-            { data: "Action" },
-          ],
-        });
+  const dataTable = $("#example").DataTable({
+    columns: [
+      { data: "userUID" },
+      { data: "fullname" },
+      { data: "email" },
+      { data: "campus" },
+      { data: "Action" },
+    ],
+    // Add the following lines to specify sorting based on the lastname column
+    columnDefs: [
+      { targets: 1, type: "string" } // Assuming the lastname column is at index 1
+    ],
+    order: [[1, "asc"]] // Order by lastname in ascending order
+  });
 
-        return dataTable;
-      };
+  return dataTable;
+};
+
 
       const dataTable = initializeDataTable();
 
       const populateDataTable = () => {
-        onValue(UsersRef, (snapshot) => {
-          const usersData = snapshot.val();
+  onValue(UsersRef, (snapshot) => {
+    const usersData = snapshot.val();
 
-          dataTable.clear();
+    dataTable.clear();
 
-          if (usersData) {
-            Object.keys(usersData).forEach((userId) => {
-              const user = usersData[userId];
-              $("#example tbody").on(
-                "click",
-                "button.view-button",
-                function () {
-                  const userId = dataTable
-                    .row($(this).parents("tr"))
-                    .data().userUID;
-                  viewUserDetails(userId);
-                }
-              );
-              dataTable.row.add({
-                userUID: userId,
-                fullname: `${user.firstname} ${user.lastname}`,
-                email: user.email,
-                campus: user.campus,
-                Action:
-                  '<button class="btn btn-danger view-button" data-toggle="modal" data-target="#exampleModalLong">View</button>',
-              });
+    if (usersData) {
+      const currentTimestamp = generateTimestamp(); // Get the current timestamp
+
+      Object.keys(usersData).forEach((userId) => {
+        const user = usersData[userId];
+
+        if (user.verificationStatus) {
+          // Check if user has verificationStatus set to true
+          const lastLoginTimestamp = new Date(user.lastLogin);
+
+          // Check if lastLogin is within the last year
+          const oneYearAgo = new Date();
+          oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+          if (lastLoginTimestamp > oneYearAgo) {
+            // User's lastLogin is within the last year
+            $("#example tbody").on("click", "button.view-button", function () {
+              const userId = dataTable.row($(this).parents("tr")).data().userUID;
+              viewUserDetails(userId);
             });
 
-            dataTable.draw();
-          } else {
-            console.log("No data available in Users collection.");
-            dataTable.clear().draw();
+            dataTable.row.add({
+              userUID: userId,
+              fullname: `${user.lastname}, ${user.firstname}, ${user.middlename}`,
+              email: user.email,
+              campus: user.campus,
+              Action: '<button class="btn btn-danger view-button" data-toggle="modal" data-target="#exampleModalLong">View</button>',
+            });
           }
-        });
+        }
+      });
 
-        onChildRemoved(UsersRef, (removedSnapshot) => {
-          const removedUserId = removedSnapshot.key;
+      dataTable.draw();
+    } else {
+      console.log("No data available in Users collection.");
+      dataTable.clear().draw();
+    }
+  });
 
-          dataTable
-            .rows((idx, data) => data.userUID === removedUserId)
-            .remove()
-            .draw();
-        });
-      };
+  onChildRemoved(UsersRef, (removedSnapshot) => {
+    const removedUserId = removedSnapshot.key;
+
+    dataTable
+      .rows((idx, data) => data.userUID === removedUserId)
+      .remove()
+      .draw();
+  });
+};
+
+
       function viewUserDetails(userId) {
         const userRef = ref(db, `Users/${userId}`);
 
@@ -1075,26 +1122,29 @@
             const modalBodyContent =
               document.getElementById("modalBodyContent");
 
-            if (userData) {
-              modalBodyContent.innerHTML = `
-          <div class="image-container"><img src="${userData.ImageProfile}" class="rounded-image"></div>
+              if (userData) {
+                const imageSrc = userData.ImageProfile || 'img/profile.png';
+                modalBodyContent.innerHTML = `
+                    <div class="image-container"><img src="${imageSrc}" class="rounded-image"></div>
           <p><u><h5>Personal Information:</h5></u></p>
-          <p><strong>Name:<input class="form-control" id ="" type="text" value="${userData.firstname} ${userData.middlename} ${userData.lastname}" readonly></input></strong></p>
+          <p><strong>Name:<input class="form-control" id ="" type="text" value="${userData.lastname}, ${userData.firstname}, ${userData.middlename}" readonly></input></strong></p>
+          <p><strong>Email:<input class="form-control" id ="" type="text" value="${userData.email}" readonly ></input></strong></p>
+          <p><strong>User Type:<input class="form-control" id ="" type="text" value="${userData.userType}" readonly ></input></strong></p>
           <p><strong>Date of Birth:<input class="form-control" id ="" type="text" value="${userData.birthday}" readonly ></input></strong></p>
           <p><strong>Gender:<input class="form-control" id ="" type="text" value="${userData.gender}" readonly ></input></strong></p>
           <p><strong>Address:<input class="form-control" id ="" type="text" value="${userData.address}" readonly ></input></strong></p>
           <p><strong>Personal Contact:<input class="form-control" id ="" type="text" value="${userData.phoneno}" readonly ></input></strong></p>
           <p><strong>Emergency Contact:<input class="form-control" id ="" type="text" value="${userData.ContactEme}" readonly ></input></strong></p>
-          <p><u><h5>Academic Information:</h5></u></p>
-          <p><strong>Campus:<input class="form-control" id ="" type="text" value="${userData.campus}" readonly ></input></strong></p>
-          <p><strong>SR-Code:<input class="form-control" id ="" type="text" value="${userData.srcode}" readonly ></input></strong></p>
-          <p><strong>Email:<input class="form-control" id ="" type="text" value="${userData.email}" readonly ></input></strong></p>
-          <p><strong>Course:<input class="form-control" id ="" type="text" value="${userData.course}" readonly ></input></strong></p>
-          <p><strong>NSTP Program:<input class="form-control" id ="" type="text" value="${userData.nstp}" readonly ></input></strong></p>
-          <p><strong>User Type:<input class="form-control" id ="" type="text" value="${userData.userType}" readonly ></input></strong></p>
           <p><strong>Current Engagement:<input class="form-control" id ="" type="text" value="${userData.CurrentEngagement}" readonly ></input></strong></p>
           <p><strong>Finish Activity:<input class="form-control" id ="" type="text" value="${userData.finishactivity}" readonly ></input></strong></p>
           <p><strong>Active Points:<input class="form-control" id ="" type="text" value="${userData.activepts}" readonly ></input></strong></p>
+          <p><u><h5>Academic Information:</h5></u></p>
+          <p><strong>Campus:<input class="form-control" id ="" type="text" value="${userData.campus}" readonly ></input></strong></p>
+          <p><strong>SR-Code:<input class="form-control" id ="" type="text" value="${userData.srcode}" readonly ></input></strong></p>
+          <p><strong>Course:<input class="form-control" id ="" type="text" value="${userData.course}" readonly ></input></strong></p>
+          <p><strong>Year and Section:<input class="form-control" id ="" type="text" value="${userData.yearandSection}" readonly ></input></strong></p>
+          <p><strong>NSTP Program:<input class="form-control" id ="" type="text" value="${userData.nstp}" readonly ></input></strong></p>
+     
 
           <!-- Add more user details here as needed -->
         `;
@@ -1208,7 +1258,7 @@
         var emailInput = document.createElement("input");
         emailInput.setAttribute("type", "email");
         emailInput.setAttribute("name", "email" + counter);
-        emailInput.setAttribute("placeholder", "Enter your email");
+        emailInput.setAttribute("placeholder", "Enter the email");
         emailInput.id = "emailInput" + counter; // Unique ID for email input
         emailInput.classList.add("emailInput"); // Add class for styling
 
@@ -1341,14 +1391,16 @@
           birthday: "",
           campus: "",
           course: "",
+          nstp: "",
+          ContactEme: "",
           yearandSection: "",
           email: email,
           firstname: "",
           finishactivity: 0,
           gender: "",
           lastname: "",
-          lastLogin: "",
-          middle: "",
+          lastLogin: generateTimestamp(),
+          middlename: "",
           phoneno: "",
           timestamp: generateTimestamp(),
           uid: uid,

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Validate Student</title>
+    <title>User Archive</title>
     <link rel="icon" type="image/png" href="login/images/icons/civicon.png" />
     <link rel="stylesheet" href="css/dashboard.css" />
     <link
@@ -135,7 +135,7 @@
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
         ></script>
       </div>
-      <h1 class="h1-group">Validate Student</h1>
+      <h1 class="h1-group">User Archive</h1>
 
       <div class="container py-5">
         <div class="row">
@@ -439,56 +439,76 @@
   const db = getDatabase(app);
 
   document.addEventListener("DOMContentLoaded", function () {
-    if (typeof $ !== "undefined" && typeof $.fn.dataTable !== "undefined") {
-      const tableElement = $("#example");
-      const usersRef = ref(db, "Users");
+  if (typeof $ !== "undefined" && typeof $.fn.dataTable !== "undefined") {
+    const tableElement = $("#example");
+    const usersRef = ref(db, "Users");
 
-      const table = tableElement.DataTable({
-        columns: [
-          { title: "UID" },
-          { title: "Name" },
-          { title: "Gender" },
-          { title: "Campus" },
-          { title: "NSTP" },
-          { title: "Action" },
-         ],
+    const table = tableElement.DataTable({
+      columns: [
+        { title: "UID" },
+        { title: "Name" },
+        { title: "Gender" },
+        { title: "Campus" },
+        { title: "NSTP" },
+        { title: "Action" },
+      ],
+    });
+
+    onValue(usersRef, (snapshot) => {
+      table.clear().draw();
+
+      const currentDate = new Date();
+
+      snapshot.forEach((userSnapshot) => {
+        const user = userSnapshot.val();
+
+        // Check if verificationStatus is true and lastLogin is 1 year ago or earlier
+        if (
+          user &&
+          user.verificationStatus === true &&
+          isLastLoginOneYearAgoOrEarlier(user.lastLogin, currentDate)
+        ) {
+          const uid = user.uid || "";
+          const name =
+            user.firstname && user.lastname
+              ? `${user.firstname} ${user.lastname}`
+              : "";
+          const gender = user.gender || "";
+          const campus = user.campus || "";
+          const nstp = user.nstp || "";
+
+          table.row.add([
+            uid,
+            name,
+            gender,
+            campus,
+            nstp,
+            `<button class="btn btn-primary view-button" data-uid="${uid}">View</button>`,
+          ]).draw();
+        }
       });
+    });
 
-      onValue(usersRef, (snapshot) => {
-        table.clear().draw();
+    function isLastLoginOneYearAgoOrEarlier(lastLogin, currentDate) {
+      const oneYearAgo = new Date(currentDate);
+      oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
-        snapshot.forEach((userSnapshot) => {
-          const user = userSnapshot.val();
+      const lastLoginDate = new Date(lastLogin);
 
-          // Check if verificationStatus is false
-          if (user && user.verificationStatus === false) {
-            const uid = user.uid || '';
-            const name = user.firstname && user.lastname ? `${user.firstname} ${user.lastname}` : '';
-            const gender = user.gender || '';
-            const campus = user.campus || '';
-            const nstp = user.nstp || '';
-
-            table.row.add([
-              uid,
-              name,
-              gender,
-              campus,
-              nstp,
-              `<button class="btn btn-primary view-button" data-uid="${uid}">View</button>`,
-            ]).draw();
-          }
-        });
-      });
-
-      tableElement.on("click", ".view-button", function () {
-        const uid = $(this).data("uid");
-        console.log("View button clicked for UID:", uid);
-        // Implement your view button logic here
-      });
-    } else {
-      console.error("jQuery or DataTables plugin is not available.");
+      return lastLoginDate <= oneYearAgo;
     }
-  });
+
+    tableElement.on("click", ".view-button", function () {
+      const uid = $(this).data("uid");
+      console.log("View button clicked for UID:", uid);
+      // Implement your view button logic here
+    });
+  } else {
+    console.error("jQuery or DataTables plugin is not available.");
+  }
+});
+
+
 </script>
   </body>
 </html>
