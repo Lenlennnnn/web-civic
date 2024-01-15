@@ -89,8 +89,8 @@
         background-color: #e1e1e1;
       }
 
-      #evntimgpic {
-        border: solid black 2px;
+      #profileImage {
+        border: solid #ccc 1px;
         border-radius: 50%;
         margin-bottom: 20px;
         height: 200px;
@@ -112,7 +112,7 @@
         height: 540px;
       }
 
-      #certito {
+      #proofImage {
         margin: 0;
         padding: 0;
         width: 100%;
@@ -173,10 +173,9 @@
                   <!-- 1. Image -->
                   <div class="text-center">
                     <img
-                      src="img/dean2.jpg"
                       alt="Event Image"
                       class="img-fluid"
-                      id="evntimgpic"
+                      id="profileImage"
                     />
                   </div>
 
@@ -305,15 +304,16 @@
                     <input
                       type="text"
                       class="form-control"
-                      id="Credentialuser"
+                      id="credential"
                       value="COR.pdf"
                       readonly
                     />
                     <a
-                      href="#proofOfEnrollmentModal"
+                      href="#proofVerification"
                       data-toggle="modal"
+                      id ="proof"
                       style="color: #dc3545"
-                    >
+                    > 
                       View the file
                     </a>
                   </div>
@@ -348,21 +348,21 @@
           <!-- Second Modal -->
           <div
             class="modal"
-            id="proofOfEnrollmentModal"
+            id="proofVerification"
             tabindex="-1"
             role="dialog"
-            aria-labelledby="proofOfEnrollmentModalTitle"
+            aria-labelledby="proofVerificationTitle"
             aria-hidden="true"
           >
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content" id="secondna">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="proofOfEnrollmentModalTitle">
-                    Proof of Enrollment
+                  <h5 class="modal-title" id="proofVerificationTitle">
+                    Credential
                   </h5>
                 </div>
                 <div class="modal-body">
-                  <img src="img/COR.jpg" alt="" id="certito" />
+                  <img src="img/COR.jpg" alt="" id="proofImage" />
                 </div>
               </div>
             </div>
@@ -417,92 +417,115 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     if (typeof $ !== "undefined" && typeof $.fn.dataTable !== "undefined") {
-      const tableElement = $("#example");
-      const usersRef = ref(db, "Users");
+        const tableElement = $("#example");
+        const usersRef = ref(db, "Users");
 
-      const table = tableElement.DataTable({
-        columns: [
-          { title: "UID" },
-          { title: "Name" },
-          { title: "Gender" },
-          { title: "Campus" },
-          { title: "NSTP" },
-          { title: "Action" },
-        ],
-      });
-      onValue(usersRef, (snapshot) => {
-        table.clear().draw();
-
-        snapshot.forEach((userSnapshot) => {
-          const user = userSnapshot.val();
-
-          if (user && user.verificationStatus === false) {
-            const uid = user.uid || '';
-            const name = user.firstname && user.lastname ? `${user.firstname} ${user.lastname}` : '';
-            const gender = user.gender || '';
-            const campus = user.campus || '';
-            const nstp = user.nstp || '';
-
-            table.row.add([
-              uid,
-              name,
-              gender,
-              campus,
-              nstp,
-              `<button class="btn btn-primary view-button" data-uid="${uid}">View</button>`,
-            ]).draw();
-          }
+        const table = tableElement.DataTable({
+            columns: [
+                { title: "UID" },
+                { title: "Name" },
+                { title: "Gender" },
+                { title: "Campus" },
+                { title: "NSTP" },
+                { title: "Action" },
+            ],
         });
-      });
 
-      tableElement.on("click", ".view-button", function () {
-        const uid = $(this).data("uid");
+        tableElement.on("click", ".view-button", function () {
+            const uid = $(this).data("uid");
 
-        const userRef = ref(db, `Users/${uid}`);
-        onValue(userRef, (userSnapshot) => {
-          const user = userSnapshot.val();
+            const userRef = ref(db, `Users/${uid}`);
+            onValue(userRef, (userSnapshot) => {
+                const user = userSnapshot.val();
 
-          $("#evntimgpic").attr("src", user.ImageProfile || "default-image.jpg");
-          $("#fullName").val(`${user.lastname}, ${user.firstname}, ${user.middlename}`);
-        $("#email").val(user.email || "");
-        $("#gender").val(user.gender || "");
-        $("#birthDay").val(user.birthday || "");
-        $("#address").val(user.address || "");
-        $("#userType").val(user.userType || "");
-        $("#campus").val(user.campus || "");
-        $("#numberMobile").val(user.phoneno || "");
-        $("#srCode").val(user.srcode || "");
-        $("#userCourse").val(user.course || "");
-        $("#yearandSect").val(user.yearandSection || "");
-        $("#nstp").val(user.nstp || "");
+                $("#profileImage").attr("src", user.ImageProfile || "img/profile.png");
+                $("#fullName").val(`${user.lastname}, ${user.firstname}, ${user.middlename}`);
+                $("#email").val(user.email || "");
+                $("#gender").val(user.gender || "");
+                $("#birthDay").val(user.birthday || "");
+                $("#address").val(user.address || "");
+                $("#userType").val(user.userType || "");
+                $("#campus").val(user.campus || "");
+                $("#numberMobile").val(user.phoneno || "");
+                $("#srCode").val(user.srcode || "");
+                $("#userCourse").val(user.course || "");
+                $("#yearandSect").val(user.yearandSection || "");
+                $("#nstp").val(user.nstp || "");
 
-        // Show the modal
-        $("#exampleModalLonggg").modal("show");
+                // Show the modal
+                $("#exampleModalLonggg").modal("show");
 
-// Adding click event for approval button
-$("#approval").off("click").on("click", function () {
-  // Display confirmation dialog
-  if (confirm("Are you sure you want to verify this account?")) {
-    // Update verificationStatus to true
-    update(ref(db, `Users/${uid}`), { verificationStatus: true });
+                // Adding click event for approval button
+                $("#approval").off("click").on("click", function () {
+                    // Display confirmation dialog
+                    if (confirm("Are you sure you want to verify this account?")) {
+                        // Update verificationStatus to true
+                        update(ref(db, `Users/${uid}`), { verificationStatus: true });
 
-    // Display success alert
-    alert("Successfully verified the account.");
+                        // Display success alert
+                        alert("Successfully verified the account.");
 
-    // Close the modal
-    $("#exampleModalLonggg").modal("hide");
+                        // Close the modal
+                        $("#exampleModalLonggg").modal("hide");
 
-    // Unbind the click event to prevent multiple bindings
-    $(this).off("click");
-  }
+                        // Unbind the click event to prevent multiple bindings
+                        $(this).off("click");
+                    }
+                });
+
+                const userRef2 = ref(db, `User Verification/${uid}`);
+                onValue(userRef2, (userSnapshot) => {
+                    const userData = userSnapshot.val();
+
+                    if (userData) {
+                        // Get the first child key (type of verification)
+                        const verificationType = Object.keys(userData)[0];
+
+                        // Get the corresponding data for the verification type
+                        const verificationData = userData[verificationType];
+
+                        // Display the verification type in the "credential" input
+                        $("#credential").val(verificationType);
+                    } else {
+                        // Handle the case where there is no verification data
+                        $("#credential").val("No verification data available");
+                    }
+
+                    // Show the modal
+                    $("#exampleModalLonggg").modal("show");
+                });
+            });
+            
+        });
+
+        onValue(usersRef, (snapshot) => {
+            table.clear().draw();
+
+            snapshot.forEach((userSnapshot) => {
+                const user = userSnapshot.val();
+
+                if (user && user.verificationStatus === false) {
+                    const uid = user.uid || '';
+                    const name = user.firstname && user.lastname ? `${user.firstname} ${user.lastname}` : '';
+                    const gender = user.gender || '';
+                    const campus = user.campus || '';
+                    const nstp = user.nstp || '';
+
+                    table.row.add([
+                        uid,
+                        name,
+                        gender,
+                        campus,
+                        nstp,
+                        `<button class="btn btn-primary view-button" data-uid="${uid}">View</button>`,
+                    ]).draw();
+                }
+            });
+        });
+    } else {
+        console.error("jQuery or DataTables plugin is not available.");
+    }
 });
-});
-});
-} else {
-console.error("jQuery or DataTables plugin is not available.");
-}
-});
-
 </script>
 
   </body>

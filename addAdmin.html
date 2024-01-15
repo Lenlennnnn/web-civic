@@ -188,7 +188,7 @@
 
       .rounded-image {
         border-radius: 50%;
-        border: 2px solid black;
+        border: 1px solid #ccc;
         width: 150px;
         height: 150px;
       }
@@ -735,7 +735,10 @@
 
             if (userData) {
               modalBodyContent.innerHTML = `
-          <div class="image-container"><img src="${userData.ImageProfile}" class="rounded-image"></div>
+              <div class="image-container">
+  <img src="${userData.ImageProfile || 'img/profile.png'}" class="rounded-image">
+</div>
+
           <p><u><h5>Information:</h5></u></p>
           <p><strong>Name:<input class="form-control" id ="" type="text" value="${userData.firstname} ${userData.middlename} ${userData.lastname}" readonly></input></strong></p>
           <p><strong>Gender:<input class="form-control" id ="" type="text" value="${userData.gender}" readonly></input></strong></p>
