@@ -9,16 +9,13 @@
     <link rel="stylesheet" href="css/dashboard.css" />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"
-    />
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
     <link
       rel="stylesheet"
-      href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"
-    />
+      href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    />
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <style>
       .container {
         position: relative;
@@ -208,24 +205,22 @@
 
       #toggleConfirmPassword {
         position: absolute;
-  right: 10px;
-  top: 40%;
-  transform: translateY(-50%);
-  cursor: pointer;
+        right: 10px;
+        top: 40%;
+        transform: translateY(-50%);
+        cursor: pointer;
       }
-      
+
       .password-container {
-  position: relative;
-}
-.toggle-password {
-  position: absolute;
-  right: 10px; 
-  top: 40%;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
-
-
+        position: relative;
+      }
+      .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 40%;
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
     </style>
   </head>
 
@@ -241,8 +236,7 @@
         <!-- ====== ionicons ======= -->
         <script
           type="module"
-          src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-        ></script>
+          src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
       </div>
       <h1 class="h1-group">Admins</h1>
       <a href="#" id="openModalBtn">
@@ -264,8 +258,7 @@
                 type="text"
                 id="firstname"
                 name="firstname"
-                placeholder="Enter the First Name"
-              />
+                placeholder="Enter the First Name" />
 
               <label for="lastname">Middle Name:</label>
               <input
@@ -273,8 +266,7 @@
                 id="middlename"
                 name="lastname"
                 required
-                placeholder="Enter the Middle Name"
-              />
+                placeholder="Enter the Middle Name" />
 
               <label for="middlename">Last Name:</label>
               <input
@@ -282,8 +274,7 @@
                 id="lastname"
                 name="middlename"
                 required
-                placeholder="Enter the Last Name"
-              />
+                placeholder="Enter the Last Name" />
 
               <label for="campus">Gender:</label>
               <select id="gender" name="campus" required>
@@ -320,36 +311,33 @@
                 id="email"
                 name="email"
                 required
-                placeholder="Enter the Email"
-              />
+                placeholder="Enter the Email" />
 
               <label for="password">Password:</label>
-<div class="password-container">
-  <input
-    type="password"
-    id="password"
-    name="password"
-    required
-    placeholder="Enter the Password"
-  />
-  <span id="togglePassword" class="toggle-password">
-    <i id="passwordIcon" class="fas fa-eye"></i>
-  </span>
-</div>
+              <div class="password-container">
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  required
+                  placeholder="Enter the Password" />
+                <span id="togglePassword" class="toggle-password">
+                  <i id="passwordIcon" class="fas fa-eye"></i>
+                </span>
+              </div>
 
-<label for="password">Confirm Password:</label>
-<div class="password-container">
-  <input
-    type="password"
-    id="confirmpassword"
-    name="password"
-    required
-    placeholder="Re-type the Password"
-  />
-  <span id="toggleConfirmPassword" class="toggle-password">
-    <i id="confirmPasswordIcon" class="fas fa-eye"></i>
-  </span>
-</div>
+              <label for="password">Confirm Password:</label>
+              <div class="password-container">
+                <input
+                  type="password"
+                  id="confirmpassword"
+                  name="password"
+                  required
+                  placeholder="Re-type the Password" />
+                <span id="toggleConfirmPassword" class="toggle-password">
+                  <i id="confirmPasswordIcon" class="fas fa-eye"></i>
+                </span>
+              </div>
 
               <button type="button" id="subbtn">Create Account</button>
             </form>
@@ -378,16 +366,14 @@
         tabindex="-1"
         role="dialog"
         aria-labelledby="exampleModalLongTitle"
-        aria-hidden="true"
-      >
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5
                 class="modal-title"
                 id="exampleModalLongTitle"
-                style="position: relative; left: 38%"
-              >
+                style="position: relative; left: 38%">
                 Admin Details
               </h5>
             </div>
@@ -399,8 +385,7 @@
                 type="button"
                 class="btn btn-secondary"
                 data-dismiss="modal"
-                id="closemodalbtn"
-              >
+                id="closemodalbtn">
                 Close
               </button>
             </div>
@@ -413,8 +398,7 @@
         tabindex="-1"
         role="dialog"
         aria-labelledby="exampleModalLongTitle"
-        aria-hidden="true"
-      ></div>
+        aria-hidden="true"></div>
     </div>
 
     <script>
@@ -462,16 +446,13 @@
 
     <script
       type="module"
-      src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js"
-    ></script>
+      src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js"></script>
     <script
       type="module"
-      src="https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js"
-    ></script>
+      src="https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js"></script>
     <script
       type="module"
-      src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js"
-    ></script>
+      src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js"></script>
     <script>
       new DataTable("#example");
     </script>
@@ -736,17 +717,35 @@
             if (userData) {
               modalBodyContent.innerHTML = `
               <div class="image-container">
-  <img src="${userData.ImageProfile || 'img/profile.png'}" class="rounded-image">
+  <img src="${
+    userData.ImageProfile || "img/profile.png"
+  }" class="rounded-image">
 </div>
 
           <p><u><h5>Information:</h5></u></p>
-          <p><strong>Name:<input class="form-control" id ="" type="text" value="${userData.firstname} ${userData.middlename} ${userData.lastname}" readonly></input></strong></p>
-          <p><strong>Gender:<input class="form-control" id ="" type="text" value="${userData.gender}" readonly></input></strong></p>
-          <p><strong>Birthday:<input class="form-control" id ="" type="text" value="${userData.birthday}" readonly></input></strong></p>
-          <p><strong>Email:<input class="form-control" id ="" type="text" value="${userData.email}" readonly></input></strong></p>
-          <p><strong>Campus:<input class="form-control" id ="" type="text" value="${userData.campus}" readonly></input></strong></p>
-          <p><strong>Position:<input class="form-control" id ="" type="text" value="${userData.position}" readonly></input></strong></p>
-          <p><strong>Contact Number:<input class="form-control" id ="" type="text" value="${userData.contactNumber}" readonly></input></strong></p>
+          <p><strong>Name:<input class="form-control" id ="" type="text" value="${
+            userData.firstname
+          } ${userData.middlename} ${
+                userData.lastname
+              }" readonly></input></strong></p>
+          <p><strong>Gender:<input class="form-control" id ="" type="text" value="${
+            userData.gender
+          }" readonly></input></strong></p>
+          <p><strong>Birthday:<input class="form-control" id ="" type="text" value="${
+            userData.birthday
+          }" readonly></input></strong></p>
+          <p><strong>Email:<input class="form-control" id ="" type="text" value="${
+            userData.email
+          }" readonly></input></strong></p>
+          <p><strong>Campus:<input class="form-control" id ="" type="text" value="${
+            userData.campus
+          }" readonly></input></strong></p>
+          <p><strong>Position:<input class="form-control" id ="" type="text" value="${
+            userData.position
+          }" readonly></input></strong></p>
+          <p><strong>Contact Number:<input class="form-control" id ="" type="text" value="${
+            userData.contactNumber
+          }" readonly></input></strong></p>
 
 
 

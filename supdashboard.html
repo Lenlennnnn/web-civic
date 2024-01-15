@@ -8,15 +8,15 @@
     <link rel="icon" type="image/png" href="login/images/icons/civicon.png" />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    />
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="css/dashboard.css" />
     <link rel="stylesheet" href="css/post.css" />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.15.4/css/ionicons.min.css"
-    />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.15.4/css/ionicons.min.css" />
+      href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.15.4/css/ionicons.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.15.4/css/ionicons.min.css" />
     <style>
       .dashboard {
         color: #a90011;
@@ -944,8 +944,7 @@
                   src="login/images/icons/civicon.png"
                   alt=""
                   width="60px"
-                  height="60px"
-                />
+                  height="60px" />
               </span>
               <span class="title" style="font-weight: 1000" id="titleto"
                 >CIVICALL</span
@@ -984,8 +983,7 @@
             <a
               href="messages.html"
               id="openMessagesModal"
-              class="page-transition"
-            >
+              class="page-transition">
               <span class="icon">
                 <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
               </span>
@@ -1026,8 +1024,7 @@
           <ion-icon
             name="notifications"
             class="notifIcon"
-            id="notificationIcon"
-          ></ion-icon>
+            id="notificationIcon"></ion-icon>
           <div class="dropdown-content" id="notificationDropdown">
             <div class="notifBack">
               <h6 class="notification" style="color: white">Notification</h6>
@@ -1064,23 +1061,20 @@
               class="avatar user-thumb hover-effect"
               src="img/profile.png"
               width="50px"
-              onclick="toggleDropdown()"
-            />
+              onclick="toggleDropdown()" />
 
             <div class="dropdown-menu" id="dropdownMenu">
               <a class="dropdown-item" href="my_account.html">
                 <ion-icon
                   name="person-circle-outline"
-                  style="color: #888"
-                ></ion-icon>
+                  style="color: #888"></ion-icon>
                 &nbsp; My Account
               </a>
 
               <a class="dropdown-item" href="feedback.html">
                 <ion-icon
                   name="thumbs-up-outline"
-                  style="color: #888"
-                ></ion-icon>
+                  style="color: #888"></ion-icon>
 
                 &nbsp; Feedback
               </a>
@@ -1190,9 +1184,14 @@
                               Post an event
                             </h2>
                             <form>
-                        
-                          
-                              <input type="image" id="imagepost" name="image" alt="Upload Image" width="400" height="400" hidden/>
+                              <input
+                                type="image"
+                                id="imagepost"
+                                name="image"
+                                alt="Upload Image"
+                                width="400"
+                                height="400"
+                                hidden />
 
                               <label
                                 for="image"
@@ -1205,8 +1204,7 @@
                                 id="filePost"
                                 name="image"
                                 accept="image/*"
-                                required
-                              />
+                                required />
                               <label
                                 for="category"
                                 id="lblpt"
@@ -1253,8 +1251,7 @@
                                 id="titlepost"
                                 name="title"
                                 required
-                                placeholder="Event title"
-                              />
+                                placeholder="Event title" />
 
                               <label
                                 for="Introduction"
@@ -1267,8 +1264,7 @@
                                 name="Introduction"
                                 rows="6"
                                 required
-                                placeholder="Add text"
-                              ></textarea>
+                                placeholder="Add text"></textarea>
                               <label
                                 for="Objective"
                                 id="lblpt"
@@ -1280,8 +1276,7 @@
                                 name="Objective"
                                 rows="6"
                                 required
-                                placeholder="Add text"
-                              ></textarea>
+                                placeholder="Add text"></textarea>
                               <label
                                 for="Instruction"
                                 id="lblpt"
@@ -1293,8 +1288,7 @@
                                 name="Instruction"
                                 rows="6"
                                 required
-                                placeholder="Add text"
-                              ></textarea>
+                                placeholder="Add text"></textarea>
                               <label
                                 for="Location"
                                 id="lblpt"
@@ -1306,8 +1300,7 @@
                                 id="Locationpost"
                                 name="Location"
                                 required
-                                placeholder="Address"
-                              />
+                                placeholder="Address" />
                               <div class="form-row">
                                 <div class="form-group">
                                   <label
@@ -1320,8 +1313,7 @@
                                     type="datetime-local"
                                     id="startdate"
                                     name="startdate"
-                                    required
-                                  />
+                                    required />
                                 </div>
                                 <div class="form-group">
                                   <label
@@ -1334,34 +1326,32 @@
                                     type="datetime-local"
                                     id="enddate"
                                     name="enddate"
-                                    required
-                                  />
+                                    required />
                                 </div>
                               </div>
 
                               <div class="form-group">
-                              <label
-                                for="campusTarget"
-                                id="lblpt"
-                                style="color: black; text-align: left"
-                                >Target Campus:</label
-                              >
-            
-                              <input
-                              type="text"
-                              id="campusTarget"
-                              name="campusTarget"
-                              required
-                              readonly
-                              placeholder="Enter Campus"
-                            />
-                              <label
-                                for="targparty"
-                                id="lblpt"
-                                style="color: black; text-align: left"
-                                >Target Participant:</label
-                              >
-                            </div>
+                                <label
+                                  for="campusTarget"
+                                  id="lblpt"
+                                  style="color: black; text-align: left"
+                                  >Target Campus:</label
+                                >
+
+                                <input
+                                  type="text"
+                                  id="campusTarget"
+                                  name="campusTarget"
+                                  required
+                                  readonly
+                                  placeholder="Enter Campus" />
+                                <label
+                                  for="targparty"
+                                  id="lblpt"
+                                  style="color: black; text-align: left"
+                                  >Target Participant:</label
+                                >
+                              </div>
 
                               <input
                                 type="text"
@@ -1370,8 +1360,7 @@
                                 required
                                 placeholder="Please enter only numbers"
                                 pattern="[0-9]+"
-                                oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-                              />
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
 
                               <label
                                 for="actpts"
@@ -1387,9 +1376,8 @@
                                 required
                                 placeholder="Please enter only numbers"
                                 pattern="[0-9]+"
-                                oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-                              />
-                         
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+
                               <label
                                 for="facname"
                                 id="lblpt"
@@ -1401,8 +1389,7 @@
                                 id="facname"
                                 name="facname"
                                 required
-                                placeholder="Insert name"
-                              />
+                                placeholder="Insert name" />
                               <!-- Google Maps Location Field -->
                               <label
                                 for="facnamecon"
@@ -1415,23 +1402,54 @@
                                 id="facnamecon"
                                 name="facnamecon"
                                 required
-                                placeholder="Insert Contact"
-                              />
+                                placeholder="Insert Contact" />
 
-                              <label for="paymentMethod" id="paymentLabel" style="color: black; text-align: left; display: none;">Payment Method:</label>
-                              <select id="paymentMethod" name="paymentMethod" style="display: none;">
-                                <option value="Select" disabled selected>Select:</option>
+                              <label
+                                for="paymentMethod"
+                                id="paymentLabel"
+                                style="
+                                  color: black;
+                                  text-align: left;
+                                  display: none;
+                                "
+                                >Payment Method:</label
+                              >
+                              <select
+                                id="paymentMethod"
+                                name="paymentMethod"
+                                style="display: none">
+                                <option value="Select" disabled selected>
+                                  Select:
+                                </option>
                                 <option value="GCash">GCash</option>
                                 <option value="PayMaya">PayMaya</option>
                                 <option value="PayPal">PayPal</option>
                               </select>
-                              
-                              <label for="recipient" id="recipientLabel" style="color: black; text-align: left; display: none;">Payment Recipient:</label>
-                              <input type="text" id="recipient" name="recipient" required placeholder="Provide the Recipient Number" style="display: none;">
-                              
 
-                              <button id="postBtn" type="button" style="margin-left: 70%">Post</button>
+                              <label
+                                for="recipient"
+                                id="recipientLabel"
+                                style="
+                                  color: black;
+                                  text-align: left;
+                                  display: none;
+                                "
+                                >Payment Recipient:</label
+                              >
+                              <input
+                                type="text"
+                                id="recipient"
+                                name="recipient"
+                                required
+                                placeholder="Provide the Recipient Number"
+                                style="display: none" />
 
+                              <button
+                                id="postBtn"
+                                type="button"
+                                style="margin-left: 70%">
+                                Post
+                              </button>
 
                               <button type="button" id="cancelButton">
                                 Cancel
@@ -1449,8 +1467,7 @@
                           <button
                             type="button"
                             id="btnfilter"
-                            class="btn btn-primary"
-                          >
+                            class="btn btn-primary">
                             <i class="fa fa-search"></i>
                           </button>
 
@@ -1469,11 +1486,21 @@
                             <option value="Tree Planting">Tree Planting</option>
                             <option value="Fund Raising">Fund Raising</option>
                             <option value="Donation">Donation</option>
-                            <option value="Clean Up Drive">Clean Up Drive</option>
-                            <option value="Feeding Program">Feeding Program</option>
-                            <option value="Relief Operation">Relief Operation</option>
-                            <option value="Seminar Training">Seminar Training</option>
-                            <option value="Teaching Literacy">Teaching Literacy</option>
+                            <option value="Clean Up Drive">
+                              Clean Up Drive
+                            </option>
+                            <option value="Feeding Program">
+                              Feeding Program
+                            </option>
+                            <option value="Relief Operation">
+                              Relief Operation
+                            </option>
+                            <option value="Seminar Training">
+                              Seminar Training
+                            </option>
+                            <option value="Teaching Literacy">
+                              Teaching Literacy
+                            </option>
                           </select>
                         </div>
                         <div class="filter-group" id="campusfilter">
@@ -1515,8 +1542,7 @@
                   <div class="table-container">
                     <table
                       class="table table-striped table-hover"
-                      id="tableevents"
-                    >
+                      id="tableevents">
                       <thead class="table-fix">
                         <tr>
                           <th id="noid">No.</th>
@@ -1564,8 +1590,7 @@
                         <button
                           type="button"
                           class="btn btn-secondary"
-                          id="closemodalbtnupcom"
-                        >
+                          id="closemodalbtnupcom">
                           Close
                         </button>
                       </div>
@@ -1578,8 +1603,7 @@
                             <ion-icon
                               name="person-circle"
                               class="user-icon"
-                              id="modalngatt"
-                            ></ion-icon>
+                              id="modalngatt"></ion-icon>
                           </a>
 
                           <h3 id="editmov">View Details</h3>
@@ -1591,8 +1615,7 @@
                               src="img/cleaning.jpg"
                               alt="Event Image"
                               class="img-fluidnew"
-                              id="evntimgpicnew"
-                            />
+                              id="evntimgpicnew" />
                           </div>
 
                           <!-- 2. Category -->
@@ -1603,8 +1626,7 @@
                               class="form-control"
                               id="category"
                               value="Clean Up Drive"
-                              readonly
-                            />
+                              readonly />
                           </div>
 
                           <!-- 3. Title -->
@@ -1615,8 +1637,7 @@
                               class="form-control"
                               id="title"
                               value="Sustainable Environmental Cleaning"
-                              readonly
-                            />
+                              readonly />
                           </div>
 
                           <!-- 4. Introduction -->
@@ -1626,8 +1647,7 @@
                               class="form-control"
                               id="introduction"
                               rows="10"
-                              readonly
-                            >
+                              readonly>
       Cleaning the environment is a vital responsibility that transcends personal and collective interests, embodying our commitment to safeguarding the planet and ensuring a sustainable future for generations to come. It involves the conscientious removal of pollutants, waste, and harmful elements from our surroundings,  promoting the restoration and preservation of natural ecosystems. Cleaning the environment is not limited to physical debris but extends to addressing broader issues such as air and water quality, deforestation, and climate change mitigation. It signifies our dedication to harmonious coexistence with nature, recognizing that a cleaner environment not only enhances our own well-being but also plays an essential role in protecting the intricate web of life on Earth and preserving the beauty and diversity of our planet.
                    </textarea
                             >
@@ -1640,8 +1660,7 @@
                               class="form-control"
                               id="description"
                               rows="10"
-                              readonly
-                            >
+                              readonly>
                     Cleaning the environment is an indispensable endeavor crucial for sustaining life on our planet. It encompasses a wide array of practices aimed at preserving and restoring the natural balance of ecosystems. From managing waste and reducing pollution to conserving resources and promoting biodiversity, the scope of cleaning the environment is multifaceted. Recycling initiatives, adoption of renewable energy sources, reforestation efforts, and advocating for sustainable practices are integral components in the mission to create a cleaner, healthier environment. Moreover, educating communities about the significance of environmental stewardship fosters a collective responsibility towards preserving the Earth for future generations. By fostering a culture of consciousness and implementing innovative strategies, cleaning the environment stands as a vital cornerstone in securing a sustainable future for all life forms on our planet.</textarea
                             >
                           </div>
@@ -1652,8 +1671,7 @@
                               class="form-control"
                               id="instruction"
                               rows="10"
-                              readonly
-                            >
+                              readonly>
 1. Check-in and Briefing: Please arrive at the designated meeting point at least 15 minutes before the scheduled start time. Upon arrival, check in with our event coordinators who will provide you with necessary equipment such as gloves, trash bags, and any additional safety gear. You'll also receive a brief orientation outlining safety protocols and the areas assigned for cleanup.
 
 2. Assignment and Cleanup Process: Once briefed, you'll be assigned to a specific cleanup zone. Work in teams to cover the designated areas thoroughly. Collect and separate recyclable materials from general waste. Be mindful of safety: avoid picking up hazardous items and wear protective gear when handling sharp objects.
@@ -1674,8 +1692,7 @@
                               class="form-control"
                               id="location"
                               value="San Miguel Sto Tomas Batangas"
-                              readonly
-                            />
+                              readonly />
                           </div>
 
                           <!-- 7. Date -->
@@ -1687,8 +1704,7 @@
                                 class="form-control"
                                 id="date"
                                 value="10/12/2023 9:00 AM"
-                                readonly
-                              />
+                                readonly />
                             </div>
                             <div class="form-group col-md-6">
                               <label for="dateend">End Date & Time:</label>
@@ -1697,8 +1713,7 @@
                                 class="form-control"
                                 id="dateend"
                                 value="10/13/2023 4:00 PM"
-                                readonly
-                              />
+                                readonly />
                             </div>
                           </div>
 
@@ -1712,8 +1727,7 @@
                               class="form-control"
                               id="targetcampus"
                               value="JPLPC Malvar Campus"
-                              readonly
-                            />
+                              readonly />
                           </div>
 
                           <!-- 8. Target Participant -->
@@ -1726,8 +1740,7 @@
                               class="form-control"
                               id="targetParticipant"
                               value="200"
-                              readonly
-                            />
+                              readonly />
                           </div>
 
                           <!-- 9. Active Points -->
@@ -1738,8 +1751,7 @@
                               class="form-control"
                               id="activePoints"
                               value="50"
-                              readonly
-                            />
+                              readonly />
                           </div>
 
                           <!-- 10. Facilitator's Name -->
@@ -1752,8 +1764,7 @@
                               class="form-control"
                               id="facilitatorsName"
                               value="Leonard S Briones"
-                              readonly
-                            />
+                              readonly />
                           </div>
                           <div class="form-group">
                             <label for="facilitatorsName"
@@ -1764,8 +1775,7 @@
                               class="form-control"
                               id="facilitatorscontact"
                               value="briones@gmail.com"
-                              readonly
-                            />
+                              readonly />
                           </div>
                         </div>
                         <div class="modal-footerevnts">
@@ -1794,8 +1804,7 @@
                 id="arasof"
                 class="checkboxna"
                 name="campus"
-                value="ARASOF Nasugbu Campus"
-              />
+                value="ARASOF Nasugbu Campus" />
               <label for="arasof" class="labelnato">ARASOF Nasugbu Campus</label
               ><br />
 
@@ -1804,8 +1813,7 @@
                 id="balayan"
                 class="checkboxna"
                 name="campus"
-                value="Balayan Campus"
-              />
+                value="Balayan Campus" />
               <label for="balayan" class="labelnato">Balayan Campus</label
               ><br />
 
@@ -1814,8 +1822,7 @@
                 id="jplpc"
                 class="checkboxna"
                 name="campus"
-                value="JPLPC Malvar Campus"
-              />
+                value="JPLPC Malvar Campus" />
               <label for="jplpc" class="labelnato">JPLPC Malvar Campus</label
               ><br />
 
@@ -1824,8 +1831,7 @@
                 id="lemery"
                 class="checkboxna"
                 name="campus"
-                value="Lemery Campus"
-              />
+                value="Lemery Campus" />
               <label for="lemery" class="labelnato">Lemery Campus</label><br />
 
               <input
@@ -1833,8 +1839,7 @@
                 id="lipa"
                 class="checkboxna"
                 name="campus"
-                value="Lipa Campus"
-              />
+                value="Lipa Campus" />
               <label for="lipa" class="labelnato">Lipa Campus</label><br />
 
               <input
@@ -1842,8 +1847,7 @@
                 id="lobo"
                 class="checkboxna"
                 name="campus"
-                value="Lobo Campus"
-              />
+                value="Lobo Campus" />
               <label for="lobo" class="labelnato">Lobo Campus</label><br />
 
               <input
@@ -1851,8 +1855,7 @@
                 id="mabini"
                 class="checkboxna"
                 name="campus"
-                value="Mabini Campus"
-              />
+                value="Mabini Campus" />
               <label for="mabini" class="labelnato">Mabini Campus</label><br />
 
               <input
@@ -1860,8 +1863,7 @@
                 id="pablo1"
                 class="checkboxna"
                 name="campus"
-                value="Pablo Borbon Campus I"
-              />
+                value="Pablo Borbon Campus I" />
               <label for="pablo1" class="labelnato">Pablo Borbon Campus I</label
               ><br />
 
@@ -1870,8 +1872,7 @@
                 id="pablo2"
                 class="checkboxna"
                 name="campus"
-                value="Pablo Borbon Campus II"
-              />
+                value="Pablo Borbon Campus II" />
               <label for="pablo2" class="labelnato"
                 >Pablo Borbon Campus II</label
               ><br />
@@ -1881,8 +1882,7 @@
                 id="rosario"
                 class="checkboxna"
                 name="campus"
-                value="Rosario Campus"
-              />
+                value="Rosario Campus" />
               <label for="rosario" class="labelnato">Rosario Campus</label
               ><br />
 
@@ -1891,8 +1891,7 @@
                 id="sanjuan"
                 class="checkboxna"
                 name="campus"
-                value="San Juan Campus"
-              />
+                value="San Juan Campus" />
               <label for="sanjuan" class="labelnato">San Juan Campus</label
               ><br />
             </form>
@@ -2066,8 +2065,8 @@
       selectAllBtn.addEventListener("click", selectAll);
       deselectAllBtn.addEventListener("click", deselectAll);
     </script>
-     
- <script type="module">
+
+    <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
       import {
         getDatabase,
@@ -2107,10 +2106,10 @@
         const eventDetailsContainer =
           document.getElementById("eventDetailsupcom");
 
-  // Function to determine whether to show payment fields
-  function shouldShowPaymentFields(category) {
-    return category === "Fund Raising" || category === "Donation";
-  }
+        // Function to determine whether to show payment fields
+        function shouldShowPaymentFields(category) {
+          return category === "Fund Raising" || category === "Donation";
+        }
 
         // Function to generate HTML for payment fields
         function generatePaymentFieldsHTML(eventData) {
@@ -2302,12 +2301,10 @@
     <!-- =============================================== ionicons ================================================ -->
     <script
       type="module"
-      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-    ></script>
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script
       nomodule
-      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
-    ></script>
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
     <script type="module">
       import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
@@ -2347,13 +2344,13 @@
       const storage2 = getStorage(app2);
 
       onAuthStateChanged(auth2, (user) => {
-    // You can handle authentication state changes here
-    if (user) {
-      console.log("User is logged in:", user);
-    } else {
-      console.log("User is logged out");
-    }
-  });
+        // You can handle authentication state changes here
+        if (user) {
+          console.log("User is logged in:", user);
+        } else {
+          console.log("User is logged out");
+        }
+      });
 
       function submitForm() {
         // Get data from the form fields
@@ -2367,8 +2364,8 @@
         const objective = document.getElementById("objectivePost").value;
         const instruction = document.getElementById("instructionPost").value;
         const location = document.getElementById("Locationpost").value;
-  const recipient= document.getElementById("recipient").value;
-  const paymentMethod= document.getElementById("paymentMethod").value;
+        const recipient = document.getElementById("recipient").value;
+        const paymentMethod = document.getElementById("paymentMethod").value;
         const targetCampus = document.getElementById("campusTarget").value;
         const activePoints = parseInt(document.getElementById("actpts").value);
         const targetParticipant = parseInt(
@@ -2394,7 +2391,7 @@
           objective: objective,
           instruction: instruction,
           fundcollected: 0,
-          paymentMethod:  paymentMethod,
+          paymentMethod: paymentMethod,
           paymentRecipient: recipient,
           verificationStatus: true,
           campus: targetCampus,
@@ -2441,46 +2438,55 @@
               return getDownloadURL(snapshot.ref);
             })
             .then((downloadURL) => {
-  // Add the downloadURL to the "image" property in eventData
-  eventData.image = downloadURL;
+              // Add the downloadURL to the "image" property in eventData
+              eventData.image = downloadURL;
 
-  // Upload data to the Firebase Realtime Database
-  const newEventRef = push(ref(db2, "Upload Engagement"));
-  set(newEventRef, eventData)
-    .then(() => {
-      console.log("Event data uploaded successfully");
-      alert("Event data uploaded successfully");
+              // Upload data to the Firebase Realtime Database
+              const newEventRef = push(ref(db2, "Upload Engagement"));
+              set(newEventRef, eventData)
+                .then(() => {
+                  console.log("Event data uploaded successfully");
+                  alert("Event data uploaded successfully");
 
-     document.getElementById("campusTarget").value = "";
-      document.getElementById("imagepost").setAttribute("hidden", "true");
+                  document.getElementById("campusTarget").value = "";
+                  document
+                    .getElementById("imagepost")
+                    .setAttribute("hidden", "true");
 
-      // Hide payment-related elements
-      const paymentLabel = document.getElementById("paymentLabel");
-      const paymentMethod = document.getElementById("paymentMethod");
-      const recipientLabel = document.getElementById("recipientLabel");
-      const recipient = document.getElementById("recipient");
+                  // Hide payment-related elements
+                  const paymentLabel = document.getElementById("paymentLabel");
+                  const paymentMethod =
+                    document.getElementById("paymentMethod");
+                  const recipientLabel =
+                    document.getElementById("recipientLabel");
+                  const recipient = document.getElementById("recipient");
 
-      if (paymentLabel && paymentMethod && recipientLabel && recipient) {
-        paymentLabel.style.display = "none";
-        paymentMethod.style.display = "none";
-        recipientLabel.style.display = "none";
-        recipient.style.display = "none";
-      }
+                  if (
+                    paymentLabel &&
+                    paymentMethod &&
+                    recipientLabel &&
+                    recipient
+                  ) {
+                    paymentLabel.style.display = "none";
+                    paymentMethod.style.display = "none";
+                    recipientLabel.style.display = "none";
+                    recipient.style.display = "none";
+                  }
 
-      clearFormFields();
-      clearCheckBoxes();
-      // Dismiss the modal
-      document.getElementById("postModalpo").style.display = "none";
-    })
-    .catch((error) => {
-      console.error("Error uploading event data:", error);
-      alert("Error uploading event data. Please try again.");
-    });
-})
-.catch((error) => {
-  console.error("Error uploading file:", error);
-  alert("Error uploading file. Please try again.");
-});
+                  clearFormFields();
+                  clearCheckBoxes();
+                  // Dismiss the modal
+                  document.getElementById("postModalpo").style.display = "none";
+                })
+                .catch((error) => {
+                  console.error("Error uploading event data:", error);
+                  alert("Error uploading event data. Please try again.");
+                });
+            })
+            .catch((error) => {
+              console.error("Error uploading file:", error);
+              alert("Error uploading file. Please try again.");
+            });
         } else {
           const newEventRef = push(ref(db2, "Upload Engagement"));
           set(newEventRef, eventData)
@@ -2500,116 +2506,128 @@
             });
         }
       }
-    document.addEventListener("DOMContentLoaded", function () {
-  const imagePreview = document.getElementById("imagepost"); // Declare imagePreview here
+      document.addEventListener("DOMContentLoaded", function () {
+        const imagePreview = document.getElementById("imagepost"); // Declare imagePreview here
 
-  document.getElementById("openPostModal").addEventListener("click", function () {
-    document.getElementById("postModalpo").style.display = "block";
-  });
+        document
+          .getElementById("openPostModal")
+          .addEventListener("click", function () {
+            document.getElementById("postModalpo").style.display = "block";
+          });
 
-  document.getElementById("postBtn").addEventListener("click", function () {
-    if (confirm("Are you sure you want to submit the form?")) {
-      submitForm();
-    }
-  });
+        document
+          .getElementById("postBtn")
+          .addEventListener("click", function () {
+            if (confirm("Are you sure you want to submit the form?")) {
+              submitForm();
+            }
+          });
 
+        // Add event listener to close the modal when Cancel button is clicked
+        document
+          .getElementById("cancelButton")
+          .addEventListener("click", function () {
+            document.getElementById("postModalpo").style.display = "none";
+          });
 
-  // Add event listener to close the modal when Cancel button is clicked
-  document.getElementById("cancelButton").addEventListener("click", function () {
-    document.getElementById("postModalpo").style.display = "none";
-  });
+        // Add event listener to close the modal
+        document
+          .getElementById("closeModalpo")
+          .addEventListener("click", function () {
+            document.getElementById("postModalpo").style.display = "none";
+          });
 
-  // Add event listener to close the modal
-  document.getElementById("closeModalpo").addEventListener("click", function () {
-    document.getElementById("postModalpo").style.display = "none";
-  });
+        document
+          .getElementById("filePost")
+          .addEventListener("change", function () {
+            // Get the file input element
+            const fileInput = document.getElementById("filePost");
 
-  document.getElementById("filePost").addEventListener("change", function () {
-    // Get the file input element
-    const fileInput = document.getElementById("filePost");
+            // Check if a file is selected
+            if (fileInput.files && fileInput.files[0]) {
+              const reader = new FileReader();
 
-    // Check if a file is selected
-    if (fileInput.files && fileInput.files[0]) {
-      const reader = new FileReader();
+              reader.onload = function (e) {
+                // Update the image source with the selected file's data
+                imagePreview.src = e.target.result;
 
-      reader.onload = function (e) {
-        // Update the image source with the selected file's data
-        imagePreview.src = e.target.result;
+                // Show the image
+                imagePreview.removeAttribute("hidden");
+              };
 
-        // Show the image
-        imagePreview.removeAttribute("hidden");
-      };
+              // Read the selected file as a data URL
+              reader.readAsDataURL(fileInput.files[0]);
+            } else {
+              // Hide the image if no file is selected
+              imagePreview.setAttribute("hidden", "true");
+            }
+          });
 
-      // Read the selected file as a data URL
-      reader.readAsDataURL(fileInput.files[0]);
-    } else {
-      // Hide the image if no file is selected
-      imagePreview.setAttribute("hidden", "true");
-    }
-  });
+        // Add event listener to campuspost element
+        document
+          .getElementById("category")
+          .addEventListener("change", function () {
+            // Get the selected value from campuspost
+            const selectedValue = this.value;
 
-  // Add event listener to campuspost element
-  document.getElementById("category").addEventListener("change", function () {
-    // Get the selected value from campuspost
-    const selectedValue = this.value;
+            // Get payment-related elements
+            const paymentLabel = document.getElementById("paymentLabel");
+            const paymentMethod = document.getElementById("paymentMethod");
+            const recipientLabel = document.getElementById("recipientLabel");
+            const recipient = document.getElementById("recipient");
 
-    // Get payment-related elements
-    const paymentLabel = document.getElementById("paymentLabel");
-    const paymentMethod = document.getElementById("paymentMethod");
-    const recipientLabel = document.getElementById("recipientLabel");
-    const recipient = document.getElementById("recipient");
+            // Check the selected value and update visibility accordingly
+            if (
+              selectedValue === "Fund Raising" ||
+              selectedValue === "Donation"
+            ) {
+              // Show payment-related elements
+              paymentLabel.style.display = "block";
+              paymentMethod.style.display = "block";
+              recipientLabel.style.display = "block";
+              recipient.style.display = "block";
+            } else {
+              // Hide payment-related elements
+              paymentLabel.style.display = "none";
+              paymentMethod.style.display = "none";
+              recipientLabel.style.display = "none";
+              recipient.style.display = "none";
+            }
+          });
 
-    // Check the selected value and update visibility accordingly
-    if (selectedValue === "Fund Raising" || selectedValue === "Donation") {
-      // Show payment-related elements
-      paymentLabel.style.display = "block";
-      paymentMethod.style.display = "block";
-      recipientLabel.style.display = "block";
-      recipient.style.display = "block";
-    } else {
-      // Hide payment-related elements
-      paymentLabel.style.display = "none";
-      paymentMethod.style.display = "none";
-      recipientLabel.style.display = "none";
-      recipient.style.display = "none";
-    }
-  });
+        var okButton = document.getElementById("okButton");
 
-  var okButton = document.getElementById("okButton");
+        // When the Ok button is clicked, close the modal and update campusTarget
+        okButton.addEventListener("click", function () {
+          // Close the "myModalnm" modal
+          modal.style.display = "none";
 
-// When the Ok button is clicked, close the modal and update campusTarget
-okButton.addEventListener("click", function () {
-    // Close the "myModalnm" modal
-    modal.style.display = "none";
+          // Get the form elements and campusTarget element
+          var campusForm = document.getElementById("campusForm");
+          var campusTarget = document.getElementById("campusTarget");
 
-    // Get the form elements and campusTarget element
-    var campusForm = document.getElementById("campusForm");
-    var campusTarget = document.getElementById("campusTarget");
+          // Get the selected campuses
+          var selectedCampuses = [];
+          var checkboxes = campusForm.querySelectorAll(".checkboxna:checked");
+          checkboxes.forEach(function (checkbox) {
+            selectedCampuses.push(checkbox.value);
+          });
 
-    // Get the selected campuses
-    var selectedCampuses = [];
-    var checkboxes = campusForm.querySelectorAll(".checkboxna:checked");
-    checkboxes.forEach(function (checkbox) {
-        selectedCampuses.push(checkbox.value);
-    });
+          // Update the campusTarget element with the selected campuses
+          campusTarget.value = selectedCampuses.join(", ");
+        });
+      });
 
-    // Update the campusTarget element with the selected campuses
-    campusTarget.value = selectedCampuses.join(", ");
-});
+      function clearCheckBoxes() {
+        // Get the form elements in the "myModalnm" modal
+        const campusForm = document.getElementById("campusForm");
 
-});
-
-   
-function clearCheckBoxes() {
-    // Get the form elements in the "myModalnm" modal
-    const campusForm = document.getElementById("campusForm");
-
-    // Clear all checkboxes
-    const checkboxes = campusForm.querySelectorAll(".checkboxna:checked");
-    checkboxes.forEach((checkbox) => {
-        checkbox.checked = false;
-    });
-}
+        // Clear all checkboxes
+        const checkboxes = campusForm.querySelectorAll(".checkboxna:checked");
+        checkboxes.forEach((checkbox) => {
+          checkbox.checked = false;
+        });
+      }
       function clearFormFields() {
         // Clear all form fields here
         document.getElementById("titlepost").value = "";
@@ -2629,159 +2647,163 @@ function clearCheckBoxes() {
         document.getElementById("imagepost").src = "";
       }
       function validateForm() {
-  // List of required field IDs
-  const requiredFields = [
-    "titlepost",
-    "category",
-    "startdate",
-    "enddate",
-    "introductionPost",
-    "objectivePost",
-    "instructionPost",
-    "Locationpost",
-    "campusTarget",
-    "actpts",
-    "targparty",
-    "filePost",
-    "facname",
-    "facnamecon",
-    // Add more field IDs as needed
-  ];
+        // List of required field IDs
+        const requiredFields = [
+          "titlepost",
+          "category",
+          "startdate",
+          "enddate",
+          "introductionPost",
+          "objectivePost",
+          "instructionPost",
+          "Locationpost",
+          "campusTarget",
+          "actpts",
+          "targparty",
+          "filePost",
+          "facname",
+          "facnamecon",
+          // Add more field IDs as needed
+        ];
 
-  // Check if all required fields are filled in
-  for (const fieldId of requiredFields) {
-    const fieldElement = document.getElementById(fieldId);
+        // Check if all required fields are filled in
+        for (const fieldId of requiredFields) {
+          const fieldElement = document.getElementById(fieldId);
 
-    // Check if the element exists before accessing its value
-    if (!fieldElement) {
-      console.error(`Element with ID '${fieldId}' not found.`);
-      return false;
-    }
+          // Check if the element exists before accessing its value
+          if (!fieldElement) {
+            console.error(`Element with ID '${fieldId}' not found.`);
+            return false;
+          }
 
-    const fieldValue = fieldElement.value.trim();
-    if (fieldValue === "") {
-      return false; // Return false if any required field is empty
-    }
-  }
+          const fieldValue = fieldElement.value.trim();
+          if (fieldValue === "") {
+            return false; // Return false if any required field is empty
+          }
+        }
 
-  // Get the selected category value
-  const selectedCategory = document.getElementById("category").value;
+        // Get the selected category value
+        const selectedCategory = document.getElementById("category").value;
 
-  // Additional validation for "Fund Raising" or "Donation" category
-  if (selectedCategory === "Fund Raising" || selectedCategory === "Donation") {
-    const paymentMethod = document.getElementById("paymentMethod");
+        // Additional validation for "Fund Raising" or "Donation" category
+        if (
+          selectedCategory === "Fund Raising" ||
+          selectedCategory === "Donation"
+        ) {
+          const paymentMethod = document.getElementById("paymentMethod");
 
-    // Check if the element exists before accessing its value
-    if (!paymentMethod) {
-      console.error("Element with ID 'paymentMethod' not found.");
-      return false;
-    }
+          // Check if the element exists before accessing its value
+          if (!paymentMethod) {
+            console.error("Element with ID 'paymentMethod' not found.");
+            return false;
+          }
 
-    const paymentMethodValue = paymentMethod.value.trim();
-    const recipient = document.getElementById("recipient");
+          const paymentMethodValue = paymentMethod.value.trim();
+          const recipient = document.getElementById("recipient");
 
-    // Check if the element exists before accessing its value
-    if (!recipient) {
-      console.error("Element with ID 'recipient' not found.");
-      return false;
-    }
+          // Check if the element exists before accessing its value
+          if (!recipient) {
+            console.error("Element with ID 'recipient' not found.");
+            return false;
+          }
 
-    const recipientValue = recipient.value.trim();
+          const recipientValue = recipient.value.trim();
 
-    // Check if payment-related fields are filled in
-    if (paymentMethodValue === "" || recipientValue === "") {
-      alert("Please fill in all required fields for payment.");
-      return false;
-    }
-  }
+          // Check if payment-related fields are filled in
+          if (paymentMethodValue === "" || recipientValue === "") {
+            alert("Please fill in all required fields for payment.");
+            return false;
+          }
+        }
 
-  // Get the date and time inputs
-  const startdate = new Date(document.getElementById("startdate").value);
-  const enddate = new Date(document.getElementById("enddate").value);
+        // Get the date and time inputs
+        const startdate = new Date(document.getElementById("startdate").value);
+        const enddate = new Date(document.getElementById("enddate").value);
 
-  const now = new Date();
-  if (startdate && startdate <= now) {
-    alert("Please select a start date and time in the future.");
-    return false;
-  }
+        const now = new Date();
+        if (startdate && startdate <= now) {
+          alert("Please select a start date and time in the future.");
+          return false;
+        }
 
-  if (enddate && enddate <= startdate) {
-    alert(
-      "Please select an end date and time greater than the start date and time."
-    );
-    return false;
-  }
+        if (enddate && enddate <= startdate) {
+          alert(
+            "Please select an end date and time greater than the start date and time."
+          );
+          return false;
+        }
 
-  return true;
-}
-
-
-</script>
-<script type="module">
-  // Import necessary Firebase modules
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
-
-  // Firebase configuration
-  const firebaseConfig3 = {
-    apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
-    authDomain: "civicall-app-a54d1.firebaseapp.com",
-    databaseURL: "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "civicall-app-a54d1",
-    storageBucket: "civicall-app-a54d1.appspot.com",
-    messagingSenderId: "909514632764",
-    appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
-    measurementId: "G-0BVYE5XJGV",
-  };
-
-  // Initialize Firebase app
-  const app3 = initializeApp(firebaseConfig3);
-  const db3 = getDatabase(app3);
-
-  // Reference to the "Users" node in the database
-  const usersRef = ref(db3, 'Users');
-
-  // Function to format the user count
-  const formatUserCount = (count) => {
-    if (count >= 1000000) {
-      return (count / 1000000).toFixed(1) + 'M';
-    } else if (count >= 10000) {
-      return (count / 1000).toFixed(1) + 'k';
-    } else {
-      return count.toString();
-    }
-  };
-
-  const updateTotalVerifiedUsers = (snapshot) => {
-  const users = snapshot.val();
-  let totalVerifiedUsers = 0;
-  const oneYearAgo = new Date();
-  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-
-  // Iterate through the users and count only those with verificationStatus set to true
-  for (const userId in users) {
-    const user = users[userId];
-
-    // Check if user exists and has verificationStatus set to true
-    if (user && user.verificationStatus === true) {
-      // Check if lastLogin is within the last year
-      const lastLoginTimestamp = new Date(user.lastLogin);
-      if (lastLoginTimestamp > oneYearAgo) {
-        totalVerifiedUsers++;
+        return true;
       }
-    }
-  }
+    </script>
+    <script type="module">
+      // Import necessary Firebase modules
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        onValue,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 
-  // Format and update the total user count in the HTML element
-  const formattedCount = formatUserCount(totalVerifiedUsers);
-  const totalNumElement = document.getElementById('totalNum');
-  totalNumElement.textContent = formattedCount;
-};
+      // Firebase configuration
+      const firebaseConfig3 = {
+        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+        authDomain: "civicall-app-a54d1.firebaseapp.com",
+        databaseURL:
+          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "civicall-app-a54d1",
+        storageBucket: "civicall-app-a54d1.appspot.com",
+        messagingSenderId: "909514632764",
+        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+        measurementId: "G-0BVYE5XJGV",
+      };
 
+      // Initialize Firebase app
+      const app3 = initializeApp(firebaseConfig3);
+      const db3 = getDatabase(app3);
 
-// Listen for changes in the "Users" node and update the total verified user count
-onValue(usersRef, updateTotalVerifiedUsers);
-</script>
+      // Reference to the "Users" node in the database
+      const usersRef = ref(db3, "Users");
 
+      // Function to format the user count
+      const formatUserCount = (count) => {
+        if (count >= 1000000) {
+          return (count / 1000000).toFixed(1) + "M";
+        } else if (count >= 10000) {
+          return (count / 1000).toFixed(1) + "k";
+        } else {
+          return count.toString();
+        }
+      };
+
+      const updateTotalVerifiedUsers = (snapshot) => {
+        const users = snapshot.val();
+        let totalVerifiedUsers = 0;
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+        // Iterate through the users and count only those with verificationStatus set to true
+        for (const userId in users) {
+          const user = users[userId];
+
+          // Check if user exists and has verificationStatus set to true
+          if (user && user.verificationStatus === true) {
+            // Check if lastLogin is within the last year
+            const lastLoginTimestamp = new Date(user.lastLogin);
+            if (lastLoginTimestamp > oneYearAgo) {
+              totalVerifiedUsers++;
+            }
+          }
+        }
+
+        // Format and update the total user count in the HTML element
+        const formattedCount = formatUserCount(totalVerifiedUsers);
+        const totalNumElement = document.getElementById("totalNum");
+        totalNumElement.textContent = formattedCount;
+      };
+
+      // Listen for changes in the "Users" node and update the total verified user count
+      onValue(usersRef, updateTotalVerifiedUsers);
+    </script>
   </body>
 </html>

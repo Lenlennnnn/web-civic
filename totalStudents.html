@@ -9,16 +9,13 @@
     <link rel="stylesheet" href="css/dashboard.css" />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"
-    />
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
     <link
       rel="stylesheet"
-      href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"
-    />
+      href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    />
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
     <style>
       .container {
@@ -225,7 +222,7 @@
       .image-container {
         display: flex;
         justify-content: center;
-        align-items: center; 
+        align-items: center;
         margin-bottom: 20px;
       }
 
@@ -426,32 +423,31 @@
 
       #toggleConfirmPassword {
         position: absolute;
-  right: 10px;
-  top: 40%;
-  transform: translateY(-50%);
-  cursor: pointer;
+        right: 10px;
+        top: 40%;
+        transform: translateY(-50%);
+        cursor: pointer;
       }
-      
+
       .password-container {
-  position: relative;
-}
-.toggle-password {
-  position: absolute;
-  right: 10px; 
-  top: 40%;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
-#archiveUser {
-  position: relative;
-  bottom: 133px;
-  left: 1180px; /* Adjust the left position as needed */
-}
+        position: relative;
+      }
+      .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 40%;
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
+      #archiveUser {
+        position: relative;
+        bottom: 133px;
+        left: 1180px; /* Adjust the left position as needed */
+      }
 
-#archiveBtn {
-  background-color: #007bff; /* Adjust the background color as needed */
-}
-
+      #archiveBtn {
+        background-color: #007bff; /* Adjust the background color as needed */
+      }
     </style>
   </head>
 
@@ -467,16 +463,14 @@
         <!-- ====== ionicons ======= -->
         <script
           type="module"
-          src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-        ></script>
+          src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
       </div>
       <h1 class="h1-group">User Management</h1>
       <a href="#" id="openModalBtn">
         <button
           type="button"
           class="btn btn-primary custom-button"
-          id="adduserBtn"
-        >
+          id="adduserBtn">
           Add Account
         </button>
       </a>
@@ -484,8 +478,7 @@
       <button
         type="button"
         class="btn btn-secondary custom-button"
-        id="addgrBtn"
-      >
+        id="addgrBtn">
         Add Multiple Accounts
       </button>
 
@@ -493,23 +486,21 @@
       <a
         href="validateStudent.html"
         id="studentValidation"
-        class="notification-link"
-      >
+        class="notification-link">
         <button type="button" class="btn btn-primary custom-button" id="valBtn">
           Verification
           <!-- <span class="notification-badge">new</span> -->
         </button>
       </a>
-      <a
-      href="archiveUser.html"
-      id="archiveUser"
-      class="notification-link"
-    >
-      <button type="button" class="btn btn-primary custom-button" id="archiveBtn">
-        Archive
-        <!-- <span class="notification-badge">new</span> -->
-      </button>
-    </a>
+      <a href="archiveUser.html" id="archiveUser" class="notification-link">
+        <button
+          type="button"
+          class="btn btn-primary custom-button"
+          id="archiveBtn">
+          Archive
+          <!-- <span class="notification-badge">new</span> -->
+        </button>
+      </a>
       <div class="modalm" id="myModalm">
         <div class="modal-contentm" id="modalcentm">
           <span class="closem" id="closeModalEx">&times;</span>
@@ -538,8 +529,7 @@
                 id="firstname"
                 name="firstname"
                 required
-                placeholder="Enter the First Name"
-              />
+                placeholder="Enter the First Name" />
 
               <label for="middlename">Middle Name:</label>
               <input
@@ -547,8 +537,7 @@
                 id="middlename"
                 name="lastname"
                 required
-                placeholder="Enter the Middle Name"
-              />
+                placeholder="Enter the Middle Name" />
 
               <label for="lastname">Last Name:</label>
               <input
@@ -556,8 +545,7 @@
                 id="lastname"
                 name="middlename"
                 required
-                placeholder="Enter the Last Name"
-              />
+                placeholder="Enter the Last Name" />
 
               <label for="campus">Gender:</label>
               <select id="gender" name="campus" required>
@@ -594,8 +582,7 @@
                 id="email"
                 name="email"
                 required
-                placeholder="Enter the Email"
-              />
+                placeholder="Enter the Email" />
               <label for="password">Password:</label>
               <div class="password-container">
                 <input
@@ -603,8 +590,7 @@
                   id="password"
                   name="password"
                   required
-                  placeholder="Enter the Password"
-                />
+                  placeholder="Enter the Password" />
                 <span id="togglePassword" class="toggle-password">
                   <i id="icon" class="fas fa-eye"></i>
                 </span>
@@ -613,12 +599,11 @@
               <label for="confirmpassword">Confirm Password:</label>
               <div class="password-container">
                 <input
-                type="password"
-                id="confirmpassword"
-                name="confirmpassword"
-                required
-                placeholder="Re-type the Password"
-                />
+                  type="password"
+                  id="confirmpassword"
+                  name="confirmpassword"
+                  required
+                  placeholder="Re-type the Password" />
                 <span id="toggleConfirmPassword" class="toggle-password">
                   <i id="confirmIcon" class="fas fa-eye"></i>
                 </span>
@@ -650,16 +635,14 @@
         id="exampleModalLong"
         role="dialog"
         aria-labelledby="exampleModalLongTitle"
-        aria-hidden="true"
-      >
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5
                 class="modal-title"
                 id="user-details"
-                style="position: relative; left: 38%"
-              >
+                style="position: relative; left: 38%">
                 User Details
               </h5>
             </div>
@@ -671,25 +654,22 @@
                 type="button"
                 class="btn btn-danger"
                 data-dismiss="modal"
-                id="setmodalbtn"
-              >
+                id="setmodalbtn">
                 Set
               </button>
 
               <button
-              type="button"
-              class="btn btn-danger"
-              data-dismiss="modal"
-              id="editBtn"
-            >
-              Edit
-            </button>
+                type="button"
+                class="btn btn-danger"
+                data-dismiss="modal"
+                id="editBtn">
+                Edit
+              </button>
               <button
                 type="button"
                 class="btn btn-secondary"
                 data-dismiss="modal"
-                id="closemodalbtn"
-              >
+                id="closemodalbtn">
                 Close
               </button>
             </div>
@@ -717,8 +697,7 @@
               <input
                 type="checkbox"
                 class="form-check-input"
-                id="banCheckbox"
-              />
+                id="banCheckbox" />
               <label class="form-check-label" for="banCheckbox"
                 >Delete this account permanently</label
               >
@@ -732,64 +711,56 @@
               type="checkbox"
               id="spam"
               name="reportCategory"
-              value="Spam"
-            />
+              value="Spam" />
             <label for="spam">Spam</label><br />
 
             <input
               type="checkbox"
               id="hateSpeech"
               name="reportCategory"
-              value="Hate Speech"
-            />
+              value="Hate Speech" />
             <label for="hateSpeech">Hate Speech</label><br />
 
             <input
               type="checkbox"
               id="falseInformation"
               name="reportCategory"
-              value="False Information"
-            />
+              value="False Information" />
             <label for="falseInformation">False Information</label><br />
 
             <input
               type="checkbox"
               id="harassment"
               name="reportCategory"
-              value="Harassment"
-            />
+              value="Harassment" />
             <label for="harassment">Harassment</label><br />
 
             <input
               type="checkbox"
               id="notConnected"
               name="reportCategory"
-              value="Not Connected"
-            />
+              value="Not Connected" />
             <label for="notConnected">Not Connected</label><br />
 
             <input
               type="checkbox"
               id="nudity"
               name="reportCategory"
-              value="Nudity"
-            />
+              value="Nudity" />
             <label for="nudity">Nudity</label><br />
 
             <input
               type="checkbox"
               id="violence"
               name="reportCategory"
-              value="Violence"
-            />
+              value="Violence" />
             <label for="violence">Violence</label><br />
 
             <input
               type="checkbox"
               id="other"
               name="reportCategory"
-              value="Other"
-            />
+              value="Other" />
             <label for="other">Other</label><br />
 
             <!-- Additional form fields or submit button can be added here -->
@@ -799,16 +770,14 @@
             type="button"
             class="btn btn-dark"
             id="precoedButtonrr"
-            style="margin-top: 10px; margin-left: 72%"
-          >
+            style="margin-top: 10px; margin-left: 72%">
             Proceed
           </button>
           <button
             type="button"
             class="btn btn-light"
             id="closeButtonrr"
-            style="margin-top: 10px"
-          >
+            style="margin-top: 10px">
             Close
           </button>
           <!-- Additional buttons or content can be added here -->
@@ -905,12 +874,14 @@
 
       function RegisterUser(event) {
         event.preventDefault();
-        const confirmed = window.confirm("Are you sure you want to create this account?");
-  
-  if (!confirmed) {
-    // If the user cancels the confirmation, do nothing
-    return;
-  }
+        const confirmed = window.confirm(
+          "Are you sure you want to create this account?"
+        );
+
+        if (!confirmed) {
+          // If the user cancels the confirmation, do nothing
+          return;
+        }
         const passwordValue = password.value;
         const confirmPasswordValue = confirmpassword.value;
 
@@ -1029,86 +1000,91 @@
       const UsersRef = ref(db, "Users");
 
       const initializeDataTable = () => {
-  if ($.fn.DataTable.isDataTable("#example")) {
-    $("#example").DataTable().destroy();
-  }
+        if ($.fn.DataTable.isDataTable("#example")) {
+          $("#example").DataTable().destroy();
+        }
 
-  const dataTable = $("#example").DataTable({
-    columns: [
-      { data: "userUID" },
-      { data: "fullname" },
-      { data: "email" },
-      { data: "campus" },
-      { data: "Action" },
-    ],
-    // Add the following lines to specify sorting based on the lastname column
-    columnDefs: [
-      { targets: 1, type: "string" } // Assuming the lastname column is at index 1
-    ],
-    order: [[1, "asc"]] // Order by lastname in ascending order
-  });
+        const dataTable = $("#example").DataTable({
+          columns: [
+            { data: "userUID" },
+            { data: "fullname" },
+            { data: "email" },
+            { data: "campus" },
+            { data: "Action" },
+          ],
+          // Add the following lines to specify sorting based on the lastname column
+          columnDefs: [
+            { targets: 1, type: "string" }, // Assuming the lastname column is at index 1
+          ],
+          order: [[1, "asc"]], // Order by lastname in ascending order
+        });
 
-  return dataTable;
-};
-
+        return dataTable;
+      };
 
       const dataTable = initializeDataTable();
 
       const populateDataTable = () => {
-  onValue(UsersRef, (snapshot) => {
-    const usersData = snapshot.val();
+        onValue(UsersRef, (snapshot) => {
+          const usersData = snapshot.val();
 
-    dataTable.clear();
+          dataTable.clear();
 
-    if (usersData) {
-      const currentTimestamp = generateTimestamp(); // Get the current timestamp
+          if (usersData) {
+            const currentTimestamp = generateTimestamp(); // Get the current timestamp
 
-      Object.keys(usersData).forEach((userId) => {
-        const user = usersData[userId];
+            Object.keys(usersData).forEach((userId) => {
+              const user = usersData[userId];
 
-        if (user.verificationStatus) {
-          // Check if user has verificationStatus set to true
-          const lastLoginTimestamp = new Date(user.lastLogin);
+              if (user.verificationStatus) {
+                // Check if user has verificationStatus set to true
+                const lastLoginTimestamp = new Date(user.lastLogin);
 
-          // Check if lastLogin is within the last year
-          const oneYearAgo = new Date();
-          oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+                // Check if lastLogin is within the last year
+                const oneYearAgo = new Date();
+                oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
-          if (lastLoginTimestamp > oneYearAgo) {
-            // User's lastLogin is within the last year
-            $("#example tbody").on("click", "button.view-button", function () {
-              const userId = dataTable.row($(this).parents("tr")).data().userUID;
-              viewUserDetails(userId);
+                if (lastLoginTimestamp > oneYearAgo) {
+                  // User's lastLogin is within the last year
+                  $("#example tbody").on(
+                    "click",
+                    "button.view-button",
+                    function () {
+                      const userId = dataTable
+                        .row($(this).parents("tr"))
+                        .data().userUID;
+                      viewUserDetails(userId);
+                    }
+                  );
+
+                  dataTable.row.add({
+                    userUID: userId,
+                    fullname: `${user.lastname}, ${user.firstname}, ${user.middlename}`,
+                    email: user.email,
+                    campus: user.campus,
+                    Action:
+                      '<button class="btn btn-danger view-button" data-toggle="modal" data-target="#exampleModalLong">View</button>',
+                  });
+                }
+              }
             });
 
-            dataTable.row.add({
-              userUID: userId,
-              fullname: `${user.lastname}, ${user.firstname}, ${user.middlename}`,
-              email: user.email,
-              campus: user.campus,
-              Action: '<button class="btn btn-danger view-button" data-toggle="modal" data-target="#exampleModalLong">View</button>',
-            });
+            dataTable.draw();
+          } else {
+            console.log("No data available in Users collection.");
+            dataTable.clear().draw();
           }
-        }
-      });
+        });
 
-      dataTable.draw();
-    } else {
-      console.log("No data available in Users collection.");
-      dataTable.clear().draw();
-    }
-  });
+        onChildRemoved(UsersRef, (removedSnapshot) => {
+          const removedUserId = removedSnapshot.key;
 
-  onChildRemoved(UsersRef, (removedSnapshot) => {
-    const removedUserId = removedSnapshot.key;
-
-    dataTable
-      .rows((idx, data) => data.userUID === removedUserId)
-      .remove()
-      .draw();
-  });
-};
-
+          dataTable
+            .rows((idx, data) => data.userUID === removedUserId)
+            .remove()
+            .draw();
+        });
+      };
 
       function viewUserDetails(userId) {
         const userRef = ref(db, `Users/${userId}`);
@@ -1122,9 +1098,9 @@
             const modalBodyContent =
               document.getElementById("modalBodyContent");
 
-              if (userData) {
-                const imageSrc = userData.ImageProfile || 'img/profile.png';
-                modalBodyContent.innerHTML = `
+            if (userData) {
+              const imageSrc = userData.ImageProfile || "img/profile.png";
+              modalBodyContent.innerHTML = `
                     <div class="image-container"><img src="${imageSrc}" class="rounded-image"></div>
           <p><u><h5>Personal Information:</h5></u></p>
           <p><strong>Name:<input class="form-control" id ="" type="text" value="${userData.lastname}, ${userData.firstname}, ${userData.middlename}" readonly></input></strong></p>
@@ -1301,12 +1277,12 @@
             return; // Stop further processing
           }
 
-    // Confirmation alert
-    if (confirm("Are you sure you want to register these users?")) {
-        // Register users
-        registerUsers();
-    }
-});
+          // Confirmation alert
+          if (confirm("Are you sure you want to register these users?")) {
+            // Register users
+            registerUsers();
+          }
+        });
 
       function registerUsers() {
         var inputRow = document.getElementById("inputrow");
