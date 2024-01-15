@@ -437,6 +437,7 @@
                     // Update verificationStatus to true
                     update(ref(db, `Users/${uid}`), {
                       verificationStatus: true,
+                      verifiedTimeStamp: generateTimestamp(),
                     });
 
                     // Display success alert
@@ -576,6 +577,19 @@
           console.error("jQuery or DataTables plugin is not available.");
         }
       });
+      function generateTimestamp() {
+        const currentDate = new Date();
+        const options = {
+          timeZone: "Asia/Manila",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        };
+        return currentDate.toLocaleString("en-US", options).replace(",", "");
+      }
     </script>
   </body>
 </html>
