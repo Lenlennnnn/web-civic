@@ -417,19 +417,21 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     if (typeof $ !== "undefined" && typeof $.fn.dataTable !== "undefined") {
-        const tableElement = $("#example");
-        const usersRef = ref(db, "Users");
+      const tableElement = $("#example");
+      const usersRef = ref(db, "Users");
 
-        const table = tableElement.DataTable({
-            columns: [
-                { title: "UID" },
-                { title: "Name" },
-                { title: "Gender" },
-                { title: "Campus" },
-                { title: "NSTP" },
-                { title: "Action" },
-            ],
-        });
+      const table = tableElement.DataTable({
+        columns: [
+          { title: "UID" },
+          { title: "Name" },
+          { title: "Gender" },
+          { title: "Campus" },
+          { title: "NSTP" },
+          { title: "Action" },
+        ],
+        // Specify the initial order based on the second column (Name)
+        order: [[1, "asc"]],
+      });
 
         tableElement.on("click", ".view-button", function () {
             const uid = $(this).data("uid");
@@ -499,33 +501,43 @@
         });
 
         onValue(usersRef, (snapshot) => {
-            table.clear().draw();
+        table.clear().draw();
 
-            snapshot.forEach((userSnapshot) => {
-                const user = userSnapshot.val();
+        const usersToDisplay = [];
 
-                if (user && user.verificationStatus === false) {
-                    const uid = user.uid || '';
-                    const name = user.firstname && user.lastname ? `${user.firstname} ${user.lastname}` : '';
-                    const gender = user.gender || '';
-                    const campus = user.campus || '';
-                    const nstp = user.nstp || '';
+        snapshot.forEach((userSnapshot) => {
+          const user = userSnapshot.val();
 
-                    table.row.add([
-                        uid,
-                        name,
-                        gender,
-                        campus,
-                        nstp,
-                        `<button class="btn btn-primary view-button" data-uid="${uid}">View</button>`,
-                    ]).draw();
-                }
-            });
+          if (user && user.verificationStatus === false) {
+            const uid = user.uid || '';
+            const name = user.firstname && user.lastname ? `${user.lastname}, ${user.firstname}, ${user.middlename}` : '';
+            const gender = user.gender || '';
+            const campus = user.campus || '';
+            const nstp = user.nstp || '';
+
+            usersToDisplay.push([
+              uid,
+              name,
+              gender,
+              campus,
+              nstp,
+              `<button class="btn btn-primary view-button" data-uid="${uid}">View</button>`,
+            ]);
+          }
         });
+
+        // Sort users alphabetically based on the Name column
+        usersToDisplay.sort((a, b) => a[1].localeCompare(b[1]));
+
+        // Add sorted rows to the DataTable
+        usersToDisplay.forEach((userRow) => {
+          table.row.add(userRow).draw();
+        });
+      });
     } else {
-        console.error("jQuery or DataTables plugin is not available.");
+      console.error("jQuery or DataTables plugin is not available.");
     }
-});
+  });
 </script>
 
   </body>
