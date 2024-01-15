@@ -7,10 +7,15 @@
     <title>Validate Student</title>
     <link rel="icon" type="image/png" href="login/images/icons/civicon.png" />
     <link rel="stylesheet" href="css/dashboard.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/css/ionicons.min.css" />
-
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/css/ionicons.min.css" />
 
     <style>
       .container {
@@ -32,10 +37,6 @@
         left: -165px;
         transform: translate(-50%, -50%);
         cursor: pointer;
-        /* Change cursor to pointer */
-        /* Other button styling properties */
-
-        /* Transition effect for hover */
         transition: background-color 0.3s, color 0.3s, transform 0.3s;
         z-index: 1;
       }
@@ -87,7 +88,7 @@
         border: solid #ccc 1px;
         border-radius: 50%;
         margin-bottom: 20px;
-        height: 200px;
+        height: 180px;
       }
 
       label {
@@ -111,6 +112,9 @@
         padding: 0;
         width: 100%;
       }
+      .form-control {
+        margin-bottom: 15px;
+      }
     </style>
   </head>
 
@@ -126,8 +130,7 @@
         <!-- ====== ionicons ======= -->
         <script
           type="module"
-          src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-        ></script>
+          src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
       </div>
       <h1 class="h1-group">Validate Student</h1>
 
@@ -154,8 +157,7 @@
             tabindex="-1"
             role="dialog"
             aria-labelledby="exampleModalLongggTitle"
-            aria-hidden="true"
-          >
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -170,7 +172,7 @@
                       alt="Event Image"
                       class="img-fluid"
                       id="profileImage"
-                    />
+                      loading="lazy" />
                   </div>
 
                   <div class="form-group">
@@ -180,8 +182,7 @@
                       class="form-control"
                       id="fullName"
                       value="Leonard Suba Briones"
-                      readonly
-                    />
+                      readonly />
                   </div>
                   <div class="form-group">
                     <label for="Email">Email:</label>
@@ -190,9 +191,8 @@
                       class="form-control"
                       id="email"
                       value="20-64514@g.batstate-u.edu.ph"
-                      readonly
-                    />
-                              </div>
+                      readonly />
+                  </div>
                   <div class="form-group">
                     <label for="gender">Gender:</label>
                     <input
@@ -200,8 +200,7 @@
                       class="form-control"
                       id="gender"
                       value="Male"
-                      readonly
-                    />
+                      readonly />
                   </div>
                   <div class="form-group">
                     <label for="Birthday">Date of Birth:</label>
@@ -210,8 +209,7 @@
                       class="form-control"
                       id="birthDay"
                       value="12/25/2002"
-                      readonly
-                    />
+                      readonly />
                   </div>
                   <div class="form-group">
                     <label for="Address">Address:</label>
@@ -220,8 +218,7 @@
                       class="form-control"
                       id="address"
                       value="Santiago Malvar Batangas"
-                      readonly
-                    />
+                      readonly />
                   </div>
                   <div class="form-group">
                     <label for="category">User Type:</label>
@@ -230,8 +227,7 @@
                       class="form-control"
                       id="userType"
                       value="Undergraduate"
-                      readonly
-                    />
+                      readonly />
                   </div>
                   <div class="form-group">
                     <label for="Campus">Campus:</label>
@@ -240,8 +236,7 @@
                       class="form-control"
                       id="campus"
                       value="JPLPC Malvar Campus"
-                      readonly
-                    />
+                      readonly />
                   </div>
                   <div class="form-group">
                     <label for="numberuser">Mobile Number:</label>
@@ -250,8 +245,7 @@
                       class="form-control"
                       id="numberMobile"
                       value="09472264408"
-                      readonly
-                    />
+                      readonly />
                   </div>
                   <div class="form-group">
                     <label for="srCode">SR Code:</label>
@@ -260,8 +254,7 @@
                       class="form-control"
                       id="srCode"
                       value="09472264408"
-                      readonly
-                    />
+                      readonly />
                   </div>
                   <div class="form-group">
                     <label for="userCourse">Course:</label>
@@ -270,8 +263,7 @@
                       class="form-control"
                       id="userCourse"
                       value="09472264408"
-                      readonly
-                    />
+                      readonly />
                   </div>
                   <div class="form-group">
                     <label for="yearandSect">Year and Section:</label>
@@ -280,8 +272,7 @@
                       class="form-control"
                       id="yearandSect"
                       value="09472264408"
-                      readonly
-                    />
+                      readonly />
                   </div>
                   <div class="form-group">
                     <label for="nstp">NSTP:</label>
@@ -290,8 +281,7 @@
                       class="form-control"
                       id="nstp"
                       value="09472264408"
-                      readonly
-                    />
+                      readonly />
                   </div>
                   <div class="form-group">
                     <label for="Credential">Credential:</label>
@@ -300,36 +290,21 @@
                       class="form-control"
                       id="credential"
                       value="COR.pdf"
-                      readonly
-                    />
-                    <a
-                      id ="proof"
-                      style="color: #dc3545"
-                    > 
-                      View the file
-                    </a>
+                      readonly />
+                    <a id="proof" style="color: #dc3545"> View the file </a>
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-success"
-                    id="approval"
-                  >
+                  <button type="button" class="btn btn-success" id="approval">
                     Approved
                   </button>
-                  <button
-                    type="button"
-                    class="btn btn-danger"
-                    id="declining"
-                  >
+                  <button type="button" class="btn btn-danger" id="declining">
                     Decline
                   </button>
                   <button
                     type="button"
                     class="btn btn-secondary"
-                    data-dismiss="modal"
-                  >
+                    data-dismiss="modal">
                     Close
                   </button>
                   <!-- Additional buttons or actions can be added here -->
@@ -344,8 +319,7 @@
             tabindex="-1"
             role="dialog"
             aria-labelledby="proofVerificationTitle"
-            aria-hidden="true"
-          >
+            aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content" id="secondna">
                 <div class="modal-header">
@@ -363,7 +337,7 @@
       </div>
     </div>
     <!-- <script src="js/addAdmin.js"></script> -->
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
     <!-- Bootstrap JS (including Popper.js) -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
@@ -374,185 +348,234 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
     <!-- Firebase scripts -->
-    <script type="module" src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js"></script>
-    <script type="module" src="https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js"></script>
-  
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js"></script>
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js"></script>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-  import {
-    getDatabase,
-    ref,
-    update,
-    onValue,
-  } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        update,
+        onValue,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
-    authDomain: "civicall-app-a54d1.firebaseapp.com",
-    databaseURL: "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "civicall-app-a54d1",
-    storageBucket: "civicall-app-a54d1.appspot.com",
-    messagingSenderId: "909514632764",
-    appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
-    measurementId: "G-0BVYE5XJGV",
-  };
+      const firebaseConfig = {
+        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+        authDomain: "civicall-app-a54d1.firebaseapp.com",
+        databaseURL:
+          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "civicall-app-a54d1",
+        storageBucket: "civicall-app-a54d1.appspot.com",
+        messagingSenderId: "909514632764",
+        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+        measurementId: "G-0BVYE5XJGV",
+      };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
 
-  document.addEventListener("DOMContentLoaded", function () {
-    if (typeof $ !== "undefined" && typeof $.fn.dataTable !== "undefined") {
-      const tableElement = $("#example");
-      const usersRef = ref(db, "Users");
+      document.addEventListener("DOMContentLoaded", function () {
+        if (typeof $ !== "undefined" && typeof $.fn.dataTable !== "undefined") {
+          const tableElement = $("#example");
+          const usersRef = ref(db, "Users");
 
-      const table = tableElement.DataTable({
-        columns: [
-          { title: "UID" },
-          { title: "Name" },
-          { title: "Gender" },
-          { title: "Campus" },
-          { title: "NSTP" },
-          { title: "Action" },
-        ],
-        // Specify the initial order based on the second column (Name)
-        order: [[1, "asc"]],
-      });
+          const table = tableElement.DataTable({
+            columns: [
+              { title: "UID" },
+              { title: "Name" },
+              { title: "Gender" },
+              { title: "Campus" },
+              { title: "NSTP" },
+              { title: "Action" },
+            ],
+            // Specify the initial order based on the second column (Name)
+            order: [[1, "asc"]],
+          });
 
-        tableElement.on("click", ".view-button", function () {
+          tableElement.on("click", ".view-button", function () {
             const uid = $(this).data("uid");
 
             const userRef = ref(db, `Users/${uid}`);
             onValue(userRef, (userSnapshot) => {
-                const user = userSnapshot.val();
+              const user = userSnapshot.val();
 
-                $("#profileImage").attr("src", user.ImageProfile || "img/profile.png");
-                $("#fullName").val(`${user.lastname}, ${user.firstname}, ${user.middlename}`);
-                $("#email").val(user.email || "");
-                $("#gender").val(user.gender || "");
-                $("#birthDay").val(user.birthday || "");
-                $("#address").val(user.address || "");
-                $("#userType").val(user.userType || "");
-                $("#campus").val(user.campus || "");
-                $("#numberMobile").val(user.phoneno || "");
-                $("#srCode").val(user.srcode || "");
-                $("#userCourse").val(user.course || "");
-                $("#yearandSect").val(user.yearandSection || "");
-                $("#nstp").val(user.nstp || "");
+              $("#profileImage").attr(
+                "src",
+                user.ImageProfile || "img/profile.png"
+              );
+              $("#fullName").val(
+                `${user.lastname}, ${user.firstname}, ${user.middlename}`
+              );
+              $("#email").val(user.email || "");
+              $("#gender").val(user.gender || "");
+              $("#birthDay").val(user.birthday || "");
+              $("#address").val(user.address || "");
+              $("#userType").val(user.userType || "");
+              $("#campus").val(user.campus || "");
+              $("#numberMobile").val(user.phoneno || "");
+              $("#srCode").val(user.srcode || "");
+              $("#userCourse").val(user.course || "");
+              $("#yearandSect").val(user.yearandSection || "");
+              $("#nstp").val(user.nstp || "");
 
-                // Show the modal
-                $("#exampleModalLonggg").modal("show");
+              // Show the modal
+              $("#exampleModalLonggg").modal("show");
 
-                // Adding click event for approval button
-                $("#approval").off("click").on("click", function () {
-                    // Display confirmation dialog
-                    if (confirm("Are you sure you want to verify this account?")) {
-                        // Update verificationStatus to true
-                        update(ref(db, `Users/${uid}`), { verificationStatus: true });
+              // Adding click event for approval button
+              $("#approval")
+                .off("click")
+                .on("click", function () {
+                  // Display confirmation dialog
+                  if (
+                    confirm("Are you sure you want to verify this account?")
+                  ) {
+                    // Update verificationStatus to true
+                    update(ref(db, `Users/${uid}`), {
+                      verificationStatus: true,
+                    });
 
-                        // Display success alert
-                        alert("Successfully verified the account.");
+                    // Display success alert
+                    alert("Successfully verified the account.");
 
-                        // Close the modal
-                        $("#exampleModalLonggg").modal("hide");
+                    // Close the modal
+                    $("#exampleModalLonggg").modal("hide");
 
-                        // Unbind the click event to prevent multiple bindings
-                        $(this).off("click");
-                    }
+                    // Unbind the click event to prevent multiple bindings
+                    $(this).off("click");
+                  }
                 });
 
+              const userRef2 = ref(db, `User Verification/${uid}`);
+              onValue(userRef2, (userSnapshot) => {
+                const userData = userSnapshot.val();
+                if (userData) {
+                  // Get the first child key (type of verification)
+                  const verificationType = Object.keys(userData)[0];
 
-                const userRef2 = ref(db, `User Verification/${uid}`);
-onValue(userRef2, (userSnapshot) => {
-    const userData = userSnapshot.val();
-if (userData) {
-                        // Get the first child key (type of verification)
-                        const verificationType = Object.keys(userData)[0];
+                  // Get the corresponding data for the verification type
+                  const verificationData = userData[verificationType];
 
-                        // Get the corresponding data for the verification type
-                        const verificationData = userData[verificationType];
+                  // Display the verification type in the "credential" input
+                  $("#credential").val(verificationType);
+                } else {
+                  // Handle the case where there is no verification data
+                  $("#credential").val("No verification data available");
+                }
+                if (userData) {
+                  const verificationType = Object.keys(userData)[0];
+                  const verificationData = userData[verificationType];
 
-                        // Display the verification type in the "credential" input
-                        $("#credential").val(verificationType);
+                  if (verificationData) {
+                    // Check if the 4th child exists and has imageUri or fileUri
+                    const fileData =
+                      verificationData.image || verificationData.file;
+                    if (fileData) {
+                      const fileUri = fileData.imageUri || fileData.fileUri;
+
+                      // Display the link to view the file
+                      $("#proof")
+                        .attr("href", fileUri)
+                        .text("View the file")
+                        .attr("target", "_blank");
                     } else {
-                        // Handle the case where there is no verification data
-                        $("#credential").val("No verification data available");
+                      // Handle the case where there is no file data
+                      $("#proof")
+                        .attr("href", "#")
+                        .text("No file available")
+                        .removeAttr("target");
                     }
-    if (userData) {
-        const verificationType = Object.keys(userData)[0];
-        const verificationData = userData[verificationType];
+                  } else {
+                    // Handle the case where there is no verification data
+                    $("#proof")
+                      .attr("href", "#")
+                      .text("No Credential data available")
+                      .removeAttr("target");
+                  }
 
-        if (verificationData) {
-            // Check if the 4th child exists and has imageUri or fileUri
-            const fileData = verificationData.image || verificationData.file;
-            if (fileData) {
-                const fileUri = fileData.imageUri || fileData.fileUri;
+                  // Show the modal
+                  $("#exampleModalLonggg").modal("show");
+                } else {
+                  // Handle the case where the UID does not exist in "User Verification"
+                  $("#proof")
+                    .attr("href", "#")
+                    .text("No Credential Available")
+                    .removeAttr("target");
 
-                // Display the link to view the file
-                $("#proof").attr("href", fileUri).text("View the file").attr("target", "_blank");
-            } else {
-                // Handle the case where there is no file data
-                $("#proof").attr("href", "#").text("No file available").removeAttr("target");
-            }
-        } else {
-            // Handle the case where there is no verification data
-            $("#proof").attr("href", "#").text("No Credential data available").removeAttr("target");
-        }
-
-        // Show the modal
-        $("#exampleModalLonggg").modal("show");
-    } else {
-        // Handle the case where the UID does not exist in "User Verification"
-        $("#proof").attr("href", "#").text("No Credential Available").removeAttr("target");
-        
-        // Show the modal
-        $("#exampleModalLonggg").modal("show");
-    }
-});
-
-
+                  // Show the modal
+                  $("#exampleModalLonggg").modal("show");
+                }
+              });
             });
-        });
+          });
 
-        onValue(usersRef, (snapshot) => {
-        table.clear().draw();
+          onValue(usersRef, (snapshot) => {
+            const usersToDisplay = [];
 
-        const usersToDisplay = [];
+            // Create an array to store promises for each user verification check
+            const verificationPromises = [];
 
-        snapshot.forEach((userSnapshot) => {
-          const user = userSnapshot.val();
+            snapshot.forEach((userSnapshot) => {
+              const user = userSnapshot.val();
 
-          if (user && user.verificationStatus === false) {
-            const uid = user.uid || '';
-            const name = user.firstname && user.lastname ? `${user.lastname}, ${user.firstname}, ${user.middlename}` : '';
-            const gender = user.gender || '';
-            const campus = user.campus || '';
-            const nstp = user.nstp || '';
+              if (user && user.verificationStatus === false) {
+                const uid = user.uid || "";
+                const userVerificationRef = ref(db, `User Verification/${uid}`);
 
-            usersToDisplay.push([
-              uid,
-              name,
-              gender,
-              campus,
-              nstp,
-              `<button class="btn btn-primary view-button" data-uid="${uid}">View</button>`,
-            ]);
-          }
-        });
+                // Create a promise for each user verification check
+                const verificationPromise = new Promise((resolve) => {
+                  onValue(userVerificationRef, (verificationSnapshot) => {
+                    resolve(verificationSnapshot.exists());
+                  });
+                });
 
-        // Sort users alphabetically based on the Name column
-        usersToDisplay.sort((a, b) => a[1].localeCompare(b[1]));
+                verificationPromises.push(verificationPromise);
 
-        // Add sorted rows to the DataTable
-        usersToDisplay.forEach((userRow) => {
-          table.row.add(userRow).draw();
-        });
+                // Add user details to usersToDisplay only if it exists in User Verification
+                verificationPromise.then((exists) => {
+                  if (exists) {
+                    const name =
+                      user.firstname && user.lastname
+                        ? `${user.lastname}, ${user.firstname}, ${user.middlename}`
+                        : "";
+                    const gender = user.gender || "";
+                    const campus = user.campus || "";
+                    const nstp = user.nstp || "";
+
+                    usersToDisplay.push([
+                      uid,
+                      name,
+                      gender,
+                      campus,
+                      nstp,
+                      `<button class="btn btn-primary view-button" data-uid="${uid}">View</button>`,
+                    ]);
+                  }
+                });
+              }
+            });
+
+            // Wait for all verification promises to resolve before updating the DataTable
+            Promise.all(verificationPromises).then(() => {
+              table.clear().draw();
+
+              // Sort users alphabetically based on the Name column
+              usersToDisplay.sort((a, b) => a[1].localeCompare(b[1]));
+
+              // Add sorted rows to the DataTable
+              usersToDisplay.forEach((userRow) => {
+                table.row.add(userRow).draw();
+              });
+            });
+          });
+        } else {
+          console.error("jQuery or DataTables plugin is not available.");
+        }
       });
-    } else {
-      console.error("jQuery or DataTables plugin is not available.");
-    }
-  });
-</script>
-
+    </script>
   </body>
 </html>
