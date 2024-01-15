@@ -166,7 +166,7 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLongggTitle">
-                    Event Details
+                    User Details
                   </h5>
                 </div>
                 <div class="modal-body">
@@ -185,27 +185,37 @@
                     <input
                       type="text"
                       class="form-control"
-                      id="fullnameuser"
+                      id="fullName"
                       value="Leonard Suba Briones"
                       readonly
                     />
                   </div>
                   <div class="form-group">
-                    <label for="Gender">Gender:</label>
+                    <label for="Email">Email:</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="Genderuser"
+                      id="email"
+                      value="20-64514@g.batstate-u.edu.ph"
+                      readonly
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="gender"
                       value="Male"
                       readonly
                     />
                   </div>
                   <div class="form-group">
-                    <label for="Birthday">Birthday:</label>
+                    <label for="Birthday">Date of Birth:</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="Birthdayuser"
+                      id="birthDay"
                       value="12/25/2002"
                       readonly
                     />
@@ -215,17 +225,17 @@
                     <input
                       type="text"
                       class="form-control"
-                      id="Addressuser"
+                      id="address"
                       value="Santiago Malvar Batangas"
                       readonly
                     />
                   </div>
                   <div class="form-group">
-                    <label for="category">User Category:</label>
+                    <label for="category">User Type:</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="categoryuser"
+                      id="userType"
                       value="Undergraduate"
                       readonly
                     />
@@ -235,27 +245,57 @@
                     <input
                       type="text"
                       class="form-control"
-                      id="Campususer"
+                      id="campus"
                       value="JPLPC Malvar Campus"
                       readonly
                     />
                   </div>
                   <div class="form-group">
-                    <label for="Email">Email:</label>
+                    <label for="numberuser">Mobile Number:</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="Emailuser"
-                      value="20-64514@g.batstate-u.edu.ph"
+                      id="numberMobile"
+                      value="09472264408"
                       readonly
                     />
                   </div>
                   <div class="form-group">
-                    <label for="number">Mobile Number:</label>
+                    <label for="srCode">SR Code:</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="numberuser"
+                      id="srCode"
+                      value="09472264408"
+                      readonly
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="userCourse">Course:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="userCourse"
+                      value="09472264408"
+                      readonly
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="yearandSect">Year and Section:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="yearandSect"
+                      value="09472264408"
+                      readonly
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="nstp">NSTP:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="nstp"
                       value="09472264408"
                       readonly
                     />
@@ -282,7 +322,6 @@
                   <button
                     type="button"
                     class="btn btn-success"
-                    data-dismiss="modal"
                     id="approval"
                   >
                     Approved
@@ -290,7 +329,6 @@
                   <button
                     type="button"
                     class="btn btn-danger"
-                    data-dismiss="modal"
                     id="declining"
                   >
                     Decline
@@ -332,83 +370,21 @@
         </div>
       </div>
     </div>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        var icon = document.getElementById("exampleModalIcon");
-        var modal = document.getElementById("exampleModalNew");
-        var closeButton = modal ? modal.querySelector(".btn-secondary") : null;
-
-        function showModal() {
-          if (modal) {
-            modal.style.display = "block";
-          }
-        }
-
-        if (icon) {
-          icon.addEventListener("click", showModal);
-        }
-
-        window.addEventListener("click", function (event) {
-          if (event.target === modal) {
-            closeModal();
-          }
-        });
-
-        function closeModal() {
-          if (modal) {
-            modal.style.display = "none";
-          }
-        }
-
-        function showConfirmationAlert() {
-          if (confirm("Are you sure?")) {
-            showSuccessMessage();
-          }
-        }
-
-        function showSuccessMessage() {
-          alert("Successfully ");
-          closeModal();
-        }
-
-        var approvalButton = document.getElementById("approval");
-        if (approvalButton) {
-          approvalButton.addEventListener("click", function () {
-            showConfirmationAlert();
-          });
-        }
-
-        function showConfirmationAlertDecline() {
-          if (confirm("Are you sure you want to decline?")) {
-            showDeclineMessage();
-          }
-        }
-
-        function showDeclineMessage() {
-          alert("Declined.");
-          closeModal();
-        }
-
-        var decliningButton = document.getElementById("declining");
-        if (decliningButton) {
-          decliningButton.addEventListener("click", function () {
-            showConfirmationAlertDecline();
-          });
-        }
-      });
-    </script>
-
     <!-- <script src="js/addAdmin.js"></script> -->
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- jQuery -->
+<!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 <!-- DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+
+<!-- Bootstrap JS (including Popper.js) -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
 
 <!-- DataTables JS -->
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -421,13 +397,14 @@
   import {
     getDatabase,
     ref,
+    update,
     onValue,
   } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+
   const firebaseConfig = {
     apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
     authDomain: "civicall-app-a54d1.firebaseapp.com",
-    databaseURL:
-      "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+    databaseURL: "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
     projectId: "civicall-app-a54d1",
     storageBucket: "civicall-app-a54d1.appspot.com",
     messagingSenderId: "909514632764",
@@ -435,7 +412,7 @@
     measurementId: "G-0BVYE5XJGV",
   };
 
- const app = initializeApp(firebaseConfig);
+  const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -451,16 +428,14 @@
           { title: "Campus" },
           { title: "NSTP" },
           { title: "Action" },
-         ],
+        ],
       });
-
       onValue(usersRef, (snapshot) => {
         table.clear().draw();
 
         snapshot.forEach((userSnapshot) => {
           const user = userSnapshot.val();
 
-          // Check if verificationStatus is false
           if (user && user.verificationStatus === false) {
             const uid = user.uid || '';
             const name = user.firstname && user.lastname ? `${user.firstname} ${user.lastname}` : '';
@@ -482,13 +457,53 @@
 
       tableElement.on("click", ".view-button", function () {
         const uid = $(this).data("uid");
-        console.log("View button clicked for UID:", uid);
-        // Implement your view button logic here
-      });
-    } else {
-      console.error("jQuery or DataTables plugin is not available.");
-    }
-  });
+
+        const userRef = ref(db, `Users/${uid}`);
+        onValue(userRef, (userSnapshot) => {
+          const user = userSnapshot.val();
+
+          $("#evntimgpic").attr("src", user.ImageProfile || "default-image.jpg");
+          $("#fullName").val(`${user.lastname}, ${user.firstname}, ${user.middlename}`);
+        $("#email").val(user.email || "");
+        $("#gender").val(user.gender || "");
+        $("#birthDay").val(user.birthday || "");
+        $("#address").val(user.address || "");
+        $("#userType").val(user.userType || "");
+        $("#campus").val(user.campus || "");
+        $("#numberMobile").val(user.phoneno || "");
+        $("#srCode").val(user.srcode || "");
+        $("#userCourse").val(user.course || "");
+        $("#yearandSect").val(user.yearandSection || "");
+        $("#nstp").val(user.nstp || "");
+
+        // Show the modal
+        $("#exampleModalLonggg").modal("show");
+
+// Adding click event for approval button
+$("#approval").off("click").on("click", function () {
+  // Display confirmation dialog
+  if (confirm("Are you sure you want to verify this account?")) {
+    // Update verificationStatus to true
+    update(ref(db, `Users/${uid}`), { verificationStatus: true });
+
+    // Display success alert
+    alert("Successfully verified the account.");
+
+    // Close the modal
+    $("#exampleModalLonggg").modal("hide");
+
+    // Unbind the click event to prevent multiple bindings
+    $(this).off("click");
+  }
+});
+});
+});
+} else {
+console.error("jQuery or DataTables plugin is not available.");
+}
+});
+
 </script>
+
   </body>
 </html>
