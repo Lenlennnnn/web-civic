@@ -9,14 +9,13 @@
     <link rel="stylesheet" href="css/dashboard.css" />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"
-    />
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
     <link
       rel="stylesheet"
-      href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"
-    />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/css/ionicons.min.css" />
-
+      href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/css/ionicons.min.css" />
 
     <style>
       .container {
@@ -38,10 +37,6 @@
         left: -165px;
         transform: translate(-50%, -50%);
         cursor: pointer;
-        /* Change cursor to pointer */
-        /* Other button styling properties */
-
-        /* Transition effect for hover */
         transition: background-color 0.3s, color 0.3s, transform 0.3s;
         z-index: 1;
       }
@@ -89,11 +84,11 @@
         background-color: #e1e1e1;
       }
 
-      #evntimgpic {
-        border: solid black 2px;
+      #profileImage {
+        border: solid #ccc 1px;
         border-radius: 50%;
         margin-bottom: 20px;
-        height: 200px;
+        height: 180px;
       }
 
       label {
@@ -112,10 +107,13 @@
         height: 540px;
       }
 
-      #certito {
+      #proofImage {
         margin: 0;
         padding: 0;
         width: 100%;
+      }
+      .form-control {
+        margin-bottom: 15px;
       }
     </style>
   </head>
@@ -132,8 +130,7 @@
         <!-- ====== ionicons ======= -->
         <script
           type="module"
-          src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-        ></script>
+          src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
       </div>
       <h1 class="h1-group">User Archive</h1>
 
@@ -160,24 +157,22 @@
             tabindex="-1"
             role="dialog"
             aria-labelledby="exampleModalLongggTitle"
-            aria-hidden="true"
-          >
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLongggTitle">
-                    Event Details
+                    User Details
                   </h5>
                 </div>
                 <div class="modal-body">
                   <!-- 1. Image -->
                   <div class="text-center">
                     <img
-                      src="img/dean2.jpg"
                       alt="Event Image"
                       class="img-fluid"
-                      id="evntimgpic"
-                    />
+                      id="profileImage"
+                      loading="lazy" />
                   </div>
 
                   <div class="form-group">
@@ -185,121 +180,123 @@
                     <input
                       type="text"
                       class="form-control"
-                      id="fullnameuser"
+                      id="fullName"
                       value="Leonard Suba Briones"
-                      readonly
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="Gender">Gender:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="Genderuser"
-                      value="Male"
-                      readonly
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="Birthday">Birthday:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="Birthdayuser"
-                      value="12/25/2002"
-                      readonly
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="Address">Address:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="Addressuser"
-                      value="Santiago Malvar Batangas"
-                      readonly
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="category">User Category:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="categoryuser"
-                      value="Undergraduate"
-                      readonly
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="Campus">Campus:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="Campususer"
-                      value="JPLPC Malvar Campus"
-                      readonly
-                    />
+                      readonly />
                   </div>
                   <div class="form-group">
                     <label for="Email">Email:</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="Emailuser"
+                      id="email"
                       value="20-64514@g.batstate-u.edu.ph"
-                      readonly
-                    />
+                      readonly />
                   </div>
                   <div class="form-group">
-                    <label for="number">Mobile Number:</label>
+                    <label for="gender">Gender:</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="numberuser"
+                      id="gender"
+                      value="Male"
+                      readonly />
+                  </div>
+                  <div class="form-group">
+                    <label for="Birthday">Date of Birth:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="birthDay"
+                      value="12/25/2002"
+                      readonly />
+                  </div>
+                  <div class="form-group">
+                    <label for="Address">Address:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="address"
+                      value="Santiago Malvar Batangas"
+                      readonly />
+                  </div>
+                  <div class="form-group">
+                    <label for="category">User Type:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="userType"
+                      value="Undergraduate"
+                      readonly />
+                  </div>
+                  <div class="form-group">
+                    <label for="Campus">Campus:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="campus"
+                      value="JPLPC Malvar Campus"
+                      readonly />
+                  </div>
+                  <div class="form-group">
+                    <label for="numberuser">Mobile Number:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="numberMobile"
                       value="09472264408"
-                      readonly
-                    />
+                      readonly />
                   </div>
                   <div class="form-group">
-                    <label for="Credential">Credential:</label>
+                    <label for="srCode">SR Code:</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="Credentialuser"
-                      value="COR.pdf"
-                      readonly
-                    />
-                    <a
-                      href="#proofOfEnrollmentModal"
-                      data-toggle="modal"
-                      style="color: #dc3545"
-                    >
-                      View the file
-                    </a>
+                      id="srCode"
+                      value="09472264408"
+                      readonly />
+                  </div>
+                  <div class="form-group">
+                    <label for="userCourse">Course:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="userCourse"
+                      value="09472264408"
+                      readonly />
+                  </div>
+                  <div class="form-group">
+                    <label for="yearandSect">Year and Section:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="yearandSect"
+                      value="09472264408"
+                      readonly />
+                  </div>
+                  <div class="form-group">
+                    <label for="nstp">NSTP:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="nstp"
+                      value="09472264408"
+                      readonly />
+                  </div>
+                  <div class="form-group">
+                    <label for="lastLogin">Last Login:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lastLogin"
+                      readonly />
                   </div>
                 </div>
                 <div class="modal-footer">
                   <button
                     type="button"
-                    class="btn btn-success"
-                    data-dismiss="modal"
-                    id="approval"
-                  >
-                    Approved
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-danger"
-                    data-dismiss="modal"
-                    id="declining"
-                  >
-                    Decline
-                  </button>
-                  <button
-                    type="button"
                     class="btn btn-secondary"
-                    data-dismiss="modal"
-                  >
+                    data-dismiss="modal">
                     Close
                   </button>
                   <!-- Additional buttons or actions can be added here -->
@@ -307,208 +304,149 @@
               </div>
             </div>
           </div>
-          <!-- Second Modal -->
-          <div
-            class="modal"
-            id="proofOfEnrollmentModal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="proofOfEnrollmentModalTitle"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog modal-lg" role="document">
-              <div class="modal-content" id="secondna">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="proofOfEnrollmentModalTitle">
-                    Proof of Enrollment
-                  </h5>
-                </div>
-                <div class="modal-body">
-                  <img src="img/COR.jpg" alt="" id="certito" />
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
-    <script>
+    <!-- <script src="js/addAdmin.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+    <!-- Bootstrap JS (including Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Firebase scripts -->
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js"></script>
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js"></script>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        onValue,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+        authDomain: "civicall-app-a54d1.firebaseapp.com",
+        databaseURL:
+          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "civicall-app-a54d1",
+        storageBucket: "civicall-app-a54d1.appspot.com",
+        messagingSenderId: "909514632764",
+        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+        measurementId: "G-0BVYE5XJGV",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+
       document.addEventListener("DOMContentLoaded", function () {
-        var icon = document.getElementById("exampleModalIcon");
-        var modal = document.getElementById("exampleModalNew");
-        var closeButton = modal ? modal.querySelector(".btn-secondary") : null;
+        if (typeof $ !== "undefined" && typeof $.fn.dataTable !== "undefined") {
+          const tableElement = $("#example");
+          const usersRef = ref(db, "Users");
 
-        function showModal() {
-          if (modal) {
-            modal.style.display = "block";
-          }
-        }
-
-        if (icon) {
-          icon.addEventListener("click", showModal);
-        }
-
-        window.addEventListener("click", function (event) {
-          if (event.target === modal) {
-            closeModal();
-          }
-        });
-
-        function closeModal() {
-          if (modal) {
-            modal.style.display = "none";
-          }
-        }
-
-        function showConfirmationAlert() {
-          if (confirm("Are you sure?")) {
-            showSuccessMessage();
-          }
-        }
-
-        function showSuccessMessage() {
-          alert("Successfully ");
-          closeModal();
-        }
-
-        var approvalButton = document.getElementById("approval");
-        if (approvalButton) {
-          approvalButton.addEventListener("click", function () {
-            showConfirmationAlert();
+          const table = tableElement.DataTable({
+            columns: [
+              { title: "UID" },
+              { title: "Name" },
+              { title: "Gender" },
+              { title: "Campus" },
+              { title: "NSTP" },
+              { title: "Details" },
+            ],
+            // Specify the initial order based on the second column (Name)
+            order: [[1, "asc"]],
           });
-        }
 
-        function showConfirmationAlertDecline() {
-          if (confirm("Are you sure you want to decline?")) {
-            showDeclineMessage();
-          }
-        }
+          tableElement.on("click", ".view-button", function () {
+            const uid = $(this).data("uid");
 
-        function showDeclineMessage() {
-          alert("Declined.");
-          closeModal();
-        }
+            const userRef = ref(db, `Users/${uid}`);
+            onValue(userRef, (userSnapshot) => {
+              const user = userSnapshot.val();
 
-        var decliningButton = document.getElementById("declining");
-        if (decliningButton) {
-          decliningButton.addEventListener("click", function () {
-            showConfirmationAlertDecline();
+              $("#profileImage").attr(
+                "src",
+                user.ImageProfile || "img/profile.png"
+              );
+              $("#fullName").val(
+                `${user.lastname}, ${user.firstname}, ${user.middlename}`
+              );
+              $("#email").val(user.email || "");
+              $("#gender").val(user.gender || "");
+              $("#birthDay").val(user.birthday || "");
+              $("#address").val(user.address || "");
+              $("#userType").val(user.userType || "");
+              $("#campus").val(user.campus || "");
+              $("#numberMobile").val(user.phoneno || "");
+              $("#srCode").val(user.srcode || "");
+              $("#userCourse").val(user.course || "");
+              $("#yearandSect").val(user.yearandSection || "");
+              $("#nstp").val(user.nstp || "");
+              $("#lastLogin").val(user.lastLogin || "");
+
+              // Show the modal
+              $("#exampleModalLonggg").modal("show");
+            });
           });
+
+          onValue(usersRef, (snapshot) => {
+            table.clear().draw();
+
+            const currentDate = new Date();
+
+            snapshot.forEach((userSnapshot) => {
+              const user = userSnapshot.val();
+
+              // Check if verificationStatus is true and lastLogin is 1 year ago or earlier
+              if (
+                user &&
+                user.verificationStatus === true &&
+                isLastLoginOneYearAgoOrEarlier(user.lastLogin, currentDate)
+              ) {
+                const uid = user.uid || "";
+                const name =
+                  user.firstname && user.lastname
+                    ? `${user.firstname} ${user.lastname}`
+                    : "";
+                const gender = user.gender || "";
+                const campus = user.campus || "";
+                const nstp = user.nstp || "";
+
+                table.row
+                  .add([
+                    uid,
+                    name,
+                    gender,
+                    campus,
+                    nstp,
+                    `<button class="btn btn-primary view-button" data-uid="${uid}">View</button>`,
+                  ])
+                  .draw();
+              }
+            });
+          });
+
+          function isLastLoginOneYearAgoOrEarlier(lastLogin, currentDate) {
+            const oneYearAgo = new Date(currentDate);
+            oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+            const lastLoginDate = new Date(lastLogin);
+
+            return lastLoginDate <= oneYearAgo;
+          }
+        } else {
+          console.error("jQuery or DataTables plugin is not available.");
         }
       });
     </script>
-
-    <!-- <script src="js/addAdmin.js"></script> -->
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-
-<!-- DataTables CSS -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
-
-<!-- DataTables JS -->
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
-  
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-  import {
-    getDatabase,
-    ref,
-    onValue,
-  } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
-  const firebaseConfig = {
-    apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
-    authDomain: "civicall-app-a54d1.firebaseapp.com",
-    databaseURL:
-      "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "civicall-app-a54d1",
-    storageBucket: "civicall-app-a54d1.appspot.com",
-    messagingSenderId: "909514632764",
-    appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
-    measurementId: "G-0BVYE5XJGV",
-  };
-
- const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-
-  document.addEventListener("DOMContentLoaded", function () {
-  if (typeof $ !== "undefined" && typeof $.fn.dataTable !== "undefined") {
-    const tableElement = $("#example");
-    const usersRef = ref(db, "Users");
-
-    const table = tableElement.DataTable({
-      columns: [
-        { title: "UID" },
-        { title: "Name" },
-        { title: "Gender" },
-        { title: "Campus" },
-        { title: "NSTP" },
-        { title: "Action" },
-      ],
-    });
-
-    onValue(usersRef, (snapshot) => {
-      table.clear().draw();
-
-      const currentDate = new Date();
-
-      snapshot.forEach((userSnapshot) => {
-        const user = userSnapshot.val();
-
-        // Check if verificationStatus is true and lastLogin is 1 year ago or earlier
-        if (
-          user &&
-          user.verificationStatus === true &&
-          isLastLoginOneYearAgoOrEarlier(user.lastLogin, currentDate)
-        ) {
-          const uid = user.uid || "";
-          const name =
-            user.firstname && user.lastname
-              ? `${user.firstname} ${user.lastname}`
-              : "";
-          const gender = user.gender || "";
-          const campus = user.campus || "";
-          const nstp = user.nstp || "";
-
-          table.row.add([
-            uid,
-            name,
-            gender,
-            campus,
-            nstp,
-            `<button class="btn btn-primary view-button" data-uid="${uid}">View</button>`,
-          ]).draw();
-        }
-      });
-    });
-
-    function isLastLoginOneYearAgoOrEarlier(lastLogin, currentDate) {
-      const oneYearAgo = new Date(currentDate);
-      oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-
-      const lastLoginDate = new Date(lastLogin);
-
-      return lastLoginDate <= oneYearAgo;
-    }
-
-    tableElement.on("click", ".view-button", function () {
-      const uid = $(this).data("uid");
-      console.log("View button clicked for UID:", uid);
-      // Implement your view button logic here
-    });
-  } else {
-    console.error("jQuery or DataTables plugin is not available.");
-  }
-});
-
-
-</script>
   </body>
 </html>
