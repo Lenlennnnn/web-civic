@@ -97,6 +97,7 @@
 
       .modal-content {
         width: 100%;
+        position: relative;
       }
 
       #newcnt {
@@ -114,6 +115,13 @@
       }
       .form-control {
         margin-bottom: 15px;
+      }
+      #declineConfirmationModal {
+        position: fixed;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: max-content;
       }
     </style>
   </head>
@@ -298,7 +306,11 @@
                   <button type="button" class="btn btn-success" id="approval">
                     Approve
                   </button>
-                  <button type="button" class="btn btn-danger" id="declining">
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    id="declining"
+                    data-toggle="modal">
                     Reject
                   </button>
                   <button
@@ -308,6 +320,44 @@
                     Close
                   </button>
                   <!-- Additional buttons or actions can be added here -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="modal"
+            id="declineConfirmationModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="declineConfirmationModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="declineConfirmationModalLabel">
+                    Decline Confirmation
+                  </h5>
+                </div>
+                <div class="modal-body">
+                  <p>Please provide a reason for rejecting:</p>
+                  <textarea
+                    class="form-control"
+                    id="declineReasonInputre"
+                    rows="4"></textarea>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    id="confirmDecline">
+                    Submit
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal">
+                    Cancel
+                  </button>
                 </div>
               </div>
             </div>
@@ -450,7 +500,43 @@
                     $(this).off("click");
                   }
                 });
+              $("#declining")
+                .off("click")
+                .on("click", function () {
+                  // Set the UID as a data attribute in the decline confirmation modal
+                  $("#confirmDecline").data("uid", uid);
 
+                  // Open the decline confirmation modal
+                  $("#declineConfirmationModal").modal("show");
+                });
+
+              $("#confirmDecline")
+                .off("click")
+                .on("click", function () {
+                  // Get the UID from the confirmDecline button's data-uid attribute
+                  const uid = $(this).data("uid");
+
+                  // Get the rejection reason from the input field
+                  const rejectionReason = $("#declineReasonInputre").val();
+
+                  // Check if the rejection reason is not empty
+                  if (rejectionReason.trim() !== "") {
+                    // Update the Users node with the rejection reason
+                    update(ref(db, `Users/${uid}`), {
+                      rejectReason: rejectionReason,
+                      verificationStatus: false,
+                    });
+
+                    // Display success alert or perform any other actions
+                    alert("Successfully rejected the account.");
+
+                    // Close the decline confirmation modal
+                    $("#declineConfirmationModal").modal("hide");
+                  } else {
+                    // Display an error message if the rejection reason is empty
+                    alert("Please provide a reason for rejection.");
+                  }
+                });
               const userRef2 = ref(db, `User Verification/${uid}`);
               onValue(userRef2, (userSnapshot) => {
                 const userData = userSnapshot.val();
