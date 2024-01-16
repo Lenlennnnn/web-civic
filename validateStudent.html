@@ -342,7 +342,7 @@
                   <p>Please provide a reason for rejecting:</p>
                   <textarea
                     class="form-control"
-                    id="declineReasonInputre"
+                    id="declineReasonInput"
                     rows="4"></textarea>
                 </div>
                 <div class="modal-footer">
@@ -398,6 +398,22 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
     <!-- Firebase scripts -->
+
+    <script type="module">
+      document.addEventListener("DOMContentLoaded", function () {
+        const declineReasonInput =
+          document.getElementById("declineReasonInput");
+        declineReasonInput.placeholder = "Maximum of 60 characters";
+        // Add an input event listener to the declineReasonInput field
+        declineReasonInput.addEventListener("input", function () {
+          // Limit the input to 55 characters
+          if (this.value.length > 60) {
+            this.value = this.value.substring(0, 60);
+          }
+        });
+      });
+    </script>
+
     <script
       type="module"
       src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js"></script>
@@ -517,7 +533,7 @@
                   const uid = $(this).data("uid");
 
                   // Get the rejection reason from the input field
-                  const rejectionReason = $("#declineReasonInputre").val();
+                  const rejectionReason = $("#declineReasonInput").val();
 
                   // Check if the rejection reason is not empty
                   if (rejectionReason.trim() !== "") {
@@ -525,6 +541,7 @@
                     update(ref(db, `Users/${uid}`), {
                       rejectReason: rejectionReason,
                       verificationStatus: false,
+                      rejectTimestamp: generateTimestamp(),
                     });
 
                     // Display success alert or perform any other actions
