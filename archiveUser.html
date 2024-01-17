@@ -296,6 +296,9 @@
                   </div>
                 </div>
                 <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" id="terminate">
+                    Terminate
+                  </button>
                   <button
                     type="button"
                     class="btn btn-secondary"
@@ -332,8 +335,14 @@
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
       import {
+        getAuth,
+        deleteUser,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+
+      import {
         getDatabase,
         ref,
+        remove,
         onValue,
       } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
       const firebaseConfig = {
@@ -350,7 +359,8 @@
 
       const app = initializeApp(firebaseConfig);
       const db = getDatabase(app);
-
+      const auth = getAuth(app);
+      let currentUserUID;
       document.addEventListener("DOMContentLoaded", function () {
         if (typeof $ !== "undefined" && typeof $.fn.dataTable !== "undefined") {
           const tableElement = $("#example");
@@ -374,15 +384,18 @@
 
           tableElement.on("click", ".view-button", function () {
             const uid = $(this).data("uid");
-
+            currentUserUID = uid;
             const userRef = ref(db, `Users/${uid}`);
             onValue(userRef, (userSnapshot) => {
               const user = userSnapshot.val();
 
-              $("#profileImage").attr(
-                "src",
-                user.ImageProfile || "img/profile.png"
-              );
+              // Check if user exists and has ImageProfile property
+              const imageUrl =
+                user && user.ImageProfile
+                  ? user.ImageProfile
+                  : "img/profile.png";
+
+              $("#profileImage").attr("src", imageUrl);
               $("#fullName").val(
                 displayNA(
                   `${user.lastname}, ${user.firstname}, ${user.middlename}`
@@ -463,6 +476,24 @@
         } else {
           console.error("jQuery or DataTables plugin is not available.");
         }
+        const terminateButton = document.getElementById("terminate");
+        terminateButton.addEventListener("click", function () {
+          const uidToDelete = currentUserUID;
+
+          if (
+            confirm("Are you sure you want to delete the data of this Account?")
+          ) {
+            // Delete user data from Realtime Database
+            const userRef = ref(db, `Users/${uidToDelete}`);
+            remove(userRef);
+
+            // Close the modal after removing user data
+            $("#exampleModalLonggg").modal("hide");
+
+            // Show success alert
+            alert("Account Data Deleted Successfully");
+          }
+        });
       });
     </script>
   </body>

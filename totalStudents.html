@@ -658,8 +658,8 @@
                 type="button"
                 class="btn btn-danger"
                 data-dismiss="modal"
-                id="revokeBtn">
-                Revoke
+                id="disableBtn">
+                Disable
               </button>
               <button
                 type="button"
@@ -1243,12 +1243,6 @@
       const app2 = initializeApp(firebaseConfig2);
       const db2 = getDatabase(app2);
       const auth2 = getAuth(app2);
-
-      document
-        .getElementById("setmodalbtn")
-        .addEventListener("click", function () {
-          document.getElementById("myModalrr").style.display = "block";
-        });
 
       // Close modified modal on clicking the close button or outside the modal
       document
