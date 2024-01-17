@@ -621,8 +621,12 @@
                 <th>UID</th>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Gender</th>
+                <th>Year & Section</th>
                 <th>Campus</th>
-                <th>Action</th>
+                <th>User Type</th>
+                <th>NSTP Program</th>
+                <th>Details</th>
               </tr>
             </thead>
             <tbody id="tbody1" style="font-size: 13px"></tbody>
@@ -1009,8 +1013,12 @@
             { data: "userUID" },
             { data: "fullname" },
             { data: "email" },
+            { data: "gender" },
+            { data: "yearandSection" },
             { data: "campus" },
-            { data: "Action" },
+            { data: "userType" },
+            { data: "nstp" },
+            { data: "Details" },
           ],
           // Add the following lines to specify sorting based on the lastname column
           columnDefs: [
@@ -1057,12 +1065,27 @@
                     }
                   );
 
+                  // Replace empty or undefined values with "N/A"
+                  const fullName = `${user.lastname || "N/A"}, ${
+                    user.firstname || "N/A"
+                  }, ${user.middlename || "N/A"}`;
+                  const email = user.email || "N/A";
+                  const gender = user.gender || "N/A";
+                  const yearAndSection = user.yearandSection || "N/A";
+                  const campus = user.campus || "N/A";
+                  const userType = user.userType || "N/A";
+                  const nstp = user.nstp || "N/A";
+
                   dataTable.row.add({
                     userUID: userId,
-                    fullname: `${user.lastname}, ${user.firstname}, ${user.middlename}`,
-                    email: user.email,
-                    campus: user.campus,
-                    Action:
+                    fullname: fullName,
+                    email: email,
+                    gender: gender,
+                    yearandSection: yearAndSection,
+                    campus: campus,
+                    userType: userType,
+                    nstp: nstp,
+                    Details:
                       '<button class="btn btn-danger view-button" data-toggle="modal" data-target="#exampleModalLong">View</button>',
                   });
                 }
@@ -1101,29 +1124,61 @@
             if (userData) {
               const imageSrc = userData.ImageProfile || "img/profile.png";
               modalBodyContent.innerHTML = `
-                    <div class="image-container"><img src="${imageSrc}" class="rounded-image"></div>
-          <p><u><h5>Personal Information:</h5></u></p>
-          <p><strong>Name:<input class="form-control" id ="" type="text" value="${userData.lastname}, ${userData.firstname}, ${userData.middlename}" readonly></input></strong></p>
-          <p><strong>Email:<input class="form-control" id ="" type="text" value="${userData.email}" readonly ></input></strong></p>
-          <p><strong>User Type:<input class="form-control" id ="" type="text" value="${userData.userType}" readonly ></input></strong></p>
-          <p><strong>Date of Birth:<input class="form-control" id ="" type="text" value="${userData.birthday}" readonly ></input></strong></p>
-          <p><strong>Gender:<input class="form-control" id ="" type="text" value="${userData.gender}" readonly ></input></strong></p>
-          <p><strong>Address:<input class="form-control" id ="" type="text" value="${userData.address}" readonly ></input></strong></p>
-          <p><strong>Personal Contact:<input class="form-control" id ="" type="text" value="${userData.phoneno}" readonly ></input></strong></p>
-          <p><strong>Emergency Contact:<input class="form-control" id ="" type="text" value="${userData.ContactEme}" readonly ></input></strong></p>
-          <p><strong>Current Engagement:<input class="form-control" id ="" type="text" value="${userData.CurrentEngagement}" readonly ></input></strong></p>
-          <p><strong>Finish Activity:<input class="form-control" id ="" type="text" value="${userData.finishactivity}" readonly ></input></strong></p>
-          <p><strong>Active Points:<input class="form-control" id ="" type="text" value="${userData.activepts}" readonly ></input></strong></p>
-          <p><u><h5>Academic Information:</h5></u></p>
-          <p><strong>Campus:<input class="form-control" id ="" type="text" value="${userData.campus}" readonly ></input></strong></p>
-          <p><strong>SR-Code:<input class="form-control" id ="" type="text" value="${userData.srcode}" readonly ></input></strong></p>
-          <p><strong>Course:<input class="form-control" id ="" type="text" value="${userData.course}" readonly ></input></strong></p>
-          <p><strong>Year and Section:<input class="form-control" id ="" type="text" value="${userData.yearandSection}" readonly ></input></strong></p>
-          <p><strong>NSTP Program:<input class="form-control" id ="" type="text" value="${userData.nstp}" readonly ></input></strong></p>
-     
-
-          <!-- Add more user details here as needed -->
-        `;
+        <div class="image-container"><img src="${imageSrc}" class="rounded-image"></div>
+        <p><u><h5>Personal Information:</h5></u></p>
+        <p><strong>Name:<input class="form-control" id="" type="text" value="${
+          userData.lastname || "N/A"
+        }, ${userData.firstname || "N/A"}, ${
+                userData.middlename || "N/A"
+              }" readonly></input></strong></p>
+        <p><strong>Email:<input class="form-control" id="" type="text" value="${
+          userData.email || "N/A"
+        }" readonly ></input></strong></p>
+        <p><strong>User Type:<input class="form-control" id="" type="text" value="${
+          userData.userType || "N/A"
+        }" readonly ></input></strong></p>
+        <p><strong>Date of Birth:<input class="form-control" id="" type="text" value="${
+          userData.birthday || "N/A"
+        }" readonly ></input></strong></p>
+        <p><strong>Gender:<input class="form-control" id="" type="text" value="${
+          userData.gender || "N/A"
+        }" readonly ></input></strong></p>
+        <p><strong>Address:<input class="form-control" id="" type="text" value="${
+          userData.address || "N/A"
+        }" readonly ></input></strong></p>
+        <p><strong>Personal Contact:<input class="form-control" id="" type="text" value="${
+          userData.phoneno || "N/A"
+        }" readonly ></input></strong></p>
+        <p><strong>Emergency Contact:<input class="form-control" id="" type="text" value="${
+          userData.ContactEme || "N/A"
+        }" readonly ></input></strong></p>
+        <p><strong>Current Engagement:<input class="form-control" id="" type="text" value="${
+          userData.CurrentEngagement || "N/A"
+        }" readonly ></input></strong></p>
+        <p><strong>Finish Activity:<input class="form-control" id="" type="text" value="${
+          userData.finishactivity || "N/A"
+        }" readonly ></input></strong></p>
+        <p><strong>Active Points:<input class="form-control" id="" type="text" value="${
+          userData.activepts || "N/A"
+        }" readonly ></input></strong></p>
+        <p><u><h5>Academic Information:</h5></u></p>
+        <p><strong>Campus:<input class="form-control" id="" type="text" value="${
+          userData.campus || "N/A"
+        }" readonly ></input></strong></p>
+        <p><strong>SR-Code:<input class="form-control" id="" type="text" value="${
+          userData.srcode || "N/A"
+        }" readonly ></input></strong></p>
+        <p><strong>Course:<input class="form-control" id="" type="text" value="${
+          userData.course || "N/A"
+        }" readonly ></input></strong></p>
+        <p><strong>Year and Section:<input class="form-control" id="" type="text" value="${
+          userData.yearandSection || "N/A"
+        }" readonly ></input></strong></p>
+        <p><strong>NSTP Program:<input class="form-control" id="" type="text" value="${
+          userData.nstp || "N/A"
+        }" readonly ></input></strong></p>
+        <!-- Add more user details here as needed -->
+    `;
             } else {
               modalBodyContent.innerHTML = `<p>No user details found.</p>`;
             }

@@ -147,10 +147,13 @@
           <table id="example" class="table table-striped" style="width: 100%">
             <thead>
               <tr>
-                <th>UID.</th>
+                <th>UID</th>
                 <th>Name</th>
+                <th>Email</th>
                 <th>Gender</th>
+                <th>Year & Section</th>
                 <th>Campus</th>
+                <th>User Type</th>
                 <th>NSTP Program</th>
                 <th>Details</th>
               </tr>
@@ -455,8 +458,11 @@
             columns: [
               { title: "UID" },
               { title: "Name" },
+              { title: "Email" },
               { title: "Gender" },
+              { title: "Year & Section" },
               { title: "Campus" },
+              { title: "User Type" },
               { title: "NSTP" },
               { title: "Details" },
             ],
@@ -476,19 +482,21 @@
                 user.ImageProfile || "img/profile.png"
               );
               $("#fullName").val(
-                `${user.lastname}, ${user.firstname}, ${user.middlename}`
+                displayNA(
+                  `${user.lastname}, ${user.firstname}, ${user.middlename}`
+                )
               );
-              $("#email").val(user.email || "");
-              $("#gender").val(user.gender || "");
-              $("#birthDay").val(user.birthday || "");
-              $("#address").val(user.address || "");
-              $("#userType").val(user.userType || "");
-              $("#campus").val(user.campus || "");
-              $("#numberMobile").val(user.phoneno || "");
-              $("#srCode").val(user.srcode || "");
-              $("#userCourse").val(user.course || "");
-              $("#yearandSect").val(user.yearandSection || "");
-              $("#nstp").val(user.nstp || "");
+              $("#email").val(displayNA(user.email));
+              $("#gender").val(displayNA(user.gender));
+              $("#birthDay").val(displayNA(user.birthday));
+              $("#address").val(displayNA(user.address));
+              $("#userType").val(displayNA(user.userType));
+              $("#campus").val(displayNA(user.campus));
+              $("#numberMobile").val(displayNA(user.phoneno));
+              $("#srCode").val(displayNA(user.srcode));
+              $("#userCourse").val(displayNA(user.course));
+              $("#yearandSect").val(displayNA(user.yearandSection));
+              $("#nstp").val(displayNA(user.nstp));
 
               // Show the modal
               $("#exampleModalLonggg").modal("show");
@@ -627,10 +635,12 @@
             });
           });
 
+          function displayNA(value) {
+            return value ? value : "N/A";
+          }
+
           onValue(usersRef, (snapshot) => {
             const usersToDisplay = [];
-
-            // Create an array to store promises for each user verification check
             const verificationPromises = [];
 
             snapshot.forEach((userSnapshot) => {
@@ -640,7 +650,6 @@
                 const uid = user.uid || "";
                 const userVerificationRef = ref(db, `User Verification/${uid}`);
 
-                // Create a promise for each user verification check
                 const verificationPromise = new Promise((resolve) => {
                   onValue(userVerificationRef, (verificationSnapshot) => {
                     resolve(verificationSnapshot.exists());
@@ -649,22 +658,26 @@
 
                 verificationPromises.push(verificationPromise);
 
-                // Add user details to usersToDisplay only if it exists in User Verification
                 verificationPromise.then((exists) => {
                   if (exists) {
-                    const name =
-                      user.firstname && user.lastname
-                        ? `${user.lastname}, ${user.firstname}, ${user.middlename}`
-                        : "";
-                    const gender = user.gender || "";
-                    const campus = user.campus || "";
-                    const nstp = user.nstp || "";
+                    const name = displayNA(
+                      `${user.lastname}, ${user.firstname}, ${user.middlename}`
+                    );
+                    const email = displayNA(user.email);
+                    const gender = displayNA(user.gender);
+                    const yearandSect = displayNA(user.yearandSection);
+                    const campus = displayNA(user.campus);
+                    const userType = displayNA(user.userType);
+                    const nstp = displayNA(user.nstp);
 
                     usersToDisplay.push([
                       uid,
                       name,
+                      email,
                       gender,
+                      yearandSect,
                       campus,
+                      userType,
                       nstp,
                       `<button class="btn btn-primary view-button" data-uid="${uid}">View</button>`,
                     ]);
@@ -673,14 +686,11 @@
               }
             });
 
-            // Wait for all verification promises to resolve before updating the DataTable
             Promise.all(verificationPromises).then(() => {
               table.clear().draw();
 
-              // Sort users alphabetically based on the Name column
               usersToDisplay.sort((a, b) => a[1].localeCompare(b[1]));
 
-              // Add sorted rows to the DataTable
               usersToDisplay.forEach((userRow) => {
                 table.row.add(userRow).draw();
               });

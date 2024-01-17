@@ -139,12 +139,15 @@
           <table id="example" class="table table-striped" style="width: 100%">
             <thead>
               <tr>
-                <th>UID.</th>
+                <th>UID</th>
                 <th>Name</th>
+                <th>Email</th>
                 <th>Gender</th>
+                <th>Year & Section</th>
                 <th>Campus</th>
+                <th>User Type</th>
                 <th>NSTP Program</th>
-                <th>Action</th>
+                <th>Details</th>
               </tr>
             </thead>
             <tbody id="tbody1" style="font-size: 13px"></tbody>
@@ -357,8 +360,11 @@
             columns: [
               { title: "UID" },
               { title: "Name" },
+              { title: "Email" },
               { title: "Gender" },
+              { title: "Year & Section" },
               { title: "Campus" },
+              { title: "User Type" },
               { title: "NSTP" },
               { title: "Details" },
             ],
@@ -378,26 +384,30 @@
                 user.ImageProfile || "img/profile.png"
               );
               $("#fullName").val(
-                `${user.lastname}, ${user.firstname}, ${user.middlename}`
+                displayNA(
+                  `${user.lastname}, ${user.firstname}, ${user.middlename}`
+                )
               );
-              $("#email").val(user.email || "");
-              $("#gender").val(user.gender || "");
-              $("#birthDay").val(user.birthday || "");
-              $("#address").val(user.address || "");
-              $("#userType").val(user.userType || "");
-              $("#campus").val(user.campus || "");
-              $("#numberMobile").val(user.phoneno || "");
-              $("#srCode").val(user.srcode || "");
-              $("#userCourse").val(user.course || "");
-              $("#yearandSect").val(user.yearandSection || "");
-              $("#nstp").val(user.nstp || "");
-              $("#lastLogin").val(user.lastLogin || "");
+              $("#email").val(displayNA(user.email));
+              $("#gender").val(displayNA(user.gender));
+              $("#birthDay").val(displayNA(user.birthday));
+              $("#address").val(displayNA(user.address));
+              $("#userType").val(displayNA(user.userType));
+              $("#campus").val(displayNA(user.campus));
+              $("#numberMobile").val(displayNA(user.phoneno));
+              $("#srCode").val(displayNA(user.srcode));
+              $("#userCourse").val(displayNA(user.course));
+              $("#yearandSect").val(displayNA(user.yearandSection));
+              $("#nstp").val(displayNA(user.nstp));
+              $("#lastLogin").val(displayNA(user.lastLogin));
 
               // Show the modal
               $("#exampleModalLonggg").modal("show");
             });
           });
-
+          function displayNA(value) {
+            return value ? value : "N/A";
+          }
           onValue(usersRef, (snapshot) => {
             table.clear().draw();
 
@@ -413,20 +423,27 @@
                 isLastLoginOneYearAgoOrEarlier(user.lastLogin, currentDate)
               ) {
                 const uid = user.uid || "";
-                const name =
+                const name = displayNA(
                   user.firstname && user.lastname
                     ? `${user.firstname} ${user.lastname}`
-                    : "";
-                const gender = user.gender || "";
-                const campus = user.campus || "";
-                const nstp = user.nstp || "";
+                    : ""
+                );
+                const email = displayNA(user.email);
+                const gender = displayNA(user.gender);
+                const yearandSect = displayNA(user.yearandSection);
+                const campus = displayNA(user.campus);
+                const userType = displayNA(user.userType);
+                const nstp = displayNA(user.nstp);
 
                 table.row
                   .add([
                     uid,
                     name,
+                    email,
                     gender,
+                    yearandSect,
                     campus,
+                    userType,
                     nstp,
                     `<button class="btn btn-primary view-button" data-uid="${uid}">View</button>`,
                   ])
