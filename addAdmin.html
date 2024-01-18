@@ -279,8 +279,8 @@
               <label for="campus">Gender:</label>
               <select id="gender" name="campus" required>
                 <option value="" disabled selected>Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
               </select>
 
               <label for="campus">Campus:</label>
@@ -352,7 +352,7 @@
                 <th>UID</th>
                 <th>Name</th>
                 <th>Campus</th>
-                <th>Action</th>
+                <th>Details</th>
               </tr>
             </thead>
             <tbody id="tbody1" style="font-size: 13px"></tbody>
@@ -381,6 +381,21 @@
               <!-- User details will be populated here -->
             </div>
             <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-dismiss="modal"
+                id="terminate"
+                style="position: relative; right: 51%">
+                Terminate
+              </button>
+              <button
+                type="button"
+                class="btn btn-success"
+                data-dismiss="modal"
+                id="editBtn">
+                Edit
+              </button>
               <button
                 type="button"
                 class="btn btn-secondary"
@@ -465,6 +480,8 @@
         get,
         push,
         set,
+        update,
+        remove,
         onValue,
         onChildRemoved,
       } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
@@ -649,7 +666,7 @@
             { data: "userUID" },
             { data: "fullname" },
             { data: "campus" },
-            { data: "Action" },
+            { data: "Details" },
           ],
           order: [[1, "asc"]],
         });
@@ -682,7 +699,7 @@
                 userUID: userId,
                 fullname: `${user.lastname}, ${user.firstname}, ${user.middlename}`,
                 campus: user.campus,
-                Action:
+                Details:
                   '<button class="btn btn-danger view-button" data-toggle="modal" data-target="#exampleModalLong">View</button>',
               });
             });
@@ -703,9 +720,11 @@
             .draw();
         });
       };
+      let eventListenersAdded = false;
+      let currentUserId;
       function viewUserDetails(userId) {
         const userRef = ref(db, `SubAdminAcc/${userId}`);
-
+        currentUserId = userId;
         get(userRef)
           .then((snapshot) => {
             const userData = snapshot.val();
@@ -724,28 +743,32 @@
 </div>
 
           <p><u><h5>Information:</h5></u></p>
-          <p><strong>Name:<input class="form-control" id ="" type="text" value="${
-            userData.firstname
-          } ${userData.middlename} ${
-                userData.lastname
-              }" readonly></input></strong></p>
-          <p><strong>Gender:<input class="form-control" id ="" type="text" value="${
-            userData.gender
+         <p><strong>Last Name:<input class="form-control" id="lastNamefield" type="text" value="${
+           userData.lastname || "N/A"
+         }" readonly></input></strong></p>
+        <p><strong>First Name:<input class="form-control" id="firstNamefield" type="text" value="${
+          userData.firstname || "N/A"
+        }" readonly></input></strong></p>
+        <p><strong>Middle Name:<input class="form-control" id="middleNamefield" type="text" value="${
+          userData.middlename || "N/A"
+        }" readonly></input></strong></p>
+                   <p><strong>Email:<input class="form-control" id ="emailfield" type="text" value="${
+                     userData.email || "N/A"
+                   }" readonly></input></strong></p>
+                        <p><strong>Campus:<input class="form-control" id ="campusfield" type="text" value="${
+                          userData.campus || "N/A"
+                        }" readonly></input></strong></p>
+          <p><strong>Gender:<input class="form-control" id ="genderfield" type="text" value="${
+            userData.gender || "N/A"
           }" readonly></input></strong></p>
-          <p><strong>Birthday:<input class="form-control" id ="" type="text" value="${
-            userData.birthday
+          <p><strong>Birthday:<input class="form-control" id ="birthDayfield" type="text" value="${
+            userData.birthday || "N/A"
           }" readonly></input></strong></p>
-          <p><strong>Email:<input class="form-control" id ="" type="text" value="${
-            userData.email
+          <p><strong>Position:<input class="form-control" id ="positionfield" type="text" value="${
+            userData.position || "N/A"
           }" readonly></input></strong></p>
-          <p><strong>Campus:<input class="form-control" id ="" type="text" value="${
-            userData.campus
-          }" readonly></input></strong></p>
-          <p><strong>Position:<input class="form-control" id ="" type="text" value="${
-            userData.position
-          }" readonly></input></strong></p>
-          <p><strong>Contact Number:<input class="form-control" id ="" type="text" value="${
-            userData.contactNumber
+          <p><strong>Contact Number:<input class="form-control" id ="contactNumfield" type="text" value="${
+            userData.contactNumber || "N/A"
           }" readonly></input></strong></p>
 
         `;
@@ -773,6 +796,105 @@
         });
       }
 
+      let terminationButtonClicked = false;
+      const terminationButton = document.getElementById("terminate");
+
+      // Add event listener only if it hasn't been added before
+      if (!terminationButtonClicked) {
+        terminationButton.addEventListener("click", deleteUserData);
+        terminationButtonClicked = true;
+      }
+
+      function deleteUserData() {
+        const uidToDelete = currentUserId;
+
+        if (
+          confirm("Are you sure you want to delete the data of this Account?")
+        ) {
+          // Delete user data from Realtime Database
+          const userRef = ref(db, `SubAdminAcc/${uidToDelete}`);
+
+          // Remove the user data and corresponding child under User Verification
+          Promise.all([remove(userRef)])
+            .then(() => {
+              // Close the modal after removing user data
+              $("#exampleModalLong").modal("hide");
+
+              // Show success alert
+              alert("Account Data Deleted Successfully");
+            })
+            .catch((error) => {
+              // Handle errors
+              alert("Error deleting account data: " + error);
+              console.error(error);
+            });
+        }
+      }
+
+      eventListenersAdded = true;
+      const editButton = document.getElementById("editBtn");
+      if (editButton) {
+        editButton.addEventListener("click", toggleEditMode);
+      }
+
+      function toggleEditMode() {
+        const inputFields = document.querySelectorAll(".form-control");
+        const excludedFields = ["emailfield"];
+        const saveButton = document.getElementById("saveBtn");
+
+        inputFields.forEach((field) => {
+          const fieldId = field.id;
+
+          // Check if the field is not in the excludedFields array
+          if (!excludedFields.includes(fieldId)) {
+            field.readOnly = !field.readOnly;
+          }
+        });
+
+        if (!saveButton) {
+          // Add "Save" button if not already added
+          const saveButton = document.createElement("button");
+          saveButton.id = "saveBtn";
+          saveButton.className = "btn btn-primary";
+          saveButton.innerText = "Save";
+          saveButton.addEventListener("click", saveChanges);
+          document.getElementById("modalBodyContent").appendChild(saveButton);
+        } else {
+          saveButton.style.display =
+            saveButton.style.display === "none" ? "block" : "none";
+        }
+      }
+      // Function to save changes to the Users node
+      function saveChanges() {
+        const userIdToUpdate = currentUserId;
+        const userRefToUpdate = ref(db, `SubAdminAcc/${userIdToUpdate}`);
+
+        const updatedUserData = {
+          firstname: document.getElementById("firstNamefield").value,
+          middlename: document.getElementById("middleNamefield").value,
+          lastname: document.getElementById("lastNamefield").value,
+          birthday: document.getElementById("birthDayfield").value,
+          gender: document.getElementById("genderfield").value,
+          contactNumber: document.getElementById("contactNumfield").value,
+          campus: document.getElementById("campusfield").value,
+          position: document.getElementById("positionfield").value,
+        };
+
+        // Update the user data in the database
+        update(userRefToUpdate, updatedUserData)
+          .then(() => {
+            alert("Changes saved successfully!");
+            // Remove the "Save" button after saving changes
+            const saveButton = document.getElementById("saveBtn");
+            if (saveButton) {
+              saveButton.parentNode.removeChild(saveButton);
+            }
+          })
+          .catch((error) => {
+            alert("Error saving changes: " + error);
+            console.error(error);
+          });
+      }
       populateDataTable();
     </script>
   </body>
