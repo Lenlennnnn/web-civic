@@ -651,6 +651,7 @@
             { data: "campus" },
             { data: "Action" },
           ],
+          order: [[1, "asc"]],
         });
 
         return dataTable;
@@ -679,7 +680,7 @@
               );
               dataTable.row.add({
                 userUID: userId,
-                fullname: `${user.firstname} ${user.middlename} ${user.lastname}`,
+                fullname: `${user.lastname}, ${user.firstname}, ${user.middlename}`,
                 campus: user.campus,
                 Action:
                   '<button class="btn btn-danger view-button" data-toggle="modal" data-target="#exampleModalLong">View</button>',
@@ -747,13 +748,10 @@
             userData.contactNumber
           }" readonly></input></strong></p>
 
-
-
         `;
             } else {
               modalBodyContent.innerHTML = `<p>No user details found.</p>`;
             }
-
             // Show the modal
             $("#exampleModalLong").modal("show");
           })
