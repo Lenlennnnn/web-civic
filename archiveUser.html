@@ -487,6 +487,13 @@
             const userRef = ref(db, `Users/${uidToDelete}`);
             remove(userRef);
 
+            // Delete the corresponding child under User Verification
+            const userVerificationRef = ref(
+              db,
+              `User Verification/${uidToDelete}`
+            );
+            remove(userVerificationRef);
+
             // Close the modal after removing user data
             $("#exampleModalLonggg").modal("hide");
 

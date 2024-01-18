@@ -658,6 +658,7 @@
                 type="button"
                 class="btn btn-danger"
                 data-dismiss="modal"
+                style="position: relative; right: 34%"
                 id="revokeBtn">
                 Revoke
               </button>
@@ -665,16 +666,18 @@
                 type="button"
                 class="btn btn-danger"
                 data-dismiss="modal"
-                id="terminate">
+                id="terminate"
+                style="position: relative; right: 33%">
                 Terminate
               </button>
               <button
                 type="button"
-                class="btn btn-danger"
+                class="btn btn-success"
                 data-dismiss="modal"
                 id="editBtn">
                 Edit
               </button>
+
               <button
                 type="button"
                 class="btn btn-secondary"
@@ -1130,61 +1133,64 @@
 
             const modalBodyContent =
               document.getElementById("modalBodyContent");
-
             if (userData) {
               const imageSrc = userData.ImageProfile || "img/profile.png";
               modalBodyContent.innerHTML = `
         <div class="image-container"><img src="${imageSrc}" class="rounded-image"></div>
         <p><u><h5>Personal Information:</h5></u></p>
-        <p><strong>Name:<input class="form-control" id="" type="text" value="${
+        <p><strong>Last Name:<input class="form-control" id="lastNamefield" type="text" value="${
           userData.lastname || "N/A"
-        }, ${userData.firstname || "N/A"}, ${
-                userData.middlename || "N/A"
-              }" readonly></input></strong></p>
-        <p><strong>Email:<input class="form-control" id="" type="text" value="${
+        }" readonly></input></strong></p>
+        <p><strong>First Name:<input class="form-control" id="firstNamefield" type="text" value="${
+          userData.firstname || "N/A"
+        }" readonly></input></strong></p>
+        <p><strong>Middle Name:<input class="form-control" id="middleNamefield" type="text" value="${
+          userData.middlename || "N/A"
+        }" readonly></input></strong></p>
+        <p><strong>Email:<input class="form-control" id="emailfield" type="text" value="${
           userData.email || "N/A"
         }" readonly ></input></strong></p>
-        <p><strong>User Type:<input class="form-control" id="" type="text" value="${
+        <p><strong>User Type:<input class="form-control" id="userTypefield" type="text" value="${
           userData.userType || "N/A"
         }" readonly ></input></strong></p>
-        <p><strong>Date of Birth:<input class="form-control" id="" type="text" value="${
+        <p><strong>Date of Birth:<input class="form-control" id="birthDayfield" type="text" value="${
           userData.birthday || "N/A"
         }" readonly ></input></strong></p>
-        <p><strong>Gender:<input class="form-control" id="" type="text" value="${
+        <p><strong>Gender:<input class="form-control" id="genderfield" type="text" value="${
           userData.gender || "N/A"
         }" readonly ></input></strong></p>
-        <p><strong>Address:<input class="form-control" id="" type="text" value="${
+        <p><strong>Address:<input class="form-control" id="addressfield" type="text" value="${
           userData.address || "N/A"
         }" readonly ></input></strong></p>
-        <p><strong>Personal Contact:<input class="form-control" id="" type="text" value="${
+        <p><strong>Personal Contact:<input class="form-control" id="personalConfield" type="text" value="${
           userData.phoneno || "N/A"
         }" readonly ></input></strong></p>
-        <p><strong>Emergency Contact:<input class="form-control" id="" type="text" value="${
+        <p><strong>Emergency Contact:<input class="form-control" id="emergencyConfield" type="text" value="${
           userData.ContactEme || "N/A"
         }" readonly ></input></strong></p>
-        <p><strong>Current Engagement:<input class="form-control" id="" type="text" value="${
+        <p><strong>Current Engagement:<input class="form-control" id="currentEngfield" type="text" value="${
           userData.CurrentEngagement || "N/A"
         }" readonly ></input></strong></p>
-        <p><strong>Finish Activity:<input class="form-control" id="" type="text" value="${
+        <p><strong>Finish Activity:<input class="form-control" id="finishActfield" type="text" value="${
           userData.finishactivity || "N/A"
         }" readonly ></input></strong></p>
-        <p><strong>Active Points:<input class="form-control" id="" type="text" value="${
+        <p><strong>Active Points:<input class="form-control" id="activePtsfield" type="text" value="${
           userData.activepts || "N/A"
         }" readonly ></input></strong></p>
         <p><u><h5>Academic Information:</h5></u></p>
-        <p><strong>Campus:<input class="form-control" id="" type="text" value="${
+        <p><strong>Campus:<input class="form-control" id="campusfield" type="text" value="${
           userData.campus || "N/A"
         }" readonly ></input></strong></p>
-        <p><strong>SR-Code:<input class="form-control" id="" type="text" value="${
+        <p><strong>SR-Code:<input class="form-control" id="srCodefield" type="text" value="${
           userData.srcode || "N/A"
         }" readonly ></input></strong></p>
-        <p><strong>Course:<input class="form-control" id="" type="text" value="${
+        <p><strong>Course:<input class="form-control" id="coursefield" type="text" value="${
           userData.course || "N/A"
         }" readonly ></input></strong></p>
-        <p><strong>Year and Section:<input class="form-control" id="" type="text" value="${
+        <p><strong>Year and Section:<input class="form-control" id="yearandSectfield" type="text" value="${
           userData.yearandSection || "N/A"
         }" readonly ></input></strong></p>
-        <p><strong>NSTP Program:<input class="form-control" id="" type="text" value="${
+        <p><strong>NSTP Program:<input class="form-control" id="nstpfield" type="text" value="${
           userData.nstp || "N/A"
         }" readonly ></input></strong></p>
         <!-- Add more user details here as needed -->
@@ -1222,8 +1228,6 @@
       }
 
       function deleteUserData() {
-        // Your existing deleteUserData function ...
-
         const uidToDelete = currentUserId;
 
         if (
@@ -1231,13 +1235,25 @@
         ) {
           // Delete user data from Realtime Database
           const userRef = ref(db, `Users/${uidToDelete}`);
-          remove(userRef);
+          const userVerificationRef = ref(
+            db,
+            `User Verification/${uidToDelete}`
+          );
 
-          // Close the modal after removing user data
-          $("#exampleModalLong").modal("hide");
+          // Remove the user data and corresponding child under User Verification
+          Promise.all([remove(userRef), set(userVerificationRef, null)])
+            .then(() => {
+              // Close the modal after removing user data
+              $("#exampleModalLong").modal("hide");
 
-          // Show success alert
-          alert("Account Data Deleted Successfully");
+              // Show success alert
+              alert("Account Data Deleted Successfully");
+            })
+            .catch((error) => {
+              // Handle errors
+              alert("Error deleting account data: " + error);
+              console.error(error);
+            });
         }
       }
 
@@ -1248,7 +1264,6 @@
       }
 
       function revokeUserVerification() {
-        // Your existing revokeUserVerification function ...
         const uidToRevoke = currentUserId;
 
         const confirmation = window.confirm(
@@ -1257,17 +1272,28 @@
 
         if (confirmation) {
           const userRefToRevoke = ref(db, `Users/${uidToRevoke}`);
+          const userVerificationRefToRevoke = ref(
+            db,
+            `User Verification/${uidToRevoke}`
+          );
 
-          // Set verificationStatus to false
-          update(userRefToRevoke, {
-            verificationStatus: false,
-            verifiedTimeStamp: "", // You can set this to an appropriate value if needed
-          })
+          // Set verificationStatus to false and delete the corresponding child under User Verification
+          Promise.all([
+            update(userRefToRevoke, {
+              verificationStatus: false,
+              verifiedTimeStamp: "", // You can set this to an appropriate value if needed
+            }),
+            set(userVerificationRefToRevoke, null),
+          ])
             .then(() => {
-              alert("Verification status revoked successfully!");
+              // Close the modal after revoking verification
               $("#exampleModalLong").modal("hide");
+
+              // Show success alert
+              alert("Verification status revoked successfully!");
             })
             .catch((error) => {
+              // Handle errors
               alert("Error revoking verification status: " + error);
               console.error(error);
             });
@@ -1279,6 +1305,83 @@
 
       // Set the flag to true to indicate that event listeners have been added
       eventListenersAdded = true;
+      const editButton = document.getElementById("editBtn");
+      if (editButton) {
+        editButton.addEventListener("click", toggleEditMode);
+      }
+
+      function toggleEditMode() {
+        const inputFields = document.querySelectorAll(".form-control");
+        const excludedFields = [
+          "emailfield",
+          "currentEngfield",
+          "finishActfield",
+          "activePtsfield",
+          // Add more field IDs to exclude as needed
+        ];
+        const saveButton = document.getElementById("saveBtn");
+
+        inputFields.forEach((field) => {
+          const fieldId = field.id;
+
+          // Check if the field is not in the excludedFields array
+          if (!excludedFields.includes(fieldId)) {
+            field.readOnly = !field.readOnly;
+          }
+        });
+
+        if (!saveButton) {
+          // Add "Save" button if not already added
+          const saveButton = document.createElement("button");
+          saveButton.id = "saveBtn";
+          saveButton.className = "btn btn-primary";
+          saveButton.innerText = "Save";
+          saveButton.addEventListener("click", saveChanges);
+          document.getElementById("modalBodyContent").appendChild(saveButton);
+        } else {
+          saveButton.style.display =
+            saveButton.style.display === "none" ? "block" : "none";
+        }
+      }
+      // Function to save changes to the Users node
+      function saveChanges() {
+        const userIdToUpdate = currentUserId;
+        const userRefToUpdate = ref(db, `Users/${userIdToUpdate}`);
+
+        const updatedUserData = {
+          firstname: document.getElementById("firstNamefield").value,
+          middlename: document.getElementById("middleNamefield").value,
+          lastname: document.getElementById("lastNamefield").value,
+          userType: document.getElementById("userTypefield").value,
+          birthday: document.getElementById("birthDayfield").value,
+          gender: document.getElementById("genderfield").value,
+          address: document.getElementById("addressfield").value,
+          phoneno: document.getElementById("personalConfield").value,
+          ContactEme: document.getElementById("emergencyConfield").value,
+          campus: document.getElementById("campusfield").value,
+          srcode: document.getElementById("srCodefield").value,
+          course: document.getElementById("coursefield").value,
+          yearandSection: document.getElementById("yearandSectfield").value,
+          nstp: document.getElementById("nstpfield").value,
+          // Add more fields as needed
+        };
+
+        // Update the user data in the database
+        update(userRefToUpdate, updatedUserData)
+          .then(() => {
+            alert("Changes saved successfully!");
+            // Remove the "Save" button after saving changes
+            const saveButton = document.getElementById("saveBtn");
+            if (saveButton) {
+              saveButton.parentNode.removeChild(saveButton);
+            }
+          })
+          .catch((error) => {
+            alert("Error saving changes: " + error);
+            console.error(error);
+          });
+      }
+
       populateDataTable();
     </script>
 
