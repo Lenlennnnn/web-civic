@@ -1118,9 +1118,10 @@
         });
       };
       let eventListenersAdded = false;
+      let currentUserId;
       function viewUserDetails(userId) {
         const userRef = ref(db, `Users/${userId}`);
-
+        currentUserId = userId;
         get(userRef)
           .then((snapshot) => {
             const userData = snapshot.val();
@@ -1188,85 +1189,6 @@
         }" readonly ></input></strong></p>
         <!-- Add more user details here as needed -->
     `;
-              let terminationButtonClicked = false;
-              const terminationButton = document.getElementById("terminate");
-
-              // Add event listener only if it hasn't been added before
-              if (!terminationButtonClicked) {
-                terminationButton.addEventListener("click", deleteUserData);
-                terminationButtonClicked = true;
-              }
-
-              function deleteUserData() {
-                const uidToDelete = userId;
-
-                if (
-                  confirm(
-                    "Are you sure you want to delete the data of this Account?"
-                  )
-                ) {
-                  // Delete user data from Realtime Database
-                  const userRef = ref(db, `Users/${uidToDelete}`);
-                  remove(userRef);
-
-                  // Close the modal after removing user data
-                  $("#exampleModalLong").modal("hide");
-
-                  // Show success alert
-                  alert("Account Data Deleted Successfully");
-                }
-              }
-              const revokeButton = document.getElementById("revokeBtn");
-
-              if (revokeButton) {
-                revokeButton.addEventListener("click", revokeUserVerification);
-              }
-
-              function revokeUserVerification() {
-                const uidToRevoke = userId; // You need to get the UID of the user you want to revoke verification for
-
-                const confirmation = window.confirm(
-                  "Are you sure to revoke this User's Account?"
-                );
-
-                if (confirmation) {
-                  const userRefToRevoke = ref(db, `Users/${uidToRevoke}`);
-
-                  // Set verificationStatus to false
-                  update(userRefToRevoke, {
-                    verificationStatus: false,
-                    verifiedTimeStamp: "", // You can set this to an appropriate value if needed
-                  })
-                    .then(() => {
-                      alert("Verification status revoked successfully!");
-                      $("#exampleModalLong").modal("hide");
-                    })
-                    .catch((error) => {
-                      alert("Error revoking verification status: " + error);
-                      console.error(error);
-                    });
-                } else {
-                  // If the user cancels the confirmation, do nothing
-                  return;
-                }
-              }
-              if (!eventListenersAdded) {
-                // Add event listener for termination button
-                const terminationButton = document.getElementById("terminate");
-                terminationButton.addEventListener("click", deleteUserData);
-
-                // Add event listener for revoke button
-                const revokeButton = document.getElementById("revokeBtn");
-                if (revokeButton) {
-                  revokeButton.addEventListener(
-                    "click",
-                    revokeUserVerification
-                  );
-                }
-
-                // Set the flag to true to indicate that event listeners have been added
-                eventListenersAdded = true;
-              }
             } else {
               modalBodyContent.innerHTML = `<p>No user details found.</p>`;
             }
@@ -1290,7 +1212,73 @@
           keyboard: false, // Disables the keyboard close functionality
         });
       }
+      let terminationButtonClicked = false;
+      const terminationButton = document.getElementById("terminate");
 
+      // Add event listener only if it hasn't been added before
+      if (!terminationButtonClicked) {
+        terminationButton.addEventListener("click", deleteUserData);
+        terminationButtonClicked = true;
+      }
+
+      function deleteUserData() {
+        // Your existing deleteUserData function ...
+
+        const uidToDelete = currentUserId;
+
+        if (
+          confirm("Are you sure you want to delete the data of this Account?")
+        ) {
+          // Delete user data from Realtime Database
+          const userRef = ref(db, `Users/${uidToDelete}`);
+          remove(userRef);
+
+          // Close the modal after removing user data
+          $("#exampleModalLong").modal("hide");
+
+          // Show success alert
+          alert("Account Data Deleted Successfully");
+        }
+      }
+
+      const revokeButton = document.getElementById("revokeBtn");
+
+      if (revokeButton) {
+        revokeButton.addEventListener("click", revokeUserVerification);
+      }
+
+      function revokeUserVerification() {
+        // Your existing revokeUserVerification function ...
+        const uidToRevoke = currentUserId;
+
+        const confirmation = window.confirm(
+          "Are you sure to revoke this User's Account?"
+        );
+
+        if (confirmation) {
+          const userRefToRevoke = ref(db, `Users/${uidToRevoke}`);
+
+          // Set verificationStatus to false
+          update(userRefToRevoke, {
+            verificationStatus: false,
+            verifiedTimeStamp: "", // You can set this to an appropriate value if needed
+          })
+            .then(() => {
+              alert("Verification status revoked successfully!");
+              $("#exampleModalLong").modal("hide");
+            })
+            .catch((error) => {
+              alert("Error revoking verification status: " + error);
+              console.error(error);
+            });
+        } else {
+          // If the user cancels the confirmation, do nothing
+          return;
+        }
+      }
+
+      // Set the flag to true to indicate that event listeners have been added
+      eventListenersAdded = true;
       populateDataTable();
     </script>
 

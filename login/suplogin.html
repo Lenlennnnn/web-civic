@@ -10,22 +10,19 @@
     <link
       rel="stylesheet"
       type="text/css"
-      href="vendor/bootstrap/css/bootstrap.min.css"
-    />
+      href="vendor/bootstrap/css/bootstrap.min.css" />
     <!--===============================================================================================-->
     <link
       rel="stylesheet"
       type="text/css"
-      href="fonts/font-awesome-4.7.0/css/font-awesome.min.css"
-    />
+      href="fonts/font-awesome-4.7.0/css/font-awesome.min.css" />
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="css/util.css" />
     <link rel="stylesheet" type="text/css" href="css/main.css" />
     <!--===============================================================================================-->
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    />
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
     <style>
       .txt2 {
@@ -285,20 +282,20 @@
         top: 217px;
       }
 
-      #icon{
+      #icon {
         color: #aaa;
       }
 
       .password-container {
-  position: relative;
-}
-.toggle-password {
-  position: absolute;
-  right: 10px; 
-  top: 45%;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
+        position: relative;
+      }
+      .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 45%;
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
     </style>
   </head>
 
@@ -308,8 +305,7 @@
         <div class="wrap-login100">
           <div
             class="login100-form-title"
-            style="background-image: url(images/homepage.jpg)"
-          >
+            style="background-image: url(images/homepage.jpg)">
             <span class="login100-form-title-1"> Super Admin's Portal </span>
           </div>
           <div>
@@ -320,31 +316,27 @@
           <form class="login100-form validate-form">
             <div
               class="wrap-input100 validate-input m-b-26"
-              data-validate="Username is required"
-            >
+              data-validate="Username is required">
               <span class="label-input100">Username</span>
               <input
                 class="input100"
                 type="text"
                 name="username"
                 placeholder="Enter username"
-                id="usernamefield"
-              />
+                id="usernamefield" />
               <span class="focus-input100"></span>
             </div>
 
             <div
               class="wrap-input100 validate-input m-b-18"
-              data-validate="Password is required"
-            >
+              data-validate="Password is required">
               <span class="label-input100">Password</span>
               <input
                 class="input100"
                 type="password"
                 name="pass"
                 placeholder="Enter password"
-                id="passwordfield"
-              />
+                id="passwordfield" />
               <span id="togglePassword" class="toggle-password">
                 <i id="passwordIcon" class="fas fa-eye"></i>
               </span>
@@ -375,16 +367,18 @@
                 <!-- Header -->
                 <h2>Enter Code</h2>
                 <div class="password-container">
-                <input
-                  type="password"
-                  id="textNumberFieldCode"
-                  name="textNumberFieldCode"
-                  required
-                />
-                <span id="togglePasswordCode" class="toggle-password" onclick="togglePasswordCode()">
-                  <i id="icon" class="fas fa-eye"></i>
-                </span>
-              </div>
+                  <input
+                    type="password"
+                    id="textNumberFieldCode"
+                    name="textNumberFieldCode"
+                    required />
+                  <span
+                    id="togglePasswordCode"
+                    class="toggle-password"
+                    onclick="togglePasswordCode()">
+                    <i id="icon" class="fas fa-eye"></i>
+                  </span>
+                </div>
                 <!-- Proceed Button -->
                 <button type="button" id="proceedBtn">Proceed</button>
               </div>
@@ -403,8 +397,7 @@
                     id="firstname"
                     name="firstname"
                     required
-                    placeholder="Your first name"
-                  />
+                    placeholder="Your first name" />
 
                   <label for="lastname">Middle Name:</label>
                   <input
@@ -412,8 +405,7 @@
                     id="lastname"
                     name="lastname"
                     required
-                    placeholder="Your middle name"
-                  />
+                    placeholder="Your middle name" />
 
                   <label for="middlename">Last Name:</label>
                   <input
@@ -421,8 +413,7 @@
                     id="middlename"
                     name="middlename"
                     required
-                    placeholder="Your last name"
-                  />
+                    placeholder="Your last name" />
 
                   <label for="campus">Gender:</label>
                   <select id="gender" name="campus" required>
@@ -437,8 +428,7 @@
                     id="email"
                     name="email"
                     required
-                    placeholder="example@email.com"
-                  />
+                    placeholder="example@email.com" />
 
                   <label for="password">Password:</label>
                   <input
@@ -447,8 +437,7 @@
                     class="passna"
                     name="password"
                     required
-                    placeholder="Your password"
-                  />
+                    placeholder="Your password" />
                   <span class="toggle-passwordCreate">
                     <i id="passnaicon" class="fas fa-eye toggle-icon"></i>
                   </span>
@@ -459,9 +448,10 @@
                     id="confirmpassword"
                     name="confirmpassword"
                     required
-                    placeholder="Re-type password"
-                  />
-                  <span id="toggleConfirmPassword" class="toggle-passwordCreate">
+                    placeholder="Re-type password" />
+                  <span
+                    id="toggleConfirmPassword"
+                    class="toggle-passwordCreate">
                     <i id="passwordIconconfirm" class="fas fa-eye"></i>
                   </span>
 
@@ -529,19 +519,19 @@
         });
       });
       function togglePasswordCode() {
-      var passwordField = document.getElementById("textNumberFieldCode");
-      var toggleIcon = document.getElementById("icon");
+        var passwordField = document.getElementById("textNumberFieldCode");
+        var toggleIcon = document.getElementById("icon");
 
-      if (passwordField.type === "password") {
-        passwordField.type = "text";
-        toggleIcon.classList.remove("fa-eye");
-        toggleIcon.classList.add("fa-eye-slash");
-      } else {
-        passwordField.type = "password";
-        toggleIcon.classList.remove("fa-eye-slash");
-        toggleIcon.classList.add("fa-eye");
+        if (passwordField.type === "password") {
+          passwordField.type = "text";
+          toggleIcon.classList.remove("fa-eye");
+          toggleIcon.classList.add("fa-eye-slash");
+        } else {
+          passwordField.type = "password";
+          toggleIcon.classList.remove("fa-eye-slash");
+          toggleIcon.classList.add("fa-eye");
+        }
       }
-    }
     </script>
 
     <script type="module">
@@ -663,12 +653,14 @@
       function RegisterUser(event) {
         event.preventDefault();
 
-    const confirmed = window.confirm("Are you sure you want to create this account?");
-  
-  if (!confirmed) {
-    // If the user cancels the confirmation, do nothing
-    return;
-  }
+        const confirmed = window.confirm(
+          "Are you sure you want to create this account?"
+        );
+
+        if (!confirmed) {
+          // If the user cancels the confirmation, do nothing
+          return;
+        }
         // Get the values of the input fields
         const firstnameValue = firstname.value.trim();
         const middlenameValue = middlename.value.trim();
@@ -758,6 +750,8 @@
         })
           .then(() => {
             alert("Admin Added Successfully");
+            const secondModal = document.getElementById("mySecondModal");
+            secondModal.style.display = "none";
           })
           .catch((error) => {
             alert("Error: " + error);
@@ -805,8 +799,9 @@
       });
       // Functionality when clicking the Proceed button in the first modal
       proceedBtn.addEventListener("click", async () => {
-        const textNumberValue =
-          document.getElementById("textNumberFieldCode").value;
+        const textNumberValue = document.getElementById(
+          "textNumberFieldCode"
+        ).value;
         clearInputFields();
         try {
           // Fetch the correct code from Firebase
