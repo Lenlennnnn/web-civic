@@ -17,6 +17,7 @@
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.15.4/css/ionicons.min.css" />
+
     <style>
       .dashboard {
         color: #a90011;
@@ -280,9 +281,14 @@
         outline: none !important;
         margin-left: 10px;
       }
+      .btn.btn-success {
+        background-color: #28a745;
+        color: #fff;
+      }
+
       .table-wrapper .btn:hover {
-        color: #333;
-        background: #f2f2f2;
+        color: #fff;
+        background: #10c469;
       }
       .table-wrapper .btn.btn-primary {
         color: #fff;
@@ -427,7 +433,6 @@
       .text-danger {
         color: #dc3545;
       }
-
       /* Targeting the button inside the .col-sm-8 */
       .col-sm-8 a.btn {
         /* Your styles here */
@@ -573,16 +578,8 @@
       }
 
       #closemodalbtnupcom {
-        position: relative;
-        bottom: 10px;
-        right: 10px;
         background-color: #6c757d;
         color: #ffffff;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s;
       }
 
       #closemodalbtnupcom:hover {
@@ -930,6 +927,14 @@
       #objectiveField,
       #instructionField {
         line-height: 1.8; /* You can adjust this value to increase or decrease the vertical spacing */
+      }
+      .btn.btn-danger {
+        background-color: #dc3545;
+        color: #fff;
+      }
+
+      .btn.btn-danger:hover {
+        background: #bd2130; /* Change this color to your desired hover color */
       }
     </style>
   </head>
@@ -1594,9 +1599,25 @@
 
                         <button
                           type="button"
+                          class="btn btn-success"
+                          data-dismiss="modal"
+                          id="editBtn">
+                          Edit
+                        </button>
+                        <button
+                          type="button"
                           class="btn btn-secondary"
+                          data-dismiss="modal"
                           id="closemodalbtnupcom">
                           Close
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-danger"
+                          data-dismiss="modal"
+                          id="terminate"
+                          style="position: relative; right: 70%">
+                          Terminate
                         </button>
                       </div>
                     </div>
@@ -1613,7 +1634,7 @@
 
                           <h3 id="editmov">View Details</h3>
                         </div>
-                        <div class="modal-bodyevnts">
+                        <div class="modal-bodyevents">
                           <!-- 1. Image -->
                           <div class="text-center">
                             <img
@@ -1630,7 +1651,7 @@
                               type="text"
                               class="form-control"
                               id="category"
-                              value="Clean Up Drive"
+                              value="category"
                               readonly />
                           </div>
 
@@ -1641,7 +1662,7 @@
                               type="text"
                               class="form-control"
                               id="title"
-                              value="Sustainable Environmental Cleaning"
+                              value="title"
                               readonly />
                           </div>
 
@@ -1653,21 +1674,18 @@
                               id="introduction"
                               rows="10"
                               readonly>
-      Cleaning the environment is a vital responsibility that transcends personal and collective interests, embodying our commitment to safeguarding the planet and ensuring a sustainable future for generations to come. It involves the conscientious removal of pollutants, waste, and harmful elements from our surroundings,  promoting the restoration and preservation of natural ecosystems. Cleaning the environment is not limited to physical debris but extends to addressing broader issues such as air and water quality, deforestation, and climate change mitigation. It signifies our dedication to harmonious coexistence with nature, recognizing that a cleaner environment not only enhances our own well-being but also plays an essential role in protecting the intricate web of life on Earth and preserving the beauty and diversity of our planet.
-                   </textarea
-                            >
+                            </textarea>
                           </div>
 
                           <!-- 5. Description -->
                           <div class="form-group">
-                            <label for="description">Description:</label>
+                            <label for="description">Objective:</label>
                             <textarea
                               class="form-control"
-                              id="description"
+                              id="objective"
                               rows="10"
                               readonly>
-                    Cleaning the environment is an indispensable endeavor crucial for sustaining life on our planet. It encompasses a wide array of practices aimed at preserving and restoring the natural balance of ecosystems. From managing waste and reducing pollution to conserving resources and promoting biodiversity, the scope of cleaning the environment is multifaceted. Recycling initiatives, adoption of renewable energy sources, reforestation efforts, and advocating for sustainable practices are integral components in the mission to create a cleaner, healthier environment. Moreover, educating communities about the significance of environmental stewardship fosters a collective responsibility towards preserving the Earth for future generations. By fostering a culture of consciousness and implementing innovative strategies, cleaning the environment stands as a vital cornerstone in securing a sustainable future for all life forms on our planet.</textarea
-                            >
+                            </textarea>
                           </div>
 
                           <div class="form-group">
@@ -1677,16 +1695,7 @@
                               id="instruction"
                               rows="10"
                               readonly>
-1. Check-in and Briefing: Please arrive at the designated meeting point at least 15 minutes before the scheduled start time. Upon arrival, check in with our event coordinators who will provide you with necessary equipment such as gloves, trash bags, and any additional safety gear. You'll also receive a brief orientation outlining safety protocols and the areas assigned for cleanup.
-
-2. Assignment and Cleanup Process: Once briefed, you'll be assigned to a specific cleanup zone. Work in teams to cover the designated areas thoroughly. Collect and separate recyclable materials from general waste. Be mindful of safety: avoid picking up hazardous items and wear protective gear when handling sharp objects.
-
-3. Environmental Conservation: While collecting trash, take note of any environmental concerns (such as signs of habitat destruction, invasive species, or pollution sources) and report them to the event coordinators. If you come across any wildlife, maintain a safe distance and avoid disturbing their habitat.
-
-4. Proper Waste Disposal: When your assigned cleanup time is completed or your bags are full, return to the designated collection point. Make sure all waste bags are securely tied. Separate recyclables from non-recyclables as instructed. Our team will properly dispose of collected waste in accordance with local recycling and waste management regulations.
-
-5. Conclusion and Appreciation: At the end of the event, there will be a brief gathering to acknowledge everyone's hard work and dedication. We'll discuss the impact of our efforts and share any significant findings. Feel free to share your experiences and any insights gained during the cleanup.</textarea
-                            >
+                            </textarea>
                           </div>
 
                           <!-- 6. Location -->
@@ -1696,28 +1705,28 @@
                               type="text"
                               class="form-control"
                               id="location"
-                              value="San Miguel Sto Tomas Batangas"
+                              value="location"
                               readonly />
                           </div>
 
                           <!-- 7. Date -->
                           <div class="form-row">
                             <div class="form-group col-md-6">
-                              <label for="date">Start Date & Time:</label>
+                              <label for="startdatet">Start Date & Time:</label>
                               <input
                                 type="text"
                                 class="form-control"
-                                id="date"
-                                value="10/12/2023 9:00 AM"
+                                id="startdatet"
+                                value="startdatet"
                                 readonly />
                             </div>
                             <div class="form-group col-md-6">
-                              <label for="dateend">End Date & Time:</label>
+                              <label for="enddatet">End Date & Time:</label>
                               <input
                                 type="text"
                                 class="form-control"
-                                id="dateend"
-                                value="10/13/2023 4:00 PM"
+                                id="enddatet"
+                                value="enddatet"
                                 readonly />
                             </div>
                           </div>
@@ -1731,7 +1740,7 @@
                               type="text"
                               class="form-control"
                               id="targetcampus"
-                              value="JPLPC Malvar Campus"
+                              value="targetcampus"
                               readonly />
                           </div>
 
@@ -1744,7 +1753,7 @@
                               type="text"
                               class="form-control"
                               id="targetParticipant"
-                              value="200"
+                              value="targetParticipant"
                               readonly />
                           </div>
 
@@ -1758,34 +1767,62 @@
                               value="50"
                               readonly />
                           </div>
-
+                          <div class="form-group">
+                            <label for="paymentMethod">Payment Method:</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="paymentMethod"
+                              value="paymentMethod"
+                              readonly />
+                          </div>
+                          <div class="form-group">
+                            <label for="paymentRecipient"
+                              >Payment Recipient:</label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="paymentRecipient"
+                              value="paymentRecipient"
+                              readonly />
+                          </div>
+                          <div class="form-group">
+                            <label for="fundCollected">Fund Collected:</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="fundCollected"
+                              value="50"
+                              readonly />
+                          </div>
                           <!-- 10. Facilitator's Name -->
                           <div class="form-group">
-                            <label for="facilitatorsName"
+                            <label for="facilitatorName"
                               >Facilitator's Name:</label
                             >
                             <input
                               type="text"
                               class="form-control"
-                              id="facilitatorsName"
-                              value="Leonard S Briones"
+                              id="facilitatorName"
+                              value="facilitatorName"
                               readonly />
                           </div>
                           <div class="form-group">
-                            <label for="facilitatorsName"
+                            <label for="facilitatorContact"
                               >Facilitator's Contact or Email:</label
                             >
                             <input
                               type="text"
                               class="form-control"
-                              id="facilitatorscontact"
-                              value="briones@gmail.com"
+                              id="facilitatorContact"
+                              value="facilitatorContact"
                               readonly />
                           </div>
                         </div>
                         <div class="modal-footerevnts">
+                          <button class="btn btn-success">Edit</button>
                           <button id="closeModalevnts">Close</button>
-                          <button class="btn btn-dark">Edit</button>
                         </div>
                       </div>
                     </div>
@@ -2227,7 +2264,14 @@
       document.addEventListener("click", function (event) {
         if (event.target && event.target.classList.contains("vieweventdet")) {
           const clickedRow = event.target.closest("tr");
-          const eventId = clickedRow.getAttribute("data-event-id"); // Assuming you have an attribute for the event ID in the table row
+          const eventId = clickedRow.getAttribute("data-event-id");
+
+          // Remove the 'selected-event' class from all rows
+          const allRows = document.querySelectorAll("tr.selected-event");
+          allRows.forEach((row) => row.classList.remove("selected-event"));
+
+          // Add the 'selected-event' class to the clicked row
+          clickedRow.classList.add("selected-event");
 
           // Reference the specific event node in Firebase
           const eventRef = ref(db, `Upload Engagement/${eventId}`);
@@ -2238,6 +2282,13 @@
               if (snapshot.exists()) {
                 const eventData = snapshot.val();
                 openEventModal(eventData);
+
+                // Remove previous event listener for termination button
+                const terminateButton = document.getElementById("terminate");
+                terminateButton.removeEventListener("click", onDeleteClick);
+
+                // Add a new event listener for termination button
+                terminateButton.addEventListener("click", onDeleteClick);
               } else {
                 console.log("No data available");
               }
@@ -2247,13 +2298,47 @@
             });
         }
       });
-      // Function to fetch and display data in the table
+
+      function onDeleteClick() {
+        const confirmation = confirm("Are you sure to delete this Engagement?");
+        if (confirmation) {
+          // Find the clicked row
+          const clickedRow = document.querySelector("tr.selected-event");
+
+          if (clickedRow) {
+            const eventId = clickedRow.getAttribute("data-event-id");
+            const eventRef = ref(db, `Upload Engagement/${eventId}`);
+
+            // Remove the event from Firebase
+            set(eventRef, null)
+              .then(() => {
+                alert("Engagement deleted successfully!");
+                closeModalEventModal(); // Close the modal after deletion
+              })
+              .catch((error) => {
+                console.error("Error deleting engagement:", error);
+              });
+          } else {
+            console.error("Clicked row is null");
+          }
+        }
+      }
+
+      function hasEventEnded(endDate) {
+        const currentDateTime = new Date();
+        const eventEndDate = new Date(endDate);
+        return eventEndDate < currentDateTime;
+      }
+
+      // Function to fetch and display data in the table, considering the endDate check
       function displayEventData() {
         const uploadEngagementRef = ref(db, "Upload Engagement");
 
         onValue(uploadEngagementRef, (snapshot) => {
           tableBody.innerHTML = ""; // Clear existing table data
           rowNumber = 1; // Reset row number
+
+          const events = []; // Array to store events for sorting
 
           snapshot.forEach((childSnapshot) => {
             const uploadData = childSnapshot.val();
@@ -2266,30 +2351,54 @@
               const {
                 campus,
                 category,
-                dateandtime,
+                startDate,
+                endDate,
                 title,
                 image,
                 location,
-                startDate,
-                endDate,
                 // Add other fields you want to retrieve from Firebase
               } = uploadData;
 
-              const newRow = tableBody.insertRow();
-              newRow.innerHTML = `
-          <td>${rowNumber}</td>
-          <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
-          <td>${title}</td>
-          <td>${category}</td>
-          <td>${campus}</td>
-          <td>${startDate} -- ${endDate}</td>
-          <td>
-            <button type="button" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>
-          </td>
-        `;
-              newRow.setAttribute("data-event-id", childSnapshot.key); // Set the event ID as an attribute in the table row
-              rowNumber++;
+              // Check if the event has already ended
+              if (!hasEventEnded(endDate)) {
+                events.push({
+                  id: childSnapshot.key,
+                  startDate: new Date(startDate),
+                  data: uploadData,
+                });
+              }
             }
+          });
+
+          // Sort events based on startDate in ascending order
+          events.sort((a, b) => a.startDate - b.startDate);
+
+          // Insert sorted events into the table
+          events.forEach((event) => {
+            const {
+              campus,
+              category,
+              startDate,
+              endDate,
+              title,
+              image,
+              location,
+            } = event.data;
+
+            const newRow = tableBody.insertRow();
+            newRow.innerHTML = `
+        <td>${rowNumber}</td>
+        <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
+        <td>${title}</td>
+        <td>${category}</td>
+        <td>${campus}</td>
+        <td>${startDate.toLocaleString()} -- ${endDate}</td>
+        <td>
+          <button type="button" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>
+        </td>
+      `;
+            newRow.setAttribute("data-event-id", event.id); // Set the event ID as an attribute in the table row
+            rowNumber++;
           });
         });
       }
