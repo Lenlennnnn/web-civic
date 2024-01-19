@@ -1309,7 +1309,7 @@
       if (editButton) {
         editButton.addEventListener("click", toggleEditMode);
       }
-
+      let saveButtonAdded = false;
       function toggleEditMode() {
         const inputFields = document.querySelectorAll(".form-control");
         const excludedFields = [
@@ -1330,7 +1330,7 @@
           }
         });
 
-        if (!saveButton) {
+        if (!saveButtonAdded) {
           // Add "Save" button if not already added
           const saveButton = document.createElement("button");
           saveButton.id = "saveBtn";
@@ -1338,6 +1338,7 @@
           saveButton.innerText = "Save";
           saveButton.addEventListener("click", saveChanges);
           document.getElementById("modalBodyContent").appendChild(saveButton);
+          saveButtonAdded = true;
         } else {
           saveButton.style.display =
             saveButton.style.display === "none" ? "block" : "none";
@@ -1370,11 +1371,7 @@
         update(userRefToUpdate, updatedUserData)
           .then(() => {
             alert("Changes saved successfully!");
-            // Remove the "Save" button after saving changes
-            const saveButton = document.getElementById("saveBtn");
-            if (saveButton) {
-              saveButton.parentNode.removeChild(saveButton);
-            }
+            toggleEditMode(); // Call toggleEditMode to reset the form fields
           })
           .catch((error) => {
             alert("Error saving changes: " + error);

@@ -516,8 +516,6 @@
         text-align: left;
         border-bottom: 1px solid #ccc; /* Add a border for separation */
       }
-
-      /* Modal styles */
       .modalupcom {
         display: none; /* Hide the modal by default */
         position: fixed;
@@ -826,8 +824,7 @@
 
       .modal-contentpo #lblpt,
       .modal-contentpo #hederrr {
-        display: block; /* Change display property to block or as needed */
-        /* Add any necessary styles for visibility */
+        display: block;
       }
 
       /* For close button */
@@ -928,6 +925,11 @@
       #deselectAllBtnn:hover {
         background-color: silver; /* Change background color on hover */
         /* Additional styles for hover state */
+      }
+      #introductionField,
+      #objectiveField,
+      #instructionField {
+        line-height: 1.8; /* You can adjust this value to increase or decrease the vertical spacing */
       }
     </style>
   </head>
@@ -1170,7 +1172,7 @@
                   <div class="table-title">
                     <div class="row">
                       <div class="col-sm-4">
-                        <h2>Civic Engagement</h2>
+                        <h2>Upcoming and Ongoing Events</h2>
                       </div>
                       <div class="col-sm-8">
                         <a href="#" class="btn" id="openPostModal">Post</a>
@@ -1582,11 +1584,14 @@
                     <!-- Updated Modal Structure -->
                     <div id="eventModalupcom" class="modalupcom">
                       <div class="modal-contentupcom">
-                        <!-- Content for displaying event details -->
-                        <h2>Event Details</h2>
+                        <span class="closepo" id="closeModaldetail">
+                          <ion-icon name="close"></ion-icon>
+                        </span>
+                        <h2 id="eventlabel" style="color: #dc3545">
+                          Event Details
+                        </h2>
                         <div id="eventDetailsupcom"></div>
 
-                        <!-- Close button at bottom-right -->
                         <button
                           type="button"
                           class="btn btn-secondary"
@@ -2115,7 +2120,7 @@
         function generatePaymentFieldsHTML(eventData) {
           if (shouldShowPaymentFields(eventData.category)) {
             return `
-        <p><strong>Payment Receipt:</strong>
+        <p><strong>Payment Recipient:</strong>
           <input class="form-control" id="payRecip" type="text" value="${eventData.paymentRecipient}" readonly>
         </p>
         <p><strong>Payment Method:</strong>
@@ -2163,15 +2168,15 @@
     <h3>Description</h3>
     <p>&nbsp;</p>
     <p><strong>Introduction:</strong></p>
-    <textarea class="form-control" rows="10" id="yourTextAreaId" readonly>${
+    <textarea class="form-control" rows="10" id="introductionField" readonly>${
       eventData.intro
     }</textarea>
     <p><strong>Objectives:</strong></p>
-    <textarea class="form-control" rows="10" id="yourTextAreaId" readonly>${
+    <textarea class="form-control" rows="10" id="objectiveField" readonly>${
       eventData.objective
     }</textarea>
     <p><strong>Instruction:</strong></p>
-    <textarea class="form-control" rows="10" id="yourTextAreaId" readonly>${
+    <textarea class="form-control" rows="10" id="instructionField" readonly>${
       eventData.instruction
     }</textarea>
     <p><strong>Target Participant:</strong>
@@ -2536,7 +2541,11 @@
           .addEventListener("click", function () {
             document.getElementById("postModalpo").style.display = "none";
           });
-
+        document
+          .getElementById("closeModaldetail")
+          .addEventListener("click", function () {
+            document.getElementById("eventModalupcom").style.display = "none";
+          });
         document
           .getElementById("filePost")
           .addEventListener("change", function () {
