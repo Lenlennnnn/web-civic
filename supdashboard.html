@@ -1212,6 +1212,7 @@
                                 name="image"
                                 accept="image/*"
                                 required />
+
                               <label
                                 for="category"
                                 id="lblpt"
@@ -1457,7 +1458,6 @@
                                 style="margin-left: 70%">
                                 Post
                               </button>
-
                               <button type="button" id="cancelButton">
                                 Cancel
                               </button>
@@ -1596,28 +1596,26 @@
                           Event Details
                         </h2>
                         <div id="eventDetailsupcom"></div>
-
-                        <button
-                          type="button"
-                          class="btn btn-success"
-                          data-dismiss="modal"
-                          id="editBtn">
-                          Edit
-                        </button>
-
-                        <button
-                          id="saveBtn"
-                          type="button"
-                          class="btn btn-success"
-                          style="display: none">
-                          Save
-                        </button>
                         <button
                           type="button"
                           class="btn btn-secondary"
                           data-dismiss="modal"
                           id="closemodalbtnupcom">
                           Close
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          data-dismiss="modal"
+                          id="editBtn">
+                          Edit
+                        </button>
+                        <button
+                          id="saveBtn"
+                          type="button"
+                          class="btn btn-success"
+                          style="display: none">
+                          Save
                         </button>
                         <button
                           type="button"
@@ -2181,6 +2179,8 @@
         <img src="${
           eventData.image
         }" alt="Event Image" class="eventpic" id="upcompostpic" />
+         <p id="labelImage" style="display: none;">Choose an Image:</p>
+        <input type="file" id="imagePost" name="image" accept="image/*" required style="display: none;">
         <p><strong>Title:</strong>
           <input class="form-control" id="titleField" type="text" value="${
             eventData.title
@@ -2225,11 +2225,19 @@
         <textarea class="form-control" rows="10" id="instructionField" readonly>${
           eventData.instruction
         }</textarea>
-        <p><strong>Target Participant:</strong>
-          <input class="form-control" id="targetField" type="text" value="${
-            eventData.targetparty
-          }" readonly>
-        </p>
+      <p>
+  <strong>Target Participant:</strong>
+  <input
+    class="form-control"
+    id="targetField"
+    type="text"
+    value="${eventData.targetparty}"
+    readonly
+    pattern="[0-9]+"
+    oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+  >
+</p>
+
         ${generatePaymentFieldsHTML(eventData)}
         <p><strong>Fund Collected:</strong>
           <input class="form-control" id="fundCollectedField" type="text" value="${
@@ -2246,11 +2254,19 @@
             eventData.facilitatorsContractorEmail
           }" readonly>
         </p>
-        <p><strong>Active Points:</strong>
-          <input class="form-control" id="activePtsField" type="text" value="${
-            eventData.activepoints
-          }" readonly>
-        </p>
+     <p>
+  <strong>Active Points:</strong>
+  <input
+    class="form-control"
+    id="activePtsField"
+    type="text"
+    value="${eventData.activepoints}"
+    readonly
+    pattern="[0-9]+"
+    oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+  >
+</p>
+
       `;
 
         // Show the modal
@@ -2260,8 +2276,45 @@
       function closeModalEventModal() {
         const modal = document.getElementById("eventModalupcom");
         modal.style.display = "none"; // Hide the modal
+
+        // Reset buttons and fields to their original state
+        resetButtonsAndFields();
       }
 
+      function resetButtonsAndFields() {
+        const editBtn = document.getElementById("editBtn");
+        const saveBtn = document.getElementById("saveBtn");
+        const terminateBtn = document.getElementById("terminate");
+
+        // Reset button text and remove event listeners
+        editBtn.textContent = "Edit";
+        editBtn.removeEventListener("click", enableEditing);
+        editBtn.removeEventListener("click", cancelEditing);
+        saveBtn.removeEventListener("click", saveChanges);
+
+        // Hide save button
+        saveBtn.style.display = "none";
+
+        // Adjust terminate button position
+        terminateBtn.style.right = "69%";
+
+        // Disable editing for each field
+        editableFields.forEach((fieldId) => {
+          const field = document.getElementById(fieldId);
+          if (
+            fieldId === "upcompostpic" ||
+            fieldId === "startDateField" ||
+            fieldId === "endDateField"
+          ) {
+            field.setAttribute("readonly", true);
+          } else {
+            field.readOnly = true;
+          }
+        });
+
+        // Add event listener for the edit button
+        editBtn.addEventListener("click", enableEditing);
+      }
       // Add click event listener to the close button of "eventModalupcom"
       const closeModalButtonEventModal =
         document.getElementById("closemodalbtnupcom");
@@ -2435,6 +2488,7 @@
         const terminateBtn = document.getElementById("terminate");
         saveBtn.style.display = "inline-block";
         terminateBtn.style.right = "58%";
+
         // Enable editing for each field
         editableFields.forEach((fieldId) => {
           const field = document.getElementById(fieldId);
@@ -2448,7 +2502,9 @@
           ) {
             // Enable editing with type="datetime-local"
             field.removeAttribute("readonly");
-            field.type = "datetime-local";
+            const dateValue = field.value;
+            const formattedDate = reverseFormatDateTime(dateValue);
+            field.value = formattedDate;
           } else {
             // Enable editing for other fields
             field.readOnly = false;
@@ -2464,6 +2520,13 @@
         // Change edit button text and add click event listener for cancel
         editBtn.textContent = "Cancel";
         editBtn.addEventListener("click", cancelEditing);
+
+        const labelImage = document.getElementById("labelImage");
+        const imagePost = document.getElementById("imagePost");
+
+        // Show labelImage and imagePost
+        labelImage.style.display = "block";
+        imagePost.style.display = "block";
       }
 
       function cancelEditing() {
@@ -2492,11 +2555,47 @@
             field.readOnly = true;
           }
         });
+        const labelImage = document.getElementById("labelImage");
+        const imagePost = document.getElementById("imagePost");
+
+        // Show labelImage and imagePost
+        labelImage.style.display = "none";
+        imagePost.style.display = "none";
       }
 
       function saveChanges() {
         const confirmation = confirm("Are you sure to save the changes?");
         if (confirmation) {
+          // Validation for startDate and endDate
+          const startDateInput = document.getElementById("startDateField");
+          const endDateInput = document.getElementById("endDateField");
+
+          // Check if the entered date values are valid
+          if (
+            isNaN(new Date(startDateInput.value).getTime()) ||
+            isNaN(new Date(endDateInput.value).getTime())
+          ) {
+            alert("Please enter valid date and time.");
+            return;
+          }
+
+          const startDate = new Date(startDateInput.value);
+          const endDate = new Date(endDateInput.value);
+
+          const now = new Date();
+
+          if (startDate <= now) {
+            alert("Please select a start date and time in the future.");
+            return;
+          }
+
+          if (endDate <= startDate) {
+            alert(
+              "Please select an end date and time greater than the start date and time."
+            );
+            return;
+          }
+
           const eventId = document
             .querySelector("tr.selected-event")
             .getAttribute("data-event-id");
@@ -2510,12 +2609,8 @@
             category: document.getElementById("categoryField").value,
             campus: document.getElementById("campusField").value,
             location: document.getElementById("locationField").value,
-            startDate: reverseFormatDateTime(
-              document.getElementById("startDateField").value
-            ),
-            endDate: reverseFormatDateTime(
-              document.getElementById("endDateField").value
-            ),
+            startDate: reverseFormatDateTime(startDateInput.value),
+            endDate: reverseFormatDateTime(endDateInput.value),
             intro: document.getElementById("introductionField").value,
             objective: document.getElementById("objectiveField").value,
             instruction: document.getElementById("instructionField").value,
@@ -2535,6 +2630,13 @@
             });
         }
       }
+
+      document
+        .getElementById("closeModaldetail")
+        .addEventListener("click", function () {
+          document.getElementById("eventModalupcom").style.display = "none";
+          resetButtonsAndFields();
+        });
       function reverseFormatDateTime(dateTimeString) {
         const options = {
           year: "numeric",
@@ -2555,6 +2657,7 @@
       editBtn.addEventListener("click", enableEditing);
       displayEventData();
     </script>
+
     <script src="js/dashboard.js"></script>
     <script src="js/post.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
@@ -2800,11 +2903,7 @@
           .addEventListener("click", function () {
             document.getElementById("postModalpo").style.display = "none";
           });
-        document
-          .getElementById("closeModaldetail")
-          .addEventListener("click", function () {
-            document.getElementById("eventModalupcom").style.display = "none";
-          });
+
         document
           .getElementById("filePost")
           .addEventListener("change", function () {
