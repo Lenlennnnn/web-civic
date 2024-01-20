@@ -1512,6 +1512,7 @@
                             <option value="Teaching Literacy">
                               Teaching Literacy
                             </option>
+                            <option value="All Category">All Category</option>
                           </select>
                         </div>
                         <div class="filter-group" id="campusfilter">
@@ -1545,6 +1546,7 @@
                             <option value="San Juan Campus">
                               San Juan Campus
                             </option>
+                            <option value="All Campus">All Campus</option>
                           </select>
                         </div>
                       </div>
@@ -2486,8 +2488,26 @@
         }
       }
 
-      // Function to fetch and display data in the table, considering the endDate check
-      function displayEventData() {
+      const campusFilterSelect = document.querySelector("#campusfilter select");
+      campusFilterSelect.addEventListener("change", function () {
+        const selectedCampus = this.value === "All Campus" ? "" : this.value;
+        const searchTerm = searchInput.value.trim();
+        displayEventData(searchTerm, selectedCampus);
+      });
+      const eventFilterSelect = document.querySelector("#eventfilter select");
+      eventFilterSelect.addEventListener("change", function () {
+        const selectedCategory =
+          this.value === "All Category" ? "" : this.value;
+        const searchTerm = searchInput.value.trim();
+        const selectedCampus = campusFilterSelect.value;
+        displayEventData(searchTerm, selectedCampus, selectedCategory);
+      });
+
+      function displayEventData(
+        searchTerm = "",
+        selectedCampus = "",
+        selectedCategory = ""
+      ) {
         const uploadEngagementRef = ref(db, "Upload Engagement");
 
         onValue(uploadEngagementRef, (snapshot) => {
@@ -2517,11 +2537,23 @@
 
               // Check if the event has already ended
               if (!hasEventEnded(endDate)) {
-                events.push({
-                  id: childSnapshot.key,
-                  startDate: new Date(startDate),
-                  data: uploadData,
-                });
+                // Check if the selected campus is present in the campus field
+                if (
+                  selectedCampus === "" ||
+                  campus.toLowerCase().includes(selectedCampus.toLowerCase())
+                ) {
+                  // Check if the selected category matches the event category
+                  if (
+                    selectedCategory === "" ||
+                    category.toLowerCase() === selectedCategory.toLowerCase()
+                  ) {
+                    events.push({
+                      id: childSnapshot.key,
+                      startDate: new Date(startDate),
+                      data: uploadData,
+                    });
+                  }
+                }
               }
             }
           });
@@ -2529,8 +2561,17 @@
           // Sort events based on startDate in ascending order
           events.sort((a, b) => a.startDate - b.startDate);
 
-          // Insert sorted events into the table
-          events.forEach((event) => {
+          // Filter events based on the search term in any field
+          const filteredEvents = events.filter((event) =>
+            Object.values(event.data).some(
+              (value) =>
+                typeof value === "string" &&
+                value.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+          );
+
+          // Insert filtered events into the table
+          filteredEvents.forEach((event) => {
             const {
               campus,
               category,
@@ -2543,21 +2584,28 @@
 
             const newRow = tableBody.insertRow();
             newRow.innerHTML = `
-            <td>${rowNumber}</td>
-            <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
-            <td>${title}</td>
-            <td>${category}</td>
-            <td>${campus}</td>
-            <td>${startDate.toLocaleString()} -- ${endDate}</td>
-            <td>
+          <td>${rowNumber}</td>
+          <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
+          <td>${title}</td>
+          <td>${category}</td>
+          <td>${campus}</td>
+          <td>${startDate.toLocaleString()} -- ${endDate}</td>
+          <td>
               <button type="button" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>
-            </td>
-          `;
+          </td>
+      `;
             newRow.setAttribute("data-event-id", event.id); // Set the event ID as an attribute in the table row
             rowNumber++;
           });
         });
       }
+
+      const searchInput = document.querySelector("#searchfilter input");
+      searchInput.addEventListener("input", function () {
+        const searchTerm = this.value.trim(); // Get the trimmed value of the input
+        const selectedCampus = campusFilterSelect.value;
+        displayEventData(searchTerm, selectedCampus);
+      });
 
       const editableFields = [
         "upcompostpic",
