@@ -2117,6 +2117,12 @@
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
       import {
+        getStorage,
+        ref as storageRef,
+        uploadBytes,
+        getDownloadURL,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-storage.js";
+      import {
         getDatabase,
         ref,
         get,
@@ -2145,7 +2151,7 @@
       const app = initializeApp(firebaseConfig);
       const db = getDatabase(app);
       const auth = getAuth(app);
-
+      const storages = getStorage(app);
       const tableBody = document.querySelector("#tableevents tbody");
       let rowNumber = 1; // Initialize row number
 
@@ -2481,7 +2487,17 @@
         "facilitatorNField",
         "activePtsField",
       ];
+      let eventRef;
+      function handleImageSelection() {
+        const imagePost = document.getElementById("imagePost");
+        const upcompostpic = document.getElementById("upcompostpic");
 
+        const selectedImage = imagePost.files[0];
+        const imageURL = URL.createObjectURL(selectedImage);
+
+        // Update the image source in upcompostpic
+        upcompostpic.src = imageURL;
+      }
       function enableEditing() {
         const editBtn = document.getElementById("editBtn");
         const saveBtn = document.getElementById("saveBtn");
@@ -2527,6 +2543,8 @@
         // Show labelImage and imagePost
         labelImage.style.display = "block";
         imagePost.style.display = "block";
+
+        imagePost.addEventListener("change", handleImageSelection);
       }
 
       function cancelEditing() {
@@ -2565,6 +2583,31 @@
 
       function saveChanges() {
         const confirmation = confirm("Are you sure to save the changes?");
+        const imagePost = document.getElementById("imagePost");
+        const upcompostpic = document.getElementById("upcompostpic");
+
+        // Check if a new image is selected
+        if (imagePost.files.length > 0) {
+          const file = imagePost.files[0];
+          const timestamp = new Date().getTime();
+          const storagePath = `Poster Civic Images/${timestamp}_${file.name}`;
+          const storageRefPath = storageRef(storages, storagePath);
+
+          // Upload the new image to Firebase Storage
+          uploadBytes(storageRefPath, file).then((snapshot) => {
+            // Get the download URL of the uploaded image
+            getDownloadURL(snapshot.ref).then((downloadURL) => {
+              // Update the image URL in Firebase Realtime Database
+              update(eventRef, {
+                image: downloadURL,
+              });
+
+              // Update the image source in upcompostpic
+              upcompostpic.src = downloadURL;
+            });
+          });
+        }
+
         if (confirmation) {
           // Validation for startDate and endDate
           const startDateInput = document.getElementById("startDateField");
@@ -2599,7 +2642,7 @@
           const eventId = document
             .querySelector("tr.selected-event")
             .getAttribute("data-event-id");
-          const eventRef = ref(db, `Upload Engagement/${eventId}`);
+          eventRef = ref(db, `Upload Engagement/${eventId}`); // Update eventRef
 
           // Update the values in Firebase
           update(eventRef, {
@@ -2630,7 +2673,6 @@
             });
         }
       }
-
       document
         .getElementById("closeModaldetail")
         .addEventListener("click", function () {
