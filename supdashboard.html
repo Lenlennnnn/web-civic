@@ -348,7 +348,7 @@
         display: inline-block;
       }
       .filter-group select.form-control {
-        width: 150px;
+        width: 200px;
       }
       .filter-icon {
         float: right;
@@ -468,8 +468,8 @@
 
       #campusfilter {
         position: relative;
-        right: 60px;
-        bottom: 65px;
+        right: 30px;
+        bottom: 60px;
         float: left;
       }
 
@@ -689,16 +689,15 @@
 
       #modalngatt {
         position: relative;
-        left: 90%;
         bottom: 15px;
         font-size: 45px;
-        transition: transform 0.3s ease-in-out; /* Adding a transition for smoothness */
-        color: #28a745;
+        transition: transform 0.3s ease-in-out;
+        color: #495057;
         cursor: pointer;
       }
 
       #modalngatt:hover {
-        transform: scale(1.2); /* Enlarge the icon on hover */
+        transform: scale(1.2);
       }
 
       .modal-headerevnts {
@@ -982,23 +981,14 @@
           </li>
 
           <li>
-            <a href="schedules/index.html">
-              <span class="icon">
-                <ion-icon name="calendar-outline"></ion-icon>
-              </span>
-              <span class="title">Schedules</span>
-            </a>
-          </li>
-
-          <li>
             <a
-              href="messages.html"
+              href="feedback.html"
               id="openMessagesModal"
               class="page-transition">
               <span class="icon">
                 <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
               </span>
-              <span class="title">Messages</span>
+              <span class="title">FeedBack</span>
             </a>
           </li>
 
@@ -1031,40 +1021,12 @@
           <h1 class="dashboard">Dashboard</h1>
 
           <!-- =============================================== Dropdown fields ================================================ -->
-          <span class="badge">3+</span>
+          <!-- <span class="badge">3+</span> -->
           <ion-icon
             name="notifications"
             class="notifIcon"
+            style="display: none"
             id="notificationIcon"></ion-icon>
-          <div class="dropdown-content" id="notificationDropdown">
-            <div class="notifBack">
-              <h6 class="notification" style="color: white">Notification</h6>
-            </div>
-            <a class="ancOne" href="validateRequest.html">
-              <div class="divOne">
-                <div class="small text-gray-500">December 12, 2023</div>
-                <span class="font-weight-bold"
-                  >20-12345 John Lui Coro has a request event for you to approve
-                  by kur</span
-                >
-              </div>
-            </a>
-            <a class="ancTwo" href="upcomEventInfo.html">
-              <div>
-                <div class="small text-gray-500">December 7, 2023</div>
-                Tomorrow is the Clean Drive event
-              </div>
-            </a>
-            <a class="ancThree" href="validateStudent.html">
-              <div>
-                <div class="small text-gray-500">December 2, 2023</div>
-                Cruz, Juan D. requesting for validation of account
-              </div>
-            </a>
-            <a class="others text-center small text-gray-500" href="#"
-              >Show All Alerts</a
-            >
-          </div>
 
           <h5 class="adminPro">Super Admin</h5>
           <div class="user-profile pull-right">
@@ -1080,14 +1042,6 @@
                   name="person-circle-outline"
                   style="color: #888"></ion-icon>
                 &nbsp; My Account
-              </a>
-
-              <a class="dropdown-item" href="feedback.html">
-                <ion-icon
-                  name="thumbs-up-outline"
-                  style="color: #888"></ion-icon>
-
-                &nbsp; Feedback
               </a>
 
               <a class="dropdown-item" href="changePass.html">
@@ -1488,7 +1442,7 @@
                           </div>
                         </div>
 
-                        <div class="filter-group" id="eventfilter">
+                        <!-- <div class="filter-group" id="eventfilter">
                           <label>Category</label>
                           <select class="form-control">
                             <option value="" disabled selected>
@@ -1514,7 +1468,7 @@
                             </option>
                             <option value="All Category">All Category</option>
                           </select>
-                        </div>
+                        </div> -->
                         <div class="filter-group" id="campusfilter">
                           <label>Campus</label>
                           <select class="form-control">
@@ -1598,9 +1552,19 @@
                         <span class="closepo" id="closeModaldetail">
                           <ion-icon name="close"></ion-icon>
                         </span>
+                        <a>
+                          <ion-icon
+                            name="people"
+                            class="user-icon"
+                            id="modalngatt"
+                            title="Attendees"
+                            style="color: #28a745"></ion-icon>
+                        </a>
+
                         <h2 id="eventlabel" style="color: #dc3545">
                           Event Details
                         </h2>
+
                         <div id="eventDetailsupcom"></div>
                         <button
                           type="button"
@@ -2490,24 +2454,25 @@
 
       const campusFilterSelect = document.querySelector("#campusfilter select");
       campusFilterSelect.addEventListener("change", function () {
-        const selectedCampus = this.value === "All Campus" ? "" : this.value;
+        let selectedCampus = this.value === "All Campus" ? "" : this.value;
         const searchTerm = searchInput.value.trim();
+
+        // Check if "All Campus" is selected, and if so, set selectedCampus to an empty string
+        if (selectedCampus === "All Campus") {
+          selectedCampus = "";
+        }
+
         displayEventData(searchTerm, selectedCampus);
       });
-      const eventFilterSelect = document.querySelector("#eventfilter select");
-      eventFilterSelect.addEventListener("change", function () {
-        const selectedCategory =
-          this.value === "All Category" ? "" : this.value;
-        const searchTerm = searchInput.value.trim();
+
+      const searchInput = document.querySelector("#searchfilter input");
+      searchInput.addEventListener("input", function () {
+        const searchTerm = this.value.trim(); // Get the trimmed value of the input
         const selectedCampus = campusFilterSelect.value;
-        displayEventData(searchTerm, selectedCampus, selectedCategory);
+        displayEventData(searchTerm, selectedCampus);
       });
 
-      function displayEventData(
-        searchTerm = "",
-        selectedCampus = "",
-        selectedCategory = ""
-      ) {
+      function displayEventData(searchTerm = "", selectedCampus = "") {
         const uploadEngagementRef = ref(db, "Upload Engagement");
 
         onValue(uploadEngagementRef, (snapshot) => {
@@ -2526,7 +2491,7 @@
             ) {
               const {
                 campus,
-                category,
+                category, // Add back the category field
                 startDate,
                 endDate,
                 title,
@@ -2542,17 +2507,11 @@
                   selectedCampus === "" ||
                   campus.toLowerCase().includes(selectedCampus.toLowerCase())
                 ) {
-                  // Check if the selected category matches the event category
-                  if (
-                    selectedCategory === "" ||
-                    category.toLowerCase() === selectedCategory.toLowerCase()
-                  ) {
-                    events.push({
-                      id: childSnapshot.key,
-                      startDate: new Date(startDate),
-                      data: uploadData,
-                    });
-                  }
+                  events.push({
+                    id: childSnapshot.key,
+                    startDate: new Date(startDate),
+                    data: uploadData,
+                  });
                 }
               }
             }
@@ -2584,28 +2543,21 @@
 
             const newRow = tableBody.insertRow();
             newRow.innerHTML = `
-          <td>${rowNumber}</td>
-          <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
-          <td>${title}</td>
-          <td>${category}</td>
-          <td>${campus}</td>
-          <td>${startDate.toLocaleString()} -- ${endDate}</td>
-          <td>
-              <button type="button" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>
-          </td>
+        <td>${rowNumber}</td>
+        <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
+        <td>${title}</td>
+        <td>${category}</td>
+        <td>${campus}</td>
+        <td>${startDate.toLocaleString()} -- ${endDate}</td>
+        <td>
+          <button type="button" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>
+        </td>
       `;
             newRow.setAttribute("data-event-id", event.id); // Set the event ID as an attribute in the table row
             rowNumber++;
           });
         });
       }
-
-      const searchInput = document.querySelector("#searchfilter input");
-      searchInput.addEventListener("input", function () {
-        const searchTerm = this.value.trim(); // Get the trimmed value of the input
-        const selectedCampus = campusFilterSelect.value;
-        displayEventData(searchTerm, selectedCampus);
-      });
 
       const editableFields = [
         "upcompostpic",
