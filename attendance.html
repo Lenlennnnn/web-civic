@@ -9,12 +9,10 @@
     <link rel="stylesheet" href="css/dashboard.css" />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"
-    />
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
     <link
       rel="stylesheet"
-      href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"
-    />
+      href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
     <style>
       .container {
         position: relative;
@@ -192,128 +190,47 @@
         <!-- ====== ionicons ======= -->
         <script
           type="module"
-          src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-        ></script>
+          src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
       </div>
       <h1 class="h1-group">Attendees</h1>
       <a href="#" id="openModalBtn">
         <button
           type="button"
           class="btn btn-dark custom-button"
-          id="sharebtnatt"
-        >
+          id="sharebtnatt">
           Share Event
         </button>
       </a>
       <!-- The modal -->
       <div id="myModalat" class="modalat">
-        <div class="modal-contentat">
+        <div class="modal-contentat" style="width: 95%; height: 95%">
           <div class="modal-headerat">
             <span class="closeat">&times;</span>
-            <h4>Share to</h4>
+            <h4>People who Joined</h4>
           </div>
           <hr />
           <div class="modal-bodyat">
-            <button id="selectAllBtn" class="btn btn-secondary">
-              Select All
-            </button>
-            <button id="deselectAllBtn" class="btn btn-light">
-              Deselect All</button
-            ><br />
-            <label
-              ><input
-                type="checkbox"
-                class="campusCheckbox"
-                value="ARASOF Nasugbu Campus"
-              />
-              ARASOF Nasugbu Campus</label
-            ><br />
-            <label
-              ><input
-                type="checkbox"
-                class="campusCheckbox"
-                value="Balayan Campus"
-              />
-              Balayan Campus</label
-            ><br />
-            <label
-              ><input
-                type="checkbox"
-                class="campusCheckbox"
-                value="JPLPC Malvar Campus"
-              />
-              JPLPC Malvar Campus</label
-            ><br />
-            <label
-              ><input
-                type="checkbox"
-                class="campusCheckbox"
-                value="Lemery Campus"
-              />
-              Lemery Campus</label
-            ><br />
-            <label
-              ><input
-                type="checkbox"
-                class="campusCheckbox"
-                value="Lipa Campus"
-              />
-              Lipa Campus</label
-            ><br />
-            <label
-              ><input
-                type="checkbox"
-                class="campusCheckbox"
-                value="Lobo Campus"
-              />
-              Lobo Campus</label
-            ><br />
-            <label
-              ><input
-                type="checkbox"
-                class="campusCheckbox"
-                value="Mabini Campus"
-              />
-              Mabini Campus</label
-            ><br />
-            <label
-              ><input
-                type="checkbox"
-                class="campusCheckbox"
-                value="Pablo Borbon Campus I"
-              />
-              Pablo Borbon Campus I</label
-            ><br />
-            <label
-              ><input
-                type="checkbox"
-                class="campusCheckbox"
-                value="Pablo Borbon Campus II"
-              />
-              Pablo Borbon Campus II</label
-            ><br />
-            <label
-              ><input
-                type="checkbox"
-                class="campusCheckbox"
-                value="Rosario Campus"
-              />
-              Rosario Campus</label
-            ><br />
-            <label
-              ><input
-                type="checkbox"
-                class="campusCheckbox"
-                value="San Juan Campus"
-              />
-              San Juan Campus</label
-            ><br />
+            <table id="example" class="table table-striped" style="width: 100%">
+              <thead class="headerr">
+                <tr>
+                  <th>No.</th>
+                  <th>Name</th>
+                  <th>Campus</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tr>
+                <td>1</td>
+                <td>Leonard Briones</td>
+                <td>JPLPC Malvar</td>
+                <td>
+                  <button class="btn btn-danger" id="atdbtn">View</button>
+                </td>
+              </tr>
+            </table>
           </div>
 
           <hr />
-          <div class="modal-footerat">
-            <button id="shareButton" class="btn btn-dark">Share</button>
-          </div>
         </div>
       </div>
 
@@ -358,8 +275,7 @@
                 border: solid 2px black;
                 position: relative;
                 top: 20px;
-              "
-            />
+              " />
             <br /><br />
             <label for="name">Name:</label>
             <input
@@ -367,56 +283,49 @@
               class="form-control"
               id="name"
               value="Leonard Briones"
-              readonly
-            />
+              readonly />
             <label for="name">Gender:</label>
             <input
               type="text"
               class="form-control"
               id="Gender"
               value="Male"
-              readonly
-            />
+              readonly />
             <label for="name">SR-Code:</label>
             <input
               type="text"
               class="form-control"
               id="SR-Code"
               value="20-12345"
-              readonly
-            />
+              readonly />
             <label for="name">Campus:</label>
             <input
               type="text"
               class="form-control"
               id="Campus"
               value="JPLPC Malvar"
-              readonly
-            />
+              readonly />
             <label for="name">Email:</label>
             <input
               type="text"
               class="form-control"
               id="Email"
               value="briones12@gmail.com"
-              readonly
-            />
+              readonly />
             <label for="name">Contact:</label>
             <input
               type="text"
               class="form-control"
               id="Contact"
               value="09123456789"
-              readonly
-            />
+              readonly />
             <label for="name">Emergency Contact:</label>
             <input
               type="text"
               class="form-control"
               id="Emergency Contact"
               value="0987654321"
-              readonly
-            />
+              readonly />
           </div>
           <hr />
           <div class="modal-footerttt">
@@ -541,16 +450,13 @@
 
     <script
       type="module"
-      src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js"
-    ></script>
+      src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js"></script>
     <script
       type="module"
-      src="https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js"
-    ></script>
+      src="https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js"></script>
     <script
       type="module"
-      src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js"
-    ></script>
+      src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js"></script>
     <script>
       new DataTable("#example");
     </script>
