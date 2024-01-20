@@ -2174,13 +2174,14 @@
         function generatePaymentFieldsHTML(eventData) {
           if (shouldShowPaymentFields(eventData.category)) {
             return `
-            <p><strong>Payment Recipient:</strong>
-              <input class="form-control" id="payRecip" type="text" value="${eventData.paymentRecipient}" readonly>
-            </p>
-            <p><strong>Payment Method:</strong>
-              <input class="form-control" id="payMeth" type="text" value="${eventData.paymentMethod}" readonly>
-            </p>
-          `;
+<p id="payRecipLabel"><strong>Payment Recipient:</strong>
+  <input class="form-control" id="payRecip" type="text" value="${eventData.paymentRecipient}" readonly>
+</p>
+<p id="payMethLabel"><strong>Payment Method:</strong>
+  <input class="form-control" id="payMeth" type="text" value="${eventData.paymentMethod}" readonly>
+</p>
+
+`;
           }
           return ""; // Empty string if payment fields should not be shown
         }
@@ -2320,6 +2321,19 @@
     oninput="this.value = this.value.replace(/[^0-9]/g, '');"
   >
 </p>
+<p style="display: none;"  id="payRecipLabel">
+    <strong>Payment Recipient:</strong>
+    <input class="form-control" id="payRecip" type="text" value="${
+      eventData.paymentRecipient
+    }" readonly>
+</p>
+<p style="display: none;" id="payMethLabel">
+    <strong>Payment Method:</strong>
+    <input class="form-control" id="payMeth" type="text" value="${
+      eventData.paymentMethod
+    }" readonly>
+</p>
+
 
       `;
 
@@ -2446,6 +2460,31 @@
         const eventEndDate = new Date(endDate);
         return eventEndDate < currentDateTime;
       }
+      function handleCategoryChange() {
+        const selectedCategory = categoryField.value;
+        const payRecipField = document.getElementById("payRecip");
+        const payMethField = document.getElementById("payMeth");
+        const payRecipLabel = document.getElementById("payRecipLabel"); // Corrected selector
+        const payMethLabel = document.getElementById("payMethLabel"); // Corrected selector
+
+        // Check if the selected category is "Fund Raising" or "Donation"
+        if (
+          selectedCategory === "Fund Raising" ||
+          selectedCategory === "Donation"
+        ) {
+          // Show the payment fields and labels
+          payRecipField.style.display = "block";
+          payMethField.style.display = "block";
+          payRecipLabel.style.display = "block";
+          payMethLabel.style.display = "block";
+        } else {
+          // Hide the payment fields and labels
+          payRecipField.style.display = "none";
+          payMethField.style.display = "none";
+          payRecipLabel.style.display = "none";
+          payMethLabel.style.display = "none";
+        }
+      }
 
       // Function to fetch and display data in the table, considering the endDate check
       function displayEventData() {
@@ -2519,6 +2558,7 @@
           });
         });
       }
+
       const editableFields = [
         "upcompostpic",
         "titleField",
@@ -2601,6 +2641,10 @@
         imagePost.addEventListener("change", handleImageSelection);
 
         campusField.addEventListener("click", showCampusModal);
+        categoryField.addEventListener("change", handleCategoryChange);
+
+        // Call the handleCategoryChange function initially to set the initial state
+        handleCategoryChange();
       }
 
       function setInitialCampusSelection() {
