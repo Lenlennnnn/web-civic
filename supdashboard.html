@@ -1843,7 +1843,7 @@
           </div>
         </div>
       </div>
-      <div id="myModalnm" class="modal">
+      <div id="myModalnm" class="modal" style="display: none">
         <div class="modal-contentnm">
           <span class="closenm">&times;</span>
           <div class="modal-bodyat">
@@ -2194,7 +2194,7 @@
         <input type="file" id="imagePost" name="image" accept="image/*" required style="display: none;">
          <p>
     <strong>Category:</strong>
-    <select id="categoryField" name="categoryField" required disabled>
+    <select id="categoryField" name="categoryField" required disabled >
       <option value="" disabled selected>
         Choose a Category
       </option>
@@ -2595,7 +2595,7 @@
         const campusField = document.getElementById("campusField");
         const terminateBtn = document.getElementById("terminate");
         const categoryField = document.getElementById("categoryField");
-        categoryField.removeAttribute("disabled");
+
         saveBtn.style.display = "inline-block";
         terminateBtn.style.right = "58%";
 
@@ -2642,7 +2642,7 @@
 
         campusField.addEventListener("click", showCampusModal);
         categoryField.addEventListener("change", handleCategoryChange);
-
+        categoryField.removeAttribute("disabled");
         // Call the handleCategoryChange function initially to set the initial state
         handleCategoryChange();
       }
@@ -2807,7 +2807,7 @@
             targetparty: document.getElementById("targetField").value,
             fundcollected: document.getElementById("fundCollectedField").value,
             facilitatorsName: document.getElementById("facilitatorField").value,
-            facilitatorsContractorEmail:
+            facilitatorsContactorEmail:
               document.getElementById("facilitatorNField").value,
             activepoints: document.getElementById("activePtsField").value,
           })
