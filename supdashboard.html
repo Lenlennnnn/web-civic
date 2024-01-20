@@ -936,6 +936,10 @@
       .btn.btn-danger:hover {
         background: #bd2130; /* Change this color to your desired hover color */
       }
+      #categoryField:disabled {
+        opacity: 10;
+        color: black;
+      }
     </style>
   </head>
 
@@ -1573,12 +1577,12 @@
                                 id="eventpicimg"
                             /></a>
                           </td>
-                          <td id="titleid">Clean and Green</td>
-                          <td id="categoryid">Clean Up Drive</td>
-                          <td id="campusid">JPLPC Malvar</td>
+                          <td id="titleid">Loading.....</td>
+                          <td id="categoryid">Loading.....</td>
+                          <td id="campusid">Loading.....</td>
                           <td id="dateid">
-                            10/20/23 7:00 AM <br />
-                            10/20/23 4:00 PM
+                            Loading..... <br />
+                            Loading.....
                           </td>
                           <td id="btnviewid">
                             <a> <button id="btnparaview">View</button></a>
@@ -2187,16 +2191,60 @@
         }" alt="Event Image" class="eventpic" id="upcompostpic" />
          <p id="labelImage" style="display: none;">Choose an Image:</p>
         <input type="file" id="imagePost" name="image" accept="image/*" required style="display: none;">
+         <p>
+    <strong>Category:</strong>
+    <select id="categoryField" name="categoryField" required disabled>
+      <option value="" disabled selected>
+        Choose a Category
+      </option>
+      <option value="Tree Planting" ${
+        eventData.category === "Tree Planting" ? "selected" : ""
+      }>
+        Tree Planting
+      </option>
+      <option value="Fund Raising" id="fund" ${
+        eventData.category === "Fund Raising" ? "selected" : ""
+      }>
+        Fund Raising
+      </option>
+      <option value="Donation" id="donation" ${
+        eventData.category === "Donation" ? "selected" : ""
+      }>
+        Donation
+      </option>
+      <option value="Clean Up Drive" ${
+        eventData.category === "Clean Up Drive" ? "selected" : ""
+      }>
+        Clean Up Drive
+      </option>
+      <option value="Feeding Program" ${
+        eventData.category === "Feeding Program" ? "selected" : ""
+      }>
+        Feeding Program
+      </option>
+      <option value="Relief Operation" ${
+        eventData.category === "Relief Operation" ? "selected" : ""
+      }>
+        Relief Operation
+      </option>
+      <option value="Seminar Training" ${
+        eventData.category === "Seminar Training" ? "selected" : ""
+      }>
+        Seminar Training
+      </option>
+      <option value="Teaching Literacy" ${
+        eventData.category === "Teaching Literacy" ? "selected" : ""
+      }>
+        Teaching Literacy
+      </option>
+    </select>
+  </p>
         <p><strong>Title:</strong>
           <input class="form-control" id="titleField" type="text" value="${
             eventData.title
           }" readonly>
         </p>
-        <p><strong>Category:</strong>
-          <input class="form-control" id="categoryField" type="text" value="${
-            eventData.category
-          }" readonly>
-        </p>
+        
         <p><strong>Campus:</strong>
           <input class="form-control" id="campusField" type="text" value="${
             eventData.campus
@@ -2291,7 +2339,8 @@
         const editBtn = document.getElementById("editBtn");
         const saveBtn = document.getElementById("saveBtn");
         const terminateBtn = document.getElementById("terminate");
-
+        const categoryField = document.getElementById("categoryField");
+        categoryField.setAttribute("disabled", true);
         // Reset button text and remove event listeners
         editBtn.textContent = "Edit";
         editBtn.removeEventListener("click", enableEditing);
@@ -2476,6 +2525,8 @@
         "categoryField",
         "campusField",
         "locationField",
+        "payMeth",
+        "payRecip",
         "startDateField",
         "endDateField",
         "introductionField",
@@ -2501,7 +2552,10 @@
       function enableEditing() {
         const editBtn = document.getElementById("editBtn");
         const saveBtn = document.getElementById("saveBtn");
+        const campusField = document.getElementById("campusField");
         const terminateBtn = document.getElementById("terminate");
+        const categoryField = document.getElementById("categoryField");
+        categoryField.removeAttribute("disabled");
         saveBtn.style.display = "inline-block";
         terminateBtn.style.right = "58%";
 
@@ -2545,6 +2599,53 @@
         imagePost.style.display = "block";
 
         imagePost.addEventListener("change", handleImageSelection);
+
+        campusField.addEventListener("click", showCampusModal);
+      }
+
+      function setInitialCampusSelection() {
+        const campusField = document.getElementById("campusField");
+        const campusForm = document.getElementById("campusForm");
+
+        // Split the campusField value into an array of selected campuses
+        const selectedCampuses = campusField.value.split(", ");
+
+        // Check the checkboxes based on the selected campuses
+        Array.from(campusForm.elements).forEach((checkbox) => {
+          checkbox.checked = selectedCampuses.includes(checkbox.value);
+        });
+      }
+
+      function showCampusModal() {
+        // Display the campus modal
+        const campusModal = document.getElementById("myModalnm");
+        campusModal.style.display = "block";
+
+        // Set the initial state of checkboxes based on the current value in campusField
+        setInitialCampusSelection();
+
+        // Disable keyboard input for the campusField
+        const campusField = document.getElementById("campusField");
+        campusField.readOnly = true;
+
+        // Add event listener for the "Ok" button in the campus modal
+        const okButton = document.getElementById("okButton");
+        okButton.addEventListener("click", updateCampusField);
+      }
+
+      function updateCampusField() {
+        const campusForm = document.getElementById("campusForm");
+        const selectedCampuses = Array.from(campusForm.elements)
+          .filter((checkbox) => checkbox.checked)
+          .map((checkbox) => checkbox.value);
+
+        // Update the #campusField with selected campuses separated by commas
+        const campusField = document.getElementById("campusField");
+        campusField.value = selectedCampuses.join(", ");
+
+        // Close the campus modal
+        const campusModal = document.getElementById("myModalnm");
+        campusModal.style.display = "none";
       }
 
       function cancelEditing() {
@@ -2655,6 +2756,8 @@
             startDate: reverseFormatDateTime(startDateInput.value),
             endDate: reverseFormatDateTime(endDateInput.value),
             intro: document.getElementById("introductionField").value,
+            paymentMethod: document.getElementById("payMeth").value,
+            paymentRecipient: document.getElementById("payRecip").value,
             objective: document.getElementById("objectiveField").value,
             instruction: document.getElementById("instructionField").value,
             targetparty: document.getElementById("targetField").value,
