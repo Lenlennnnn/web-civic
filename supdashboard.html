@@ -689,7 +689,8 @@
 
       #modalngatt {
         position: relative;
-        bottom: 15px;
+        bottom: 10px;
+        margin-bottom: -40px;
         font-size: 45px;
         transition: transform 0.3s ease-in-out;
         color: #495057;
@@ -1560,7 +1561,6 @@
                             title="Attendees"
                             style="color: #28a745"></ion-icon>
                         </a>
-
                         <h2 id="eventlabel" style="color: #dc3545">
                           Event Details
                         </h2>
@@ -2143,6 +2143,9 @@
 <p id="payRecipLabel"><strong>Payment Recipient:</strong>
   <input class="form-control" id="payRecip" type="text" value="${eventData.paymentRecipient}" readonly>
 </p>
+  <p id="fundLabel"><strong>Fund Collected:</strong>
+          <input class="form-control" id="fundCollectedField" type="text" value="${eventData.fundcollected}" readonly>
+        </p>
 <p id="payMethLabel"><strong>Payment Method:</strong>
   <input class="form-control" id="payMeth" type="text" value="${eventData.paymentMethod}" readonly>
 </p>
@@ -2260,11 +2263,7 @@
 </p>
 
         ${generatePaymentFieldsHTML(eventData)}
-        <p><strong>Fund Collected:</strong>
-          <input class="form-control" id="fundCollectedField" type="text" value="${
-            eventData.fundcollected
-          }" readonly>
-        </p>
+    
         <p><strong>Facilitators Name:</strong>
           <input class="form-control" id="facilitatorField" type="text" value="${
             eventData.facilitatorsName
@@ -2272,7 +2271,7 @@
         </p>
         <p><strong>Facilitators Contractor Email:</strong>
           <input class="form-control" id="facilitatorNField" type="text" value="${
-            eventData.facilitatorsContractorEmail
+            eventData.facilitatorsContactorEmail
           }" readonly>
         </p>
      <p>
@@ -2287,6 +2286,7 @@
     oninput="this.value = this.value.replace(/[^0-9]/g, '');"
   >
 </p>
+
 <p style="display: none;"  id="payRecipLabel">
     <strong>Payment Recipient:</strong>
     <input class="form-control" id="payRecip" type="text" value="${
@@ -2299,7 +2299,12 @@
       eventData.paymentMethod
     }" readonly>
 </p>
-
+ <p style="display: none;" id="fundLabel">
+    <strong>Fund Collected:</strong>
+          <input class="form-control" id="fundCollectedField" type="text" value="${
+            eventData.fundcollected
+          }" readonly>
+        </p>
 
       `;
 
@@ -2430,9 +2435,11 @@
         const selectedCategory = categoryField.value;
         const payRecipField = document.getElementById("payRecip");
         const payMethField = document.getElementById("payMeth");
-        const payRecipLabel = document.getElementById("payRecipLabel"); // Corrected selector
-        const payMethLabel = document.getElementById("payMethLabel"); // Corrected selector
-
+        const payRecipLabel = document.getElementById("payRecipLabel");
+        const payMethLabel = document.getElementById("payMethLabel");
+        const fundLabel = document.getElementById("fundLabel");
+        const fundCollectedField =
+          document.getElementById("fundCollectedField");
         // Check if the selected category is "Fund Raising" or "Donation"
         if (
           selectedCategory === "Fund Raising" ||
@@ -2443,12 +2450,16 @@
           payMethField.style.display = "block";
           payRecipLabel.style.display = "block";
           payMethLabel.style.display = "block";
+          fundLabel.style.display = "block";
+          fundCollectedField.style.display = "block";
         } else {
           // Hide the payment fields and labels
           payRecipField.style.display = "none";
           payMethField.style.display = "none";
           payRecipLabel.style.display = "none";
           payMethLabel.style.display = "none";
+          fundLabel.style.display = "none";
+          fundCollectedField.style.display = "none";
         }
       }
 
@@ -2573,7 +2584,6 @@
         "objectiveField",
         "instructionField",
         "targetField",
-        "fundCollectedField",
         "facilitatorField",
         "facilitatorNField",
         "activePtsField",
@@ -2589,6 +2599,7 @@
         // Update the image source in upcompostpic
         upcompostpic.src = imageURL;
       }
+      const originalValues = {};
       function enableEditing() {
         const editBtn = document.getElementById("editBtn");
         const saveBtn = document.getElementById("saveBtn");
@@ -2620,7 +2631,10 @@
             field.readOnly = false;
           }
         });
-
+        editableFields.forEach((fieldId) => {
+          const field = document.getElementById(fieldId);
+          originalValues[fieldId] = field.value;
+        });
         // Remove the current event listener for the edit button
         editBtn.removeEventListener("click", enableEditing);
 
@@ -2691,13 +2705,14 @@
         const campusModal = document.getElementById("myModalnm");
         campusModal.style.display = "none";
       }
-
       function cancelEditing() {
         const editBtn = document.getElementById("editBtn");
         const saveBtn = document.getElementById("saveBtn");
         const terminateBtn = document.getElementById("terminate");
+
         saveBtn.style.display = "none";
         terminateBtn.style.right = "69%";
+
         // Remove the current event listener for the cancel button
         editBtn.removeEventListener("click", cancelEditing);
 
@@ -2705,7 +2720,7 @@
         editBtn.textContent = "Edit";
         editBtn.addEventListener("click", enableEditing);
 
-        // Disable editing for each field
+        // Disable editing for each field and revert to original values
         editableFields.forEach((fieldId) => {
           const field = document.getElementById(fieldId);
           if (
@@ -2717,7 +2732,11 @@
           } else {
             field.readOnly = true;
           }
+
+          // Revert to the original value
+          field.value = originalValues[fieldId];
         });
+
         const labelImage = document.getElementById("labelImage");
         const imagePost = document.getElementById("imagePost");
 
@@ -2791,8 +2810,6 @@
 
           // Update the values in Firebase
           update(eventRef, {
-            // Update with the values from the editable fields
-            // Use document.getElementById(fieldId).value to get the updated value
             title: document.getElementById("titleField").value,
             category: document.getElementById("categoryField").value,
             campus: document.getElementById("campusField").value,
@@ -2804,12 +2821,17 @@
             paymentRecipient: document.getElementById("payRecip").value,
             objective: document.getElementById("objectiveField").value,
             instruction: document.getElementById("instructionField").value,
-            targetparty: document.getElementById("targetField").value,
-            fundcollected: document.getElementById("fundCollectedField").value,
+            targetparty: parseInt(
+              document.getElementById("targetField").value,
+              10
+            ),
             facilitatorsName: document.getElementById("facilitatorField").value,
             facilitatorsContactorEmail:
               document.getElementById("facilitatorNField").value,
-            activepoints: document.getElementById("activePtsField").value,
+            activepoints: parseInt(
+              document.getElementById("activePtsField").value,
+              10
+            ),
           })
             .then(() => {
               alert("Changes saved successfully!");
