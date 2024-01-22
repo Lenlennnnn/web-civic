@@ -221,6 +221,24 @@
         transform: translateY(-50%);
         cursor: pointer;
       }
+      .closepo {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .closepo:hover,
+      .closepo:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .closepo {
+        display: block;
+      }
     </style>
   </head>
 
@@ -376,6 +394,9 @@
                 style="position: relative; left: 38%">
                 Admin Details
               </h5>
+              <span class="closepo" id="closeModalpo">
+                <ion-icon name="close" data-dismiss="modal"></ion-icon>
+              </span>
             </div>
             <div class="modal-body" id="modalBodyContent">
               <!-- User details will be populated here -->
@@ -786,7 +807,13 @@
             $("#exampleModalLong").modal("hide");
           });
         }
+        const closeButtonex = document.getElementById("closeModalpo");
 
+        if (closeButtonex) {
+          closeButtonex.addEventListener("click", () => {
+            $("#exampleModalLong").modal("hide");
+          });
+        }
         // Remove outside click close modal functionality
         $("#exampleModalLong").modal({
           backdrop: "static", // Prevents modal from closing when clicking outside

@@ -448,6 +448,24 @@
       #archiveBtn {
         background-color: #007bff; /* Adjust the background color as needed */
       }
+      .closepo {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .closepo:hover,
+      .closepo:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .closepo {
+        display: block;
+      }
     </style>
   </head>
 
@@ -489,7 +507,7 @@
         class="notification-link">
         <button type="button" class="btn btn-primary custom-button" id="valBtn">
           Verification
-          <!-- <span class="notification-badge">new</span> -->
+          <span id="notificationBadge" class="notification-badge">0</span>
         </button>
       </a>
       <a href="archiveUser.html" id="archiveUser" class="notification-link">
@@ -498,7 +516,8 @@
           class="btn btn-primary custom-button"
           id="archiveBtn">
           Archive
-          <!-- <span class="notification-badge">new</span> -->
+        <span id="notificationBadgeArchive" class="notification-badge">0</span>
+        </button>
         </button>
       </a>
       <div class="modalm" id="myModalm">
@@ -649,6 +668,9 @@
                 style="position: relative; left: 38%">
                 User Details
               </h5>
+              <span class="closepo" id="closeModalpo">
+                <ion-icon name="close"></ion-icon>
+              </span>
             </div>
             <div class="modal-body" id="modalBodyContent">
               <!-- User details will be populated here -->
@@ -1208,11 +1230,30 @@
 
         if (closeButton) {
           closeButton.addEventListener("click", () => {
+            // Remove the saveButton when the modal is closed
+            const saveButton = document.getElementById("saveBtn");
+            if (saveButton) {
+              saveButton.remove();
+              saveButtonAdded = false;
+            }
+
             $("#exampleModalLong").modal("hide");
           });
         }
+        const closeButtonpo = document.getElementById("closeModalpo");
 
-        // Remove outside click close modal functionality
+        if (closeButtonpo) {
+          closeButtonpo.addEventListener("click", () => {
+            // Remove the saveButton when the modal is closed
+            const saveButton = document.getElementById("saveBtn");
+            if (saveButton) {
+              saveButton.remove();
+              saveButtonAdded = false;
+            }
+
+            $("#exampleModalLong").modal("hide");
+          });
+        }
         $("#exampleModalLong").modal({
           backdrop: "static", // Prevents modal from closing when clicking outside
           keyboard: false, // Disables the keyboard close functionality
@@ -1665,5 +1706,104 @@
         });
       }
     </script>
+
+    <script type="module">
+    // Import Firebase modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+    import {
+        getDatabase,
+        ref,
+        get,
+        onValue,
+    } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+
+    const firebaseConfig3 = {
+        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+        authDomain: "civicall-app-a54d1.firebaseapp.com",
+        databaseURL: "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "civicall-app-a54d1",
+        storageBucket: "civicall-app-a54d1.appspot.com",
+        messagingSenderId: "909514632764",
+        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+        measurementId: "G-0BVYE5XJGV",
+    };
+
+    const app3 = initializeApp(firebaseConfig3);
+    const db3 = getDatabase(app3);
+
+    // Reference to the Users node
+    const usersRef = ref(db3, "Users");
+
+    // Reference to the User Verification node
+    const verificationRef = ref(db3, "User Verification");
+
+    // Reference to the notification badges
+    const notificationBadge = document.getElementById("notificationBadge");
+    const notificationBadgeArchive = document.getElementById("notificationBadgeArchive");
+
+    function countUnverifiedUsers(snapshot) {
+        let unverifiedUsersCount = 0;
+
+        // Loop through the users
+        snapshot.forEach((userSnapshot) => {
+            const verificationStatus = userSnapshot.child("verificationStatus").val();
+
+            // Check if verificationStatus is false
+            if (verificationStatus === false) {
+                unverifiedUsersCount++;
+            }
+        });
+
+        // Update the notification badge with the count
+        notificationBadge.textContent = unverifiedUsersCount;
+    }
+    function countArchivedUsers(snapshot) {
+        let archivedUsersCount = 0;
+
+        // Current date and time
+        const currentDate = new Date();
+
+        // One year ago from the current date
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
+
+        // Loop through the users
+        snapshot.forEach((userSnapshot) => {
+            const verificationStatus = userSnapshot.child("verificationStatus").val();
+            const lastLogin = userSnapshot.child("lastLogin").val();
+            const lastLoginDate = new Date(lastLogin);
+            if (verificationStatus === true && lastLoginDate <= oneYearAgo) {
+                archivedUsersCount++;
+            }
+        });
+
+        // Update the notification badge for archive with the count
+        notificationBadgeArchive.textContent = archivedUsersCount;
+    }
+
+    // Function to count users with verificationStatus in User Verification node
+    function countVerifiedUsers(snapshot) {
+        let verifiedUsersCount = 0;
+
+        // Loop through the User Verification entries
+        snapshot.forEach((verificationSnapshot) => {
+            // Check if UID exists in Users node
+            if (snapshot.child(verificationSnapshot.key).exists()) {
+                verifiedUsersCount++;
+            }
+        });
+
+        notificationBadge.textContent = verifiedUsersCount;
+    }
+
+    // Listen for changes in the Users node
+    onValue(usersRef, countUnverifiedUsers);
+
+    // Listen for changes in the User Verification node
+    onValue(verificationRef, countVerifiedUsers);
+
+    // Listen for changes in the Users node for archived users
+    onValue(usersRef, countArchivedUsers);
+</script>
   </body>
 </html>

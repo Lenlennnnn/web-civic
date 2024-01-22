@@ -123,6 +123,24 @@
         transform: translate(-50%, -50%);
         max-width: max-content;
       }
+      .closepo {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .closepo:hover,
+      .closepo:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .closepo {
+        display: block;
+      }
     </style>
   </head>
 
@@ -175,6 +193,9 @@
                   <h5 class="modal-title" id="exampleModalLongggTitle">
                     User Details
                   </h5>
+                  <span class="closepo" id="closeModalpo">
+                    <ion-icon name="close" data-dismiss="modal"></ion-icon>
+                  </span>
                 </div>
                 <div class="modal-body">
                   <!-- 1. Image -->
@@ -530,8 +551,6 @@
                 .on("click", function () {
                   // Set the UID as a data attribute in the decline confirmation modal
                   $("#confirmDecline").data("uid", uid);
-
-                  // Open the decline confirmation modal
                   $("#declineConfirmationModal").modal("show");
                 });
 
