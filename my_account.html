@@ -58,7 +58,7 @@
       }
 
       .admin-info {
-        margin-top: 60%;
+        margin-top: 80%;
         margin-right: 10%;
       }
       .container-acc {
@@ -112,6 +112,8 @@
           <div class="img-area" data-img="">
             <i class="bx bxs-cloud-upload icon"></i>
             <h3>Upload Image</h3>
+            <img id="profileImage" src="" />
+
             <p>Image size must be less than <span>2MB</span></p>
           </div>
           <button class="select-image">Edit Image</button>
@@ -122,17 +124,52 @@
         <!-- =============== My account details ================ -->
         <div class="admin-info">
           <div class="form-group">
-            <label for="account-id">Name:</label>
+            <label for="email">Email Account:</label>
+            <div class="input-container">
+              <input
+                type="email"
+                id="accountemail"
+                name="email"
+                value="Loading......"
+                readonly />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="account-id">First Name:</label>
             <div class="input-container">
               <input
                 type="text"
-                id="accountname"
+                id="firstname"
                 name="account-id"
-                value="John D. Smith"
+                value="Loading......"
                 readonly />
-              <span class="edit-icon" onclick="enableEdit('accountname')"
+              <span class="edit-icon" onclick="enableEdit('firstname')">✎</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="account-id">Middle Name:</label>
+            <div class="input-container">
+              <input
+                type="text"
+                id="middlename"
+                name="account-id"
+                value="Loading......"
+                readonly />
+              <span class="edit-icon" onclick="enableEdit('middlename')"
                 >✎</span
               >
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="account-id">Last Name:</label>
+            <div class="input-container">
+              <input
+                type="text"
+                id="lastname"
+                name="account-id"
+                value="Loading......"
+                readonly />
+              <span class="edit-icon" onclick="enableEdit('lastname')">✎</span>
             </div>
           </div>
           <div class="form-group">
@@ -142,7 +179,7 @@
                 type="text"
                 id="accountgender"
                 name="gender"
-                value="Male"
+                value="Loading......"
                 readonly />
               <span class="edit-icon" onclick="enableEdit('accountgender')"
                 >✎</span
@@ -156,7 +193,7 @@
                 type="text"
                 id="accountbday"
                 name="bday"
-                value="January 22, 1990"
+                value="Loading......"
                 readonly />
               <span class="edit-icon" onclick="enableEdit('accountbday')"
                 >✎</span
@@ -170,39 +207,14 @@
                 type="text"
                 id="accountcontact"
                 name="cpnum"
-                value="09123456789"
+                value="Loading......"
                 readonly />
               <span class="edit-icon" onclick="enableEdit('accountcontact')"
                 >✎</span
               >
             </div>
           </div>
-          <div class="form-group">
-            <label for="email">Email Account:</label>
-            <div class="input-container">
-              <input
-                type="email"
-                id="accountemail"
-                name="email"
-                value="20-12345@g.batstate-u.edu.ph"
-                readonly />
-              <span class="edit-icon" onclick="enableEdit('accountemail')"
-                >✎</span
-              >
-            </div>
-          </div>
 
-          <div class="form-group">
-            <label for="campus">Campus:</label>
-            <div class="input-container">
-              <input
-                type="text"
-                id="accountcampus"
-                name="campus"
-                value="Pablo Borbon Batangas"
-                readonly />
-            </div>
-          </div>
           <div class="form-group">
             <label for="position">Position:</label>
             <div class="input-container">
@@ -210,7 +222,7 @@
                 type="text"
                 id="accountposition"
                 name="position"
-                value="CICS Dean"
+                value="Loading......"
                 readonly />
               <span class="edit-icon" onclick="enableEdit('accountposition')"
                 >✎</span
@@ -235,18 +247,22 @@
           }
         </script>
         <script type="module">
+          import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
           import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
           import {
             getDatabase,
             ref,
             get,
-            push,
-            set,
             update,
-            onValue,
-            onChildRemoved,
           } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+          import {
+            getStorage,
+            ref as storageRef,
+            uploadBytes,
+            getDownloadURL,
+          } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-storage.js";
           import { getAuth } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+
           const firebaseConfig = {
             apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
             authDomain: "civicall-app-a54d1.firebaseapp.com",
@@ -262,6 +278,168 @@
           const app = initializeApp(firebaseConfig);
           const db = getDatabase(app);
           const auth = getAuth(app);
+          const storage = getStorage(app);
+          let isEditing = false;
+
+          onAuthStateChanged(auth, (user) => {
+            if (user) {
+              const uid = user.uid;
+              const userRef = ref(db, `SuperAdminAcc/${uid}`);
+
+              // Function to update the user data
+              const updateUserData = (field, value) => {
+                update(userRef, { [field]: value });
+                isEditing = true;
+                showSaveButton();
+              };
+
+              // Function to show the "Save" button
+              const showSaveButton = () => {
+                const saveBtn = document.getElementById("saveBtn");
+                if (isEditing) {
+                  saveBtn.style.display = "block";
+                } else {
+                  saveBtn.style.display = "none";
+                }
+              };
+
+              // Function to handle save button click
+              const handleSaveButtonClick = () => {
+                const confirmation = confirm(
+                  "Are you sure to save the changes?"
+                );
+                if (confirmation) {
+                  console.log("Changes saved!");
+                  showSuccessAlert();
+                } else {
+                  console.log("Changes not saved.");
+                }
+              };
+
+              // Function to show success alert
+              const showSuccessAlert = () => {
+                alert("Changes saved successfully!");
+              };
+
+              // Function to handle image change
+              const handleImageChange = (file) => {
+                const confirmation = confirm(
+                  "Are you sure to change the profile picture?"
+                );
+                if (confirmation) {
+                  const storageRefVar = storageRef(
+                    storage,
+                    `profileSuperImages/${uid}`
+                  );
+                  uploadBytes(storageRefVar, file).then(() => {
+                    getDownloadURL(storageRefVar).then((downloadURL) => {
+                      updateUserData("ImageProfile", downloadURL);
+                      document.getElementById("profileSuperImage").src =
+                        downloadURL;
+                      showImageChangeSuccessAlert();
+                    });
+                  });
+                }
+              };
+
+              // Function to show image change success alert
+              const showImageChangeSuccessAlert = () => {
+                alert("Profile picture changed successfully!");
+              };
+
+              get(userRef).then((snapshot) => {
+                const userData = snapshot.val();
+
+                // Update the DOM elements with user data
+                document.getElementById("profileImage").src =
+                  userData.ImageProfile || "";
+                document.getElementById("firstname").value =
+                  userData.firstname || "";
+                document.getElementById("lastname").value =
+                  userData.lastname || "";
+                document.getElementById("middlename").value =
+                  userData.middlename || "";
+                document.getElementById("accountcontact").value =
+                  userData.contactNumber || "";
+                document.getElementById("accountemail").value =
+                  userData.email || "";
+                document.getElementById("accountgender").value =
+                  userData.gender || "";
+                document.getElementById("accountbday").value =
+                  userData.birthday || "";
+                document.getElementById("accountposition").value =
+                  userData.position || "";
+
+                // Event listener for editing the firstname
+                document
+                  .getElementById("firstname")
+                  .addEventListener("input", (event) => {
+                    updateUserData("firstname", event.target.value);
+                  });
+
+                // Event listener for editing the lastname
+                document
+                  .getElementById("lastname")
+                  .addEventListener("input", (event) => {
+                    updateUserData("lastname", event.target.value);
+                  });
+
+                // Event listener for editing the middlename
+                document
+                  .getElementById("middlename")
+                  .addEventListener("input", (event) => {
+                    updateUserData("middlename", event.target.value);
+                  });
+
+                // Event listener for editing the contactNumber
+                document
+                  .getElementById("accountcontact")
+                  .addEventListener("input", (event) => {
+                    updateUserData("contactNumber", event.target.value);
+                  });
+
+                // Event listener for editing the gender
+                document
+                  .getElementById("accountgender")
+                  .addEventListener("input", (event) => {
+                    updateUserData("gender", event.target.value);
+                  });
+
+                // Event listener for editing the birthday
+                document
+                  .getElementById("accountbday")
+                  .addEventListener("input", (event) => {
+                    updateUserData("birthday", event.target.value);
+                  });
+
+                // Event listener for editing the position
+                document
+                  .getElementById("accountposition")
+                  .addEventListener("input", (event) => {
+                    updateUserData("position", event.target.value);
+                  });
+
+                // Event listener for uploading a new profile image
+                document
+                  .getElementById("file")
+                  .addEventListener("change", (event) => {
+                    const file = event.target.files[0];
+                    if (file) {
+                      handleImageChange(file);
+                    }
+                  });
+
+                // Event listener for save button click
+                document
+                  .getElementById("saveBtn")
+                  .addEventListener("click", handleSaveButtonClick);
+              });
+
+              console.log("User is logged in:", user);
+            } else {
+              console.log("User is logged out");
+            }
+          });
         </script>
       </div>
     </div>
