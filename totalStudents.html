@@ -1734,27 +1734,8 @@
     // Reference to the Users node
     const usersRef = ref(db3, "Users");
 
-    // Reference to the User Verification node
-    const verificationRef = ref(db3, "User Verification");
-
-    // Reference to the notification badges
-    const notificationBadge = document.getElementById("notificationBadge");
     const notificationBadgeArchive = document.getElementById("notificationBadgeArchive");
 
-    function countUnverifiedUsers(snapshot) {
-        let unverifiedUsersCount = 0;
-
-        // Loop through the users
-        snapshot.forEach((userSnapshot) => {
-            const verificationStatus = userSnapshot.child("verificationStatus").val();
-
-            // Check if verificationStatus is false
-            if (verificationStatus === false) {
-                unverifiedUsersCount++;
-            }
-        });
-        notificationBadge.textContent = unverifiedUsersCount;
-    }
     function countArchivedUsers(snapshot) {
         let archivedUsersCount = 0;
 
@@ -1778,30 +1759,36 @@
         // Update the notification badge for archive with the count
         notificationBadgeArchive.textContent = archivedUsersCount;
     }
-
-    // Function to count users with verificationStatus in User Verification node
-    function countVerifiedUsers(snapshot) {
-        let verifiedUsersCount = 0;
-
-        // Loop through the User Verification entries
-        snapshot.forEach((verificationSnapshot) => {
-            // Check if UID exists in Users node
-            if (snapshot.child(verificationSnapshot.key).exists()) {
-                verifiedUsersCount++;
-            }
-        });
-
-        notificationBadge.textContent = verifiedUsersCount;
-    }
+    onValue(usersRef, countArchivedUsers);
+      const notificationBadge = document.getElementById("notificationBadge");
 
     // Listen for changes in the Users node
-    onValue(usersRef, countUnverifiedUsers);
+    onValue(usersRef, (snapshot) => {
+        // Reset badge count
+        let badgeCount = 0;
 
-    // Listen for changes in the User Verification node
-    onValue(verificationRef, countVerifiedUsers);
+        // Iterate through each user
+        snapshot.forEach((userSnapshot) => {
+            const user = userSnapshot.val();
+            const uid = userSnapshot.key;
 
-    // Listen for changes in the Users node for archived users
-    onValue(usersRef, countArchivedUsers);
+            // Check if verificationStatus is false
+            if (user.verificationStatus === false) {
+                // Check if UID exists in User Verification node
+                const userVerificationRef = ref(db3, "User Verification/" + uid);
+                get(userVerificationRef).then((verificationSnapshot) => {
+                    if (verificationSnapshot.exists()) {
+                        // Increment badge count
+                        badgeCount++;
+                    }
+                   
+                    notificationBadge.textContent = badgeCount;
+                });
+            }
+        });
+    });
 </script>
+
+
   </body>
 </html>
