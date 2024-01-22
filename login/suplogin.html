@@ -742,11 +742,11 @@
           lastname: lastname.value,
           gender: gender.value,
           email: email.value,
-          role: "superadmin", // Set the role of this user as "admin"
-          // New fields to be added
-          birthday: "", // Set empty for now, this will be updated in the future
-          contactNumber: "", // Set empty for now
-          position: "", // Set empty for now
+          role: "superadmin",
+          birthday: "",
+          ImageProfile: "",
+          contactNumber: "",
+          position: "",
         })
           .then(() => {
             alert("Admin Added Successfully");
@@ -769,9 +769,6 @@
       openModalBtn.addEventListener("click", () => {
         modal.style.display = "block";
       });
-
-      // Close the modal
-      // Close the modal
       closeModalBtn.addEventListener("click", () => {
         modal.style.display = "none";
         clearInputFields();

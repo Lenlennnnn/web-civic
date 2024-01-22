@@ -379,7 +379,12 @@
         position: relative;
         left: 120px;
       }
-
+      #searchfilterSec {
+        margin-top: 15px;
+      }
+      #inputSearch {
+        margin-left: 10px;
+      }
       table.table tr th,
       table.table tr td {
         border-color: #e9e9e9;
@@ -420,7 +425,11 @@
         padding: 0px;
         border-radius: 3%;
       }
-
+      table.table .profilepic {
+        width: 75px;
+        height: 75px;
+        border-radius: 100%;
+      }
       .text-success {
         color: #10c469;
       }
@@ -458,11 +467,15 @@
         left: 100px;
         top: 2px;
       }
-
+      #btnfilterSec {
+        position: relative;
+        left: 2px;
+        top: 15px;
+      }
       #eventfilter {
         position: relative;
-        right: 35px;
-        bottom: 65px;
+        right: 30px;
+        bottom: 60px;
         float: left;
       }
 
@@ -472,12 +485,26 @@
         bottom: 60px;
         float: left;
       }
-
+      #campusfilterSec {
+        position: relative;
+        left: 10px;
+        margin-top: 15px;
+        float: left;
+      }
+      #attendedFilter {
+        position: relative;
+        left: 50px;
+        margin-top: 15px;
+        float: left;
+      }
       #searchfieldcontainer {
         position: relative;
         right: 24px;
       }
-
+      #searchfieldcontainerSec {
+        position: relative;
+        right: 5px;
+      }
       #tableevents {
         position: relative;
         bottom: 10px;
@@ -607,7 +634,10 @@
         border: black 2px solid;
         cursor: default;
       }
-
+      .profilepic {
+        border: #6c757d 1px solid;
+        cursor: default;
+      }
       #iconto {
         position: inherit;
         top: 5px;
@@ -687,7 +717,7 @@
         border: black solid 2px;
       }
 
-      #modalngatt {
+      #modalAttendee {
         position: relative;
         bottom: 10px;
         margin-bottom: -40px;
@@ -697,7 +727,7 @@
         cursor: pointer;
       }
 
-      #modalngatt:hover {
+      #modalAttendee:hover {
         transform: scale(1.2);
       }
 
@@ -765,7 +795,21 @@
         right: 10px;
         cursor: pointer;
       }
+      .closeat {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        position: relative;
+        bottom: 10px;
+      }
 
+      .closeat:hover,
+      .closeat:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
       #myModalatt .btnatt {
         padding: 8px 20px;
         border-radius: 4px;
@@ -961,6 +1005,9 @@
       }
       .modal-headerat h2 {
         margin: 0;
+      }
+      #myModalat {
+        z-index: 1001; /* Use a value higher than the z-index of eventModalupcom */
       }
     </style>
   </head>
@@ -1579,9 +1626,14 @@
                           <ion-icon
                             name="people"
                             class="user-icon"
-                            id="modalngatt"
+                            id="modalAttendee"
                             title="Attendees"
                             style="color: #28a745"></ion-icon>
+                          <span
+                            id="notificationBadge"
+                            class="notification-badge"
+                            >0</span
+                          >
                         </a>
                         <h2 id="eventlabel" style="color: #dc3545">
                           Event Details
@@ -1619,210 +1671,131 @@
                         </button>
                       </div>
                     </div>
-                    <!-- for not functioning purpose -->
-                    <div id="myModalevnts" class="modalevnts">
-                      <div class="modal-contentevnts">
-                        <div class="modal-headerevnts">
-                          <a href="attendance.html">
-                            <ion-icon
-                              name="person-circle"
-                              class="user-icon"
-                              id="modalngatt"></ion-icon>
-                          </a>
+                  </div>
 
-                          <h3 id="editmov">View Details</h3>
-                        </div>
-                        <div class="modal-bodyevents">
-                          <!-- 1. Image -->
-                          <div class="text-center">
-                            <img
-                              src="img/cleaning.jpg"
-                              alt="Event Image"
-                              class="img-fluidnew"
-                              id="evntimgpicnew" />
-                          </div>
+                  <div id="myModalat" class="modalat">
+                    <div
+                      class="modal-contentat"
+                      style="width: 95%; height: 95%">
+                      <div class="modal-headerat">
+                        <span class="closeat">&times;</span>
+                        <h4>People who Joined</h4>
+                      </div>
 
-                          <!-- 2. Category -->
-                          <div class="form-group">
-                            <label for="category">Category:</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="category"
-                              value="category"
-                              readonly />
-                          </div>
+                      <hr />
 
-                          <!-- 3. Title -->
-                          <div class="form-group">
-                            <label for="title">Title:</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="title"
-                              value="title"
-                              readonly />
-                          </div>
+                      <div
+                        id="searchfieldcontainerSec"
+                        style="float: right; width: 25%">
+                        <button
+                          type="button"
+                          id="btnfilterSec"
+                          class="btn btn-primary">
+                          <i class="fa fa-search"></i>
+                        </button>
 
-                          <!-- 4. Introduction -->
-                          <div class="form-group">
-                            <label for="introduction">Introduction:</label>
-                            <textarea
-                              class="form-control"
-                              id="introduction"
-                              rows="10"
-                              readonly>
-                            </textarea>
-                          </div>
-
-                          <!-- 5. Description -->
-                          <div class="form-group">
-                            <label for="description">Objective:</label>
-                            <textarea
-                              class="form-control"
-                              id="objective"
-                              rows="10"
-                              readonly>
-                            </textarea>
-                          </div>
-
-                          <div class="form-group">
-                            <label for="instruction">Instruction:</label>
-                            <textarea
-                              class="form-control"
-                              id="instruction"
-                              rows="10"
-                              readonly>
-                            </textarea>
-                          </div>
-
-                          <!-- 6. Location -->
-                          <div class="form-group">
-                            <label for="location">Location:</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="location"
-                              value="location"
-                              readonly />
-                          </div>
-
-                          <!-- 7. Date -->
-                          <div class="form-row">
-                            <div class="form-group col-md-6">
-                              <label for="startdatet">Start Date & Time:</label>
-                              <input
-                                type="text"
-                                class="form-control"
-                                id="startdatet"
-                                value="startdatet"
-                                readonly />
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="enddatet">End Date & Time:</label>
-                              <input
-                                type="text"
-                                class="form-control"
-                                id="enddatet"
-                                value="enddatet"
-                                readonly />
-                            </div>
-                          </div>
-
-                          <!-- 8. Target Participant -->
-                          <div class="form-group">
-                            <label for="targetParticipant"
-                              >Target Campus:</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="targetcampus"
-                              value="targetcampus"
-                              readonly />
-                          </div>
-
-                          <!-- 8. Target Participant -->
-                          <div class="form-group">
-                            <label for="targetParticipant"
-                              >Target Participant:</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="targetParticipant"
-                              value="targetParticipant"
-                              readonly />
-                          </div>
-
-                          <!-- 9. Active Points -->
-                          <div class="form-group">
-                            <label for="activePoints">Active Points:</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="activePoints"
-                              value="50"
-                              readonly />
-                          </div>
-                          <div class="form-group">
-                            <label for="paymentMethod">Payment Method:</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="paymentMethod"
-                              value="paymentMethod"
-                              readonly />
-                          </div>
-                          <div class="form-group">
-                            <label for="paymentRecipient"
-                              >Payment Recipient:</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="paymentRecipient"
-                              value="paymentRecipient"
-                              readonly />
-                          </div>
-                          <div class="form-group">
-                            <label for="fundCollected">Fund Collected:</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="fundCollected"
-                              value="50"
-                              readonly />
-                          </div>
-                          <!-- 10. Facilitator's Name -->
-                          <div class="form-group">
-                            <label for="facilitatorName"
-                              >Facilitator's Name:</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="facilitatorName"
-                              value="facilitatorName"
-                              readonly />
-                          </div>
-                          <div class="form-group">
-                            <label for="facilitatorContact"
-                              >Facilitator's Contact or Email:</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="facilitatorContact"
-                              value="facilitatorContact"
-                              readonly />
-                          </div>
-                        </div>
-                        <div class="modal-footerevnts">
-                          <button class="btn btn-success">Edit</button>
-                          <button id="closeModalevnts">Close</button>
+                        <div class="filter-group" id="searchfilterSec">
+                          <label>Search </label>
+                          <input
+                            id="inputSearch"
+                            type="text"
+                            class="form-control" />
                         </div>
                       </div>
+                      <div class="filter-group" id="campusfilterSec">
+                        <label>Campus</label>
+                        <select class="form-control">
+                          <option value="" disabled selected>
+                            Filter Campus
+                          </option>
+                          <option value="ARASOF Nasugbu Campus">
+                            ARASOF Nasugbu Campus
+                          </option>
+                          <option value="Balayan Campus">Balayan Campus</option>
+                          <option value="JPLPC Malvar Campus">
+                            JPLPC Malvar Campus
+                          </option>
+                          <option value="Lemery Campus">Lemery Campus</option>
+                          <option value="Lipa Campus">Lipa Campus</option>
+                          <option value="Lobo Campus">Lobo Campus</option>
+                          <option value="Mabini Campus">Mabini Campus</option>
+                          <option value="Pablo Borbon Campus I">
+                            Pablo Borbon Campus I
+                          </option>
+                          <option value=" Pablo Borbon Campus II">
+                            Pablo Borbon Campus II
+                          </option>
+                          <option value="Rosario Campus">Rosario Campus</option>
+                          <option value="San Juan Campus">
+                            San Juan Campus
+                          </option>
+                          <option value="All Campus">All Campus</option>
+                        </select>
+                      </div>
+                      <div class="filter-group" id="attendedFilter">
+                        <label>Participants</label>
+                        <select class="form-control">
+                          <option value="" disabled selected>
+                            Filter Participants
+                          </option>
+                          <option value="Engaged">Engaged</option>
+                          <option value="Not-Engaged">Not-Engaged</option>
+                          <option value="All Participants">
+                            All Participants
+                          </option>
+                        </select>
+                      </div>
+                      <div class="modal-bodyat">
+                        <table
+                          id="example"
+                          class="table table-striped"
+                          style="width: 100%">
+                          <thead class="headerr">
+                            <tr>
+                              <th>UID</th>
+                              <th>Profile</th>
+                              <th>Name</th>
+                              <th>Campus</th>
+                              <th>Proof</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>cVgtKBKiYEQ5XnldOKyoJAKS9GC3</td>
+                              <td>
+                                <a href="#"
+                                  ><img
+                                    src="img/cleaning.jpg"
+                                    class="profilepic"
+                                    alt="Avatar"
+                                    id="profilePic"
+                                /></a>
+                              </td>
+                              <td>Leonard Briones</td>
+                              <td>JPLPC Malvar</td>
+                              <td>
+                                <a
+                                  href="#"
+                                  id="proof"
+                                  style="
+                                    color: #dc3545;
+                                    text-decoration: underline;
+                                  "
+                                  >View the file</a
+                                >
+                              </td>
+                              <td>
+                                <button class="btn btn-success" id="atdbtn">
+                                  Confirm
+                                </button>
+                              </td>
+                            </tr>
+                            <!-- Add more rows if needed -->
+                          </tbody>
+                        </table>
+                      </div>
+                      <hr />
                     </div>
                   </div>
                 </div>
@@ -1942,37 +1915,8 @@
           <button id="okButton">Ok</button>
         </div>
       </div>
-      <div id="attendeesModal" class="modalat">
-        <div class="modal-contentat" style="width: 95%; height: 95%">
-          <div class="modal-headerat">
-            <span class="closeat">&times;</span>
-            <h4>People who Joined</h4>
-          </div>
-          <hr />
-          <div class="modal-bodyat">
-            <table id="example" class="table table-striped" style="width: 100%">
-              <thead class="headerr">
-                <tr>
-                  <th>No.</th>
-                  <th>Name</th>
-                  <th>Campus</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tr>
-                <td>1</td>
-                <td>Leonard Briones</td>
-                <td>JPLPC Malvar</td>
-                <td>
-                  <button class="btn btn-danger" id="atdbtn">View</button>
-                </td>
-              </tr>
-            </table>
-          </div>
-          <hr />
-        </div>
-      </div>
     </div>
+
     <!-- =============================================== Scripts ================================================ -->
     <script>
       // Get the notification icon and dropdown content
@@ -2188,28 +2132,32 @@
           return category === "Fund Raising" || category === "Donation";
         }
 
-        // Function to generate HTML for payment fields
         function generatePaymentFieldsHTML(eventData) {
           if (shouldShowPaymentFields(eventData.category)) {
             return `
-<p id="payRecipLabel"><strong>Payment Recipient:</strong>
-  <input class="form-control" id="payRecip" type="text" value="${eventData.paymentRecipient}" readonly>
-</p>
-  <p id="fundLabel"><strong>Fund Collected:</strong>
-          <input class="form-control" id="fundCollectedField" type="text" value="${eventData.fundcollected}" readonly>
-        </p>
-<p id="payMethLabel"><strong>Payment Method:</strong>
-  <input class="form-control" id="payMeth" type="text" value="${eventData.paymentMethod}" readonly>
-</p>
-
-`;
+                <p id="payRecipLabel"><strong>Payment Recipient:</strong>
+                    <input class="form-control" id="payRecip" type="text" value="${
+                      eventData.paymentRecipient || "N/A"
+                    }" readonly>
+                </p>
+                <p id="fundLabel"><strong>Fund Collected:</strong>
+                    <input class="form-control" id="fundCollectedField" type="text" value="${
+                      eventData.fundcollected || "N/A"
+                    }" readonly>
+                </p>
+                <p id="payMethLabel"><strong>Payment Method:</strong>
+                    <input class="form-control" id="payMeth" type="text" value="${
+                      eventData.paymentMethod || "N/A"
+                    }" readonly>
+                </p>
+            `;
           }
           return ""; // Empty string if payment fields should not be shown
         }
 
         eventDetailsContainer.innerHTML = `
         <img src="${
-          eventData.image
+          eventData.image || "N/A"
         }" alt="Event Image" class="eventpic" id="upcompostpic" />
          <p id="labelImage" style="display: none;">Choose an Image:</p>
         <input type="file" id="imagePost" name="image" accept="image/*" required style="display: none;">
@@ -2263,43 +2211,43 @@
   </p>
         <p><strong>Title:</strong>
           <input class="form-control" id="titleField" type="text" value="${
-            eventData.title
+            eventData.title || "N/A"
           }" readonly>
         </p>
         
         <p><strong>Campus:</strong>
           <input class="form-control" id="campusField" type="text" value="${
-            eventData.campus
+            eventData.campus || "N/A"
           }" readonly>
         </p>
         <p><strong>Location:</strong>
           <input class="form-control" id="locationField" type="text" value="${
-            eventData.location
+            eventData.location || "N/A"
           }" readonly>
         </p>
         <p><strong>Start Date:</strong>
           <input class="form-control" id="startDateField" type="text" value="${
-            eventData.startDate
+            eventData.startDate || "N/A"
           }" readonly>
         </p>
         <p><strong>End Date:</strong>
           <input class="form-control" id="endDateField" type="text" value="${
-            eventData.endDate
+            eventData.endDate || "N/A"
           }" readonly>
         </p>
         <h3>Description</h3>
         <p>&nbsp;</p>
         <p><strong>Introduction:</strong></p>
-        <textarea class="form-control" rows="10" id="introductionField" readonly>${
-          eventData.intro
+        <textarea class="form-control" rows="7" id="introductionField" readonly>${
+          eventData.intro || "N/A"
         }</textarea>
         <p><strong>Objectives:</strong></p>
-        <textarea class="form-control" rows="10" id="objectiveField" readonly>${
-          eventData.objective
+        <textarea class="form-control" rows="7" id="objectiveField" readonly>${
+          eventData.objective || "N/A"
         }</textarea>
         <p><strong>Instruction:</strong></p>
-        <textarea class="form-control" rows="10" id="instructionField" readonly>${
-          eventData.instruction
+        <textarea class="form-control" rows="7" id="instructionField" readonly>${
+          eventData.instruction || "N/A"
         }</textarea>
       <p>
   <strong>Target Participant:</strong>
@@ -2307,7 +2255,7 @@
     class="form-control"
     id="targetField"
     type="text"
-    value="${eventData.targetparty}"
+    value="${eventData.targetparty || "N/A"}"
     readonly
     pattern="[0-9]+"
     oninput="this.value = this.value.replace(/[^0-9]/g, '');"
@@ -2318,12 +2266,12 @@
     
         <p><strong>Facilitators Name:</strong>
           <input class="form-control" id="facilitatorField" type="text" value="${
-            eventData.facilitatorsName
+            eventData.facilitatorsName || "N/A"
           }" readonly>
         </p>
         <p><strong>Facilitators Contractor Email:</strong>
           <input class="form-control" id="facilitatorNField" type="text" value="${
-            eventData.facilitatorsContactorEmail
+            eventData.facilitatorsContactorEmail || "N/A"
           }" readonly>
         </p>
      <p>
@@ -2342,19 +2290,19 @@
 <p style="display: none;"  id="payRecipLabel">
     <strong>Payment Recipient:</strong>
     <input class="form-control" id="payRecip" type="text" value="${
-      eventData.paymentRecipient
+      eventData.paymentRecipient || "N/A"
     }" readonly>
 </p>
 <p style="display: none;" id="payMethLabel">
     <strong>Payment Method:</strong>
     <input class="form-control" id="payMeth" type="text" value="${
-      eventData.paymentMethod
+      eventData.paymentMethod || "N/A"
     }" readonly>
 </p>
  <p style="display: none;" id="fundLabel">
     <strong>Fund Collected:</strong>
           <input class="form-control" id="fundCollectedField" type="text" value="${
-            eventData.fundcollected
+            eventData.fundcollected || "N/A"
           }" readonly>
         </p>
 
@@ -2516,22 +2464,20 @@
       }
 
       const campusFilterSelect = document.querySelector("#campusfilter select");
+      const searchInput = document.querySelector("#searchfilter input");
+
       campusFilterSelect.addEventListener("change", function () {
         let selectedCampus = this.value === "All Campus" ? "" : this.value;
         const searchTerm = searchInput.value.trim();
-
-        // Check if "All Campus" is selected, and if so, set selectedCampus to an empty string
-        if (selectedCampus === "All Campus") {
-          selectedCampus = "";
-        }
-
         displayEventData(searchTerm, selectedCampus);
       });
 
-      const searchInput = document.querySelector("#searchfilter input");
       searchInput.addEventListener("input", function () {
-        const searchTerm = this.value.trim(); // Get the trimmed value of the input
-        const selectedCampus = campusFilterSelect.value;
+        const searchTerm = this.value.trim();
+        const selectedCampus =
+          campusFilterSelect.value === "All Campus"
+            ? ""
+            : campusFilterSelect.value;
         displayEventData(searchTerm, selectedCampus);
       });
       function displayEventData(searchTerm = "", selectedCampus = "") {
@@ -2608,10 +2554,12 @@
               newRow.innerHTML = `
                     <td>${rowNumber}</td>
                     <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
-                    <td>${title}</td>
-                    <td>${category}</td>
-                    <td>${campus}</td>
-                    <td>${startDate.toLocaleString()} -- ${endDate}</td>
+                    <td>${title || "N/A"}</td>
+                    <td>${category || "N/A"}</td>
+                    <td>${campus || "N/A"}</td>
+                    <td>${startDate.toLocaleString() || "N/A"} -- ${
+                endDate || "N/A"
+              }</td>
                     <td>
                         <button type="button" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>
                     </td>
@@ -2931,10 +2879,38 @@
 
         return reverseFormattedDate;
       }
-      // Add click event listener to the edit button
+
       const editBtn = document.getElementById("editBtn");
       editBtn.addEventListener("click", enableEditing);
       displayEventData();
+      // Add click event listener to the modalAttendee element
+      const modalAttendeeIcon = document.getElementById("modalAttendee");
+      modalAttendeeIcon.addEventListener("click", function () {
+        // Display the modal with id "myModalat"
+        const modalAt = document.getElementById("myModalat");
+        modalAt.style.display = "block";
+
+        // Handle the close button inside the modal
+        const closeAt = document.getElementsByClassName("closeat")[0];
+        closeAt.addEventListener("click", function () {
+          modalAt.style.display = "none";
+        });
+
+        // Handle clicks outside the modal to close it
+        window.addEventListener("click", function (event) {
+          if (event.target == modalAt) {
+            modalAt.style.display = "none";
+          }
+        });
+      });
+
+      // Add logic for handling the "View" button inside the modal
+      const viewButton = document.getElementById("atdbtn");
+      viewButton.addEventListener("click", function () {
+        // Add logic to handle the "View" button click inside the modal
+        // You can customize this based on your requirements.
+        console.log("View button clicked");
+      });
     </script>
 
     <script src="js/dashboard.js"></script>

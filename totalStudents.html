@@ -1735,7 +1735,15 @@
     const usersRef = ref(db3, "Users");
 
     const notificationBadgeArchive = document.getElementById("notificationBadgeArchive");
-
+    function formatNumber(num) {
+    if (num >= 1000000) {
+        return (num / 1000000).toFixed(1) + 'M';
+    } else if (num >= 1000) {
+        return (num / 1000).toFixed(1) + 'k';
+    } else {
+        return num.toString();
+    }
+}
     function countArchivedUsers(snapshot) {
         let archivedUsersCount = 0;
 
@@ -1756,8 +1764,7 @@
             }
         });
 
-        // Update the notification badge for archive with the count
-        notificationBadgeArchive.textContent = archivedUsersCount;
+        notificationBadgeArchive.textContent = formatNumber(archivedUsersCount);
     }
     onValue(usersRef, countArchivedUsers);
       const notificationBadge = document.getElementById("notificationBadge");
@@ -1782,11 +1789,12 @@
                         badgeCount++;
                     }
                    
-                    notificationBadge.textContent = badgeCount;
+                   notificationBadge.textContent = formatNumber(badgeCount);
                 });
             }
         });
     });
+
 </script>
 
 
