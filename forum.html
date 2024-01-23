@@ -382,6 +382,53 @@
         margin-top: 5px; /* Adjust as needed */
         padding: 5px; /* Adjust as needed */
       }
+
+      #myModalvm {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.7);
+      }
+
+      #modal-contentvm {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 70%;
+      }
+
+      /* Style to enlarge on hover */
+      .enlarge-on-hover:hover {
+        transform: scale(1.2);
+        transition: transform 0.3s;
+      }
+
+      #cssmo {
+        transition: transform 0.3s ease; /* Add a smooth transition effect */
+      }
+
+      #cssmo:hover {
+        transform: scale(1.2); /* Enlarge the span on hover */
+      }
+
+      #modal-bodyvm table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+
+      #modal-bodyvm th,
+      #modal-bodyvm td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+      }
     </style>
   </head>
 
@@ -537,13 +584,12 @@
                           <div class="mar-btm">
                             <p class="text-semibold media-heading box-inline">
                               Kurt
-                              <!--   <img
+                              <img
                                 src="img/reportto.png"
                                 alt="Report"
                                 style="width: 15px"
                                 class="enlarge-on-hover"
-                                id="hoverreport"
-                              /> -->
+                                id="hoverreport" />
                             </p>
                             <a class="options-icon">
                               <i class="fas fa-ellipsis-v"></i>
@@ -596,13 +642,13 @@
                   <div class="mar-btm">
                     <p class="text-semibold media-heading box-inline">
                       Leonard
-                      <!--   <img
+                      <img
                         src="img/reportto.png"
                         alt="Report"
                         style="width: 15px"
                         class="enlarge-on-hover"
                         id="hoverreport"
-                      /> -->
+                        onclick="openModal()" />
                       <a
                         class="options-icon"
                         id="optionito"
@@ -717,6 +763,48 @@
                       Submit
                     </button>
                     <button id="closmrt" onclick="closeModal()">Close</button>
+                  </div>
+                </div>
+              </div>
+              <div id="myModalvm">
+                <div id="modal-contentvm">
+                  <!-- Modal Header -->
+                  <div id="modal-headervm">
+                    <span
+                      id="cssmo"
+                      onclick="closeModal()"
+                      style="float: right; cursor: pointer"
+                      >&times;</span
+                    >
+                    <h3>View Report</h3>
+                    <hr
+                      style="
+                        border-bottom: 1px solid black;
+                        margin-bottom: 20px;
+                        margin-top: 30px;
+                      " />
+                  </div>
+
+                  <!-- Modal Body Content -->
+                  <div id="modal-bodyvm">
+                    <table>
+                      <thead>
+                        <tr
+                          id="whitenam"
+                          style="background-color: #343a40; color: white">
+                          <th style="width: 50px">No.</th>
+                          <th style="width: 300px">Name</th>
+                          <th>Reasons</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>1</td>
+                          <td>JJ Mallorca</td>
+                          <td>Ni-report ko si JJ kasi maingay sa forum</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -869,11 +957,6 @@
         document.getElementById("modalrt").style.display = "block";
       }
 
-      // Function to close the modal
-      function closeModal() {
-        document.getElementById("modalrt").style.display = "none";
-      }
-
       // Add a click event listener to the report icon
       document
         .getElementById("reportIcon")
@@ -892,6 +975,35 @@
           closeModal();
         }
       }
+
+      function openModal() {
+        document.getElementById("myModalvm").style.display = "block";
+      }
+
+      // Function to close the modal
+      function closeModal() {
+        var modalrt = document.getElementById("modalrt");
+        var myModalvm = document.getElementById("myModalvm");
+
+        // Close both modals if they are open
+        if (modalrt.style.display === "block") {
+          modalrt.style.display = "none";
+        }
+
+        if (myModalvm.style.display === "block") {
+          myModalvm.style.display = "none";
+        }
+      }
+
+      // Add a click event listener to the close button in modalrt
+      document
+        .getElementsByClassName("closert")[0]
+        .addEventListener("click", closeModal);
+
+      // Add a click event listener to the close button in myModalvm
+      document
+        .getElementsByClassName("close-btn")[0]
+        .addEventListener("click", closeModal);
     </script>
   </body>
 </html>

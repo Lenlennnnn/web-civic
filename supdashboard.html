@@ -1009,6 +1009,16 @@
       #myModalat {
         z-index: 1001; /* Use a value higher than the z-index of eventModalupcom */
       }
+      /* .upcoming {
+        position: fixed;
+      } */
+      /* 
+      .topbar {
+        position: sticky;
+        top: 0;
+        background-color: white;
+        z-index: 1000;
+      } */
     </style>
   </head>
 
@@ -1098,12 +1108,18 @@
             style="display: none"
             id="notificationIcon"></ion-icon>
 
-          <h5 class="adminPro">Super Admin</h5>
+          <h5 class="adminPro">
+            Super Admin:
+            <span id="superName" class="additional-text"
+              >Arpilleda, Kurt Bryant</span
+            >
+          </h5>
           <div class="user-profile pull-right">
             <img
               class="avatar user-thumb hover-effect"
               src="img/profile.png"
               width="50px"
+              id="profileImage"
               onclick="toggleDropdown()" />
 
             <div class="dropdown-menu" id="dropdownMenu">
@@ -3426,6 +3442,55 @@
 
       // Listen for changes in the "Users" node and update the total verified user count
       onValue(usersRef, updateTotalVerifiedUsers);
+    </script>
+    <script type="module">
+      import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+        update,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+      import { getAuth } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+
+      const firebaseConfig4 = {
+        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
+        authDomain: "civicall-app-a54d1.firebaseapp.com",
+        databaseURL:
+          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "civicall-app-a54d1",
+        storageBucket: "civicall-app-a54d1.appspot.com",
+        messagingSenderId: "909514632764",
+        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
+        measurementId: "G-0BVYE5XJGV",
+      };
+
+      const app4 = initializeApp(firebaseConfig4);
+      const db4 = getDatabase(app4);
+      const auth4 = getAuth(app4);
+
+      onAuthStateChanged(auth4, (user) => {
+        if (user) {
+          const uid = user.uid;
+          const userRef = ref(db4, `SuperAdminAcc/${uid}`);
+
+          get(userRef).then((snapshot) => {
+            const userData = snapshot.val();
+
+            // Update the DOM elements with user data
+            document.getElementById("profileImage").src =
+              userData.ImageProfile || "img/profile.png";
+            document.getElementById("superName").textContent = `${
+              userData.lastname || "N/A"
+            }, ${userData.firstname || "N/A"}, ${userData.middlename || "N/A"}`;
+          });
+
+          console.log("User is logged in:", user);
+        } else {
+          console.log("User is logged out");
+        }
+      });
     </script>
   </body>
 </html>

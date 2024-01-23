@@ -58,7 +58,7 @@
       }
 
       .admin-info {
-        margin-top: 80%;
+        margin-top: 75%;
         margin-right: 10%;
       }
       .container-acc {
@@ -111,10 +111,7 @@
           <input type="file" id="file" accept="image/*" hidden />
           <div class="img-area" data-img="">
             <i class="bx bxs-cloud-upload icon"></i>
-            <h3>Upload Image</h3>
             <img id="profileImage" src="" />
-
-            <p>Image size must be less than <span>2MB</span></p>
           </div>
           <button class="select-image">Edit Image</button>
         </div>
@@ -352,7 +349,7 @@
 
                 // Update the DOM elements with user data
                 document.getElementById("profileImage").src =
-                  userData.ImageProfile || "";
+                  userData.ImageProfile || "img/profile.png";
                 document.getElementById("firstname").value =
                   userData.firstname || "";
                 document.getElementById("lastname").value =
