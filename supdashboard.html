@@ -885,7 +885,20 @@
         border-color: #aaa; /* Darker border color on hover */
         color: #fff; /* Text color on hover */
       }
+      #campusField {
+        background-color: #fff; /* Dark background color */
+        color: black; /* Text color */
+        border: 1px solid #ccc; /* Dark border */
+        padding: 8px 16px; /* Adjust padding as needed */
+        cursor: pointer; /* Change cursor on hover */
+        transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+      }
 
+      #campusField:hover {
+        background-color: #aaa; /* Darker background color on hover */
+        border-color: #aaa; /* Darker border color on hover */
+        color: #fff; /* Text color on hover */
+      }
       #myModalnm {
         z-index: 999999999;
       }
@@ -1110,9 +1123,7 @@
 
           <h5 class="adminPro">
             Super Admin:
-            <span id="superName" class="additional-text"
-              >Arpilleda, Kurt Bryant</span
-            >
+            <span id="superName" class="additional-text">Loading.........</span>
           </h5>
           <div class="user-profile pull-right">
             <img
@@ -1389,7 +1400,6 @@
                                   style="color: black; text-align: left"
                                   >Target Campus:</label
                                 >
-
                                 <input
                                   type="text"
                                   id="campusTarget"
@@ -2033,67 +2043,6 @@
 
       // Event listener for closing the "myModalevnts" modal
       closeModalBtnEvnts.addEventListener("click", closeModalEvnts);
-
-      // Get the modified modal and the button
-      var modal = document.getElementById("myModalnm");
-      var btn = document.getElementById("campusTarget");
-
-      // Get the close button inside the modified modal
-      var span = document.getElementsByClassName("closenm")[0];
-
-      // Function to open the modified modal when the button is clicked
-      btn.onclick = function () {
-        modal.style.display = "block";
-      };
-
-      // Function to close the modified modal when the close button (X) is clicked
-      span.onclick = function () {
-        modal.style.display = "none";
-      };
-
-      // Function to close the modified modal when clicking outside the modal content
-      window.onclick = function (event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-      };
-
-      // Get the modal element
-      var modal = document.getElementById("myModalnm");
-
-      // Get the Ok button inside the modal
-      var okButton = document.getElementById("okButton");
-
-      // When the Ok button is clicked, close the modal
-      okButton.addEventListener("click", function () {
-        modal.style.display = "none";
-      });
-
-      // Function to handle Select All button click
-      function selectAll() {
-        var checkboxes = document.querySelectorAll(".checkboxna");
-        checkboxes.forEach(function (checkbox) {
-          checkbox.checked = true;
-        });
-      }
-
-      // Function to handle Deselect All button click
-      function deselectAll() {
-        var checkboxes = document.querySelectorAll(".checkboxna");
-        checkboxes.forEach(function (checkbox) {
-          checkbox.checked = false;
-        });
-      }
-
-      // Get the Select All button
-      var selectAllBtn = document.getElementById("selectAllBtnn");
-
-      // Get the Deselect All button
-      var deselectAllBtn = document.getElementById("deselectAllBtnn");
-
-      // Add click event listeners to buttons
-      selectAllBtn.addEventListener("click", selectAll);
-      deselectAllBtn.addEventListener("click", deselectAll);
     </script>
 
     <script type="module">
@@ -3161,11 +3110,12 @@
             }
           });
 
-        // Add event listener to close the modal when Cancel button is clicked
         document
           .getElementById("cancelButton")
           .addEventListener("click", function () {
             document.getElementById("postModalpo").style.display = "none";
+            clearFormFields();
+            clearCampusSelection();
           });
 
         // Add event listener to close the modal
@@ -3173,8 +3123,98 @@
           .getElementById("closeModalpo")
           .addEventListener("click", function () {
             document.getElementById("postModalpo").style.display = "none";
+            clearFormFields();
+            clearCampusSelection();
           });
 
+        var modal = document.getElementById("myModalnm");
+
+        // Get the Ok button inside the modal
+        var okButton = document.getElementById("okButton");
+
+        // When the Ok button is clicked, close the modal and update campusTarget
+        okButton.addEventListener("click", function () {
+          // Close the "myModalnm" modal
+          modal.style.display = "none";
+
+          // Get the form elements and campusTarget element
+          var campusForm = document.getElementById("campusForm");
+          var campusTarget = document.getElementById("campusTarget");
+
+          // Get the selected campuses
+          var selectedCampuses = [];
+          var checkboxes = campusForm.querySelectorAll(".checkboxna:checked");
+          checkboxes.forEach(function (checkbox) {
+            selectedCampuses.push(checkbox.value);
+          });
+
+          // Update the campusTarget element with the selected campuses
+          campusTarget.value = selectedCampuses.join(", ");
+        });
+
+        // Add event listener to campusTarget element
+        var campusTargetInput = document.getElementById("campusTarget");
+        campusTargetInput.addEventListener("click", function () {
+          // Get the form elements in the "myModalnm" modal
+          const campusForm = document.getElementById("campusForm");
+
+          // Get the current selected campuses from campusTarget
+          const currentSelectedCampuses = campusTarget.value.split(", ");
+
+          // Update checkboxes based on the current selected campuses
+          const checkboxes = campusForm.querySelectorAll(".checkboxna");
+          checkboxes.forEach((checkbox) => {
+            checkbox.checked = currentSelectedCampuses.includes(checkbox.value);
+          });
+
+          // Open the "myModalnm" modal
+          modal.style.display = "block";
+        });
+
+        var span = document.getElementsByClassName("closenm")[0];
+        span.onclick = function () {
+          modal.style.display = "none";
+        };
+
+        window.onclick = function (event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        };
+
+        function selectAll() {
+          var checkboxes = document.querySelectorAll(".checkboxna");
+          checkboxes.forEach(function (checkbox) {
+            checkbox.checked = true;
+          });
+        }
+
+        function deselectAll() {
+          var checkboxes = document.querySelectorAll(".checkboxna");
+          checkboxes.forEach(function (checkbox) {
+            checkbox.checked = false;
+          });
+        }
+
+        var selectAllBtn = document.getElementById("selectAllBtnn");
+        var deselectAllBtn = document.getElementById("deselectAllBtnn");
+
+        selectAllBtn.addEventListener("click", selectAll);
+        deselectAllBtn.addEventListener("click", deselectAll);
+        document
+          .getElementById("cancelButton")
+          .addEventListener("click", function () {
+            document.getElementById("postModalpo").style.display = "none";
+            clearCampusSelection();
+          });
+
+        // Add event listener to close the modal
+        document
+          .getElementById("closeModalpo")
+          .addEventListener("click", function () {
+            document.getElementById("postModalpo").style.display = "none";
+            clearCampusSelection();
+          });
         document
           .getElementById("filePost")
           .addEventListener("change", function () {
@@ -3255,7 +3295,17 @@
           campusTarget.value = selectedCampuses.join(", ");
         });
       });
+      function clearCampusSelection() {
+        var campusForm = document.getElementById("campusForm");
+        var campusTarget = document.getElementById("campusTarget");
+        var checkboxes = campusForm.querySelectorAll(".checkboxna:checked");
 
+        checkboxes.forEach(function (checkbox) {
+          checkbox.checked = false;
+        });
+
+        campusTarget.value = "";
+      }
       function clearCheckBoxes() {
         // Get the form elements in the "myModalnm" modal
         const campusForm = document.getElementById("campusForm");
@@ -3282,7 +3332,13 @@
         document.getElementById("facname").value = "";
         document.getElementById("facnamecon").value = "";
         document.getElementById("filePost").value = "";
-        document.getElementById("imagepost").src = "";
+        document.getElementById("paymentMethod").value = "Select";
+        document.getElementById("recipient").value = "";
+        document.getElementById("paymentLabel").style.display = "none";
+        document.getElementById("paymentMethod").style.display = "none";
+        document.getElementById("recipient").style.display = "none";
+        document.getElementById("recipientLabel").style.display = "none";
+        document.getElementById("imagepost").setAttribute("hidden", "true");
       }
       function validateForm() {
         // List of required field IDs
@@ -3478,12 +3534,17 @@
           get(userRef).then((snapshot) => {
             const userData = snapshot.val();
 
+            // Extract the first letter of middlename and append a dot
+            const middlenameInitial = userData.middlename
+              ? userData.middlename.charAt(0) + "."
+              : "";
+
             // Update the DOM elements with user data
             document.getElementById("profileImage").src =
               userData.ImageProfile || "img/profile.png";
             document.getElementById("superName").textContent = `${
               userData.lastname || "N/A"
-            }, ${userData.firstname || "N/A"}, ${userData.middlename || "N/A"}`;
+            }, ${userData.firstname || "N/A"} ${middlenameInitial}`;
           });
 
           console.log("User is logged in:", user);
