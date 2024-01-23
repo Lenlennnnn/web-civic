@@ -13,6 +13,9 @@
     <link
       rel="stylesheet"
       href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <style>
       .h1-group {
         position: relative;
@@ -26,10 +29,6 @@
         left: -165px;
         transform: translate(-50%, -50%);
         cursor: pointer;
-        /* Change cursor to pointer */
-        /* Other button styling properties */
-
-        /* Transition effect for hover */
         transition: background-color 0.3s, color 0.3s, transform 0.3s;
         z-index: 1;
       }
@@ -91,9 +90,11 @@
       label {
         font-weight: bold;
       }
-
-      input[type="password"] {
+      #newPassword,
+      #confirmPassword,
+      #currentPassword {
         width: 100%;
+        min-width: 200px;
         padding: 8px;
         border: 1px solid #ccc;
         border-radius: 4px;
@@ -225,6 +226,28 @@
           left: -10px;
         }
       }
+
+      .toggle-password {
+        position: relative;
+        bottom: 30px;
+        left: 45%;
+        top: 40%;
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
+      .passwordLabel {
+        display: flex;
+        align-items: left;
+        margin-top: 5px;
+      }
+      #currenticon,
+      #newicon,
+      #confirmicon {
+        color: #aaa;
+      }
+      #labelChange {
+        font-size: 25px;
+      }
     </style>
   </head>
 
@@ -243,25 +266,38 @@
       </div>
       <h1 class="h1-group">Change Password</h1>
       <div class="change-password-container">
-        <h2>Insert your password here</h2>
+        <h2 id="labelChange">Change your password here</h2>
         <form id="changePasswordForm">
           <div class="form-group">
-            <label for="currentPassword">Current Password:</label>
+            <label for="currentPassword" class="passwordLabel"
+              >Current Password:</label
+            >
             <input
-              type="password"
+              type="currentPassword"
               id="currentPassword"
               name="currentPassword" />
+            <span id="togglePassword" class="toggle-password">
+              <i id="currenticon" class="fas fa-eye"></i>
+            </span>
           </div>
           <div class="form-group">
-            <label for="newPassword">New Password:</label>
+            <label for="newPassword" class="passwordLabel">New Password:</label>
             <input type="password" id="newPassword" name="newPassword" />
+            <span id="toggleNewPassword" class="toggle-password">
+              <i id="newicon" class="fas fa-eye"></i>
+            </span>
           </div>
           <div class="form-group">
-            <label for="confirmPassword">Confirm New Password:</label>
+            <label for="confirmPassword" class="passwordLabel"
+              >Confirm New Password:</label
+            >
             <input
               type="password"
               id="confirmPassword"
               name="confirmPassword" />
+            <span id="toggleConfirmPassword" class="toggle-password">
+              <i id="confirmicon" class="fas fa-eye"></i>
+            </span>
           </div>
 
           <!-- Button to open the modal -->
@@ -269,6 +305,7 @@
         </form>
       </div>
     </div>
+
     <script type="module">
       import {
         onAuthStateChanged,
@@ -370,6 +407,68 @@
           // Error alert
           alert("Failed to change password. " + error.message);
         }
+      });
+      document.addEventListener("DOMContentLoaded", function () {
+        const currentPasswordInput = document.getElementById("currentPassword");
+        const togglePasswordIcon = document.getElementById("togglePassword");
+        const currentIcon = document.getElementById("currenticon");
+
+        // Add an event listener to the togglePassword span
+        togglePasswordIcon.addEventListener("click", function () {
+          // Toggle the password visibility
+          if (currentPasswordInput.type === "password") {
+            currentPasswordInput.type = "text";
+            // Update the icon to show an open eye when the password is visible
+            currentIcon.classList.remove("fas", "fa-eye");
+            currentIcon.classList.add("fas", "fa-eye-slash");
+          } else {
+            currentPasswordInput.type = "password";
+            // Update the icon to show a closed eye when the password is hidden
+            currentIcon.classList.remove("fas", "fa-eye-slash");
+            currentIcon.classList.add("fas", "fa-eye");
+          }
+        });
+        const newPasswordInput = document.getElementById("newPassword");
+        const toggleNewPasswordIcon =
+          document.getElementById("toggleNewPassword");
+        const newIcon = document.getElementById("newicon");
+
+        // Add an event listener to the togglePassword span
+        toggleNewPasswordIcon.addEventListener("click", function () {
+          // Toggle the password visibility
+          if (newPasswordInput.type === "password") {
+            newPasswordInput.type = "text";
+            // Update the icon to show an open eye when the password is visible
+            newIcon.classList.remove("fas", "fa-eye");
+            newIcon.classList.add("fas", "fa-eye-slash");
+          } else {
+            newPasswordInput.type = "password";
+            // Update the icon to show a closed eye when the password is hidden
+            newIcon.classList.remove("fas", "fa-eye-slash");
+            newIcon.classList.add("fas", "fa-eye");
+          }
+        });
+        const confirmPasswordInput = document.getElementById("confirmPassword");
+        const toggleConfirmPasswordIcon = document.getElementById(
+          "toggleConfirmPassword"
+        );
+        const confirmIcon = document.getElementById("confirmicon");
+
+        // Add an event listener to the togglePassword span
+        toggleConfirmPasswordIcon.addEventListener("click", function () {
+          // Toggle the password visibility
+          if (confirmPasswordInput.type === "password") {
+            confirmPasswordInput.type = "text";
+            // Update the icon to show an open eye when the password is visible
+            confirmIcon.classList.remove("fas", "fa-eye");
+            confirmIcon.classList.add("fas", "fa-eye-slash");
+          } else {
+            confirmPasswordInput.type = "password";
+            // Update the icon to show a closed eye when the password is hidden
+            confirmIcon.classList.remove("fas", "fa-eye-slash");
+            confirmIcon.classList.add("fas", "fa-eye");
+          }
+        });
       });
     </script>
   </body>

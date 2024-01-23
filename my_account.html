@@ -80,6 +80,87 @@
         color: #fff;
         transform: scale(1.05);
       }
+
+      /* for header =========================================================================*/
+
+      /* Styles for non-responsive devices or default styles */
+
+      #mainname {
+        font-size: 40px;
+      }
+
+      /* Media query for devices with a maximum width of 1600 pixels (typical for larger screens) */
+      @media only screen and (max-width: 1600px) {
+        #mainname {
+          font-size: 40px;
+          position: relative;
+          left: -290px;
+        }
+      }
+
+      /* Media query for devices with a maximum width of 768 pixels (typical for tablets) */
+      @media only screen and (max-width: 1300px) {
+        #mainname {
+          font-size: 40px;
+          position: relative;
+          left: -140px;
+        }
+      }
+
+      /* this is for profile container ========================================================================*/
+
+      .container-acc {
+        max-width: 300px; /* Set the default max-width */
+        margin: 0 auto; /* Center the container horizontally */
+        padding: 20px; /* Set default padding */
+        border: 1px solid #ddd; /* Add default border for visualization */
+      }
+
+      /* Media query for devices with a maximum width of 768 pixels (typical for tablets) */
+      @media only screen and (max-width: 1600px) {
+        .container-acc {
+          max-width: 300px; /* Make the container full width for tablets */
+          padding: 10px;
+          margin-left: 150px;
+          margin-top: -100px; /* Adjust padding for tablets */
+        }
+      }
+
+      /* Media query for devices with a maximum width of 480 pixels (typical for smartphones) */
+      @media only screen and (max-width: 1300px) {
+        .container-acc {
+          max-width: 300px;
+          margin-left: 30px;
+          margin-top: 20px;
+        }
+      }
+
+      /* this is for details responsive ====================================================================== */
+
+      .admin-info {
+        width: 600px; /* Set the default width */
+        position: relative;
+        top: 110px;
+      }
+
+      /* Media query for devices with a maximum width of 768 pixels (typical for tablets) */
+      @media only screen and (max-width: 1600px) {
+        .admin-info {
+          width: 100%;
+          position: relative;
+          top: 30px;
+        }
+      }
+
+      /* Media query for devices with a maximum width of 480 pixels (typical for smartphones) */
+      @media only screen and (max-width: 1300px) {
+        .admin-info {
+          width: 100%;
+          position: relative;
+          top: 140px;
+          left: -30px;
+        }
+      }
     </style>
   </head>
 
@@ -105,9 +186,9 @@
           </div>
         </a>
 
-        <h1>My Account</h1>
+        <h1 id="mainname">My Account</h1>
 
-        <div class="container-acc">
+        <div class="container-acc" id="useadpro">
           <input type="file" id="file" accept="image/*" hidden />
           <div class="img-area" data-img="">
             <i class="bx bxs-cloud-upload icon"></i>
@@ -119,7 +200,7 @@
         <script src="js/my_account.js"></script>
 
         <!-- =============== My account details ================ -->
-        <div class="admin-info">
+        <div class="admin-info" id="adconpro">
           <div class="form-group">
             <label for="email">Email Account:</label>
             <div class="input-container">
