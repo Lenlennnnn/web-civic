@@ -1153,7 +1153,7 @@
               <hr />
               <a class="dropdown-item" href="#" onclick="showLogoutPopup()">
                 <ion-icon name="log-out-outline" style="color: #888"></ion-icon>
-                &nbsp; Log Out
+                &nbsp; Log-Out
               </a>
             </div>
           </div>
@@ -1166,9 +1166,9 @@
 
           <!-- Popup Form for Log Out -->
           <div id="logoutForm">
-            <h2 id="logoutTitle">Log Out</h2>
+            <h2 id="logoutTitle">Log-Out</h2>
             <p>Are you sure you want to log out?</p>
-            <button onclick="performLogout()">Log Out</button>
+            <button id="logOut">Log Out</button>
             <button onclick="closeLogoutPopup()">Cancel</button>
           </div>
         </div>
@@ -1779,7 +1779,6 @@
                           <thead class="headerr">
                             <tr>
                               <th>UID</th>
-                              <th>Profile</th>
                               <th>Name</th>
                               <th>Campus</th>
                               <th>Proof</th>
@@ -1789,15 +1788,6 @@
                           <tbody>
                             <tr>
                               <td>cVgtKBKiYEQ5XnldOKyoJAKS9GC3</td>
-                              <td>
-                                <a href="#"
-                                  ><img
-                                    src="img/cleaning.jpg"
-                                    class="profilepic"
-                                    alt="Avatar"
-                                    id="profilePic"
-                                /></a>
-                              </td>
                               <td>Leonard Briones</td>
                               <td>JPLPC Malvar</td>
                               <td>
@@ -2117,7 +2107,7 @@
                 </p>
             `;
           }
-          return ""; // Empty string if payment fields should not be shown
+          return "";
         }
 
         eventDetailsContainer.innerHTML = `
@@ -2175,10 +2165,12 @@
     </select>
   </p>
         <p><strong>Title:</strong>
-          <input class="form-control" id="titleField" type="text" value="${
-            eventData.title || "N/A"
-          }" readonly>
-        </p>
+        <input class="form-control" id="titleField" type="text" value="${
+          eventData.titleEvent
+            ? eventData.titleEvent.replace(/"/g, "&quot;")
+            : "N/A"
+        }" readonly>
+    </p>
         
         <p><strong>Campus:</strong>
           <input class="form-control" id="campusField" type="text" value="${
@@ -2187,7 +2179,9 @@
         </p>
         <p><strong>Location:</strong>
           <input class="form-control" id="locationField" type="text" value="${
-            eventData.location || "N/A"
+            eventData.location
+              ? eventData.location.replace(/"/g, "&quot;")
+              : "N/A"
           }" readonly>
         </p>
         <p><strong>Start Date:</strong>
@@ -2204,15 +2198,19 @@
         <p>&nbsp;</p>
         <p><strong>Introduction:</strong></p>
         <textarea class="form-control" rows="7" id="introductionField" readonly>${
-          eventData.intro || "N/A"
+          eventData.intro ? eventData.intro.replace(/"/g, "&quot;") : "N/A"
         }</textarea>
         <p><strong>Objectives:</strong></p>
         <textarea class="form-control" rows="7" id="objectiveField" readonly>${
-          eventData.objective || "N/A"
+          eventData.objective
+            ? eventData.objective.replace(/"/g, "&quot;")
+            : "N/A"
         }</textarea>
         <p><strong>Instruction:</strong></p>
         <textarea class="form-control" rows="7" id="instructionField" readonly>${
-          eventData.instruction || "N/A"
+          eventData.instruction
+            ? eventData.instruction.replace(/"/g, "&quot;")
+            : "N/A"
         }</textarea>
       <p>
   <strong>Target Participant:</strong>
@@ -2225,18 +2223,19 @@
     pattern="[0-9]+"
     oninput="this.value = this.value.replace(/[^0-9]/g, '');"
   >
-</p>
-
-        ${generatePaymentFieldsHTML(eventData)}
-    
+</p>    
         <p><strong>Facilitators Name:</strong>
           <input class="form-control" id="facilitatorField" type="text" value="${
-            eventData.facilitatorsName || "N/A"
+            eventData.facilitatorsName
+              ? eventData.facilitatorsName.replace(/"/g, "&quot;")
+              : "N/A"
           }" readonly>
         </p>
         <p><strong>Facilitators Contractor Email:</strong>
           <input class="form-control" id="facilitatorNField" type="text" value="${
-            eventData.facilitatorsContactorEmail || "N/A"
+            eventData.facilitatorsContactorEmail
+              ? eventData.facilitatorsContactorEmail.replace(/"/g, "&quot;")
+              : "N/A"
           }" readonly>
         </p>
      <p>
@@ -2255,7 +2254,9 @@
 <p style="display: none;"  id="payRecipLabel">
     <strong>Payment Recipient:</strong>
     <input class="form-control" id="payRecip" type="text" value="${
-      eventData.paymentRecipient || "N/A"
+      eventData.paymentRecipient
+        ? eventData.paymentRecipient.replace(/"/g, "&quot;")
+        : "N/A"
     }" readonly>
 </p>
 <p style="display: none;" id="payMethLabel">
@@ -2270,7 +2271,7 @@
             eventData.fundcollected || "N/A"
           }" readonly>
         </p>
-
+       ${generatePaymentFieldsHTML(eventData)}
       `;
 
         // Show the modal
@@ -2342,7 +2343,28 @@
 
           // Reference the specific event node in Firebase
           const eventRef = ref(db, `Upload Engagement/${eventId}`);
+          const participantsRef = ref(
+            db,
+            `Upload Engagement/${eventId}/Participants`
+          );
 
+          // Function to update the notification badge count
+          function updateNotificationBadge(count) {
+            const notificationBadge =
+              document.getElementById("notificationBadge");
+            notificationBadge.innerText = count.toString();
+          }
+
+          // Listen for changes in the Participants child
+          onValue(participantsRef, (snapshot) => {
+            if (snapshot.exists()) {
+              const participantsCount = Object.keys(snapshot.val()).length;
+              updateNotificationBadge(participantsCount);
+            } else {
+              // Handle the case where there are no participants
+              updateNotificationBadge(0);
+            }
+          });
           // Retrieve the event data from Firebase
           get(eventRef)
             .then((snapshot) => {
@@ -2464,10 +2486,10 @@
             ) {
               const {
                 campus,
-                category, // Add back the category field
+                category,
                 startDate,
                 endDate,
-                title,
+                titleEvent,
                 image,
                 location,
                 // Add other fields you want to retrieve from Firebase
@@ -2510,7 +2532,7 @@
                 category,
                 startDate,
                 endDate,
-                title,
+                titleEvent,
                 image,
                 location,
               } = event.data;
@@ -2519,7 +2541,7 @@
               newRow.innerHTML = `
                     <td>${rowNumber}</td>
                     <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
-                    <td>${title || "N/A"}</td>
+                    <td>${titleEvent || "N/A"}</td>
                     <td>${category || "N/A"}</td>
                     <td>${campus || "N/A"}</td>
                     <td>${startDate.toLocaleString() || "N/A"} -- ${
@@ -2791,7 +2813,7 @@
 
           // Update the values in Firebase
           update(eventRef, {
-            title: document.getElementById("titleField").value,
+            titleEvent: document.getElementById("titleField").value,
             category: document.getElementById("categoryField").value,
             campus: document.getElementById("campusField").value,
             location: document.getElementById("locationField").value,
@@ -2941,7 +2963,7 @@
 
       function submitForm() {
         // Get data from the form fields
-        const title = document.getElementById("titlepost").value;
+        const titleEvent = document.getElementById("titlepost").value;
         const category = document.getElementById("category").value;
         const startDate = formatDate(
           document.getElementById("startdate").value
@@ -2969,7 +2991,7 @@
         // Prepare data for upload
         const eventData = {
           uploadersUID: uploadersUID,
-          title: title,
+          titleEvent: titleEvent,
           category: category,
           startDate: startDate,
           endDate: endDate,
@@ -2986,7 +3008,6 @@
           activepoints: activePoints,
           facilitatorsName: facilitatorsName,
           facilitatorsContactorEmail: facilitatorsContactOrEmail,
-          // ... (add other properties as needed)
         };
 
         // Get the file input element
@@ -3357,7 +3378,6 @@
           "filePost",
           "facname",
           "facnamecon",
-          // Add more field IDs as needed
         ];
 
         // Check if all required fields are filled in
@@ -3551,6 +3571,20 @@
         } else {
           console.log("User is logged out");
         }
+      });
+      document.getElementById("logOut").addEventListener("click", () => {
+        // Sign out the current user
+        auth4
+          .signOut()
+          .then(() => {
+            console.log("User logged out");
+
+            // Redirect to the suplogin.html page after successful logout
+            window.location.href = "login/suplogin.html";
+          })
+          .catch((error) => {
+            console.error("Error logging out:", error);
+          });
       });
     </script>
   </body>
