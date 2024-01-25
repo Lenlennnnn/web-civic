@@ -2996,88 +2996,56 @@
       }
       document.addEventListener("click", function (event) {
         if (event.target && event.target.id === "atdbtn") {
-          const uid = event.target.getAttribute("data-uid");
-          const eventId = event.target.getAttribute("data-event-id");
-
-          const participantRef = ref(
-            db,
-            `Upload Engagement/${eventId}/Participants/${uid}`
-          );
-          const timestamp = generateTimestamp();
-
-          // Get the event category
-          const eventCategoryRef = ref(
-            db,
-            `Upload Engagement/${eventId}/category`
+          const confirmAttendance = confirm(
+            "Are you sure to confirm the user's attendance?"
           );
 
-          // Use Promise.all to fetch both participants and event category
-          Promise.all([get(participantRef), get(eventCategoryRef)])
-            .then(([participantSnapshot, categorySnapshot]) => {
-              const isJoined =
-                participantSnapshot.exists() &&
-                participantSnapshot.val().joined;
+          if (confirmAttendance) {
+            const uid = event.target.getAttribute("data-uid");
+            const eventId = event.target.getAttribute("data-event-id");
 
-              if (isJoined) {
-                // If already joined, ask for confirmation to cancel
-                const confirmCancel = confirm(
-                  "Are you sure you want to cancel your attendance?"
-                );
-                if (!confirmCancel) {
-                  return; // If user cancels, do nothing
-                }
-              }
+            const participantRef = ref(
+              db,
+              `Upload Engagement/${eventId}/Participants/${uid}`
+            );
+            const timestamp = generateTimestamp();
 
-              // Use Promise.all to ensure atomic updates
-              Promise.all([
-                update(participantRef, {
-                  joined: !isJoined,
-                  approveTimeStamp: isJoined ? null : timestamp,
-                }),
-                updateColorAndText(event.target, !isJoined),
-                get(eventCategoryRef),
-              ])
-                .then(([_, __, categorySnapshot]) => {
-                  // Check if the category is "Fund Raising" or "Donation" and update contributionStatus
-                  if (
-                    categorySnapshot.val() === "Fund Raising" ||
-                    categorySnapshot.val() === "Donation"
-                  ) {
-                    const transparencyImageRef = ref(
-                      db,
-                      `Upload Engagement/${eventId}/TransparencyImage/${uid}`
-                    );
-                    update(transparencyImageRef, {
-                      contributionStatus: !isJoined,
-                    });
-                  }
+            // Get the event category
+            const eventCategoryRef = ref(
+              db,
+              `Upload Engagement/${eventId}/category`
+            );
 
-                  alert(
-                    `Attendance ${
-                      isJoined ? "cancelled" : "confirmed"
-                    } successfully!`
+            // Use Promise.all to fetch both participants and event category
+            Promise.all([
+              update(participantRef, {
+                joined: true,
+                approveTimeStamp: timestamp,
+              }),
+              get(eventCategoryRef),
+            ])
+              .then(([_, categorySnapshot]) => {
+                // Check if the category is "Fund Raising" or "Donation" and update contributionStatus
+                if (
+                  categorySnapshot.val() === "Fund Raising" ||
+                  categorySnapshot.val() === "Donation"
+                ) {
+                  const transparencyImageRef = ref(
+                    db,
+                    `Upload Engagement/${eventId}/TransparencyImage/${uid}`
                   );
-                })
-                .catch((error) => {
-                  console.error("Error updating data:", error);
-                  alert("Error updating attendance status. Please try again.");
-                });
-            })
-            .catch((error) => {
-              console.error("Error fetching data:", error);
-            });
+                  update(transparencyImageRef, { contributionStatus: true });
+                }
+
+                alert("Attendance confirmed successfully!");
+              })
+              .catch((error) => {
+                console.error("Error updating data:", error);
+                alert("Error confirming attendance. Please try again.");
+              });
+          }
         }
       });
-
-      function updateColorAndText(button, isJoined) {
-        return new Promise((resolve) => {
-          // Change button color and text based on the joined status
-          button.style.backgroundColor = isJoined ? "red" : "green";
-          button.textContent = isJoined ? "Cancel" : "Confirm";
-          resolve();
-        });
-      }
-
       const modalAttendeeIcon = document.getElementById("modalAttendee");
       modalAttendeeIcon.addEventListener("click", function () {
         // Display the modal with id "myModalat"
