@@ -1025,6 +1025,11 @@
       #logoutForm {
         height: 25%;
       }
+      .center-text {
+        text-align: center;
+        font-size: 18px;
+      }
+
       /* .upcoming {
         position: fixed;
       } */
@@ -1776,7 +1781,7 @@
                       </div>
                       <div class="modal-bodyat">
                         <table
-                          id="example"
+                          id="tableParticipants"
                           class="table table-striped"
                           style="width: 100%">
                           <thead class="headerr">
@@ -1784,7 +1789,7 @@
                               <th>UID</th>
                               <th>Name</th>
                               <th>Campus</th>
-                              <th>Proof</th>
+                              <th id="proofHead">Proof</th>
                               <th>Action</th>
                             </tr>
                           </thead>
@@ -2881,12 +2886,211 @@
       const editBtn = document.getElementById("editBtn");
       editBtn.addEventListener("click", enableEditing);
       displayEventData();
-      // Add click event listener to the modalAttendee element
+      function tableParticipants(eventId) {
+        const participantsTable = document
+          .getElementById("tableParticipants")
+          .getElementsByTagName("tbody")[0];
+        participantsTable.innerHTML = ""; // Clear existing table data
+
+        const participantsRef = ref(
+          db,
+          `Upload Engagement/${eventId}/Participants`
+        );
+
+        // Fetch the event category from the database
+        const eventCategoryRef = ref(
+          db,
+          `Upload Engagement/${eventId}/category`
+        );
+
+        // Use Promise.all to fetch both participants and event category
+        Promise.all([get(participantsRef), get(eventCategoryRef)])
+          .then(([participantsSnapshot, categorySnapshot]) => {
+            if (participantsSnapshot.exists()) {
+              participantsSnapshot.forEach((participantSnapshot) => {
+                const uid = participantSnapshot.key;
+                const participantData = participantSnapshot.val();
+
+                const userRef = ref(db, `Users/${uid}`);
+                get(userRef).then((userSnapshot) => {
+                  if (userSnapshot.exists()) {
+                    const userData = userSnapshot.val();
+
+                    // Create a new row for each participant
+                    const newRow = participantsTable.insertRow();
+                    newRow.innerHTML = `
+                            <td>${uid}</td>
+                            <td>${userData.lastname}, ${userData.firstname} ${
+                      userData.middlename
+                    }</td>
+                            <td>${userData.campus}</td>
+                            ${
+                              categorySnapshot.val() === "Fund Raising" ||
+                              categorySnapshot.val() === "Donation"
+                                ? `
+                                        <td>
+                                            <a href="#" id="proof" style="color: #dc3545; text-decoration: underline;">View the file</a>
+                                        </td>
+                                    `
+                                : ""
+                            }
+                            <td>
+                                <button class="btn btn-success" id="atdbtn" data-uid="${uid}" data-event-id="${eventId}">
+                                    Confirm
+                                </button>
+                            </td>
+                        `;
+
+                    // Add event listener for "proof" link
+                    const proofLink = newRow.querySelector("#proof");
+                    proofLink.addEventListener("click", function (event) {
+                      event.preventDefault(); // Prevent the default behavior of the link (opening in the same tab)
+
+                      const transparencyImageRef = ref(
+                        db,
+                        `Upload Engagement/${eventId}/TransparencyImage/${uid}`
+                      );
+                      get(transparencyImageRef)
+                        .then((imageSnapshot) => {
+                          if (imageSnapshot.exists()) {
+                            const imageUri = imageSnapshot.val().imageUri;
+
+                            // Open the imageUri link in a new tab
+                            window.open(imageUri, "_blank");
+                          } else {
+                            console.error("Image data not found for UID:", uid);
+                          }
+                        })
+                        .catch((error) => {
+                          console.error("Error fetching image data:", error);
+                        });
+                    });
+                  }
+                });
+              });
+            } else {
+              // If there are no participants, add a row with a message
+              const noParticipantsRow = participantsTable.insertRow();
+              noParticipantsRow.innerHTML = `
+                <td colspan="${
+                  categorySnapshot.val() === "Fund Raising" ||
+                  categorySnapshot.val() === "Donation"
+                    ? 5
+                    : 4
+                }" class="center-text">
+                    Currently, there are no participants at the moment.
+                </td>
+            `;
+            }
+            // Hide the "Proof" column header if the category is neither "Fund Raising" nor "Donation"
+            const proofHead = document.getElementById("proofHead");
+            proofHead.style.display =
+              categorySnapshot.val() === "Fund Raising" ||
+              categorySnapshot.val() === "Donation"
+                ? ""
+                : "none";
+          })
+          .catch((error) => {
+            console.error("Error fetching data:", error);
+          });
+      }
+      document.addEventListener("click", function (event) {
+        if (event.target && event.target.id === "atdbtn") {
+          const uid = event.target.getAttribute("data-uid");
+          const eventId = event.target.getAttribute("data-event-id");
+
+          const participantRef = ref(
+            db,
+            `Upload Engagement/${eventId}/Participants/${uid}`
+          );
+          const timestamp = generateTimestamp();
+
+          // Get the event category
+          const eventCategoryRef = ref(
+            db,
+            `Upload Engagement/${eventId}/category`
+          );
+
+          // Use Promise.all to fetch both participants and event category
+          Promise.all([get(participantRef), get(eventCategoryRef)])
+            .then(([participantSnapshot, categorySnapshot]) => {
+              const isJoined =
+                participantSnapshot.exists() &&
+                participantSnapshot.val().joined;
+
+              if (isJoined) {
+                // If already joined, ask for confirmation to cancel
+                const confirmCancel = confirm(
+                  "Are you sure you want to cancel your attendance?"
+                );
+                if (!confirmCancel) {
+                  return; // If user cancels, do nothing
+                }
+              }
+
+              // Use Promise.all to ensure atomic updates
+              Promise.all([
+                update(participantRef, {
+                  joined: !isJoined,
+                  approveTimeStamp: isJoined ? null : timestamp,
+                }),
+                updateColorAndText(event.target, !isJoined),
+                get(eventCategoryRef),
+              ])
+                .then(([_, __, categorySnapshot]) => {
+                  // Check if the category is "Fund Raising" or "Donation" and update contributionStatus
+                  if (
+                    categorySnapshot.val() === "Fund Raising" ||
+                    categorySnapshot.val() === "Donation"
+                  ) {
+                    const transparencyImageRef = ref(
+                      db,
+                      `Upload Engagement/${eventId}/TransparencyImage/${uid}`
+                    );
+                    update(transparencyImageRef, {
+                      contributionStatus: !isJoined,
+                    });
+                  }
+
+                  alert(
+                    `Attendance ${
+                      isJoined ? "cancelled" : "confirmed"
+                    } successfully!`
+                  );
+                })
+                .catch((error) => {
+                  console.error("Error updating data:", error);
+                  alert("Error updating attendance status. Please try again.");
+                });
+            })
+            .catch((error) => {
+              console.error("Error fetching data:", error);
+            });
+        }
+      });
+
+      function updateColorAndText(button, isJoined) {
+        return new Promise((resolve) => {
+          // Change button color and text based on the joined status
+          button.style.backgroundColor = isJoined ? "red" : "green";
+          button.textContent = isJoined ? "Cancel" : "Confirm";
+          resolve();
+        });
+      }
+
       const modalAttendeeIcon = document.getElementById("modalAttendee");
       modalAttendeeIcon.addEventListener("click", function () {
         // Display the modal with id "myModalat"
         const modalAt = document.getElementById("myModalat");
         modalAt.style.display = "block";
+
+        // Get the eventId from the selected row
+        const eventId = document
+          .querySelector("tr.selected-event")
+          .getAttribute("data-event-id");
+
+        // Call the tableParticipants function to populate the table
+        tableParticipants(eventId);
 
         // Handle the close button inside the modal
         const closeAt = document.getElementsByClassName("closeat")[0];
@@ -2901,14 +3105,19 @@
           }
         });
       });
-
-      // Add logic for handling the "View" button inside the modal
-      const viewButton = document.getElementById("atdbtn");
-      viewButton.addEventListener("click", function () {
-        // Add logic to handle the "View" button click inside the modal
-        // You can customize this based on your requirements.
-        console.log("View button clicked");
-      });
+      function generateTimestamp() {
+        const currentDate = new Date();
+        const options = {
+          timeZone: "Asia/Manila",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        };
+        return currentDate.toLocaleString("en-US", options).replace(",", "");
+      }
     </script>
 
     <script src="js/dashboard.js"></script>
