@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Validate Student</title>
+    <title>Validate User</title>
     <link rel="icon" type="image/png" href="login/images/icons/civicon.png" />
     <link rel="stylesheet" href="css/dashboard.css" />
     <link
@@ -158,7 +158,7 @@
           type="module"
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
       </div>
-      <h1 class="h1-group">Validate Student</h1>
+      <h1 class="h1-group">Validate User</h1>
 
       <div class="container py-5">
         <div class="row">
@@ -166,6 +166,7 @@
             <thead>
               <tr>
                 <th>UID</th>
+                <th>Sr-Code</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Gender</th>
@@ -478,6 +479,7 @@
           const table = tableElement.DataTable({
             columns: [
               { title: "UID" },
+              { title: "Sr-Code" },
               { title: "Name" },
               { title: "Email" },
               { title: "Gender" },
@@ -488,7 +490,7 @@
               { title: "Details" },
             ],
             // Specify the initial order based on the second column (Name)
-            order: [[1, "asc"]],
+            order: [[2, "asc"]],
           });
 
           tableElement.on("click", ".view-button", function () {
@@ -682,6 +684,7 @@
                     const name = displayNA(
                       `${user.lastname}, ${user.firstname}, ${user.middlename}`
                     );
+                    const srcode = displayNA(user.srcode);
                     const email = displayNA(user.email);
                     const gender = displayNA(user.gender);
                     const yearandSect = displayNA(user.yearandSection);
@@ -691,6 +694,7 @@
 
                     usersToDisplay.push([
                       uid,
+                      srcode,
                       name,
                       email,
                       gender,
