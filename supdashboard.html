@@ -1790,7 +1790,7 @@
                               <th>Name</th>
                               <th>Campus</th>
                               <th id="proofHead">Proof</th>
-                              <th>Action</th>
+                              <th>Attendance</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -2886,6 +2886,32 @@
       const editBtn = document.getElementById("editBtn");
       editBtn.addEventListener("click", enableEditing);
       displayEventData();
+      function initRealtimeListener(uid, eventId) {
+        const participantRef = ref(
+          db,
+          `Upload Engagement/${eventId}/Participants/${uid}`
+        );
+
+        onValue(participantRef, (snapshot) => {
+          const participantData = snapshot.val();
+
+          // Check if the participant has already joined and attended
+          const isAlreadyAttended =
+            participantData.joined && participantData.attendedStamp;
+
+          // Update the button style based on real-time changes
+          const button = document.querySelector(
+            `#atdbtn[data-uid="${uid}"][data-event-id="${eventId}"]`
+          );
+          if (button) {
+            button.classList.remove("btn-success", "btn-danger");
+            button.classList.add(
+              isAlreadyAttended ? "btn-danger" : "btn-success"
+            );
+            button.textContent = isAlreadyAttended ? "Cancel" : "Confirm";
+          }
+        });
+      }
       function tableParticipants(eventId) {
         const participantsTable = document
           .getElementById("tableParticipants")
@@ -2910,7 +2936,8 @@
               participantsSnapshot.forEach((participantSnapshot) => {
                 const uid = participantSnapshot.key;
                 const participantData = participantSnapshot.val();
-
+                const isAlreadyAttended =
+                  participantData.joined && participantData.attendedStamp;
                 const userRef = ref(db, `Users/${uid}`);
                 get(userRef).then((userSnapshot) => {
                   if (userSnapshot.exists()) {
@@ -2934,12 +2961,15 @@
                                     `
                                 : ""
                             }
-                            <td>
-                                <button class="btn btn-success" id="atdbtn" data-uid="${uid}" data-event-id="${eventId}">
-                                    Confirm
-                                </button>
-                            </td>
+                          <td>
+      <button class="btn ${
+        isAlreadyAttended ? "btn-danger" : "btn-success"
+      }" id="atdbtn" data-uid="${uid}" data-event-id="${eventId}">
+        ${isAlreadyAttended ? "Cancel" : "Confirm"}
+      </button>
+    </td>
                         `;
+                    initRealtimeListener(uid, eventId);
 
                     // Add event listener for "proof" link
                     const proofLink = newRow.querySelector("#proof");
@@ -2996,56 +3026,138 @@
       }
       document.addEventListener("click", function (event) {
         if (event.target && event.target.id === "atdbtn") {
-          const confirmAttendance = confirm(
-            "Are you sure to confirm the user's attendance?"
+          const uid = event.target.getAttribute("data-uid");
+          const eventId = event.target.getAttribute("data-event-id");
+          const participantRef = ref(
+            db,
+            `Upload Engagement/${eventId}/Participants/${uid}`
           );
 
-          if (confirmAttendance) {
-            const uid = event.target.getAttribute("data-uid");
-            const eventId = event.target.getAttribute("data-event-id");
+          get(participantRef)
+            .then((participantSnapshot) => {
+              const participantData = participantSnapshot.val();
 
-            const participantRef = ref(
-              db,
-              `Upload Engagement/${eventId}/Participants/${uid}`
-            );
-            const timestamp = generateTimestamp();
-
-            // Get the event category
-            const eventCategoryRef = ref(
-              db,
-              `Upload Engagement/${eventId}/category`
-            );
-
-            // Use Promise.all to fetch both participants and event category
-            Promise.all([
-              update(participantRef, {
-                joined: true,
-                approveTimeStamp: timestamp,
-              }),
-              get(eventCategoryRef),
-            ])
-              .then(([_, categorySnapshot]) => {
-                // Check if the category is "Fund Raising" or "Donation" and update contributionStatus
-                if (
-                  categorySnapshot.val() === "Fund Raising" ||
-                  categorySnapshot.val() === "Donation"
-                ) {
-                  const transparencyImageRef = ref(
-                    db,
-                    `Upload Engagement/${eventId}/TransparencyImage/${uid}`
-                  );
-                  update(transparencyImageRef, { contributionStatus: true });
-                }
-
-                alert("Attendance confirmed successfully!");
-              })
-              .catch((error) => {
-                console.error("Error updating data:", error);
-                alert("Error confirming attendance. Please try again.");
-              });
-          }
+              if (participantData.joined && participantData.attendedStamp) {
+                // If already attended, cancel the attendance
+                cancelAttendance(uid, eventId);
+              } else {
+                // Confirm the attendance
+                confirmAttendance(uid, eventId);
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching participant data:", error);
+              alert("Error confirming/canceling attendance. Please try again.");
+            });
         }
       });
+
+      // Using event delegation for the 'proof' link
+      document.addEventListener("click", function (event) {
+        if (event.target && event.target.id === "proof") {
+          event.preventDefault();
+
+          const row = event.target.closest("tr");
+          const uid = row.querySelector("[data-uid]").getAttribute("data-uid");
+          const eventId = row
+            .querySelector("[data-event-id]")
+            .getAttribute("data-event-id");
+
+          const transparencyImageRef = ref(
+            db,
+            `Upload Engagement/${eventId}/TransparencyImage/${uid}`
+          );
+
+          get(transparencyImageRef)
+            .then((imageSnapshot) => {
+              if (imageSnapshot.exists()) {
+                const imageUri = imageSnapshot.val().imageUri;
+
+                // Open the imageUri link in a new tab
+                window.open(imageUri, "_blank");
+              } else {
+                console.error("Image data not found for UID:", uid);
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching image data:", error);
+            });
+        }
+      });
+
+      function confirmAttendance(uid, eventId) {
+        const confirmAttendance = confirm(
+          "Are you sure to confirm the user's attendance?"
+        );
+
+        if (confirmAttendance) {
+          const participantRef = ref(
+            db,
+            `Upload Engagement/${eventId}/Participants/${uid}`
+          );
+          const timestamp = generateTimestamp();
+
+          // Get the event category
+          const eventCategoryRef = ref(
+            db,
+            `Upload Engagement/${eventId}/category`
+          );
+
+          // Use Promise.all to fetch both participants and event category
+          Promise.all([
+            update(participantRef, { joined: true, attendedStamp: timestamp }),
+            get(eventCategoryRef),
+          ])
+            .then(([_, categorySnapshot]) => {
+              // Check if the category is "Fund Raising" or "Donation" and update contributionStatus
+              if (
+                categorySnapshot.val() === "Fund Raising" ||
+                categorySnapshot.val() === "Donation"
+              ) {
+                const transparencyImageRef = ref(
+                  db,
+                  `Upload Engagement/${eventId}/TransparencyImage/${uid}`
+                );
+                update(transparencyImageRef, { contributionStatus: true });
+              }
+
+              alert("Attendance confirmed successfully!");
+            })
+            .catch((error) => {
+              console.error("Error updating data:", error);
+              alert("Error confirming attendance. Please try again.");
+            });
+        }
+      }
+
+      function cancelAttendance(uid, eventId) {
+        const cancelAttendance = confirm(
+          "Are you sure to cancel the user's attendance?"
+        );
+
+        if (cancelAttendance) {
+          const participantRef = ref(
+            db,
+            `Upload Engagement/${eventId}/Participants/${uid}`
+          );
+          const transparencyImageRef = ref(
+            db,
+            `Upload Engagement/${eventId}/TransparencyImage/${uid}`
+          );
+
+          Promise.all([
+            update(participantRef, { joined: false, attendedStamp: null }),
+            update(transparencyImageRef, { contributionStatus: false }),
+          ])
+            .then(() => {
+              alert("Attendance canceled successfully!");
+            })
+            .catch((error) => {
+              console.error("Error updating data:", error);
+              alert("Error canceling attendance. Please try again.");
+            });
+        }
+      }
       const modalAttendeeIcon = document.getElementById("modalAttendee");
       modalAttendeeIcon.addEventListener("click", function () {
         // Display the modal with id "myModalat"
