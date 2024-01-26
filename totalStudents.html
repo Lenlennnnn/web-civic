@@ -634,10 +634,11 @@
       </div>
       <div class="container py-5">
         <div class="row">
-          <table id="example" class="table table-striped" style="width: 100%">
+          <table id="example" class="table table-striped" style="width: 105%">
             <thead class="headerr">
               <tr>
                 <th>UID</th>
+                 <th>Sr-Code</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Gender</th>
@@ -1045,6 +1046,7 @@
         const dataTable = $("#example").DataTable({
           columns: [
             { data: "userUID" },
+             { data: "srcode" },
             { data: "fullname" },
             { data: "email" },
             { data: "gender" },
@@ -1056,9 +1058,9 @@
           ],
           // Add the following lines to specify sorting based on the lastname column
           columnDefs: [
-            { targets: 1, type: "string" }, // Assuming the lastname column is at index 1
+            { targets: 2, type: "string" }, // Assuming the lastname column is at index 1
           ],
-          order: [[1, "asc"]], // Order by lastname in ascending order
+          order: [[2, "asc"]], // Order by lastname in ascending order
         });
 
         return dataTable;
@@ -1103,6 +1105,7 @@
                   const fullName = `${user.lastname || "N/A"}, ${
                     user.firstname || "N/A"
                   }, ${user.middlename || "N/A"}`;
+                  const srcode = user.srcode || "N/A";
                   const email = user.email || "N/A";
                   const gender = user.gender || "N/A";
                   const yearAndSection = user.yearandSection || "N/A";
@@ -1112,6 +1115,7 @@
 
                   dataTable.row.add({
                     userUID: userId,
+                      srcode: srcode,
                     fullname: fullName,
                     email: email,
                     gender: gender,

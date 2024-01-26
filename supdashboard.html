@@ -1787,6 +1787,7 @@
                           <thead class="headerr">
                             <tr>
                               <th>UID</th>
+                              <th>Sr-Code</th>
                               <th>Name</th>
                               <th>Campus</th>
                               <th id="proofHead">Proof</th>
@@ -1796,6 +1797,7 @@
                           <tbody>
                             <tr>
                               <td>cVgtKBKiYEQ5XnldOKyoJAKS9GC3</td>
+                              <td>20-63720</td>
                               <td>Leonard Briones</td>
                               <td>JPLPC Malvar</td>
                               <td>
@@ -2957,6 +2959,7 @@
                     const newRow = participantsTable.insertRow();
                     newRow.innerHTML = `
                                 <td>${uid}</td>
+                                   <td>${userData.srcode}</td>
                                 <td>${userData.lastname}, ${
                       userData.firstname
                     } ${userData.middlename}</td>
