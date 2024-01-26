@@ -2103,11 +2103,12 @@
                       eventData.paymentRecipient || "N/A"
                     }" readonly>
                 </p>
-                <p id="fundLabel"><strong>Fund Collected:</strong>
-                    <input class="form-control" id="fundCollectedField" type="text" value="${
-                      eventData.fundcollected || "N/A"
-                    }" readonly>
-                </p>
+              <p  id="fundLabel">
+  <strong>Fund Collected:</strong>
+  <input class="form-control" id="fundCollectedField" type="text" value="₱ ${
+    formatDecimal(eventData.fundcollected) || "N/A"
+  }" readonly>
+</p>
                 <p id="payMethLabel"><strong>Payment Method:</strong>
                     <input class="form-control" id="payMeth" type="text" value="${
                       eventData.paymentMethod || "N/A"
@@ -2273,12 +2274,12 @@
       eventData.paymentMethod || "N/A"
     }" readonly>
 </p>
- <p style="display: none;" id="fundLabel">
-    <strong>Fund Collected:</strong>
-          <input class="form-control" id="fundCollectedField" type="text" value="${
-            eventData.fundcollected || "N/A"
-          }" readonly>
-        </p>
+<p style="display: none;" id="fundLabel">
+  <strong>Fund Collected:</strong>
+  <input class="form-control" id="fundCollectedField" type="text" value="₱ ${
+    formatDecimal(eventData.fundcollected) || "N/A"
+  }" readonly>
+</p>
        ${generatePaymentFieldsHTML(eventData)}
       `;
 
@@ -2293,7 +2294,13 @@
         // Reset buttons and fields to their original state
         resetButtonsAndFields();
       }
-
+      function formatDecimal(value) {
+        if (value !== undefined && value !== null) {
+          // Use toFixed(2) to round to 2 decimal places
+          return parseFloat(value).toFixed(2);
+        }
+        return null;
+      }
       function resetButtonsAndFields() {
         const editBtn = document.getElementById("editBtn");
         const saveBtn = document.getElementById("saveBtn");
