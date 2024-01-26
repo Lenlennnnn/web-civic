@@ -2067,18 +2067,7 @@
         getAuth,
         createUserWithEmailAndPassword,
       } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
-      const firebaseConfig = {
-        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
-        authDomain: "civicall-app-a54d1.firebaseapp.com",
-        databaseURL:
-          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "civicall-app-a54d1",
-        storageBucket: "civicall-app-a54d1.appspot.com",
-        messagingSenderId: "909514632764",
-        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
-        measurementId: "G-0BVYE5XJGV",
-      };
-
+      import firebaseConfig from "./js/firebaseConfig.js";
       const app = initializeApp(firebaseConfig);
       const db = getDatabase(app);
       const auth = getAuth(app);
@@ -3323,19 +3312,9 @@
         getDownloadURL,
       } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-storage.js";
 
-      const firebaseConfig2 = {
-        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
-        authDomain: "civicall-app-a54d1.firebaseapp.com",
-        databaseURL:
-          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "civicall-app-a54d1",
-        storageBucket: "civicall-app-a54d1.appspot.com",
-        messagingSenderId: "909514632764",
-        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
-        measurementId: "G-0BVYE5XJGV",
-      };
+      import firebaseConfig from "./js/firebaseConfig.js";
 
-      const app2 = initializeApp(firebaseConfig2);
+      const app2 = initializeApp(firebaseConfig);
       const db2 = getDatabase(app2);
       const auth2 = getAuth(app2);
       const storage2 = getStorage(app2);
@@ -3847,21 +3826,10 @@
         onValue,
       } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 
-      // Firebase configuration
-      const firebaseConfig3 = {
-        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
-        authDomain: "civicall-app-a54d1.firebaseapp.com",
-        databaseURL:
-          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "civicall-app-a54d1",
-        storageBucket: "civicall-app-a54d1.appspot.com",
-        messagingSenderId: "909514632764",
-        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
-        measurementId: "G-0BVYE5XJGV",
-      };
+      import firebaseConfig from "./js/firebaseConfig.js";
 
       // Initialize Firebase app
-      const app3 = initializeApp(firebaseConfig3);
+      const app3 = initializeApp(firebaseConfig);
       const db3 = getDatabase(app3);
 
       // Reference to the "Users" node in the database
@@ -3918,19 +3886,9 @@
       } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
       import { getAuth } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 
-      const firebaseConfig4 = {
-        apiKey: "AIzaSyAMl8Eq_Clwyaw4w4D_TTrmOan9osHooMY",
-        authDomain: "civicall-app-a54d1.firebaseapp.com",
-        databaseURL:
-          "https://civicall-app-a54d1-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "civicall-app-a54d1",
-        storageBucket: "civicall-app-a54d1.appspot.com",
-        messagingSenderId: "909514632764",
-        appId: "1:909514632764:web:bc969936e31a4fba9e9d39",
-        measurementId: "G-0BVYE5XJGV",
-      };
+      import firebaseConfig from "./js/firebaseConfig.js";
 
-      const app4 = initializeApp(firebaseConfig4);
+      const app4 = initializeApp(firebaseConfig);
       const db4 = getDatabase(app4);
       const auth4 = getAuth(app4);
 
