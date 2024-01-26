@@ -3103,7 +3103,11 @@
             db,
             `Upload Engagement/${eventId}/Participants/${uid}`
           );
-          const timestamp = generateTimestamp();
+          const transparencyImageRef = ref(
+            db,
+            `Upload Engagement/${eventId}/TransparencyImage/${uid}`
+          );
+          const eventRef = ref(db, `Upload Engagement/${eventId}`);
 
           // Get the event category
           const eventCategoryRef = ref(
@@ -3111,32 +3115,62 @@
             `Upload Engagement/${eventId}/category`
           );
 
-          // Use Promise.all to fetch both participants and event category
+          // Use Promise.all to fetch both participants, event category, and TransparencyImage data
           Promise.all([
-            update(participantRef, { joined: true, attendedStamp: timestamp }),
+            get(participantRef),
+            get(transparencyImageRef),
             get(eventCategoryRef),
+            get(eventRef),
           ])
-            .then(([_, categorySnapshot]) => {
-              // Check if the category is "Fund Raising" or "Donation" and update contributionStatus
-              if (
-                categorySnapshot.val() === "Fund Raising" ||
-                categorySnapshot.val() === "Donation"
-              ) {
-                const transparencyImageRef = ref(
-                  db,
-                  `Upload Engagement/${eventId}/TransparencyImage/${uid}`
-                );
-                update(transparencyImageRef, { contributionStatus: true });
-              }
+            .then(
+              ([
+                participantSnapshot,
+                transparencyImageSnapshot,
+                categorySnapshot,
+                eventSnapshot,
+              ]) => {
+                const participantData = participantSnapshot.val();
+                const transparencyImageData = transparencyImageSnapshot.val();
 
-              alert("Attendance confirmed successfully!");
-            })
+                if (!participantData.joined || !participantData.attendedStamp) {
+                  // If not already attended, confirm the attendance
+                  const timestamp = generateTimestamp();
+
+                  // Update participant data
+                  const updates = {
+                    joined: true,
+                    attendedStamp: timestamp,
+                  };
+                  update(participantRef, updates);
+
+                  // Update fundcollected if category is "Fund Raising" or "Donation"
+                  if (
+                    categorySnapshot.val() === "Fund Raising" ||
+                    categorySnapshot.val() === "Donation"
+                  ) {
+                    const newFundCollected =
+                      eventSnapshot.val().fundcollected +
+                      transparencyImageData.amount;
+
+                    update(eventRef, { fundcollected: newFundCollected });
+
+                    // Also update TransparencyImage contributionStatus
+                    update(transparencyImageRef, { contributionStatus: true });
+                  }
+
+                  alert("Attendance confirmed successfully!");
+                } else {
+                  alert("User has already confirmed attendance.");
+                }
+              }
+            )
             .catch((error) => {
-              console.error("Error updating data:", error);
+              console.error("Error confirming attendance:", error);
               alert("Error confirming attendance. Please try again.");
             });
         }
       }
+
       function cancelAttendance(uid, eventId) {
         const cancelAttendance = confirm(
           "Are you sure to cancel the user's attendance?"
@@ -3151,41 +3185,52 @@
             db,
             `Upload Engagement/${eventId}/TransparencyImage/${uid}`
           );
-          const eventCategoryRef = ref(
-            db,
-            `Upload Engagement/${eventId}/category`
-          );
+          const eventRef = ref(db, `Upload Engagement/${eventId}`);
 
-          Promise.all([get(participantRef), get(eventCategoryRef)])
-            .then(([participantSnapshot, categorySnapshot]) => {
-              const participantData = participantSnapshot.val();
+          Promise.all([
+            get(participantRef),
+            get(transparencyImageRef),
+            get(eventRef),
+          ])
+            .then(
+              ([
+                participantSnapshot,
+                transparencyImageSnapshot,
+                eventSnapshot,
+              ]) => {
+                const participantData = participantSnapshot.val();
+                const transparencyImageData = transparencyImageSnapshot.val();
 
-              if (participantData.joined && participantData.attendedStamp) {
-                // If already attended, cancel the attendance
-                const updates = { joined: false, attendedStamp: null };
+                if (participantData.joined && participantData.attendedStamp) {
+                  // If already attended, cancel the attendance
+                  const updates = { joined: false, attendedStamp: null };
 
-                if (
-                  categorySnapshot.val() === "Fund Raising" ||
-                  categorySnapshot.val() === "Donation"
-                ) {
-                  // Include TransparencyImage updates only for "Fund Raising" or "Donation"
-                  update(transparencyImageRef, { contributionStatus: false });
+                  // Update participant data
+                  update(participantRef, updates);
+
+                  // Update fundcollected if category is "Fund Raising" or "Donation"
+                  if (
+                    eventSnapshot.val().category === "Fund Raising" ||
+                    eventSnapshot.val().category === "Donation"
+                  ) {
+                    const newFundCollected =
+                      eventSnapshot.val().fundcollected -
+                      transparencyImageData.amount;
+
+                    update(eventRef, { fundcollected: newFundCollected });
+
+                    // Also update TransparencyImage contributionStatus
+                    update(transparencyImageRef, { contributionStatus: false });
+                  }
+
+                  alert("Attendance canceled successfully!");
+                } else {
+                  alert("User has not confirmed attendance yet.");
                 }
-
-                update(participantRef, updates)
-                  .then(() => {
-                    alert("Attendance canceled successfully!");
-                  })
-                  .catch((error) => {
-                    console.error("Error updating participant data:", error);
-                    alert("Error canceling attendance. Please try again.");
-                  });
-              } else {
-                alert("User has not confirmed attendance yet.");
               }
-            })
+            )
             .catch((error) => {
-              console.error("Error fetching data:", error);
+              console.error("Error canceling attendance:", error);
               alert("Error canceling attendance. Please try again.");
             });
         }
