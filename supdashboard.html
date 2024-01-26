@@ -2808,11 +2808,6 @@
 
           const now = new Date();
 
-          if (startDate <= now) {
-            alert("Please select a start date and time in the future.");
-            return;
-          }
-
           if (endDate <= startDate) {
             alert(
               "Please select an end date and time greater than the start date and time."

@@ -461,6 +461,7 @@
       const app = initializeApp(firebaseConfig);
       const db = getDatabase(app);
       const auth = getAuth(app);
+
       document.addEventListener("DOMContentLoaded", function () {
         if (typeof $ !== "undefined" && typeof $.fn.dataTable !== "undefined") {
           const tableElement = $("#example");
