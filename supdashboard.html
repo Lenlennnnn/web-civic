@@ -2348,10 +2348,10 @@
           clickedRow.classList.add("selected-event");
 
           // Reference the specific event node in Firebase
-          const eventRef = ref(db, `Upload Engagement/${eventId}`);
+          const eventRef = ref(db, `Upload_Engagement/${eventId}`);
           const participantsRef = ref(
             db,
-            `Upload Engagement/${eventId}/Participants`
+            `Upload_Engagement/${eventId}/Participants`
           );
           function formatNumber(num) {
             if (num >= 1000000) {
@@ -2410,7 +2410,7 @@
 
           if (clickedRow) {
             const eventId = clickedRow.getAttribute("data-event-id");
-            const eventRef = ref(db, `Upload Engagement/${eventId}`);
+            const eventRef = ref(db, `Upload_Engagement/${eventId}`);
 
             // Remove the event from Firebase
             set(eventRef, null)
@@ -2482,7 +2482,7 @@
         displayEventData(searchTerm, selectedCampus);
       });
       function displayEventData(searchTerm = "", selectedCampus = "") {
-        const uploadEngagementRef = ref(db, "Upload Engagement");
+        const uploadEngagementRef = ref(db, "Upload_Engagement");
 
         onValue(uploadEngagementRef, (snapshot) => {
           tableBody.innerHTML = ""; // Clear existing table data
@@ -2818,7 +2818,7 @@
           const eventId = document
             .querySelector("tr.selected-event")
             .getAttribute("data-event-id");
-          eventRef = ref(db, `Upload Engagement/${eventId}`); // Update eventRef
+          eventRef = ref(db, `Upload_Engagement/${eventId}`); // Update eventRef
 
           // Update the values in Firebase
           update(eventRef, {
@@ -2882,7 +2882,7 @@
       function initRealtimeListener(uid, eventId) {
         const participantRef = ref(
           db,
-          `Upload Engagement/${eventId}/Participants/${uid}`
+          `Upload_Engagement/${eventId}/Participants/${uid}`
         );
 
         onValue(participantRef, (snapshot) => {
@@ -2912,13 +2912,13 @@
 
         const participantsRef = ref(
           db,
-          `Upload Engagement/${eventId}/Participants`
+          `Upload_Engagement/${eventId}/Participants`
         );
 
         // Fetch the event category from the database
         const eventCategoryRef = ref(
           db,
-          `Upload Engagement/${eventId}/category`
+          `Upload_Engagement/${eventId}/category`
         );
 
         // Use onValue to listen for changes in participants and event category in real-time
@@ -2980,7 +2980,7 @@
 
                       const transparencyImageRef = ref(
                         db,
-                        `Upload Engagement/${eventId}/TransparencyImage/${uid}`
+                        `Upload_Engagement/${eventId}/TransparencyImage/${uid}`
                       );
                       get(transparencyImageRef)
                         .then((imageSnapshot) => {
@@ -3032,7 +3032,7 @@
           const eventId = event.target.getAttribute("data-event-id");
           const participantRef = ref(
             db,
-            `Upload Engagement/${eventId}/Participants/${uid}`
+            `Upload_Engagement/${eventId}/Participants/${uid}`
           );
 
           get(participantRef)
@@ -3067,7 +3067,7 @@
 
           const transparencyImageRef = ref(
             db,
-            `Upload Engagement/${eventId}/TransparencyImage/${uid}`
+            `Upload_Engagement/${eventId}/TransparencyImage/${uid}`
           );
 
           get(transparencyImageRef)
@@ -3095,18 +3095,18 @@
         if (confirmAttendance) {
           const participantRef = ref(
             db,
-            `Upload Engagement/${eventId}/Participants/${uid}`
+            `Upload_Engagement/${eventId}/Participants/${uid}`
           );
           const transparencyImageRef = ref(
             db,
-            `Upload Engagement/${eventId}/TransparencyImage/${uid}`
+            `Upload_Engagement/${eventId}/TransparencyImage/${uid}`
           );
-          const eventRef = ref(db, `Upload Engagement/${eventId}`);
+          const eventRef = ref(db, `Upload_Engagement/${eventId}`);
 
           // Get the event category
           const eventCategoryRef = ref(
             db,
-            `Upload Engagement/${eventId}/category`
+            `Upload_Engagement/${eventId}/category`
           );
 
           // Use Promise.all to fetch both participants, event category, and TransparencyImage data
@@ -3173,13 +3173,13 @@
         if (cancelAttendance) {
           const participantRef = ref(
             db,
-            `Upload Engagement/${eventId}/Participants/${uid}`
+            `Upload_Engagement/${eventId}/Participants/${uid}`
           );
           const transparencyImageRef = ref(
             db,
-            `Upload Engagement/${eventId}/TransparencyImage/${uid}`
+            `Upload_Engagement/${eventId}/TransparencyImage/${uid}`
           );
-          const eventRef = ref(db, `Upload Engagement/${eventId}`);
+          const eventRef = ref(db, `Upload_Engagement/${eventId}`);
 
           Promise.all([
             get(participantRef),
@@ -3412,7 +3412,7 @@
               eventData.image = downloadURL;
 
               // Upload data to the Firebase Realtime Database
-              const newEventRef = push(ref(db2, "Upload Engagement"));
+              const newEventRef = push(ref(db2, "Upload_Engagement"));
               set(newEventRef, eventData)
                 .then(() => {
                   console.log("Event data uploaded successfully");
@@ -3458,7 +3458,7 @@
               alert("Error uploading file. Please try again.");
             });
         } else {
-          const newEventRef = push(ref(db2, "Upload Engagement"));
+          const newEventRef = push(ref(db2, "Upload_Engagement"));
           set(newEventRef, eventData)
             .then(() => {
               console.log("Event data uploaded successfully");
