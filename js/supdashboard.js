@@ -852,16 +852,15 @@ function tableParticipants(eventId) {
     .getElementsByTagName("tbody")[0];
 
   const participantsRef = ref(db, `Upload_Engagement/${eventId}/Participants`);
-
-  // Fetch the event category from the database
   const eventCategoryRef = ref(db, `Upload_Engagement/${eventId}/category`);
 
-  // Use onValue to listen for changes in participants and event category in real-time
-  onValue(participantsRef, (participantsSnapshot) => {
-    onValue(eventCategoryRef, (categorySnapshot) => {
+  // Fetch both participants and event category data
+  Promise.all([get(participantsRef), get(eventCategoryRef)])
+    .then(([participantsSnapshot, categorySnapshot]) => {
       // Clear the table before updating it
       participantsTable.innerHTML = "";
 
+      // Rest of your code...
       if (participantsSnapshot.exists()) {
         participantsSnapshot.forEach((participantSnapshot) => {
           const uid = participantSnapshot.key;
@@ -957,10 +956,11 @@ function tableParticipants(eventId) {
         categorySnapshot.val() === "Donation"
           ? ""
           : "none";
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
     });
-  });
 }
-
 document.addEventListener("click", function (event) {
   if (event.target && event.target.id === "atdbtn") {
     const uid = event.target.getAttribute("data-uid");
