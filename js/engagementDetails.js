@@ -876,34 +876,28 @@ function tableParticipants(eventId) {
               // Create a new row for each participant
               const newRow = participantsTable.insertRow();
               newRow.innerHTML = `
-                                <td>${uid}</td>
-                                   <td>${userData.srcode}</td>
-                                <td>${userData.lastname}, ${
-                userData.firstname
-              }, ${userData.middlename}</td>
-                                <td>${userData.campus}</td>
-                                ${
-                                  categorySnapshot.val() === "Fund Raising" ||
-                                  categorySnapshot.val() === "Donation"
-                                    ? `<td>
-                                                <a href="#" id="proof" style="color: #dc3545; text-decoration: underline;">View the Image</a>
-                                            </td>`
-                                    : ""
-                                }
-                                <td>
-                                    <button class="btn ${
-                                      isAlreadyAttended
-                                        ? "btn-danger"
-                                        : "btn-success"
-                                    }" id="atdbtn" data-uid="${uid}" data-event-id="${eventId}">
-                                        ${
-                                          isAlreadyAttended
-                                            ? "Cancel"
-                                            : "Confirm"
-                                        }
-                                    </button>
-                                </td>
-                            `;
+                <td>${uid}</td>
+                <td>${userData.srcode}</td>
+                <td>${userData.lastname}, ${userData.firstname}, ${
+                userData.middlename
+              }</td>
+                <td>${userData.campus}</td>
+                ${
+                  categorySnapshot.val() === "Fund Raising" ||
+                  categorySnapshot.val() === "Donation"
+                    ? `<td>
+                        <a href="#" id="proof" style="color: #dc3545; text-decoration: underline;">View the Image</a>
+                      </td>`
+                    : ""
+                }
+                <td>
+                  <button class="btn ${
+                    isAlreadyAttended ? "btn-danger" : "btn-success"
+                  }" id="atdbtn" data-uid="${uid}" data-event-id="${eventId}">
+                    ${isAlreadyAttended ? "Cancel" : "Confirm"}
+                  </button>
+                </td>
+              `;
 
               initRealtimeListener(uid, eventId);
 
@@ -938,15 +932,15 @@ function tableParticipants(eventId) {
         // If there are no participants, add a row with a message
         const noParticipantsRow = participantsTable.insertRow();
         noParticipantsRow.innerHTML = `
-                    <td colspan="${
-                      categorySnapshot.val() === "Fund Raising" ||
-                      categorySnapshot.val() === "Donation"
-                        ? 5
-                        : 4
-                    }" class="center-text">
-                        Currently, there are no participants at the moment.
-                    </td>
-                `;
+          <td colspan="${
+            categorySnapshot.val() === "Fund Raising" ||
+            categorySnapshot.val() === "Donation"
+              ? 5
+              : 4
+          }" class="center-text">
+            Currently, there are no participants at the moment.
+          </td>
+        `;
       }
 
       // Hide the "Proof" column header if the category is neither "Fund Raising" nor "Donation"
@@ -956,11 +950,65 @@ function tableParticipants(eventId) {
         categorySnapshot.val() === "Donation"
           ? ""
           : "none";
+
+      // Event listener for the "attendedFilter" dropdown
+      const attendedFilterDropdown = document
+        .getElementById("attendedFilter")
+        .querySelector("select");
+      attendedFilterDropdown.addEventListener("change", function () {
+        updateTableFilters();
+      });
+
+      // Event listener for the search input
+      const inputSearch = document.getElementById("inputSearch");
+      inputSearch.addEventListener("input", function () {
+        updateTableFilters();
+      });
+
+      function updateTableFilters() {
+        const selectedAttendedValue =
+          attendedFilterDropdown.value.toLowerCase();
+        const searchText = inputSearch.value.toLowerCase();
+        const rows = participantsTable.getElementsByTagName("tr");
+
+        for (let i = 0; i < rows.length; i++) {
+          const row = rows[i];
+          const cancelButton = row.querySelector("#atdbtn");
+          const cells = row.getElementsByTagName("td");
+          let rowText = "";
+
+          for (let j = 0; j < cells.length; j++) {
+            rowText += cells[j].innerText.toLowerCase() + " ";
+          }
+
+          // Check if the row matches both filters
+          const matchesAttendedFilter =
+            selectedAttendedValue === "engaged"
+              ? cancelButton.classList.contains("btn-danger")
+              : selectedAttendedValue === "not-engaged"
+              ? cancelButton.classList.contains("btn-success")
+              : true;
+
+          const matchesSearchFilter = rowText.includes(searchText);
+
+          row.style.display =
+            matchesAttendedFilter && matchesSearchFilter ? "" : "none";
+        }
+
+        // Show or hide the "No Data" message based on filter matches
+        const noDataMessageRow = document.getElementById("noDataMessage");
+        noDataMessageRow.style.display = Array.from(rows).every(
+          (row) => row.style.display === "none"
+        )
+          ? ""
+          : "none";
+      }
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
     });
 }
+
 document.addEventListener("click", function (event) {
   if (event.target && event.target.id === "atdbtn") {
     const uid = event.target.getAttribute("data-uid");

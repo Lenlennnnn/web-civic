@@ -493,7 +493,7 @@
       }
       #attendedFilter {
         position: relative;
-        left: 50px;
+        margin-left: 10px;
         margin-top: 15px;
         float: left;
       }
@@ -1725,40 +1725,11 @@
                             class="form-control" />
                         </div>
                       </div>
-                      <div class="filter-group" id="campusfilterSec">
-                        <label>Campus</label>
-                        <select class="form-control">
-                          <option value="" disabled selected>
-                            Filter Campus
-                          </option>
-                          <option value="ARASOF Nasugbu Campus">
-                            ARASOF Nasugbu Campus
-                          </option>
-                          <option value="Balayan Campus">Balayan Campus</option>
-                          <option value="JPLPC Malvar Campus">
-                            JPLPC Malvar Campus
-                          </option>
-                          <option value="Lemery Campus">Lemery Campus</option>
-                          <option value="Lipa Campus">Lipa Campus</option>
-                          <option value="Lobo Campus">Lobo Campus</option>
-                          <option value="Mabini Campus">Mabini Campus</option>
-                          <option value="Pablo Borbon Campus I">
-                            Pablo Borbon Campus I
-                          </option>
-                          <option value=" Pablo Borbon Campus II">
-                            Pablo Borbon Campus II
-                          </option>
-                          <option value="Rosario Campus">Rosario Campus</option>
-                          <option value="San Juan Campus">
-                            San Juan Campus
-                          </option>
-                          <option value="All Campus">All Campus</option>
-                        </select>
-                      </div>
+
                       <div class="filter-group" id="attendedFilter">
                         <label>Participants</label>
                         <select class="form-control">
-                          <option value="" disabled selected>
+                          <option value="Filter Participants" disabled selected>
                             Filter Participants
                           </option>
                           <option value="Engaged">Engaged</option>
@@ -1785,10 +1756,10 @@
                           </thead>
                           <tbody>
                             <tr>
-                              <td>cVgtKBKiYEQ5XnldOKyoJAKS9GC3</td>
-                              <td>20-63720</td>
-                              <td>Leonard Briones</td>
-                              <td>JPLPC Malvar</td>
+                              <td>Loading....</td>
+                              <td>Loading....</td>
+                              <td>Loading....</td>
+                              <td>Loading....</td>
                               <td>
                                 <a
                                   href="#"
@@ -1809,7 +1780,21 @@
                             <!-- Add more rows if needed -->
                           </tbody>
                         </table>
+
+                        <!-- Message should be within the modal-bodyat div -->
+                        <p
+                          id="noDataMessage"
+                          style="
+                            display: none;
+                            color: red;
+                            text-align: center;
+                            font-size: 20px;
+                            margin-bottom: 15px;
+                          ">
+                          No relevant data found for your criteria
+                        </p>
                       </div>
+
                       <hr />
                     </div>
                   </div>
