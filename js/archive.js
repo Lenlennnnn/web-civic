@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const table = tableElement.DataTable({
       columns: [
         { title: "UID" },
+        { title: "Sr-Code" },
         { title: "Name" },
         { title: "Email" },
         { title: "Gender" },
@@ -34,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
         { title: "Details" },
       ],
       // Specify the initial order based on the second column (Name)
-      order: [[1, "asc"]],
+      order: [[2, "asc"]],
     });
 
     tableElement.on("click", ".view-button", function () {
@@ -87,11 +88,13 @@ document.addEventListener("DOMContentLoaded", function () {
           isLastLoginOneYearAgoOrEarlier(user.lastLogin, currentDate)
         ) {
           const uid = user.uid || "";
+          const srcode = displayNA(user.srcode);
           const name = displayNA(
             user.firstname && user.lastname
               ? `${user.firstname} ${user.lastname}`
               : ""
           );
+
           const email = displayNA(user.email);
           const gender = displayNA(user.gender);
           const yearandSect = displayNA(user.yearandSection);
@@ -102,6 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
           table.row
             .add([
               uid,
+              srcode,
               name,
               email,
               gender,

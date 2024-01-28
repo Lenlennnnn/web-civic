@@ -176,11 +176,12 @@ const initializeDataTable = () => {
   const dataTable = $("#example").DataTable({
     columns: [
       { data: "userUID" },
+      { data: "email" },
       { data: "fullname" },
       { data: "campus" },
       { data: "Details" },
     ],
-    order: [[1, "asc"]],
+    order: [[2, "asc"]],
   });
 
   return dataTable;
@@ -203,6 +204,7 @@ const populateDataTable = () => {
         });
         dataTable.row.add({
           userUID: userId,
+          email: user.email,
           fullname: `${user.lastname}, ${user.firstname}, ${user.middlename}`,
           campus: user.campus,
           Details:

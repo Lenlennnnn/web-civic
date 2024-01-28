@@ -880,7 +880,7 @@ function tableParticipants(eventId) {
                                    <td>${userData.srcode}</td>
                                 <td>${userData.lastname}, ${
                 userData.firstname
-              } ${userData.middlename}</td>
+              }, ${userData.middlename}</td>
                                 <td>${userData.campus}</td>
                                 ${
                                   categorySnapshot.val() === "Fund Raising" ||
