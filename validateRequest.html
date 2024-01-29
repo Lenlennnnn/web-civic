@@ -16,6 +16,13 @@
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+    <link rel="stylesheet" href="css/post.css" />
+
     <style>
       .h1-group {
         position: relative;
@@ -487,6 +494,7 @@
       .vieweventdet {
         background-color: #dc3545;
         color: white;
+        border-radius: 5px;
         border: none;
         padding: 8px 16px;
         font-size: 16px;
@@ -542,7 +550,7 @@
         padding: 20px;
         border: 1px solid #888;
         border-radius: 10px; /* Set border radius */
-        width: 80%;
+        width: 50%;
         height: 900px;
         max-height: 90%; /* Set a maximum height for the modal content */
         max-width: 900px; /* Set a maximum width for the modal */
@@ -690,7 +698,7 @@
         border: black solid 2px;
       }
 
-      #modalAttendee {
+      #modalApprove {
         position: relative;
         bottom: 10px;
         margin-bottom: -40px;
@@ -700,7 +708,7 @@
         cursor: pointer;
       }
 
-      #modalAttendee:hover {
+      #modalApprove:hover {
         transform: scale(1.2);
       }
 
@@ -1057,9 +1065,9 @@
                       </div>
                     </div>
                     <div class="filter-group" id="campusfilter">
-                      <label style="margin-top: 10px">Campus</label>
+                      <label style="margin-top: -5px">Campus</label>
 
-                      <select class="form-control">
+                      <select class="form-control" style="margin-top: -5px">
                         <option value="" disabled selected>
                           Filter Campus
                         </option>
@@ -1086,7 +1094,7 @@
                       </select>
                       <i
                         class="fas fa-chevron-down"
-                        style="margin-top: 10px; margin-left: -45px"></i>
+                        style="margin-left: -45px; margin-top: -15px"></i>
                     </div>
                   </div>
                 </div>
@@ -1096,9 +1104,10 @@
                   <thead class="table-fix">
                     <tr>
                       <th id="noid">No.</th>
-                      <th>Event</th>
+                      <th>Poster</th>
                       <th>Title</th>
                       <th>Category</th>
+                      <th>Location</th>
                       <th>Campus</th>
                       <th>Date & Time</th>
                       <th>Action</th>
@@ -1106,7 +1115,7 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td id="numid">1</td>
+                      <td id="numid">0</td>
                       <td>
                         <a href="#"
                           ><img
@@ -1118,6 +1127,7 @@
                       </td>
                       <td id="titleid">Loading.....</td>
                       <td id="categoryid">Loading.....</td>
+                      <td id="locationid">Loading.....</td>
                       <td id="campusid">Loading.....</td>
                       <td id="dateid">
                         Loading..... <br />
@@ -1137,15 +1147,13 @@
                     </span>
                     <a>
                       <ion-icon
-                        name="people"
-                        class="user-icon"
-                        id="modalAttendee"
-                        title="Attendees"
+                        name="checkmark"
+                        class="approve-icon"
+                        id="modalApprove"
+                        title="Approve"
                         style="color: #28a745"></ion-icon>
-                      <span id="notificationBadge" class="notification-badge"
-                        >0</span
-                      >
                     </a>
+
                     <h2 id="eventlabel" style="color: #dc3545">
                       Event Details
                     </h2>
@@ -1183,110 +1191,13 @@
                   </div>
                 </div>
               </div>
-
-              <div id="myModalat" class="modalat">
-                <div class="modal-contentat" style="width: 95%; height: 95%">
-                  <div class="modal-headerat">
-                    <span class="closeat">&times;</span>
-                    <h4>People who Joined</h4>
-                  </div>
-
-                  <hr />
-
-                  <div
-                    id="searchfieldcontainerSec"
-                    style="float: right; width: 25%">
-                    <button
-                      type="button"
-                      id="btnfilterSec"
-                      class="btn btn-primary">
-                      <i class="fa fa-search"></i>
-                    </button>
-
-                    <div class="filter-group" id="searchfilterSec">
-                      <label>Search </label>
-                      <input
-                        id="inputSearch"
-                        type="text"
-                        class="form-control" />
-                    </div>
-                  </div>
-
-                  <div class="filter-group" id="attendedFilter">
-                    <label>Participants</label>
-                    <select class="form-control">
-                      <option value="Filter Participants" disabled selected>
-                        Filter Participants
-                      </option>
-                      <option value="Engaged">Engaged</option>
-                      <option value="Not-Engaged">Not-Engaged</option>
-                      <option value="All Participants">All Participants</option>
-                    </select>
-                  </div>
-                  <div class="modal-bodyat">
-                    <table
-                      id="tableParticipants"
-                      class="table table-striped"
-                      style="width: 100%">
-                      <thead class="headerr">
-                        <tr>
-                          <th>UID</th>
-                          <th>Sr-Code</th>
-                          <th>Name</th>
-                          <th>Campus</th>
-                          <th id="proofHead">Proof</th>
-                          <th>Attendance</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Loading....</td>
-                          <td>Loading....</td>
-                          <td>Loading....</td>
-                          <td>Loading....</td>
-                          <td>
-                            <a
-                              href="#"
-                              id="proof"
-                              style="color: #dc3545; text-decoration: underline"
-                              >View the file</a
-                            >
-                          </td>
-                          <td>
-                            <button class="btn btn-success" id="atdbtn">
-                              Confirm
-                            </button>
-                          </td>
-                        </tr>
-                        <!-- Add more rows if needed -->
-                      </tbody>
-                    </table>
-
-                    <!-- Message should be within the modal-bodyat div -->
-                    <p
-                      id="noDataMessage"
-                      style="
-                        display: none;
-                        color: red;
-                        text-align: center;
-                        font-size: 20px;
-                        margin-bottom: 15px;
-                      ">
-                      No relevant data found for your criteria
-                    </p>
-                  </div>
-
-                  <hr />
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
-
       <div id="myModalnm" class="modal" style="display: none">
         <div class="modal-contentnm">
-          <span class="closenm">&times;</span>
+          <span class="closenm" id="closeCampusModal">&times;</span>
           <div class="modal-bodyat">
             <button id="selectAllBtnn">Select All</button>
             <button id="deselectAllBtnn">Deselect All</button><br />
@@ -1530,6 +1441,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <script type="module"></script>
+    <script type="module" src="js/validateRequestEvent.js"></script>
   </body>
 </html>

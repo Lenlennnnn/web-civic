@@ -4,52 +4,23 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Completed Activities</title>
+    <title>Completed Activity</title>
     <link rel="icon" type="image/png" href="login/images/icons/civicon.png" />
     <link rel="stylesheet" href="css/dashboard.css" />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"
-    />
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
     <link
       rel="stylesheet"
-      href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"
-    />
+      href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.15.4/css/ionicons.min.css" />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.15.4/css/ionicons.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
-    />
-
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <style>
-      .container {
-        position: relative;
-        right: 235px;
-        width: 200%;
-        bottom: 50px;
-      }
-
       .h1-group {
         position: relative;
         bottom: 58px;
         right: 180px;
-      }
-
-      .custom-button {
-        position: absolute;
-        top: 100px;
-        left: -165px;
-        transform: translate(-50%, -50%);
-        cursor: pointer;
-        /* Change cursor to pointer */
-        /* Other button styling properties */
-
-        /* Transition effect for hover */
-        transition: background-color 0.3s, color 0.3s, transform 0.3s;
-        z-index: 1;
       }
 
       .custom-button:hover {
@@ -85,13 +56,11 @@
       thead {
         border: solid 1px black;
       }
-
-      .main {
+      body {
         background-color: #e1e1e1;
-        border-radius: 50% 0px 0px 50%;
       }
 
-      body {
+      .main {
         background-color: #e1e1e1;
       }
 
@@ -110,22 +79,6 @@
         position: relative;
         right: 80px;
       }
-      #exampleModalLongggTitle {
-        position: relative;
-        right: 80%;
-      }
-      .user-icon {
-        position: relative;
-        left: 90%;
-        font-size: 50px;
-        transition: transform 0.3s ease; /* Adding transition for smooth effect */
-        cursor: pointer;
-      }
-
-      /* Enlarge effect on hover */
-      .user-icon:hover {
-        transform: scale(1.2); /* Change the scale factor as desired */
-      }
 
       #newcnt {
         position: relative;
@@ -135,89 +88,924 @@
         height: 540px;
       }
 
-      /* Ensure the form elements are displayed in-line */
       .form-row .form-group {
         display: inline-block;
         width: 47.2%; /* Adjust the width as per your layout needs */
         margin-right: 5%; /* Adjust the spacing between elements */
         vertical-align: top; /* Align elements at the top */
-      }
+      } /* Ensure the form elements are displayed in-line */
 
       /* Clear margin for the last element in the row */
       .form-row .form-group:last-child {
         margin-right: 0;
       }
 
-      #kulayan.thead-dark th {
-        background-color: black !important; /* Change to your preferred color */
-        color: white; /* Set text color to white for better contrast */
+      /* .dashboard {
+        color: #a90011;
+        position: absolute;
+        left: 80px;
+        top: 10px;
+      } */
+      /* 
+      .adminPro {
+        color: #a90011;
+        position: absolute;
+        right: 90px;
+      } */
+
+      /* .notifIcon {
+        position: absolute;
+        right: 204px;
+        font-size: 20px;
+        color: #6c757d;
+      } */
+
+      .search {
+        position: relative;
+        top: 10px;
       }
 
-      .glyphicon {
-        margin-right: 5px;
+      /* .user-profile {
+        position: relative;
+        bottom: 3px;
+      } */
+
+      /* this is for upcoming */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
       }
-      .rating .glyphicon {
-        font-size: 22px;
-      }
-      .rating-num {
-        margin-top: 0px;
-        font-size: 54px;
-      }
-      .progress {
-        margin-bottom: 5px;
-      }
-      .progress-bar {
+
+      th,
+      td {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
         text-align: left;
       }
-      .rating-desc .col-md-3 {
-        padding-right: 0px;
+
+      thead {
+        background-color: #f2f2f2;
       }
-      .sr-only {
+
+      th {
+        background-color: #333;
+        color: white;
+      }
+      /* ============================ dropdown menu ============================== */
+
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: white;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        /* Position the dropdown menu below the avatar and center it horizontally */
+        top: 120%;
+        left: -70px;
+        transform: translateX(-50%);
+        /* Set a minimum width to prevent wrapping */
+        min-width: 180px;
+        /* Align the text to the right */
+        text-align: left;
+        border-radius: 0px;
+        border: solid 1px #ccc;
+      }
+
+      .dropdown-menu,
+      .popup-form-my_account {
+        display: none;
+      }
+
+      /* Style the dropdown links */
+      .dropdown-item {
+        display: block;
+        padding: 12px 16px;
+        text-decoration: none;
+        color: #333;
+        /* Set white-space to nowrap to prevent text wrapping */
+        white-space: nowrap;
+        border-radius: 0px;
+      }
+
+      /* Change the background color on hover */
+      .dropdown-item:hover {
+        background-color: #ddd;
+      }
+
+      /* for notification */
+      .badge {
+        position: absolute;
+        top: 10px;
+        right: 195px;
+        background-color: #28a745;
+        color: white;
+        border-radius: 50%;
+        padding: 5px;
+        font-size: 8px;
+        z-index: 1;
+      }
+
+      a {
+        transition: color 0.3s ease;
+      }
+
+      /* Apply the transition effect on hover */
+      a:hover {
+        color: #a90011;
+        /* Change the link color on hover */
+      }
+
+      /* Style for the transition effect */
+      .page-transition {
+        opacity: 1;
+        transition: opacity 0.5s ease-in-out;
+      }
+
+      /* Style for the page being loaded */
+      .page-loading {
+        opacity: 0;
+      }
+
+      .table-responsive {
+        width: 112%;
+        justify-content: center;
+        overflow-x: auto;
+      }
+
+      .table-wrapper {
+        min-width: 700px;
+
+        background: #fff;
+        padding: 20px 25px;
+        border-radius: 3px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+      }
+      .table-wrapper .btn {
+        float: right;
+        color: #333;
+        background-color: #fff;
+        border-radius: 3px;
+        border: none;
+        outline: none !important;
+        margin-left: 10px;
+      }
+      .btn.btn-success {
+        background-color: #28a745;
+        color: #fff;
+      }
+
+      .table-wrapper .btn:hover {
+        color: #fff;
+        background: #10c469;
+      }
+      .table-wrapper .btn.btn-primary {
+        color: #fff;
+        background: #03a9f4;
+      }
+      .table-wrapper .btn.btn-primary:hover {
+        background: #03a3e7;
+      }
+      .table-title .btn {
+        font-size: 13px;
+        border: none;
+      }
+      .table-title .btn i {
+        float: left;
+        font-size: 21px;
+        margin-right: 5px;
+      }
+      .table-title .btn span {
+        float: left;
+        margin-top: 2px;
+      }
+      .table-title {
+        color: #fff;
+        background: #343a40;
+        padding: 16px 25px;
+
+        margin: -20px -25px 10px;
+        border-radius: 3px 3px 0 0;
+      }
+      .table-title h2 {
+        margin: 5px 0 0;
+
+        font-size: 24px;
+      }
+
+      .table-filter .filter-group {
+        margin-left: 15px;
+      }
+      .table-filter input,
+      .table-filter select {
+        height: 40px;
+        border-radius: 3px;
+        border-color: #ddd;
+        box-shadow: none;
+        margin-top: 10px;
+        margin-right: 20px;
+      }
+
+      .table-filter .btn {
+        height: 34px;
+        margin-top: 10px;
+      }
+
+      .table-filter select,
+      .table-filter input {
+        display: inline-block;
         margin-left: 5px;
-        overflow: visible;
-        clip: auto;
+      }
+      .table-filter input {
+        width: 200px;
+        display: inline-block;
+      }
+      .filter-group select.form-control {
+        width: 250px;
+      }
+      .filter-icon {
+        float: right;
+        margin-top: 7px;
+      }
+      .filter-icon i {
+        font-size: 18px;
+        opacity: 0.7;
       }
 
-      .container3 {
-        background-color: #343a40;
-        padding: 15px;
+      .filter-group {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-bottom: 10px;
+      }
+
+      .filter-group select {
+        margin-left: 10px; /* Adjust as needed */
+      }
+
+      .filter-group label {
+        font-weight: normal;
+        margin-left: 5px; /* Adjust as needed */
+      }
+
+      #searchfilter {
+        position: relative;
+        left: 36%;
+      }
+      #searchfilterSec {
+        margin-top: 15px;
+      }
+      #inputSearch {
+        margin-left: 10px;
+      }
+      table.table tr th,
+      table.table tr td {
+        border-color: #e9e9e9;
+        padding: 12px 15px;
+        vertical-align: middle;
+      }
+      table.table tr th:first-child {
+        width: 60px;
+      }
+      table.table tr th:last-child {
+        width: 80px;
+      }
+      table.table-striped tbody tr:nth-of-type(odd) {
+        background-color: #fcfcfc;
+      }
+      table.table-striped.table-hover tbody tr:hover {
+        background: #f5f5f5;
+      }
+      table.table th i {
+        font-size: 13px;
+        margin: 0 5px;
+        cursor: pointer;
+      }
+      table.table td a {
+        font-weight: bold;
+        color: #566787;
+        display: inline-block;
+        text-decoration: none;
+      }
+      table.table td a:hover {
+        color: #2196f3;
+      }
+
+      table.table .eventpic {
+        margin: 0px;
+        width: 110px;
+        height: 70px;
+        padding: 0px;
+        border-radius: 3%;
+      }
+      table.table .profilepic {
+        width: 75px;
+        height: 75px;
+        border-radius: 100%;
+      }
+      .text-success {
+        color: #10c469;
+      }
+      .text-info {
+        color: #62c9e8;
+      }
+      .text-warning {
+        color: #ffc107;
+      }
+      .text-danger {
+        color: #dc3545;
+      }
+      /* Targeting the button inside the .col-sm-8 */
+      .col-sm-8 a.btn {
+        /* Your styles here */
+        display: inline-block;
+        background-color: #28a745;
+        color: #ffffff;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        position: relative;
+        bottom: 35px;
+      }
+
+      .col-sm-8 a.btn:hover {
+        /* Styles when hovering over the button */
+        background-color: #1f7f3b;
         color: white;
       }
 
-      /* Style the user icon color */
-      #totalrate .ion-person {
-        /* Set the color of the user icon to white */
+      #btnfilter {
+        position: relative;
+        left: 34%;
+        top: 2px;
+      }
+      #btnfilterSec {
+        position: relative;
+        left: 2px;
+        top: 15px;
+      }
+      #eventfilter {
+        position: relative;
+        right: 30px;
+        bottom: 60px;
+        float: left;
+      }
+
+      #campusfilter {
+        position: relative;
+        right: 30px;
+        bottom: 60px;
+        float: left;
+      }
+      #campusfilterSec {
+        position: relative;
+        left: 10px;
+        margin-top: 15px;
+        float: left;
+      }
+      #attendedFilter {
+        position: relative;
+        margin-left: 10px;
+        margin-top: 15px;
+        float: left;
+      }
+      #searchfieldcontainer {
+        position: relative;
+        right: 24px;
+      }
+      #searchfieldcontainerSec {
+        position: relative;
+        right: 5px;
+      }
+      #tableevents {
+        position: relative;
+        bottom: 10px;
+      }
+
+      /* Style for the button */
+      .vieweventdet {
+        background-color: #dc3545;
         color: white;
+        border: none;
+        padding: 8px 16px;
+        font-size: 16px;
+        transition: background-color 0.3s, transform 0.3s;
       }
 
-      .ion-star {
-        color: yellow; /* Set the color to yellow */
-        font-size: 15px; /* Adjust font size as needed */
+      /* Hover effect: Darker color and larger size */
+      .vieweventdet:hover {
+        background-color: #9c2e3b; /* Darker color */
+        transform: scale(1.1); /* Enlarge button */
+        cursor: pointer;
       }
 
-      /* Style for the modified modal container */
-      .modalre {
+      .table-container {
+        max-height: 400px;
+        width: 100%; /* Set the desired height for the scrollable area */
+        position: relative;
+        bottom: 60px;
+      }
+
+      /* Style the fixed table header */
+      .table-fix {
+        position: sticky;
+        top: -2px;
+        background-color: #fff; /* Adjust as needed */
+      }
+
+      /* Style the table cells */
+      #tableevents th,
+      #tableevents td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ccc; /* Add a border for separation */
+      }
+      .modalupcom {
+        display: none; /* Hide the modal by default */
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+      }
+
+      .modal-contentupcom {
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        background-color: #fefefe;
+        margin: 15% auto; /* Center the modal vertically and horizontally */
+        padding: 20px;
+        border: 1px solid #888;
+        border-radius: 10px; /* Set border radius */
+        width: 80%;
+        height: 900px;
+        max-height: 90%; /* Set a maximum height for the modal content */
+        max-width: 900px; /* Set a maximum width for the modal */
+        transform: translate(-50%, -50%);
+        animation: modalFadeIn 0.5s ease-in-out forwards; /* Animation for fade-in */
+        overflow-y: auto; /* Enable vertical scrolling */
+      }
+
+      /* Customize the scrollbar */
+      .modal-contentupcom::-webkit-scrollbar {
+        width: 10px; /* Width of the scrollbar */
+      }
+
+      .modal-contentupcom::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Track color */
+        border-radius: 10px;
+      }
+
+      .modal-contentupcom::-webkit-scrollbar-thumb {
+        background: #888; /* Thumb color */
+        border-radius: 10px; /* Rounded corners for the thumb */
+      }
+
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+
+      #closemodalbtnupcom {
+        background-color: #6c757d;
+        color: #ffffff;
+      }
+
+      #closemodalbtnupcom:hover {
+        background-color: #565e64;
+      }
+
+      /* inside the modal content in upcomming */
+      .modal-contentupcom h2 {
+        /* Your existing styles */
+        text-align: center; /* Center align text inside the container */
+        margin-bottom: 20px;
+        text-decoration: underline;
+      }
+
+      #upcompostpic {
+        height: 250px;
+        width: 500px;
+        border: solid 2px black;
+        border-radius: 10px;
+        display: block; /* Ensures the image behaves as a block element */
+        margin: 0 auto; /* Sets margins to auto to horizontally center the image */
+      }
+
+      .eventpic {
+        border: black 2px solid;
+        cursor: default;
+      }
+      .profilepic {
+        border: #6c757d 1px solid;
+        cursor: default;
+      }
+      #iconto {
+        position: inherit;
+        top: 5px;
+      }
+      #titleto {
+        position: inherit;
+        top: 5px;
+        font-size: 20px;
+      }
+
+      #btnparaview {
+        background-color: #dc3545;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      #btnparaview:hover {
+        background-color: #9c232f; /* Darker color for hover */
+        transform: scale(1.1); /* Enlarge the button on hover */
+      }
+
+      /* Styling for the modal not functioning */
+      .modalevnts {
+        display: none; /* Hide the modal by default */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+      }
+
+      .modal-contentevnts {
+        background-color: #fff;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 70%;
+        max-width: 600px;
+        border-radius: 5px;
+      }
+
+      .modal-headerevnts,
+      .modal-bodyevnts,
+      .modal-footerevnts {
+        padding: 10px 0;
+      }
+
+      .modal-headerevnts {
+        border-bottom: 1px solid #ccc;
+      }
+
+      .modal-footerevnts {
+        border-top: 1px solid #ccc;
+        text-align: right;
+      }
+
+      #closeModalevnts {
+        background-color: #6c757d; /* Light color */
+        color: #fff; /* Text color */
+        /* Add any other necessary styling */
+      }
+
+      /* Darker hover effect */
+      #closeModalevnts:hover {
+        background-color: #495057; /* Darker color on hover */
+      }
+
+      #evntimgpicnew {
+        width: 555px;
+        border-radius: 5%;
+        border: black solid 2px;
+      }
+
+      #modalAttendee {
+        position: relative;
+        bottom: 10px;
+        margin-bottom: -40px;
+        font-size: 45px;
+        transition: transform 0.3s ease-in-out;
+        color: #495057;
+        cursor: pointer;
+      }
+
+      #modalAttendee:hover {
+        transform: scale(1.2);
+      }
+
+      .modal-headerevnts {
+        padding-top: 0%;
+        margin-top: 0%;
+        height: 35px;
+      }
+
+      .modal-contentevnts {
+        position: relative;
+        bottom: 150px;
+      }
+
+      #editmov {
+        position: relative;
+        bottom: 55px;
+      }
+
+      /* modal for att */
+      /* Styling for your specific modal IDs */
+      #myModalatt {
+        display: none;
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 999999;
+        z-index: 9999;
       }
 
-      /* Style for the modified modal content */
-      .modal-contentre {
+      #myModalatt .modal-dialogatt {
+        position: relative;
+        width: auto;
+        max-width: 600px;
+        margin: 10% auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+      }
+
+      #myModalatt .modal-headeratt {
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+      }
+
+      #myModalatt .modal-titleatt {
+        margin: 0;
+      }
+
+      #myModalatt .modal-bodyatt {
+        padding: 20px 0;
+      }
+
+      #myModalatt .modal-footeratt {
+        border-top: 1px solid #ccc;
+        padding-top: 10px;
+        text-align: right;
+      }
+
+      #myModalatt .closeatt {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+      }
+      .closeat {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        position: relative;
+        bottom: 10px;
+      }
+
+      .closeat:hover,
+      .closeat:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      #myModalatt .btnatt {
+        padding: 8px 20px;
+        border-radius: 4px;
+        border: none;
+        color: #fff;
+        background-color: #dc3545;
+        cursor: pointer;
+      }
+
+      #myModalatt .btnatt:hover {
+        background-color: #c82333;
+      }
+
+      .modalpo {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 2;
+        overflow: auto; /* Ito ang binago: ginamit na 'overflow: auto' dito */
+      }
+
+      .modal-contentpo {
+        background-color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        text-align: center;
+        width: 50%;
+        max-height: 100%;
+        overflow-y: auto;
+      }
+
+      .closepo {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .closepo:hover,
+      .closepo:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .closepo {
+        display: block;
+      }
+
+      .modal-contentpo #lblpt,
+      .modal-contentpo #hederrr {
+        display: block;
+      }
+
+      #campusTarget {
+        background-color: #fff; /* Dark background color */
+        color: black; /* Text color */
+        border: 1px solid #ccc; /* Dark border */
+        padding: 8px 16px; /* Adjust padding as needed */
+        cursor: pointer; /* Change cursor on hover */
+        transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+      }
+
+      #campusTarget:hover {
+        background-color: #aaa; /* Darker background color on hover */
+        border-color: #aaa; /* Darker border color on hover */
+        color: #fff; /* Text color on hover */
+      }
+      #campusField {
+        background-color: #fff; /* Dark background color */
+        color: black; /* Text color */
+        border: 1px solid #ccc; /* Dark border */
+        padding: 8px 16px; /* Adjust padding as needed */
+        cursor: pointer; /* Change cursor on hover */
+        transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+      }
+
+      #campusField:hover {
+        background-color: #aaa; /* Darker background color on hover */
+        border-color: #aaa; /* Darker border color on hover */
+        color: #fff; /* Text color on hover */
+      }
+      #myModalnm {
+        z-index: 999999999;
+      }
+
+      .modal-contentnm {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 40%;
+        z-index: 3;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .closenm {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .closenm:hover,
+      .closenm:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .checkboxna {
+        position: relative;
+        top: 10px;
+        right: 290px;
+      }
+
+      .labelnato {
+        position: relative;
+        left: 50px;
+        margin: -20px;
+      }
+
+      #okButton {
+        margin-left: 85%;
+      }
+
+      #okButton {
+        background-color: black;
+        /* Other button styles */
+      }
+
+      #okButton:hover {
+        background-color: darkgray; /* Change background color on hover */
+        /* Additional styles for hover state */
+      }
+
+      /* Select All button */
+      #selectAllBtnn {
+        background-color: darkgray;
+        /* Other button styles */
+      }
+
+      #selectAllBtnn:hover {
+        background-color: lightgray; /* Change background color on hover */
+        /* Additional styles for hover state */
+      }
+
+      /* Deselect All button */
+      #deselectAllBtnn {
+        background-color: gray;
+        /* Other button styles */
+      }
+
+      #deselectAllBtnn:hover {
+        background-color: silver; /* Change background color on hover */
+        /* Additional styles for hover state */
+      }
+      #introductionField,
+      #objectiveField,
+      #instructionField {
+        line-height: 1.8; /* You can adjust this value to increase or decrease the vertical spacing */
+      }
+      .btn.btn-danger {
+        background-color: #dc3545;
+        color: #fff;
+      }
+
+      .btn.btn-danger:hover {
+        background: #bd2130; /* Change this color to your desired hover color */
+      }
+      #categoryField:disabled {
+        opacity: 10;
+        color: black;
+      }
+      .modalat {
+        display: none;
+        position: fixed;
+        z-index: 999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      .modal-contentat {
         background-color: #fff;
         padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        width: 60%;
-        height: 100%;
-        margin-left: 20%;
+        border: 1px solid #888;
+        width: 50%;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .modal-headerat h2 {
+        margin: 0;
+      }
+      #myModalat {
+        z-index: 1001; /* Use a value higher than the z-index of eventModalupcom */
+      }
+      #logoutForm {
+        height: 25%;
+      }
+      .center-text {
+        text-align: center;
+        font-size: 18px;
+      }
+      .upcomingEvents {
+        margin-left: -35%;
+        justify-content: center;
       }
     </style>
   </head>
@@ -234,504 +1022,377 @@
         <!-- ====== ionicons ======= -->
         <script
           type="module"
-          src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-        ></script>
+          src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
       </div>
-      <h1 class="h1-group">Completed Activities</h1>
+      <h1 class="h1-group">Completed Activity</h1>
 
-      <div class="container py-5">
-        <div class="row">
-          <table id="example" class="table table-striped" style="width: 100%">
-            <thead>
-              <tr>
-                <th>No.</th>
-                <th>Title</th>
-                <th>Civic Engagement</th>
-                <th>Campus</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="clickable-row">
-                <td>1</td>
-                <td>Sustainable Environmental Cleaning</td>
-                <td>Clean Up Drive</td>
-                <td>JPLPC Malvar</td>
-                <td>
-                  <!-- Button to trigger modal -->
-                  <button
-                    class="btn btn-danger view-button"
-                    data-toggle="modal"
-                    data-target="#exampleModalLonggg"
-                    id="comactbtn"
-                  >
-                    View
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      <!-- =============================================== upcoming Events ================================================ -->
 
-          <!-- Modal -->
-          <div
-            class="modal"
-            id="exampleModalLonggg"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="exampleModalLongggTitle"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <ion-icon
-                    name="person-circle"
-                    class="user-icon"
-                    id="exampleModalIcon"
-                  ></ion-icon>
-                  <h5 class="modal-title" id="exampleModalLongggTitle">
-                    Event Details
-                  </h5>
-                </div>
-                <div class="modal-body">
-                  <!-- 1. Image -->
-                  <div class="text-center">
-                    <img
-                      src="img/linis3.jpg"
-                      alt="Event Image"
-                      class="img-fluid"
-                      id="evntimgpic"
-                      style="width: 600px"
-                    />
-                  </div>
-
-                  <!-- 2. Category -->
-                  <div class="form-group">
-                    <label for="category">Category:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="category"
-                      value="Clean Up Drive"
-                      readonly
-                    />
-                  </div>
-
-                  <!-- 3. Title -->
-                  <div class="form-group">
-                    <label for="title">Title:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="title"
-                      value="Sustainable Environmental Cleaning"
-                      readonly
-                    />
-                  </div>
-
-                  <!-- 4. Introduction -->
-                  <div class="form-group">
-                    <label for="introduction">Introduction:</label>
-                    <textarea
-                      class="form-control"
-                      id="introduction"
-                      rows="10"
-                      readonly
-                    >
-      Cleaning the environment is a vital responsibility that transcends personal and collective interests, embodying our commitment to safeguarding the planet and ensuring a sustainable future for generations to come. It involves the conscientious removal of pollutants, waste, and harmful elements from our surroundings,  promoting the restoration and preservation of natural ecosystems. Cleaning the environment is not limited to physical debris but extends to addressing broader issues such as air and water quality, deforestation, and climate change mitigation. It signifies our dedication to harmonious coexistence with nature, recognizing that a cleaner environment not only enhances our own well-being but also plays an essential role in protecting the intricate web of life on Earth and preserving the beauty and diversity of our planet.
-                   </textarea
-                    >
-                  </div>
-
-                  <!-- 5. Description -->
-                  <div class="form-group">
-                    <label for="description">Description:</label>
-                    <textarea
-                      class="form-control"
-                      id="description"
-                      rows="10"
-                      readonly
-                    >
-                    Cleaning the environment is an indispensable endeavor crucial for sustaining life on our planet. It encompasses a wide array of practices aimed at preserving and restoring the natural balance of ecosystems. From managing waste and reducing pollution to conserving resources and promoting biodiversity, the scope of cleaning the environment is multifaceted. Recycling initiatives, adoption of renewable energy sources, reforestation efforts, and advocating for sustainable practices are integral components in the mission to create a cleaner, healthier environment. Moreover, educating communities about the significance of environmental stewardship fosters a collective responsibility towards preserving the Earth for future generations. By fostering a culture of consciousness and implementing innovative strategies, cleaning the environment stands as a vital cornerstone in securing a sustainable future for all life forms on our planet.</textarea
-                    >
-                  </div>
-
-                  <div class="form-group">
-                    <label for="instruction">Instruction:</label>
-                    <textarea
-                      class="form-control"
-                      id="instruction"
-                      rows="10"
-                      readonly
-                    >
-1. Check-in and Briefing: Please arrive at the designated meeting point at least 15 minutes before the scheduled start time. Upon arrival, check in with our event coordinators who will provide you with necessary equipment such as gloves, trash bags, and any additional safety gear. You'll also receive a brief orientation outlining safety protocols and the areas assigned for cleanup.
-
-2. Assignment and Cleanup Process: Once briefed, you'll be assigned to a specific cleanup zone. Work in teams to cover the designated areas thoroughly. Collect and separate recyclable materials from general waste. Be mindful of safety: avoid picking up hazardous items and wear protective gear when handling sharp objects.
-
-3. Environmental Conservation: While collecting trash, take note of any environmental concerns (such as signs of habitat destruction, invasive species, or pollution sources) and report them to the event coordinators. If you come across any wildlife, maintain a safe distance and avoid disturbing their habitat.
-
-4. Proper Waste Disposal: When your assigned cleanup time is completed or your bags are full, return to the designated collection point. Make sure all waste bags are securely tied. Separate recyclables from non-recyclables as instructed. Our team will properly dispose of collected waste in accordance with local recycling and waste management regulations.
-
-5. Conclusion and Appreciation: At the end of the event, there will be a brief gathering to acknowledge everyone's hard work and dedication. We'll discuss the impact of our efforts and share any significant findings. Feel free to share your experiences and any insights gained during the cleanup.</textarea
-                    >
-                  </div>
-
-                  <!-- 6. Location -->
-                  <div class="form-group">
-                    <label for="location">Location:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="location"
-                      value="San Miguel Sto Tomas Batangas"
-                      readonly
-                    />
-                  </div>
-
-                  <!-- 7. Date -->
-                  <div class="form-row">
-                    <div class="form-group col-md-6">
-                      <label for="date">Start Date & Time:</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="date"
-                        value="10/12/2023 9:00 AM"
-                        readonly
-                      />
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label for="dateend">End Date & Time:</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="dateend"
-                        value="10/13/2023 4:00 PM"
-                        readonly
-                      />
-                    </div>
-                  </div>
-
-                  <!-- 8. Target Participant -->
-                  <div class="form-group">
-                    <label for="targetParticipant">Target Campus:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="targetcampus"
-                      value="JPLPC Malvar Campus"
-                      readonly
-                    />
-                  </div>
-
-                  <!-- 8. Target Participant -->
-                  <div class="form-group">
-                    <label for="targetParticipant">Target Participant:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="targetParticipant"
-                      value="200"
-                      readonly
-                    />
-                  </div>
-
-                  <!-- 9. Active Points -->
-                  <div class="form-group">
-                    <label for="activePoints">Active Points:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="activePoints"
-                      value="50"
-                      readonly
-                    />
-                  </div>
-
-                  <!-- 10. Facilitator's Name -->
-                  <div class="form-group">
-                    <label for="facilitatorsName">Facilitator's Name:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="facilitatorsName"
-                      value="Leonard S Briones"
-                      readonly
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="facilitatorsName"
-                      >Facilitator's Contact or Email:</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="facilitatorscontact"
-                      value="briones@gmail.com"
-                      readonly
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="Payment-Method">Payment-Method :</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="Payment-Method"
-                      value="GCash"
-                      readonly
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="Payment-Recipient">Payment Recipient:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="Payment-Recipient"
-                      value="09675468945"
-                      readonly
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="Fundcollected">Fund Collected:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="Fundcollected"
-                      value="12600"
-                      readonly
-                    />
+      <div class="upcomingEvents">
+        <div class="container-xl">
+          <div class="table-responsive">
+            <div class="table-wrapper" style="height: 600px">
+              <div class="table-title">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <h2>Complete Engagements</h2>
                   </div>
                 </div>
-                <div class="container3">
-                  <div class="row">
-                    <div class="col-xs-12 col-md-11">
-                      <div class="well well-sm">
-                        <div class="row">
-                          <div class="col-xs-12 col-md-6 text-center">
-                            <h1 class="rating-num">4.0</h1>
-                            <div class="rating"></div>
-                            <div id="totalrate">
-                              <span class="ion-person"></span>
-                              1,050,008
-                            </div>
-                          </div>
-                          <div class="col-xs-12 col-md-6">
-                            <div class="row rating-desc">
-                              <div class="col-xs-3 col-md-3 text-right">
-                                5 &nbsp;<span class="ion-star"></span>
-                              </div>
-                              <div class="col-xs-8 col-md-9">
-                                <div class="progress progress-striped">
-                                  <div
-                                    class="progress-bar progress-bar-success"
-                                    role="progressbar"
-                                    aria-valuenow="20"
-                                    aria-valuemin="0"
-                                    aria-valuemax="100"
-                                    style="width: 80%"
-                                  >
-                                    <span class="sr-only">80%</span>
-                                  </div>
-                                </div>
-                              </div>
-                              <!-- end 5 -->
-                              <div class="col-xs-3 col-md-3 text-right">
-                                4 &nbsp;<span class="ion-star"></span>
-                              </div>
-                              <div class="col-xs-8 col-md-9">
-                                <div class="progress">
-                                  <div
-                                    class="progress-bar progress-bar-success"
-                                    role="progressbar"
-                                    aria-valuenow="20"
-                                    aria-valuemin="0"
-                                    aria-valuemax="100"
-                                    style="width: 60%"
-                                  >
-                                    <span class="sr-only">60%</span>
-                                  </div>
-                                </div>
-                              </div>
-                              <!-- end 4 -->
-                              <div class="col-xs-3 col-md-3 text-right">
-                                3 &nbsp;<span class="ion-star"></span>
-                              </div>
-                              <div class="col-xs-8 col-md-9">
-                                <div class="progress">
-                                  <div
-                                    class="progress-bar progress-bar-info"
-                                    role="progressbar"
-                                    aria-valuenow="20"
-                                    aria-valuemin="0"
-                                    aria-valuemax="100"
-                                    style="width: 40%"
-                                  >
-                                    <span class="sr-only">40%</span>
-                                  </div>
-                                </div>
-                              </div>
-                              <!-- end 3 -->
-                              <div class="col-xs-3 col-md-3 text-right">
-                                2 &nbsp;<span class="ion-star"></span>
-                              </div>
-                              <div class="col-xs-8 col-md-9">
-                                <div class="progress">
-                                  <div
-                                    class="progress-bar progress-bar-warning"
-                                    role="progressbar"
-                                    aria-valuenow="20"
-                                    aria-valuemin="0"
-                                    aria-valuemax="100"
-                                    style="width: 20%"
-                                  >
-                                    <span class="sr-only">20%</span>
-                                  </div>
-                                </div>
-                              </div>
-                              <!-- end 2 -->
-                              <div class="col-xs-3 col-md-3 text-right">
-                                1 &nbsp;<span class="ion-star"></span>
-                              </div>
-                              <div class="col-xs-8 col-md-9">
-                                <div class="progress">
-                                  <div
-                                    class="progress-bar progress-bar-danger"
-                                    role="progressbar"
-                                    aria-valuenow="80"
-                                    aria-valuemin="0"
-                                    aria-valuemax="100"
-                                    style="width: 15%"
-                                  >
-                                    <span class="sr-only">15%</span>
-                                  </div>
-                                </div>
-                              </div>
-                              <!-- end 1 -->
-                            </div>
-                            <!-- end row -->
-                          </div>
-                        </div>
+              </div>
+              <div class="table-filter">
+                <div class="row">
+                  <div class="col-sm-9">
+                    <div id="searchfieldcontainer">
+                      <button
+                        type="button"
+                        id="btnfilter"
+                        class="btn btn-primary">
+                        <i class="fa fa-search"></i>
+                      </button>
+
+                      <div class="filter-group" id="searchfilter">
+                        <label style="margin-top: 10px">Search</label>
+
+                        <input type="text" class="form-control" />
                       </div>
                     </div>
+                    <div class="filter-group" id="campusfilter">
+                      <label style="margin-top: 10px">Campus</label>
+
+                      <select class="form-control">
+                        <option value="" disabled selected>
+                          Filter Campus
+                        </option>
+                        <option value="ARASOF Nasugbu Campus">
+                          ARASOF Nasugbu Campus
+                        </option>
+                        <option value="Balayan Campus">Balayan Campus</option>
+                        <option value="JPLPC Malvar Campus">
+                          JPLPC Malvar Campus
+                        </option>
+                        <option value="Lemery Campus">Lemery Campus</option>
+                        <option value="Lipa Campus">Lipa Campus</option>
+                        <option value="Lobo Campus">Lobo Campus</option>
+                        <option value="Mabini Campus">Mabini Campus</option>
+                        <option value="Pablo Borbon Campus I">
+                          Pablo Borbon Campus I
+                        </option>
+                        <option value=" Pablo Borbon Campus II">
+                          Pablo Borbon Campus II
+                        </option>
+                        <option value="Rosario Campus">Rosario Campus</option>
+                        <option value="San Juan Campus">San Juan Campus</option>
+                        <option value="All Campus">All Campus</option>
+                      </select>
+                      <i
+                        class="fas fa-chevron-down"
+                        style="margin-top: 10px; margin-left: -45px"></i>
+                    </div>
                   </div>
                 </div>
+              </div>
+              <div class="table-container">
+                <table class="table table-striped table-hover" id="tableevents">
+                  <thead class="table-fix">
+                    <tr>
+                      <th id="noid">No.</th>
+                      <th>Event</th>
+                      <th>Title</th>
+                      <th>Category</th>
+                      <th>Campus</th>
+                      <th>Date & Time</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td id="numid">1</td>
+                      <td>
+                        <a href="#"
+                          ><img
+                            src="img/cleaning.jpg"
+                            class="eventpic"
+                            alt="Avatar"
+                            id="eventpicimg"
+                        /></a>
+                      </td>
+                      <td id="titleid">Loading.....</td>
+                      <td id="categoryid">Loading.....</td>
+                      <td id="campusid">Loading.....</td>
+                      <td id="dateid">
+                        Loading..... <br />
+                        Loading.....
+                      </td>
+                      <td id="btnviewid">
+                        <a> <button id="btnparaview">View</button></a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- Updated Modal Structure -->
+                <div id="eventModalupcom" class="modalupcom">
+                  <div class="modal-contentupcom">
+                    <span class="closepo" id="closeModaldetail">
+                      <ion-icon name="close"></ion-icon>
+                    </span>
+                    <a>
+                      <ion-icon
+                        name="people"
+                        class="user-icon"
+                        id="modalAttendee"
+                        title="Attendees"
+                        style="color: #28a745"></ion-icon>
+                      <span id="notificationBadge" class="notification-badge"
+                        >0</span
+                      >
+                    </a>
+                    <h2 id="eventlabel" style="color: #dc3545">
+                      Event Details
+                    </h2>
 
-                <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                  <!-- Additional buttons or actions can be added here -->
+                    <div id="eventDetailsupcom"></div>
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                      id="closemodalbtnupcom">
+                      Close
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      data-dismiss="modal"
+                      id="editBtn">
+                      Edit
+                    </button>
+                    <button
+                      id="saveBtn"
+                      type="button"
+                      class="btn btn-success"
+                      style="display: none">
+                      Save
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      data-dismiss="modal"
+                      id="terminate"
+                      style="position: relative; right: 69%">
+                      Terminate
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div id="myModalat" class="modalat">
+                <div class="modal-contentat" style="width: 95%; height: 95%">
+                  <div class="modal-headerat">
+                    <span class="closeat">&times;</span>
+                    <h4>People who Joined</h4>
+                  </div>
+
+                  <hr />
+
+                  <div
+                    id="searchfieldcontainerSec"
+                    style="float: right; width: 25%">
+                    <button
+                      type="button"
+                      id="btnfilterSec"
+                      class="btn btn-primary">
+                      <i class="fa fa-search"></i>
+                    </button>
+
+                    <div class="filter-group" id="searchfilterSec">
+                      <label>Search </label>
+                      <input
+                        id="inputSearch"
+                        type="text"
+                        class="form-control" />
+                    </div>
+                  </div>
+
+                  <div class="filter-group" id="attendedFilter">
+                    <label>Participants</label>
+                    <select class="form-control">
+                      <option value="Filter Participants" disabled selected>
+                        Filter Participants
+                      </option>
+                      <option value="Engaged">Engaged</option>
+                      <option value="Not-Engaged">Not-Engaged</option>
+                      <option value="All Participants">All Participants</option>
+                    </select>
+                  </div>
+                  <div class="modal-bodyat">
+                    <table
+                      id="tableParticipants"
+                      class="table table-striped"
+                      style="width: 100%">
+                      <thead class="headerr">
+                        <tr>
+                          <th>UID</th>
+                          <th>Sr-Code</th>
+                          <th>Name</th>
+                          <th>Campus</th>
+                          <th id="proofHead">Proof</th>
+                          <th>Attendance</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Loading....</td>
+                          <td>Loading....</td>
+                          <td>Loading....</td>
+                          <td>Loading....</td>
+                          <td>
+                            <a
+                              href="#"
+                              id="proof"
+                              style="color: #dc3545; text-decoration: underline"
+                              >View the file</a
+                            >
+                          </td>
+                          <td>
+                            <button class="btn btn-success" id="atdbtn">
+                              Confirm
+                            </button>
+                          </td>
+                        </tr>
+                        <!-- Add more rows if needed -->
+                      </tbody>
+                    </table>
+
+                    <!-- Message should be within the modal-bodyat div -->
+                    <p
+                      id="noDataMessage"
+                      style="
+                        display: none;
+                        color: red;
+                        text-align: center;
+                        font-size: 20px;
+                        margin-bottom: 15px;
+                      ">
+                      No relevant data found for your criteria
+                    </p>
+                  </div>
+
+                  <hr />
                 </div>
               </div>
             </div>
           </div>
+        </div>
+      </div>
 
-          <div
-            class="modal"
-            id="exampleModalNew"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="exampleModalNewTitle"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog" role="document">
-              <div class="modal-content" id="newcnt">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalNewTitle">
-                    Attendees
-                  </h5>
-                </div>
-                <div class="modal-body">
-                  <table class="table">
-                    <thead class="thead-dark" id="kulayan">
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Campus</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Contact No.</th>
-                        <th scope="col">Receipt</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row">1</th>
-                        <td>Leonard Briones</td>
-                        <td>Malvar Campus</td>
-                        <td>Leonard@gmail.com</td>
-                        <td>0967889456</td>
-                        <td>
-                          <button id="viewrec" class="btn btn-danger">
-                            View
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">2</th>
-                        <td>Kurt Mallorca</td>
-                        <td>Malvar Campus</td>
-                        <td>Kurt@gmail.com</td>
-                        <td>0935657895</td>
-                        <td>
-                          <button id="viewrec" class="btn btn-danger">
-                            View
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
-                        <td>Jherimy Arpilleda</td>
-                        <td>Malvar Campus</td>
-                        <td>JJ@gmail.com</td>
-                        <td>JJ@gmail.com</td>
-                        <td>
-                          <button id="viewrec" class="btn btn-danger">
-                            View
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modalre" id="myModalre" style="display: none">
-            <div class="modal-contentre">
-              <!-- Modal Body -->
-              <div class="modal-bodyre">
-                <img
-                  src="img/samplerec.webp"
-                  alt=""
-                  id="recimg"
-                  style="height: 520px; margin-left: 220px"
-                />
-              </div>
+      <div id="myModalnm" class="modal" style="display: none">
+        <div class="modal-contentnm">
+          <span class="closenm">&times;</span>
+          <div class="modal-bodyat">
+            <button id="selectAllBtnn">Select All</button>
+            <button id="deselectAllBtnn">Deselect All</button><br />
+            <hr style="margin: 10px" />
+            <form id="campusForm">
+              <input
+                type="checkbox"
+                id="arasof"
+                class="checkboxna"
+                name="campus"
+                value="ARASOF Nasugbu Campus" />
+              <label for="arasof" class="labelnato">ARASOF Nasugbu Campus</label
+              ><br />
 
-              <footer>
-                <button
-                  id="closeModalre"
-                  class="btn btn-secondary"
-                  style="margin-left: 90%"
-                >
-                  Close
-                </button>
-              </footer>
-            </div>
+              <input
+                type="checkbox"
+                id="balayan"
+                class="checkboxna"
+                name="campus"
+                value="Balayan Campus" />
+              <label for="balayan" class="labelnato">Balayan Campus</label
+              ><br />
+
+              <input
+                type="checkbox"
+                id="jplpc"
+                class="checkboxna"
+                name="campus"
+                value="JPLPC Malvar Campus" />
+              <label for="jplpc" class="labelnato">JPLPC Malvar Campus</label
+              ><br />
+
+              <input
+                type="checkbox"
+                id="lemery"
+                class="checkboxna"
+                name="campus"
+                value="Lemery Campus" />
+              <label for="lemery" class="labelnato">Lemery Campus</label><br />
+
+              <input
+                type="checkbox"
+                id="lipa"
+                class="checkboxna"
+                name="campus"
+                value="Lipa Campus" />
+              <label for="lipa" class="labelnato">Lipa Campus</label><br />
+
+              <input
+                type="checkbox"
+                id="lobo"
+                class="checkboxna"
+                name="campus"
+                value="Lobo Campus" />
+              <label for="lobo" class="labelnato">Lobo Campus</label><br />
+
+              <input
+                type="checkbox"
+                id="mabini"
+                class="checkboxna"
+                name="campus"
+                value="Mabini Campus" />
+              <label for="mabini" class="labelnato">Mabini Campus</label><br />
+
+              <input
+                type="checkbox"
+                id="pablo1"
+                class="checkboxna"
+                name="campus"
+                value="Pablo Borbon Campus I" />
+              <label for="pablo1" class="labelnato">Pablo Borbon Campus I</label
+              ><br />
+
+              <input
+                type="checkbox"
+                id="pablo2"
+                class="checkboxna"
+                name="campus"
+                value="Pablo Borbon Campus II" />
+              <label for="pablo2" class="labelnato"
+                >Pablo Borbon Campus II</label
+              ><br />
+
+              <input
+                type="checkbox"
+                id="rosario"
+                class="checkboxna"
+                name="campus"
+                value="Rosario Campus" />
+              <label for="rosario" class="labelnato">Rosario Campus</label
+              ><br />
+
+              <input
+                type="checkbox"
+                id="sanjuan"
+                class="checkboxna"
+                name="campus"
+                value="San Juan Campus" />
+              <label for="sanjuan" class="labelnato">San Juan Campus</label
+              ><br />
+            </form>
+
+            <hr style="margin: 10px" />
           </div>
+
+          <button id="okButton">Ok</button>
         </div>
       </div>
     </div>
@@ -774,25 +1435,91 @@
         });
       });
 
+      // Function to display the "Are you sure?" confirmation alert
+      function showConfirmationAlert() {
+        if (confirm("Are you sure?")) {
+          // If the event clicks 'Yes', display the success message
+          showSuccessMessage();
+        }
+      }
+
+      // Function to display the success message
+      function showSuccessMessage() {
+        alert("Successfully ");
+        // Close the modal after the 'OK' button in the alert is clicked
+        $("#approval").closest(".modal").modal("hide");
+      }
+
+      // Click event listener for the Approved button
+      document
+        .getElementById("approval")
+        .addEventListener("click", function () {
+          // Show the confirmation alert when the Approved button is clicked
+          showConfirmationAlert();
+        });
+
+      // Function to handle the decline confirmation modal
       document.addEventListener("DOMContentLoaded", function () {
-        // Get the button element
-        var viewButton = document.getElementById("viewrec");
+        var declineButton = document.getElementById("declining");
+        var declineConfirmationModal = document.getElementById(
+          "declineConfirmationModal"
+        );
+        var confirmDeclineButton = document.getElementById("confirmDecline");
 
-        // Get the modified modal element
-        var modal = document.getElementById("myModalre");
+        // Function to show the decline confirmation modal
+        function showDeclineConfirmationModal() {
+          if (declineConfirmationModal) {
+            $(declineConfirmationModal).modal("show");
+          }
+        }
 
-        // Get the close button inside the modified modal
-        var closeButton = document.getElementById("closeModalre");
+        // Event listener for the "Decline" button click
+        if (declineButton) {
+          declineButton.addEventListener("click", showDeclineConfirmationModal);
+        }
 
-        // Event listener for the button click to show the modified modal
-        viewButton.addEventListener("click", function () {
-          modal.style.display = "block";
-        });
+        // Event listener for the "Confirm Decline" button click
+        if (confirmDeclineButton) {
+          confirmDeclineButton.addEventListener("click", function () {
+            // Add your logic for handling the decline action here
+            // For example, you can trigger an action or send a request to decline the event
+            // Then, close the decline confirmation modal
+            $(declineConfirmationModal).modal("hide");
+            // Additional actions after declining can be added here
+          });
+        }
+      });
 
-        // Event listener for the close button to hide the modified modal
-        closeButton.addEventListener("click", function () {
-          modal.style.display = "none";
-        });
+      // Function to handle the decline confirmation modal
+      document.addEventListener("DOMContentLoaded", function () {
+        var declineButton = document.getElementById("declining");
+        var declineConfirmationModal = document.getElementById(
+          "declineConfirmationModal"
+        );
+        var confirmDeclineButton = document.getElementById("confirmDecline");
+
+        // Function to show the decline confirmation modal
+        function showDeclineConfirmationModal() {
+          if (declineConfirmationModal) {
+            $(declineConfirmationModal).modal("show");
+          }
+        }
+
+        // Event listener for the "Decline" button click
+        if (declineButton) {
+          declineButton.addEventListener("click", showDeclineConfirmationModal);
+        }
+
+        // Event listener for the "Confirm Decline" button click
+        if (confirmDeclineButton) {
+          confirmDeclineButton.addEventListener("click", function () {
+            // Show the success alert when the "Submit" button is clicked
+            alert("Submitted Successfully");
+
+            // Close the decline confirmation modal
+            $(declineConfirmationModal).modal("hide");
+          });
+        }
       });
     </script>
 
@@ -803,8 +1530,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <script>
-      new DataTable("#example");
-    </script>
+    <script type="module"></script>
   </body>
 </html>

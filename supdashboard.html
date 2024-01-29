@@ -569,7 +569,7 @@
         padding: 20px;
         border: 1px solid #888;
         border-radius: 10px; /* Set border radius */
-        width: 80%;
+        width: 50%;
         height: 900px;
         max-height: 90%; /* Set a maximum height for the modal content */
         max-width: 900px; /* Set a maximum width for the modal */
@@ -1198,7 +1198,7 @@
           <a href="validateRequest.html" class="no-underline">
             <div class="card">
               <div>
-                <div class="numbers">1</div>
+                <div class="numbers" id="totalRequest">Loading...</div>
                 <div class="cardName">Validate<br />Request</div>
               </div>
 
@@ -1606,17 +1606,18 @@
                       <thead class="table-fix">
                         <tr>
                           <th id="noid">No.</th>
-                          <th>Event</th>
+                          <th>Poster</th>
                           <th>Title</th>
                           <th>Category</th>
+                          <th>Location</th>
                           <th>Campus</th>
                           <th>Date & Time</th>
-                          <th>Action</th>
+                          <th>Details</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td id="numid">1</td>
+                          <td id="numid">0</td>
                           <td>
                             <a href="#"
                               ><img
@@ -1628,6 +1629,7 @@
                           </td>
                           <td id="titleid">Loading.....</td>
                           <td id="categoryid">Loading.....</td>
+                          <td id="locationid">Loading.....</td>
                           <td id="campusid">Loading.....</td>
                           <td id="dateid">
                             Loading..... <br />
@@ -1689,7 +1691,7 @@
                           class="btn btn-danger"
                           data-dismiss="modal"
                           id="terminate"
-                          style="position: relative; right: 69%">
+                          style="position: relative; right: 65%">
                           Terminate
                         </button>
                       </div>

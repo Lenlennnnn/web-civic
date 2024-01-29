@@ -72,6 +72,7 @@ function submitForm() {
     paymentMethod: paymentMethod,
     paymentRecipient: recipient,
     verificationStatus: true,
+    approveTimeStamp: generateTimestamp(),
     campus: targetCampus,
     targetparty: targetParticipant,
     activepoints: activePoints,
@@ -367,6 +368,20 @@ document.addEventListener("DOMContentLoaded", function () {
     campusTarget.value = selectedCampuses.join(", ");
   });
 });
+function generateTimestamp() {
+  const currentDate = new Date();
+  const options = {
+    timeZone: "Asia/Manila",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  };
+  return currentDate.toLocaleString("en-US", options).replace(",", "");
+}
+
 function clearCampusSelection() {
   var campusForm = document.getElementById("campusForm");
   var campusTarget = document.getElementById("campusTarget");

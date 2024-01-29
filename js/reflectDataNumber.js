@@ -65,3 +65,27 @@ const updateTotalVerifiedUsers = (snapshot) => {
 
 // Listen for changes in the "Users" node and update the total verified user count
 onValue(usersRef, updateTotalVerifiedUsers);
+const uploadEngagementRef = ref(db, "Upload_Engagement");
+
+// Function to update total engagement count with verificationStatus set to false
+const updateTotalFalseEngagement = (snapshot) => {
+  const engagements = snapshot.val();
+  let totalFalseEngagement = 0;
+
+  for (const postKey in engagements) {
+    const engagement = engagements[postKey];
+
+    // Check if engagement exists and has verificationStatus set to false
+    if (engagement && engagement.verificationStatus === false) {
+      totalFalseEngagement++;
+    }
+  }
+
+  // Format and update the total false engagement count in the HTML element
+  const formattedCount = formatUserCount(totalFalseEngagement);
+  const totalRequestElement = document.getElementById("totalRequest");
+  totalRequestElement.textContent = formattedCount;
+};
+
+// Listen for changes in the "Upload_Engagement" node and update the total false engagement count
+onValue(uploadEngagementRef, updateTotalFalseEngagement);
