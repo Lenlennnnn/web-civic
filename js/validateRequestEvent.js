@@ -418,7 +418,8 @@ function displayEventData(searchTerm = "", selectedCampus = "") {
       const uploadData = childSnapshot.val();
       if (
         uploadData.hasOwnProperty("verificationStatus") &&
-        uploadData.verificationStatus === false
+        uploadData.verificationStatus === false &&
+        !uploadData.hasOwnProperty("rejectReason") // Check if rejectReason does not exist
       ) {
         const {
           campus,
@@ -478,7 +479,7 @@ function displayEventData(searchTerm = "", selectedCampus = "") {
                     <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
                     <td>${titleEvent || "N/A"}</td>
                     <td>${category || "N/A"}</td>
-                     <td>${location || "N/A"}</td>
+                    <td>${location || "N/A"}</td>
                     <td>${campus || "N/A"}</td>
                     <td>${startDate.toLocaleString() || "N/A"} -- ${
           endDate || "N/A"
@@ -545,10 +546,11 @@ function enableEditing() {
   const campusField = document.getElementById("campusField");
   const terminateBtn = document.getElementById("terminate");
   const categoryField = document.getElementById("categoryField");
+  const rejectBtn = document.getElementById("reject");
 
   saveBtn.style.display = "inline-block";
   terminateBtn.style.right = "58%";
-
+  rejectBtn.style.right = "32%";
   // Enable editing for each field
   editableFields.forEach((fieldId) => {
     const field = document.getElementById(fieldId);
@@ -646,9 +648,11 @@ function cancelEditing() {
   const editBtn = document.getElementById("editBtn");
   const saveBtn = document.getElementById("saveBtn");
   const terminateBtn = document.getElementById("terminate");
+  const rejectBtn = document.getElementById("reject");
 
   saveBtn.style.display = "none";
-  terminateBtn.style.right = "69%";
+  terminateBtn.style.right = "68%";
+  rejectBtn.style.right = "42%";
 
   // Remove the current event listener for the cancel button
   editBtn.removeEventListener("click", cancelEditing);
@@ -889,7 +893,46 @@ modalApproveButton.addEventListener("click", function () {
   }
 });
 
-// Function to generate a timestamp
+$(document).ready(function () {
+  // Function to handle the click event of the "reject" button
+  $("#reject").on("click", function () {
+    // Show the decline confirmation modal
+    $("#declineConfirmationModal").modal("show");
+  });
+
+  // Function to handle the click event of the "confirmDecline" button
+  $("#confirmDecline").on("click", function () {
+    // Get the value entered in the declineReasonInput textarea
+    var declineReason = $("#declineReasonInput").val();
+
+    // Check if eventId is defined
+    var selectedEvent = document.querySelector("tr.selected-event");
+    if (selectedEvent) {
+      var eventId = selectedEvent.getAttribute("data-event-id");
+
+      // Ask for confirmation
+      if (confirm("Are you sure to reject this Engagement?")) {
+        // Update the specified fields in the Firebase database
+        update(ref(db, "Upload_Engagement/" + eventId), {
+          rejectReason: declineReason,
+          verificationStatus: false,
+          rejecttime: generateTimestamp(),
+        });
+
+        // Hide the decline confirmation modal
+        $("#declineConfirmationModal").modal("hide");
+
+        // Show success alert
+        alert("Engagement rejected successfully!");
+      } else {
+        // If the user cancels, do nothing
+        console.log("Rejection cancelled");
+      }
+    } else {
+      console.error("No selected event found");
+    }
+  });
+});
 function generateTimestamp() {
   const currentDate = new Date();
   const options = {

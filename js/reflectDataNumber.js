@@ -75,8 +75,12 @@ const updateTotalFalseEngagement = (snapshot) => {
   for (const postKey in engagements) {
     const engagement = engagements[postKey];
 
-    // Check if engagement exists and has verificationStatus set to false
-    if (engagement && engagement.verificationStatus === false) {
+    // Check if engagement exists, has verificationStatus set to false, and does not have rejectReason
+    if (
+      engagement &&
+      engagement.verificationStatus === false &&
+      !engagement.rejectReason
+    ) {
       totalFalseEngagement++;
     }
   }
