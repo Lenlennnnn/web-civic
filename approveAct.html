@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Approved Engagement</title>
+    <title>Approve Engagement</title>
     <link rel="icon" type="image/png" href="login/images/icons/civicon.png" />
     <link rel="stylesheet" href="css/dashboard.css" />
     <link
@@ -16,6 +16,13 @@
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+    <link rel="stylesheet" href="css/post.css" />
+
     <style>
       .h1-group {
         position: relative;
@@ -100,37 +107,11 @@
         margin-right: 0;
       }
 
-      /* .dashboard {
-        color: #a90011;
-        position: absolute;
-        left: 80px;
-        top: 10px;
-      } */
-      /* 
-      .adminPro {
-        color: #a90011;
-        position: absolute;
-        right: 90px;
-      } */
-
-      /* .notifIcon {
-        position: absolute;
-        right: 204px;
-        font-size: 20px;
-        color: #6c757d;
-      } */
-
       .search {
         position: relative;
         top: 10px;
       }
 
-      /* .user-profile {
-        position: relative;
-        bottom: 3px;
-      } */
-
-      /* this is for upcoming */
       table {
         width: 100%;
         border-collapse: collapse;
@@ -487,6 +468,7 @@
       .vieweventdet {
         background-color: #dc3545;
         color: white;
+        border-radius: 5px;
         border: none;
         padding: 8px 16px;
         font-size: 16px;
@@ -542,7 +524,7 @@
         padding: 20px;
         border: 1px solid #888;
         border-radius: 10px; /* Set border radius */
-        width: 80%;
+        width: 50%;
         height: 900px;
         max-height: 90%; /* Set a maximum height for the modal content */
         max-width: 900px; /* Set a maximum width for the modal */
@@ -1007,6 +989,9 @@
         margin-left: -35%;
         justify-content: center;
       }
+      #declineConfirmationModal {
+        z-index: 1050;
+      }
     </style>
   </head>
 
@@ -1024,7 +1009,7 @@
           type="module"
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
       </div>
-      <h1 class="h1-group">Approved Engagement</h1>
+      <h1 class="h1-group">Approve Request</h1>
 
       <!-- =============================================== upcoming Events ================================================ -->
 
@@ -1035,7 +1020,7 @@
               <div class="table-title">
                 <div class="row">
                   <div class="col-sm-4">
-                    <h2>Already Approved</h2>
+                    <h2>Verified Engagement Table</h2>
                   </div>
                 </div>
               </div>
@@ -1057,9 +1042,9 @@
                       </div>
                     </div>
                     <div class="filter-group" id="campusfilter">
-                      <label style="margin-top: 10px">Campus</label>
+                      <label style="margin-top: -5px">Campus</label>
 
-                      <select class="form-control">
+                      <select class="form-control" style="margin-top: -5px">
                         <option value="" disabled selected>
                           Filter Campus
                         </option>
@@ -1086,7 +1071,7 @@
                       </select>
                       <i
                         class="fas fa-chevron-down"
-                        style="margin-top: 10px; margin-left: -45px"></i>
+                        style="margin-left: -45px; margin-top: -15px"></i>
                     </div>
                   </div>
                 </div>
@@ -1096,9 +1081,10 @@
                   <thead class="table-fix">
                     <tr>
                       <th id="noid">No.</th>
-                      <th>Event</th>
+                      <th>Poster</th>
                       <th>Title</th>
                       <th>Category</th>
+                      <th>Location</th>
                       <th>Campus</th>
                       <th>Date & Time</th>
                       <th>Action</th>
@@ -1106,7 +1092,7 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td id="numid">1</td>
+                      <td id="numid">0</td>
                       <td>
                         <a href="#"
                           ><img
@@ -1118,6 +1104,7 @@
                       </td>
                       <td id="titleid">Loading.....</td>
                       <td id="categoryid">Loading.....</td>
+                      <td id="locationid">Loading.....</td>
                       <td id="campusid">Loading.....</td>
                       <td id="dateid">
                         Loading..... <br />
@@ -1177,13 +1164,12 @@
                       class="btn btn-danger"
                       data-dismiss="modal"
                       id="terminate"
-                      style="position: relative; right: 69%">
+                      style="position: relative; right: 68%">
                       Terminate
                     </button>
                   </div>
                 </div>
               </div>
-
               <div id="myModalat" class="modalat">
                 <div class="modal-contentat" style="width: 95%; height: 95%">
                   <div class="modal-headerat">
@@ -1275,7 +1261,6 @@
                       No relevant data found for your criteria
                     </p>
                   </div>
-
                   <hr />
                 </div>
               </div>
@@ -1283,10 +1268,45 @@
           </div>
         </div>
       </div>
-
+      <div
+        class="modal"
+        id="declineConfirmationModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="declineConfirmationModalLabel"
+        aria-hidden="true"
+        data-backdrop="false">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="declineConfirmationModalLabel">
+                Decline Confirmation
+              </h5>
+            </div>
+            <div class="modal-body">
+              <p>Please provide a reason for rejecting:</p>
+              <textarea
+                class="form-control"
+                id="declineReasonInput"
+                rows="2"></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" id="confirmDecline">
+                Submit
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div id="myModalnm" class="modal" style="display: none">
         <div class="modal-contentnm">
-          <span class="closenm">&times;</span>
+          <span class="closenm" id="closeCampusModal">&times;</span>
           <div class="modal-bodyat">
             <button id="selectAllBtnn">Select All</button>
             <button id="deselectAllBtnn">Deselect All</button><br />
@@ -1523,13 +1543,27 @@
       });
     </script>
 
-    <script src="js/addAdmin.js"></script>
+    <script type="module">
+      document.addEventListener("DOMContentLoaded", function () {
+        const declineReasonInput =
+          document.getElementById("declineReasonInput");
+        declineReasonInput.placeholder = "Maximum of 100 characters";
+        // Add an input event listener to the declineReasonInput field
+        declineReasonInput.addEventListener("input", function () {
+          // Limit the input to 70 characters
+          if (this.value.length > 100) {
+            this.value = this.value.substring(0, 100);
+          }
+        });
+      });
+    </script>
+
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <script type="module"></script>
+    <script type="module" src="js/approvedEngagement.js"></script>
   </body>
 </html>

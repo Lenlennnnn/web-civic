@@ -51,6 +51,7 @@ function openEventModal(eventData) {
   function generatePaymentFieldsHTML(eventData) {
     if (shouldShowPaymentFields(eventData.category)) {
       return `
+              <div id="payDiv">
                 <p id="payRecipLabel"><strong>Payment Recipient:</strong>
                     <input class="form-control" id="payRecip" type="text" value="${
                       eventData.paymentRecipient || "N/A"
@@ -67,6 +68,7 @@ function openEventModal(eventData) {
                       eventData.paymentMethod || "N/A"
                     }" readonly>
                 </p>
+                </div>
             `;
     }
     return "";
@@ -78,10 +80,18 @@ function openEventModal(eventData) {
         }" alt="Event Image" class="eventpic" id="upcompostpic" />
           <strong id= "labelImage" style="display: none; margin-top:10px;">Choose an Image:</strong>
         <input class="form-control" type="file" id="imagePost" name="image" accept="image/*" required style="display: none; margin-bottom:10px;">
+        
+          <p style="margin-top: 30px;">
+  <strong>Uploaders UID:</strong>
+  <input class="form-control" id="uploadersField" type="text" value="${
+    eventData.uploadersUID || "N/A"
+  }" readonly>
+</p>
+
          <p>
     <strong>Category:</strong>
     <select class="form-control" id="categoryField" name="categoryField" required disabled >
-      <option value=""  disabled selected>
+      <option value="Choose a Category"  disabled selected>
         Choose a Category
       </option>
       <option value="Tree Planting" ${
@@ -260,6 +270,8 @@ function resetButtonsAndFields() {
   const saveBtn = document.getElementById("saveBtn");
   const terminateBtn = document.getElementById("terminate");
   const categoryField = document.getElementById("categoryField");
+  const rejectBtn = document.getElementById("reject");
+
   categoryField.setAttribute("disabled", true);
   // Reset button text and remove event listeners
   editBtn.textContent = "Edit";
@@ -271,8 +283,8 @@ function resetButtonsAndFields() {
   saveBtn.style.display = "none";
 
   // Adjust terminate button position
-  terminateBtn.style.right = "69%";
-
+  terminateBtn.style.right = "68%";
+  rejectBtn.style.right = "42%";
   // Disable editing for each field
   editableFields.forEach((fieldId) => {
     const field = document.getElementById(fieldId);
@@ -370,6 +382,7 @@ function handleCategoryChange() {
   const payMethLabel = document.getElementById("payMethLabel");
   const fundLabel = document.getElementById("fundLabel");
   const fundCollectedField = document.getElementById("fundCollectedField");
+  const payDiv = document.getElementById("payDiv");
   // Check if the selected category is "Fund Raising" or "Donation"
   if (selectedCategory === "Fund Raising" || selectedCategory === "Donation") {
     // Show the payment fields and labels
@@ -379,6 +392,7 @@ function handleCategoryChange() {
     payMethLabel.style.display = "block";
     fundLabel.style.display = "block";
     fundCollectedField.style.display = "block";
+    payDiv.style.display = "none";
   } else {
     // Hide the payment fields and labels
     payRecipField.style.display = "none";
@@ -387,6 +401,7 @@ function handleCategoryChange() {
     payMethLabel.style.display = "none";
     fundLabel.style.display = "none";
     fundCollectedField.style.display = "none";
+    payDiv.style.display = "block";
   }
 }
 
@@ -502,7 +517,7 @@ function displayEventData(searchTerm = "", selectedCampus = "") {
                         <img src="img/cleaning.jpg" class="eventpic" alt="Avatar" id="eventpicimg" />
                     </a>
                <td colspan="7" style="text-align: center;">
-              No Civic Engagement events are currently available.
+              No Civic Engagement Request are currently available.
 
             </td>
             `;
@@ -596,7 +611,7 @@ function enableEditing() {
   campusField.addEventListener("click", showCampusModal);
   categoryField.addEventListener("change", handleCategoryChange);
   categoryField.removeAttribute("disabled");
-  // Call the handleCategoryChange function initially to set the initial state
+
   handleCategoryChange();
 }
 

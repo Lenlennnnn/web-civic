@@ -393,7 +393,7 @@ function deleteUserData() {
   if (confirm("Are you sure you want to delete the data of this Account?")) {
     // Delete user data from Realtime Database
     const userRef = ref(db, `Users/${uidToDelete}`);
-    const userVerificationRef = ref(db, `User Verification/${uidToDelete}`);
+    const userVerificationRef = ref(db, `User_Verification/${uidToDelete}`);
 
     // Remove the user data and corresponding child under User Verification
     Promise.all([remove(userRef), set(userVerificationRef, null)])
@@ -429,7 +429,7 @@ function revokeUserVerification() {
     const userRefToRevoke = ref(db, `Users/${uidToRevoke}`);
     const userVerificationRefToRevoke = ref(
       db,
-      `User Verification/${uidToRevoke}`
+      `User_Verification/${uidToRevoke}`
     );
 
     // Set verificationStatus to false and delete the corresponding child under User Verification

@@ -93,3 +93,29 @@ const updateTotalFalseEngagement = (snapshot) => {
 
 // Listen for changes in the "Upload_Engagement" node and update the total false engagement count
 onValue(uploadEngagementRef, updateTotalFalseEngagement);
+
+const approveNumElement = document.getElementById("approveNum");
+
+// Function to update the number of approved engagements
+const updateTotalApprovedEngagements = (snapshot) => {
+  const engagements = snapshot.val();
+  let totalApprovedEngagements = 0;
+
+  for (const postKey in engagements) {
+    const engagement = engagements[postKey];
+
+    if (
+      engagement &&
+      engagement.verificationStatus === true &&
+      engagement.hasOwnProperty("approveBy")
+    ) {
+      totalApprovedEngagements++;
+    }
+  }
+
+  const formattedCount = formatUserCount(totalApprovedEngagements);
+  approveNumElement.textContent = formattedCount;
+};
+
+// Listen for changes in the "Upload_Engagement" node and update the total approved engagement count
+onValue(uploadEngagementRef, updateTotalApprovedEngagements);

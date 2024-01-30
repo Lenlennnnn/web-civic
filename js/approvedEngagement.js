@@ -23,10 +23,13 @@ const db = getDatabase(app);
 const auth = getAuth(app);
 const storages = getStorage(app);
 
+let currentUserUID;
+
 onAuthStateChanged(auth, (user) => {
   // You can handle authentication state changes here
   if (user) {
     console.log("User is logged in:", user);
+    currentUserUID = user.uid;
   } else {
     console.log("User is logged out");
   }
@@ -48,7 +51,7 @@ function openEventModal(eventData) {
   function generatePaymentFieldsHTML(eventData) {
     if (shouldShowPaymentFields(eventData.category)) {
       return `
-      <div id="payDiv">
+                 <div id="payDiv">
                 <p id="payRecipLabel"><strong>Payment Recipient:</strong>
                     <input class="form-control" id="payRecip" type="text" value="${
                       eventData.paymentRecipient || "N/A"
@@ -75,12 +78,20 @@ function openEventModal(eventData) {
         <img src="${
           eventData.image || "N/A"
         }" alt="Event Image" class="eventpic" id="upcompostpic" />
-         <p id="labelImage" style="display: none;">Choose an Image:</p>
-        <input type="file" id="imagePost" name="image" accept="image/*" required style="display: none;">
+          <strong id= "labelImage" style="display: none; margin-top:10px;">Choose an Image:</strong>
+        <input class="form-control" type="file" id="imagePost" name="image" accept="image/*" required style="display: none; margin-bottom:10px;">
+        
+          <p style="margin-top: 30px;">
+  <strong>Uploaders UID:</strong>
+  <input class="form-control" id="uploadersField" type="text" value="${
+    eventData.uploadersUID || "N/A"
+  }" readonly>
+</p>
+
          <p>
     <strong>Category:</strong>
-    <select id="categoryField" name="categoryField" required disabled >
-      <option value="" disabled selected>
+    <select class="form-control" id="categoryField" name="categoryField" required disabled >
+      <option value=""  disabled selected>
         Choose a Category
       </option>
       <option value="Tree Planting" ${
@@ -123,7 +134,9 @@ function openEventModal(eventData) {
       }>
         Teaching Literacy
       </option>
+     
     </select>
+
   </p>
         <p><strong>Title:</strong>
         <input class="form-control" id="titleField" type="text" value="${
@@ -134,7 +147,7 @@ function openEventModal(eventData) {
     </p>
         
         <p><strong>Campus:</strong>
-          <input class="form-control" id="campusField" required disabled type="text" value="${
+          <input class="form-control" id="campusField" type="text" value="${
             eventData.campus || "N/A"
           }" readonly>
         </p>
@@ -155,20 +168,19 @@ function openEventModal(eventData) {
             eventData.endDate || "N/A"
           }" readonly>
         </p>
-        <h3>Description</h3>
-        <p>&nbsp;</p>
+
         <p><strong>Introduction:</strong></p>
-        <textarea class="form-control" rows="7" id="introductionField" readonly>${
+        <textarea class="form-control" rows="7" id="introductionField" style="margin-bottom:15px" readonly>${
           eventData.intro ? eventData.intro.replace(/"/g, "&quot;") : "N/A"
         }</textarea>
         <p><strong>Objectives:</strong></p>
-        <textarea class="form-control" rows="7" id="objectiveField" readonly>${
+        <textarea class="form-control" rows="7" id="objectiveField" style="margin-bottom:15px" readonly>${
           eventData.objective
             ? eventData.objective.replace(/"/g, "&quot;")
             : "N/A"
         }</textarea>
         <p><strong>Instruction:</strong></p>
-        <textarea class="form-control" rows="7" id="instructionField" readonly>${
+        <textarea class="form-control" rows="7" id="instructionField" style="margin-bottom:15px" readonly>${
           eventData.instruction
             ? eventData.instruction.replace(/"/g, "&quot;")
             : "N/A"
@@ -212,29 +224,26 @@ function openEventModal(eventData) {
   >
 </p>
 
-
-    <p style="display: none;" id="payRecipLabel">
-        <strong>Payment Recipient:</strong>
-        <input class="form-control" id="payRecip" type="text" value="${
-          eventData.paymentRecipient
-            ? eventData.paymentRecipient.replace(/"/g, "&quot;")
-            : "N/A"
-        }" readonly>
-    </p>
-    <p style="display: none;" id="payMethLabel">
-        <strong>Payment Method:</strong>
-        <input class="form-control" id="payMeth" type="text" value="${
-          eventData.paymentMethod || "N/A"
-        }" readonly>
-    </p>
-    <p style="display: none;" id="fundLabel">
-        <strong>Fund Collected:</strong>
-        <input class="form-control" id="fundCollectedField" type="text" value="₱ ${
-          formatDecimal(eventData.fundcollected) || "N/A"
-        }" readonly>
-    </p>
-
-
+<p style="display: none;"  id="payRecipLabel">
+    <strong>Payment Recipient:</strong>
+    <input class="form-control" id="payRecip" type="text" value="${
+      eventData.paymentRecipient
+        ? eventData.paymentRecipient.replace(/"/g, "&quot;")
+        : "N/A"
+    }" readonly>
+</p>
+<p style="display: none;" id="payMethLabel">
+    <strong>Payment Method:</strong>
+    <input class="form-control" id="payMeth" type="text" value="${
+      eventData.paymentMethod || "N/A"
+    }" readonly>
+</p>
+<p style="display: none;" id="fundLabel">
+  <strong>Fund Collected:</strong>
+  <input class="form-control" id="fundCollectedField" type="text" value="₱ ${
+    formatDecimal(eventData.fundcollected) || "N/A"
+  }" readonly>
+</p>
        ${generatePaymentFieldsHTML(eventData)}
       `;
 
@@ -260,6 +269,7 @@ function resetButtonsAndFields() {
   const editBtn = document.getElementById("editBtn");
   const saveBtn = document.getElementById("saveBtn");
   const terminateBtn = document.getElementById("terminate");
+
   const categoryField = document.getElementById("categoryField");
   categoryField.setAttribute("disabled", true);
   // Reset button text and remove event listeners
@@ -272,9 +282,8 @@ function resetButtonsAndFields() {
   saveBtn.style.display = "none";
 
   // Adjust terminate button position
-  terminateBtn.style.right = "65%";
+  terminateBtn.style.right = "68%";
 
-  // Disable editing for each field
   editableFields.forEach((fieldId) => {
     const field = document.getElementById(fieldId);
     if (
@@ -339,7 +348,6 @@ document.addEventListener("click", function (event) {
         updateNotificationBadge(0);
       }
     });
-    // Retrieve the event data from Firebase
     get(eventRef)
       .then((snapshot) => {
         if (snapshot.exists()) {
@@ -422,7 +430,6 @@ function handleCategoryChange() {
     payDiv.style.display = "block";
   }
 }
-
 const campusFilterSelect = document.querySelector("#campusfilter select");
 const searchInput = document.querySelector("#searchfilter input");
 
@@ -442,18 +449,17 @@ function displayEventData(searchTerm = "", selectedCampus = "") {
   const uploadEngagementRef = ref(db, "Upload_Engagement");
 
   onValue(uploadEngagementRef, (snapshot) => {
-    tableBody.innerHTML = ""; // Clear existing table data
-    rowNumber = 1; // Reset row number
+    tableBody.innerHTML = "";
+    rowNumber = 1;
 
-    const events = []; // Array to store events for sorting
+    const events = [];
 
     snapshot.forEach((childSnapshot) => {
       const uploadData = childSnapshot.val();
-
-      // Check if the verificationStatus child exists and is true
       if (
         uploadData.hasOwnProperty("verificationStatus") &&
-        uploadData.verificationStatus === true
+        uploadData.verificationStatus === true &&
+        uploadData.hasOwnProperty("approveBy")
       ) {
         const {
           campus,
@@ -513,7 +519,7 @@ function displayEventData(searchTerm = "", selectedCampus = "") {
                     <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
                     <td>${titleEvent || "N/A"}</td>
                     <td>${category || "N/A"}</td>
-                     <td>${location || "N/A"}</td>
+                    <td>${location || "N/A"}</td>
                     <td>${campus || "N/A"}</td>
                     <td>${startDate.toLocaleString() || "N/A"} -- ${
           endDate || "N/A"
@@ -536,7 +542,7 @@ function displayEventData(searchTerm = "", selectedCampus = "") {
                         <img src="img/cleaning.jpg" class="eventpic" alt="Avatar" id="eventpicimg" />
                     </a>
                <td colspan="7" style="text-align: center;">
-              No Civic Engagement events are currently available.
+              No Civic Engagement Request are currently available.
 
             </td>
             `;
@@ -574,7 +580,6 @@ function handleImageSelection() {
   upcompostpic.src = imageURL;
 }
 const originalValues = {};
-
 function enableEditing() {
   const editBtn = document.getElementById("editBtn");
   const saveBtn = document.getElementById("saveBtn");
@@ -583,8 +588,7 @@ function enableEditing() {
   const categoryField = document.getElementById("categoryField");
 
   saveBtn.style.display = "inline-block";
-  terminateBtn.style.right = "53%";
-
+  terminateBtn.style.right = "58%";
   // Enable editing for each field
   editableFields.forEach((fieldId) => {
     const field = document.getElementById(fieldId);
@@ -684,7 +688,7 @@ function cancelEditing() {
   const terminateBtn = document.getElementById("terminate");
 
   saveBtn.style.display = "none";
-  terminateBtn.style.right = "65%";
+  terminateBtn.style.right = "68%";
 
   // Remove the current event listener for the cancel button
   editBtn.removeEventListener("click", cancelEditing);
@@ -838,6 +842,51 @@ function reverseFormatDateTime(dateTimeString) {
 const editBtn = document.getElementById("editBtn");
 editBtn.addEventListener("click", enableEditing);
 displayEventData();
+
+function selectAll() {
+  var checkboxes = document.querySelectorAll(".checkboxna");
+  checkboxes.forEach(function (checkbox) {
+    checkbox.checked = true;
+  });
+}
+
+function deselectAll() {
+  var checkboxes = document.querySelectorAll(".checkboxna");
+  checkboxes.forEach(function (checkbox) {
+    checkbox.checked = false;
+  });
+}
+
+var selectAllBtn = document.getElementById("selectAllBtnn");
+var deselectAllBtn = document.getElementById("deselectAllBtnn");
+
+selectAllBtn.addEventListener("click", selectAll);
+deselectAllBtn.addEventListener("click", deselectAll);
+
+var okButton = document.getElementById("okButton");
+
+var span = document.getElementById("closeCampusModal");
+var modal = document.getElementById("myModalnm");
+
+span.onclick = function () {
+  modal.style.display = "none";
+};
+
+okButton.addEventListener("click", function () {
+  modal.style.display = "none";
+
+  var campusForm = document.getElementById("campusForm");
+  var campusTarget = document.getElementById("campusTarget");
+
+  var selectedCampuses = [];
+  var checkboxes = campusForm.querySelectorAll(".checkboxna:checked");
+  checkboxes.forEach(function (checkbox) {
+    selectedCampuses.push(checkbox.value);
+  });
+
+  // Update the campusTarget element with the selected campuses
+  campusTarget.value = selectedCampuses.join(", ");
+});
 function initRealtimeListener(uid, eventId) {
   const participantRef = ref(
     db,
