@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
               });
 
               // Delete the corresponding child under User Verification
-              const userVerificationRef = ref(db, `User Verification/${uid}`);
+              const userVerificationRef = ref(db, `User_Verification/${uid}`);
               set(userVerificationRef, null); // This will delete the child with UID
 
               // Display success alert or perform any other actions
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
           });
 
-        const userRef2 = ref(db, `User Verification/${uid}`);
+        const userRef2 = ref(db, `User_Verification/${uid}`);
         onValue(userRef2, (userSnapshot) => {
           const userData = userSnapshot.val();
           if (userData) {
@@ -200,7 +200,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (user && user.verificationStatus === false) {
           const uid = user.uid || "";
-          const userVerificationRef = ref(db, `User Verification/${uid}`);
+          const userVerificationRef = ref(db, `User_Verification/${uid}`);
 
           const verificationPromise = new Promise((resolve) => {
             onValue(userVerificationRef, (verificationSnapshot) => {

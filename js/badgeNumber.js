@@ -64,7 +64,7 @@ onValue(usersRef, (snapshot) => {
     // Check if verificationStatus is false
     if (user.verificationStatus === false) {
       // Check if UID exists in User Verification node
-      const userVerificationRef = ref(db, "User Verification/" + uid);
+      const userVerificationRef = ref(db, "User_Verification/" + uid);
       get(userVerificationRef).then((verificationSnapshot) => {
         if (verificationSnapshot.exists()) {
           // Increment badge count

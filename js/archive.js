@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
       remove(userRef);
 
       // Delete the corresponding child under User Verification
-      const userVerificationRef = ref(db, `User Verification/${uidToDelete}`);
+      const userVerificationRef = ref(db, `User_Verification/${uidToDelete}`);
       remove(userVerificationRef);
 
       // Close the modal after removing user data
