@@ -27,7 +27,7 @@ onAuthStateChanged(auth, (user) => {
 const usersRef = ref(db, "Users");
 
 // Function to format the user count
-const formatUserCount = (count) => {
+const formatCount = (count) => {
   if (count >= 1000000) {
     return (count / 1000000).toFixed(1) + "M";
   } else if (count >= 10000) {
@@ -58,7 +58,7 @@ const updateTotalVerifiedUsers = (snapshot) => {
   }
 
   // Format and update the total user count in the HTML element
-  const formattedCount = formatUserCount(totalVerifiedUsers);
+  const formattedCount = formatCount(totalVerifiedUsers);
   const totalNumElement = document.getElementById("totalNum");
   totalNumElement.textContent = formattedCount;
 };
@@ -86,7 +86,7 @@ const updateTotalFalseEngagement = (snapshot) => {
   }
 
   // Format and update the total false engagement count in the HTML element
-  const formattedCount = formatUserCount(totalFalseEngagement);
+  const formattedCount = formatCount(totalFalseEngagement);
   const totalRequestElement = document.getElementById("totalRequest");
   totalRequestElement.textContent = formattedCount;
 };
@@ -113,9 +113,40 @@ const updateTotalApprovedEngagements = (snapshot) => {
     }
   }
 
-  const formattedCount = formatUserCount(totalApprovedEngagements);
+  const formattedCount = formatCount(totalApprovedEngagements);
   approveNumElement.textContent = formattedCount;
 };
 
 // Listen for changes in the "Upload_Engagement" node and update the total approved engagement count
 onValue(uploadEngagementRef, updateTotalApprovedEngagements);
+const finishNumElement = document.getElementById("finishNum");
+
+// Function to update the number of finished events
+const updateTotalFinishedEvents = (snapshot) => {
+  const events = snapshot.val();
+  let totalFinishedEvents = 0;
+  const currentDate = new Date();
+
+  for (const eventKey in events) {
+    const event = events[eventKey];
+
+    if (
+      event &&
+      event.verificationStatus === true &&
+      event.hasOwnProperty("endDate")
+    ) {
+      const eventEndDate = new Date(event.endDate);
+
+      // Check if the event has finished (current date is after the event's end date)
+      if (currentDate > eventEndDate) {
+        totalFinishedEvents++;
+      }
+    }
+  }
+
+  const formattedCount = formatCount(totalFinishedEvents);
+  finishNumElement.textContent = formattedCount;
+};
+
+// Listen for changes in the "Upload_Engagement" node and update the total finished events count
+onValue(uploadEngagementRef, updateTotalFinishedEvents);

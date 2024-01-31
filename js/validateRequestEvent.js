@@ -447,19 +447,16 @@ function displayEventData(searchTerm = "", selectedCampus = "") {
           // Add other fields you want to retrieve from Firebase
         } = uploadData;
 
-        // Check if the event has already ended
-        if (!hasEventEnded(endDate)) {
-          // Check if the selected campus is present in the campus field
-          if (
-            selectedCampus === "" ||
-            campus.toLowerCase().includes(selectedCampus.toLowerCase())
-          ) {
-            events.push({
-              id: childSnapshot.key,
-              startDate: new Date(startDate),
-              data: uploadData,
-            });
-          }
+        // Check if the selected campus is present in the campus field
+        if (
+          selectedCampus === "" ||
+          campus.toLowerCase().includes(selectedCampus.toLowerCase())
+        ) {
+          events.push({
+            id: childSnapshot.key,
+            startDate: new Date(startDate),
+            data: uploadData,
+          });
         }
       }
     });
@@ -490,19 +487,17 @@ function displayEventData(searchTerm = "", selectedCampus = "") {
 
         const newRow = tableBody.insertRow();
         newRow.innerHTML = `
-                    <td>${rowNumber}</td>
-                    <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
-                    <td>${titleEvent || "N/A"}</td>
-                    <td>${category || "N/A"}</td>
-                    <td>${location || "N/A"}</td>
-                    <td>${campus || "N/A"}</td>
-                    <td>${startDate.toLocaleString() || "N/A"} -- ${
-          endDate || "N/A"
-        }</td>
-                    <td>
-                        <button type="button" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>
-                    </td>
-                `;
+          <td>${rowNumber}</td>
+          <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
+          <td>${titleEvent || "N/A"}</td>
+          <td>${category || "N/A"}</td>
+          <td>${location || "N/A"}</td>
+          <td>${campus || "N/A"}</td>
+          <td>${startDate.toLocaleString() || "N/A"} -- ${endDate || "N/A"}</td>
+          <td>
+              <button type="button" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>
+          </td>
+        `;
         newRow.setAttribute("data-event-id", event.id); // Set the event ID as an attribute in the table row
         rowNumber++;
       });
@@ -511,16 +506,15 @@ function displayEventData(searchTerm = "", selectedCampus = "") {
       const defaultRow = tableBody.insertRow();
       defaultRow.id = "defaultRow";
       defaultRow.innerHTML = `
-                <td id="numid">0</td>
-                <td>
-                    <a href="#">
-                        <img src="img/cleaning.jpg" class="eventpic" alt="Avatar" id="eventpicimg" />
-                    </a>
-               <td colspan="7" style="text-align: center;">
-              No Civic Engagement Request are currently available.
-
-            </td>
-            `;
+        <td id="numid">0</td>
+        <td>
+          <a href="#">
+            <img src="img/cleaning.jpg" class="eventpic" alt="Avatar" id="eventpicimg" />
+          </a>
+        <td colspan="7" style="text-align: center;">
+          No Civic Engagement Requests are currently available.
+        </td>
+      `;
     }
   });
 }
