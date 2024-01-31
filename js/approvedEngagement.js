@@ -919,6 +919,9 @@ function tableParticipants(eventId) {
       // Clear the table before updating it
       participantsTable.innerHTML = "";
 
+      let totalAttendCount = 0;
+      let totalNotAttendCount = 0;
+
       // Rest of your code...
       if (participantsSnapshot.exists()) {
         participantsSnapshot.forEach((participantSnapshot) => {
@@ -986,6 +989,11 @@ function tableParticipants(eventId) {
               });
             }
           });
+          if (isAlreadyAttended) {
+            totalAttendCount++;
+          } else {
+            totalNotAttendCount++;
+          }
         });
       } else {
         // If there are no participants, add a row with a message
@@ -1001,7 +1009,12 @@ function tableParticipants(eventId) {
           </td>
         `;
       }
+      const totalAttendElement = document.getElementById("totalAttend");
+      totalAttendElement.innerText = totalAttendCount;
 
+      // Update the total not attend count in the respective element
+      const totalNotAttendElement = document.getElementById("totalNotAttend");
+      totalNotAttendElement.innerText = totalNotAttendCount;
       // Hide the "Proof" column header if the category is neither "Fund Raising" nor "Donation"
       const proofHead = document.getElementById("proofHead");
       proofHead.style.display =
@@ -1010,7 +1023,6 @@ function tableParticipants(eventId) {
           ? ""
           : "none";
 
-      // Event listener for the "attendedFilter" dropdown
       const attendedFilterDropdown = document
         .getElementById("attendedFilter")
         .querySelector("select");

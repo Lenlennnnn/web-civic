@@ -903,6 +903,25 @@ function initRealtimeListener(uid, eventId) {
     }
   });
 }
+function getStarRating(message) {
+  switch (message.toLowerCase()) {
+    case "very dissatisfied":
+      return "&#9734;&#9734;&#9734;&#9734;&#9734;"; // 5 empty stars
+    case "dissatisfied":
+      return "&#9733;&#9734;&#9734;&#9734;&#9734;"; // 1 gold star
+    case "ok":
+      return "&#9733;&#9733;&#9734;&#9734;&#9734;"; // 2 gold stars
+    case "average":
+      return "&#9733;&#9733;&#9733;&#9734;&#9734;"; // 3 gold stars
+    case "satisfied":
+      return "&#9733;&#9733;&#9733;&#9733;&#9734;"; // 4 gold stars
+    case "very satisfied":
+      return "&#9733;&#9733;&#9733;&#9733;&#9733;"; // 5 gold stars
+    default:
+      return ""; // No stars for unknown messages
+  }
+}
+
 function tableParticipants(eventId) {
   const participantsTable = document
     .getElementById("tableParticipants")
@@ -928,65 +947,74 @@ function tableParticipants(eventId) {
           const isAlreadyAttended =
             participantData.joined && participantData.attendedStamp;
           const userRef = ref(db, `Users/${uid}`);
+          const ratingsRef = ref(
+            db,
+            `Upload_Engagement/${eventId}/Ratings/${uid}`
+          );
+          Promise.all([get(userRef), get(ratingsRef)]).then(
+            ([userSnapshot, ratingsSnapshot]) => {
+              if (userSnapshot.exists()) {
+                const userData = userSnapshot.val();
+                const ratingMessage = ratingsSnapshot.exists()
+                  ? ratingsSnapshot.val().message
+                  : "";
+                const starRating = getStarRating(ratingMessage);
 
-          get(userRef).then((userSnapshot) => {
-            if (userSnapshot.exists()) {
-              const userData = userSnapshot.val();
-
-              // Create a new row for each participant
-              const newRow = participantsTable.insertRow();
-              newRow.innerHTML = `
-                <td>${uid}</td>
-                <td>${userData.srcode}</td>
-                <td>${userData.lastname}, ${userData.firstname}, ${
-                userData.middlename
-              }</td>
-                <td>${userData.campus}</td>
-                ${
-                  categorySnapshot.val() === "Fund Raising" ||
-                  categorySnapshot.val() === "Donation"
-                    ? `<td>
-                        <a href="#" id="proof" style="color: #dc3545; text-decoration: underline;">View the Image</a>
-                      </td>`
-                    : ""
-                }
-                <td>
-                  <button class="btn ${
-                    isAlreadyAttended ? "btn-danger" : "btn-success"
-                  }" id="atdbtn" data-uid="${uid}" data-event-id="${eventId}">
-                    ${isAlreadyAttended ? "Cancel" : "Confirm"}
-                  </button>
-                </td>
-              `;
-
-              initRealtimeListener(uid, eventId);
-
-              // Add event listener for "proof" link
-              const proofLink = newRow.querySelector("#proof");
-              proofLink.addEventListener("click", function (event) {
-                event.preventDefault(); // Prevent the default behavior of the link (opening in the same tab)
-
-                const transparencyImageRef = ref(
-                  db,
-                  `Upload_Engagement/${eventId}/TransparencyImage/${uid}`
-                );
-                get(transparencyImageRef)
-                  .then((imageSnapshot) => {
-                    if (imageSnapshot.exists()) {
-                      const imageUri = imageSnapshot.val().imageUri;
-
-                      // Open the imageUri link in a new tab
-                      window.open(imageUri, "_blank");
-                    } else {
-                      console.error("Image data not found for UID:", uid);
+                // Create a new row for each participant
+                const newRow = participantsTable.insertRow();
+                newRow.innerHTML = `
+                    <td>${uid}</td>
+                    <td>${userData.srcode}</td>
+                    <td>${userData.lastname}, ${userData.firstname}, ${
+                  userData.middlename
+                }</td>
+                    <td>${userData.campus}</td>
+                    ${
+                      categorySnapshot.val() === "Fund Raising" ||
+                      categorySnapshot.val() === "Donation"
+                        ? `<td>
+                                <a href="#" id="proof" style="color: #dc3545; text-decoration: underline;">View the Image</a>
+                              </td>`
+                        : ""
                     }
-                  })
-                  .catch((error) => {
-                    console.error("Error fetching image data:", error);
-                  });
-              });
+                    <td style="color: #FFD700; font-size: 20px;" >${starRating} <span style="color: black;"> ${ratingMessage}</span></td> 
+                    <td>
+                        <button class="btn ${
+                          isAlreadyAttended ? "btn-danger" : "btn-success"
+                        }" id="atdbtn" data-uid="${uid}" data-event-id="${eventId}">
+                            ${isAlreadyAttended ? "Cancel" : "Confirm"}
+                        </button>
+                    </td>
+                `;
+                initRealtimeListener(uid, eventId);
+
+                // Add event listener for "proof" link
+                const proofLink = newRow.querySelector("#proof");
+                proofLink.addEventListener("click", function (event) {
+                  event.preventDefault(); // Prevent the default behavior of the link (opening in the same tab)
+
+                  const transparencyImageRef = ref(
+                    db,
+                    `Upload_Engagement/${eventId}/TransparencyImage/${uid}`
+                  );
+                  get(transparencyImageRef)
+                    .then((imageSnapshot) => {
+                      if (imageSnapshot.exists()) {
+                        const imageUri = imageSnapshot.val().imageUri;
+
+                        // Open the imageUri link in a new tab
+                        window.open(imageUri, "_blank");
+                      } else {
+                        console.error("Image data not found for UID:", uid);
+                      }
+                    })
+                    .catch((error) => {
+                      console.error("Error fetching image data:", error);
+                    });
+                });
+              }
             }
-          });
+          );
           if (isAlreadyAttended) {
             totalAttendCount++;
           } else {
