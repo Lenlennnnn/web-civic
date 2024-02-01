@@ -903,6 +903,54 @@ function initRealtimeListener(uid, eventId) {
     }
   });
 }
+function updateOverallRating(eventId) {
+  const ratingsRef = ref(db, `Upload_Engagement/${eventId}/Ratings`);
+
+  return get(ratingsRef).then((ratingsSnapshot) => {
+    let totalRating = 0;
+    let numberOfRatings = 0;
+
+    if (ratingsSnapshot.exists()) {
+      ratingsSnapshot.forEach((rating) => {
+        const ratingData = rating.val();
+        // Check if the UID has a valid rating
+        if (ratingData.message) {
+          // Add the rating to the total
+          totalRating += getStarRatingValue(ratingData.message);
+          numberOfRatings++;
+        }
+      });
+    }
+
+    // Calculate the overall average rating
+    const overallAverage =
+      numberOfRatings > 0 ? totalRating / numberOfRatings : 0;
+
+    // Update the element with the overall average rating
+    const overallOutputElement = document.getElementById("overallOutput");
+    overallOutputElement.innerText = overallAverage.toFixed(1); // Display with one decimal place
+  });
+}
+// Helper function to convert star rating messages to numerical values
+function getStarRatingValue(message) {
+  switch (message.toLowerCase()) {
+    case "very dissatisfied":
+      return 0.0;
+    case "dissatisfied":
+      return 1.0;
+    case "ok":
+      return 2.0;
+    case "average":
+      return 3.0;
+    case "satisfied":
+      return 4.0;
+    case "very satisfied":
+      return 5.0;
+    default:
+      return 0.0; // Treat unknown messages as 0.0 rating
+  }
+}
+
 function getStarRating(message) {
   switch (message.toLowerCase()) {
     case "very dissatisfied":
@@ -921,12 +969,130 @@ function getStarRating(message) {
       return ""; // No stars for unknown messages
   }
 }
+function updateStarRatingPercentages(eventId) {
+  const ratingsRef = ref(db, `Upload_Engagement/${eventId}/Ratings`);
+
+  return get(ratingsRef).then((ratingsSnapshot) => {
+    let totalRatings = 0;
+    let starCounts = {
+      "very satisfied": 0,
+      satisfied: 0,
+      average: 0,
+      ok: 0,
+      dissatisfied: 0,
+      "very dissatisfied": 0,
+    };
+
+    if (ratingsSnapshot.exists()) {
+      ratingsSnapshot.forEach((rating) => {
+        const ratingData = rating.val();
+        // Check if the UID has a valid rating
+        if (ratingData.message) {
+          const starRating = getStarRatingValue(ratingData.message);
+          starCounts[ratingData.message.toLowerCase()] += 1;
+          totalRatings += 1; // Count each UID's rating
+        }
+      });
+    }
+
+    // Calculate percentages
+    const fiveStarPercentage =
+      (starCounts["very satisfied"] / totalRatings) * 100;
+    const fourStarPercentage = (starCounts["satisfied"] / totalRatings) * 100;
+    const threeStarPercentage = (starCounts["average"] / totalRatings) * 100;
+    const twoStarPercentage = (starCounts["ok"] / totalRatings) * 100;
+    const oneStarPercentage = (starCounts["dissatisfied"] / totalRatings) * 100;
+    const zeroStarPercentage =
+      (starCounts["very dissatisfied"] / totalRatings) * 100;
+
+    // Update the element with the calculated percentages
+    document.getElementById(
+      "fiveStar"
+    ).innerText = `${fiveStarPercentage.toFixed(1)}%`;
+    document.getElementById(
+      "fourStar"
+    ).innerText = `${fourStarPercentage.toFixed(1)}%`;
+    document.getElementById(
+      "threeStar"
+    ).innerText = `${threeStarPercentage.toFixed(1)}%`;
+    document.getElementById("twoStar").innerText = `${twoStarPercentage.toFixed(
+      1
+    )}%`;
+    document.getElementById("oneStar").innerText = `${oneStarPercentage.toFixed(
+      1
+    )}%`;
+    document.getElementById(
+      "zeroStar"
+    ).innerText = `${zeroStarPercentage.toFixed(1)}%`;
+  });
+}
+function updateStarRatingWidths(eventId) {
+  const ratingsRef = ref(db, `Upload_Engagement/${eventId}/Ratings`);
+
+  return get(ratingsRef).then((ratingsSnapshot) => {
+    let totalRatings = 0;
+    let starCounts = {
+      "very satisfied": 0,
+      satisfied: 0,
+      average: 0,
+      ok: 0,
+      dissatisfied: 0,
+      "very dissatisfied": 0,
+    };
+
+    if (ratingsSnapshot.exists()) {
+      ratingsSnapshot.forEach((rating) => {
+        const ratingData = rating.val();
+        // Check if the UID has a valid rating
+        if (ratingData.message) {
+          const starRating = getStarRatingValue(ratingData.message);
+          starCounts[ratingData.message.toLowerCase()] += 1;
+          totalRatings += 1; // Count each UID's rating
+        }
+      });
+    }
+
+    // Calculate percentages
+    const fiveStarPercentage =
+      (starCounts["very satisfied"] / totalRatings) * 100;
+    const fourStarPercentage = (starCounts["satisfied"] / totalRatings) * 100;
+    const threeStarPercentage = (starCounts["average"] / totalRatings) * 100;
+    const twoStarPercentage = (starCounts["ok"] / totalRatings) * 100;
+    const oneStarPercentage = (starCounts["dissatisfied"] / totalRatings) * 100;
+    const zeroStarPercentage =
+      (starCounts["very dissatisfied"] / totalRatings) * 100;
+
+    // Update the width of each element
+    document.getElementById(
+      "widthFive"
+    ).style.width = `${fiveStarPercentage.toFixed(2)}%`;
+    document.getElementById(
+      "widthFour"
+    ).style.width = `${fourStarPercentage.toFixed(2)}%`;
+    document.getElementById(
+      "widthThree"
+    ).style.width = `${threeStarPercentage.toFixed(2)}%`;
+    document.getElementById(
+      "widthTwo"
+    ).style.width = `${twoStarPercentage.toFixed(2)}%`;
+    document.getElementById(
+      "widthOne"
+    ).style.width = `${oneStarPercentage.toFixed(2)}%`;
+    document.getElementById(
+      "widthZero"
+    ).style.width = `${zeroStarPercentage.toFixed(2)}%`;
+  });
+}
 
 function tableParticipants(eventId) {
   const participantsTable = document
     .getElementById("tableParticipants")
     .getElementsByTagName("tbody")[0];
+  updateTotalRatingElement(eventId);
+  updateOverallRating(eventId);
+  updateStarRatingPercentages(eventId);
 
+  updateStarRatingWidths(eventId);
   const participantsRef = ref(db, `Upload_Engagement/${eventId}/Participants`);
   const eventCategoryRef = ref(db, `Upload_Engagement/${eventId}/category`);
 
@@ -977,7 +1143,7 @@ function tableParticipants(eventId) {
                               </td>`
                         : ""
                     }
-                    <td style="color: #FFD700; font-size: 20px;" >${starRating} <span style="color: black;"> ${ratingMessage}</span></td> 
+                    <td style="color: #FFD700; font-size: 17px;" >${starRating} <span style="color: black;"> ${ratingMessage}</span></td> 
                     <td>
                         <button class="btn ${
                           isAlreadyAttended ? "btn-danger" : "btn-success"
@@ -1022,14 +1188,13 @@ function tableParticipants(eventId) {
           }
         });
       } else {
-        // If there are no participants, add a row with a message
         const noParticipantsRow = participantsTable.insertRow();
         noParticipantsRow.innerHTML = `
           <td colspan="${
             categorySnapshot.val() === "Fund Raising" ||
             categorySnapshot.val() === "Donation"
-              ? 6
-              : 5
+              ? 7
+              : 6
           }" class="center-text">
             Currently, there are no participants at the moment.
           </td>
@@ -1103,6 +1268,37 @@ function tableParticipants(eventId) {
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
+    });
+}
+function getTotalRating(eventId) {
+  const ratingsRef = ref(db, `Upload_Engagement/${eventId}/Ratings`);
+
+  return get(ratingsRef).then((ratingsSnapshot) => {
+    let totalRatings = 0;
+
+    if (ratingsSnapshot.exists()) {
+      ratingsSnapshot.forEach((rating) => {
+        const ratingData = rating.val();
+        // Check if the UID has a valid rating
+        if (ratingData.message) {
+          totalRatings += 1; // Count each UID's rating
+        }
+      });
+    }
+
+    return totalRatings;
+  });
+}
+
+function updateTotalRatingElement(eventId) {
+  const totalRatingElement = document.getElementById("totalRating");
+
+  getTotalRating(eventId)
+    .then((totalRating) => {
+      totalRatingElement.innerText = totalRating;
+    })
+    .catch((error) => {
+      console.error("Error calculating total rating:", error);
     });
 }
 
