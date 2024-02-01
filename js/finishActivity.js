@@ -997,13 +997,23 @@ function updateStarRatingPercentages(eventId) {
 
     // Calculate percentages
     const fiveStarPercentage =
-      (starCounts["very satisfied"] / totalRatings) * 100;
-    const fourStarPercentage = (starCounts["satisfied"] / totalRatings) * 100;
-    const threeStarPercentage = (starCounts["average"] / totalRatings) * 100;
-    const twoStarPercentage = (starCounts["ok"] / totalRatings) * 100;
-    const oneStarPercentage = (starCounts["dissatisfied"] / totalRatings) * 100;
+      totalRatings === 0
+        ? 0
+        : (starCounts["very satisfied"] / totalRatings) * 100;
+    const fourStarPercentage =
+      totalRatings === 0 ? 0 : (starCounts["satisfied"] / totalRatings) * 100;
+    const threeStarPercentage =
+      totalRatings === 0 ? 0 : (starCounts["average"] / totalRatings) * 100;
+    const twoStarPercentage =
+      totalRatings === 0 ? 0 : (starCounts["ok"] / totalRatings) * 100;
+    const oneStarPercentage =
+      totalRatings === 0
+        ? 0
+        : (starCounts["dissatisfied"] / totalRatings) * 100;
     const zeroStarPercentage =
-      (starCounts["very dissatisfied"] / totalRatings) * 100;
+      totalRatings === 0
+        ? 0
+        : (starCounts["very dissatisfied"] / totalRatings) * 100;
 
     // Update the element with the calculated percentages
     document.getElementById(
@@ -1026,6 +1036,7 @@ function updateStarRatingPercentages(eventId) {
     ).innerText = `${zeroStarPercentage.toFixed(1)}%`;
   });
 }
+
 function updateStarRatingWidths(eventId) {
   const ratingsRef = ref(db, `Upload_Engagement/${eventId}/Ratings`);
 
