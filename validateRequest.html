@@ -581,8 +581,10 @@
         width: 500px;
         border: solid 2px black;
         border-radius: 10px;
-        display: block; /* Ensures the image behaves as a block element */
-        margin: 0 auto; /* Sets margins to auto to horizontally center the image */
+        display: block;
+        margin: 0 auto;
+        object-fit: cover; /* Ensures the image covers the specified dimensions */
+        object-position: center; /* Centers the image within the container */
       }
 
       .eventpic {
@@ -1454,7 +1456,46 @@
         }
       });
     </script>
+    <script>
+      // JavaScript to handle the smooth transition
+      const links = document.querySelectorAll(".page-transition");
 
+      links.forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault(); // Prevent the default navigation
+
+          // Apply the transition effect
+          document.body.classList.add("page-loading");
+
+          // Navigate to the new page after a short delay (for the transition effect)
+          setTimeout(() => {
+            window.location.href = link.href;
+          }, 500); // Adjust the delay time as needed
+        });
+      });
+
+      // JavaScript to initialize table scrolling
+      const tableContainer = document.querySelector(".table-container");
+      const table = document.getElementById("tableevents");
+
+      if (table && tableContainer) {
+        tableContainer.style.maxHeight = "350px"; // Adjust the maximum height as needed
+
+        // Hide or show the scrollbar based on content overflow
+        const checkOverflow = () => {
+          tableContainer.style.overflowY =
+            tableContainer.scrollHeight > tableContainer.clientHeight
+              ? "scroll"
+              : "auto";
+        };
+
+        // Initially check for overflow
+        checkOverflow();
+
+        // Re-check overflow on window resize
+        window.addEventListener("resize", checkOverflow);
+      }
+    </script>
     <script type="module">
       document.addEventListener("DOMContentLoaded", function () {
         const declineReasonInput =

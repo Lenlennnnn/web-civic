@@ -510,7 +510,9 @@ function displayEventData(searchTerm = "", selectedCampus = "") {
         const newRow = tableBody.insertRow();
         newRow.innerHTML = `
                     <td>${rowNumber}</td>
-                    <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
+                        <td style="width: 120px; height: 80px; overflow: hidden;">
+  <img src="${image}" class="eventpic" alt="Event Image" style="width: 100%; height: 100%; object-fit: cover;">
+</td>
                     <td>${titleEvent || "N/A"}</td>
                     <td>${category || "N/A"}</td>
                      <td>${location || "N/A"}</td>
@@ -897,6 +899,13 @@ function tableParticipants(eventId) {
               newRow.innerHTML = `
                 <td>${uid}</td>
                 <td>${userData.srcode}</td>
+                  <td>
+        <a href="#" style="display: block; overflow: hidden; height: 80px; width: 80px; border-radius: 50%;">
+            <img src="${
+              userData.ImageProfile
+            }" class="profilePic" alt="Avatar" id="profilePic" style="width: 100%; height: 100%; object-fit: cover;"/>
+        </a>
+    </td>
                 <td>${userData.lastname}, ${userData.firstname}, ${
                 userData.middlename
               }</td>
@@ -959,8 +968,8 @@ function tableParticipants(eventId) {
           <td colspan="${
             categorySnapshot.val() === "Fund Raising" ||
             categorySnapshot.val() === "Donation"
-              ? 6
-              : 5
+              ? 8
+              : 7
           }" class="center-text">
             Currently, there are no participants at the moment.
           </td>

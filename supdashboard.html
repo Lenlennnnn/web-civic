@@ -626,8 +626,10 @@
         width: 500px;
         border: solid 2px black;
         border-radius: 10px;
-        display: block; /* Ensures the image behaves as a block element */
-        margin: 0 auto; /* Sets margins to auto to horizontally center the image */
+        display: block;
+        margin: 0 auto;
+        object-fit: cover; /* Ensures the image covers the specified dimensions */
+        object-position: center; /* Centers the image within the container */
       }
 
       .eventpic {
@@ -1758,6 +1760,7 @@
                             <tr>
                               <th>UID</th>
                               <th>Sr-Code</th>
+                              <th>Profile Picture</th>
                               <th>Name</th>
                               <th>Campus</th>
                               <th id="proofHead">Proof</th>
@@ -1768,6 +1771,15 @@
                             <tr>
                               <td>Loading....</td>
                               <td>Loading....</td>
+                              <td>
+                                <a href="#"
+                                  ><img
+                                    src="img/profilePic.jpg"
+                                    class="profilePic"
+                                    alt="Avatar"
+                                    id="profilePic"
+                                /></a>
+                              </td>
                               <td>Loading....</td>
                               <td>Loading....</td>
                               <td>

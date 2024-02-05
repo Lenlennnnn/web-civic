@@ -488,7 +488,10 @@ function displayEventData(searchTerm = "", selectedCampus = "") {
         const newRow = tableBody.insertRow();
         newRow.innerHTML = `
           <td>${rowNumber}</td>
-          <td><img src="${image}" class="eventpic" alt="Event Image"/></td>
+          <td style="width: 120px; height: 80px; overflow: hidden;">
+  <img src="${image}" class="eventpic" alt="Event Image" style="width: 100%; height: 100%; object-fit: cover;">
+</td>
+
           <td>${titleEvent || "N/A"}</td>
           <td>${category || "N/A"}</td>
           <td>${location || "N/A"}</td>
@@ -868,10 +871,10 @@ modalApproveButton.addEventListener("click", function () {
   const confirmation = confirm("Are you sure to approve this engagement?");
 
   if (confirmation) {
-    // If the user clicks OK, update the verificationStatus to true
     const eventId = document
       .querySelector("tr.selected-event")
       .getAttribute("data-event-id");
+
     const eventRef = ref(db, `Upload_Engagement/${eventId}`);
 
     // Retrieve the current user's data from SuperAdminAcc using the UID
@@ -881,26 +884,48 @@ modalApproveButton.addEventListener("click", function () {
         const userData = snapshot.val();
         const { lastname, firstname } = userData;
 
-        // Update the verificationStatus to true and add "approveTimeStamp" and "approveBy" children
-        const timestamp = generateTimestamp();
-        update(eventRef, {
-          verificationStatus: true,
-          approveTimeStamp: timestamp,
-          approveBy: `${lastname}, ${firstname}`,
-        })
-          .then(() => {
-            alert("Engagement approved successfully!");
-            closeModalEventModal(); // Close the modal after approval
-          })
-          .catch((error) => {
-            console.error("Error approving engagement:", error);
-          });
+        // Retrieve the engagement data
+        get(eventRef).then((eventSnapshot) => {
+          if (eventSnapshot.exists()) {
+            const eventData = eventSnapshot.val();
+            const { endDate } = eventData;
+
+            // Check if the endDate is in the past
+            if (isDateInPast(endDate)) {
+              alert("The end date and time are in the past.");
+            } else {
+              // Update the verificationStatus to true and add "approveTimeStamp" and "approveBy" children
+              const timestamp = generateTimestamp();
+              update(eventRef, {
+                verificationStatus: true,
+                approveTimeStamp: timestamp,
+                approveBy: `${lastname}, ${firstname}`,
+              })
+                .then(() => {
+                  alert("Engagement approved successfully!");
+                  closeModalEventModal(); // Close the modal after approval
+                })
+                .catch((error) => {
+                  console.error("Error approving engagement:", error);
+                });
+            }
+          } else {
+            console.log("Engagement data not found");
+          }
+        });
       } else {
         console.log("User data not found");
       }
     });
   }
 });
+
+// Function to check if a date is in the past
+function isDateInPast(dateString) {
+  const currentDate = new Date();
+  const endDate = new Date(dateString);
+  return endDate < currentDate;
+}
 
 $(document).ready(function () {
   // Function to handle the click event of the "reject" button

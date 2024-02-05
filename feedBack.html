@@ -496,20 +496,6 @@
         font-size: 20px;
       }
 
-      #btnparaview {
-        background-color: #dc3545;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-      }
-
-      #btnparaview:hover {
-        background-color: #9c232f; /* Darker color for hover */
-        transform: scale(1.1); /* Enlarge the button on hover */
-      }
-
       #evntimgpicnew {
         width: 555px;
         border-radius: 5%;
@@ -603,7 +589,7 @@
   <body>
     <div class="main">
       <div class="topbar">
-        <a href="supdashboard.html">
+        <a href="supdashboard.html" class="page-transition">
           <div class="back-button">
             <ion-icon name="return-down-back-outline"></ion-icon>
           </div>
@@ -630,7 +616,7 @@
                     class="rating-num"
                     id="overallOutput"
                     style="margin-bottom: -15px; margin-right: -50%">
-                    4.0
+                    0.0
                   </h1>
                   <div class="rating">
                     <span class="glyphicon glyphicon-star"></span
@@ -805,12 +791,17 @@
                       <td>
                         <a href="#"
                           ><img
-                            src="img/cleaning.jpg"
+                            src="img/profilePic.jpg"
                             class="eventpic"
                             alt="Avatar"
                             id="profilePic"
                         /></a>
                       </td>
+                      <div
+                        id="noMatchMessage"
+                        style="display: none; text-align: center">
+                        Your input does not match any criteria.
+                      </div>
                       <td id="nameid">Loading.....</td>
                       <td id="campusid">Loading.....</td>
                       <td id="datetimeid">Loading.....</td>
@@ -825,7 +816,46 @@
         </div>
       </div>
     </div>
+    <script>
+      // JavaScript to handle the smooth transition
+      const links = document.querySelectorAll(".page-transition");
 
+      links.forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault(); // Prevent the default navigation
+
+          // Apply the transition effect
+          document.body.classList.add("page-loading");
+
+          // Navigate to the new page after a short delay (for the transition effect)
+          setTimeout(() => {
+            window.location.href = link.href;
+          }, 500); // Adjust the delay time as needed
+        });
+      });
+
+      // JavaScript to initialize table scrolling
+      const tableContainer = document.querySelector(".table-container");
+      const table = document.getElementById("tableevents");
+
+      if (table && tableContainer) {
+        tableContainer.style.maxHeight = "350px"; // Adjust the maximum height as needed
+
+        // Hide or show the scrollbar based on content overflow
+        const checkOverflow = () => {
+          tableContainer.style.overflowY =
+            tableContainer.scrollHeight > tableContainer.clientHeight
+              ? "scroll"
+              : "auto";
+        };
+
+        // Initially check for overflow
+        checkOverflow();
+
+        // Re-check overflow on window resize
+        window.addEventListener("resize", checkOverflow);
+      }
+    </script>
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
