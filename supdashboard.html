@@ -533,7 +533,13 @@
         position: relative;
         bottom: 60px;
       }
-
+      .table-containerSec {
+        max-height: 400px;
+        margin-top: 11%;
+        width: 100%;
+        position: relative;
+        bottom: 60px;
+      }
       /* Style the fixed table header */
       .table-fix {
         position: sticky;
@@ -1751,10 +1757,10 @@
                           </option>
                         </select>
                       </div>
-                      <div class="modal-bodyat">
+                      <div class="table-containerSec">
                         <table
                           id="tableParticipants"
-                          class="table table-striped"
+                          class="table-striped"
                           style="width: 100%">
                           <thead class="headerr">
                             <tr>
@@ -2001,6 +2007,26 @@
         const checkOverflow = () => {
           tableContainer.style.overflowY =
             tableContainer.scrollHeight > tableContainer.clientHeight
+              ? "scroll"
+              : "auto";
+        };
+
+        // Initially check for overflow
+        checkOverflow();
+
+        // Re-check overflow on window resize
+        window.addEventListener("resize", checkOverflow);
+      }
+      const tableContainers = document.querySelector(".table-containerSec");
+      const tables = document.getElementById("tableParticipants");
+
+      if (tables && tableContainers) {
+        tableContainers.style.maxHeight = "350px"; // Adjust the maximum height as needed
+
+        // Hide or show the scrollbar based on content overflow
+        const checkOverflow = () => {
+          tableContainers.style.overflowY =
+            tableContainers.scrollHeight > tableContainers.clientHeight
               ? "scroll"
               : "auto";
         };

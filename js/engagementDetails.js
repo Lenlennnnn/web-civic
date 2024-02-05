@@ -968,8 +968,8 @@ function tableParticipants(eventId) {
           <td colspan="${
             categorySnapshot.val() === "Fund Raising" ||
             categorySnapshot.val() === "Donation"
-              ? 8
-              : 7
+              ? 7
+              : 6
           }" class="center-text">
             Currently, there are no participants at the moment.
           </td>

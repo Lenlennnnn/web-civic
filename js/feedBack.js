@@ -61,6 +61,7 @@ function updateFeedbackTable() {
       `;
     } else {
       const promises = [];
+      const rowsData = [];
 
       snapshot.forEach((childSnapshot) => {
         const feedbackData = childSnapshot.val();
@@ -72,8 +73,27 @@ function updateFeedbackTable() {
         const userPromise = get(userRef).then((userSnapshot) => {
           const userData = userSnapshot.val();
 
-          const newRow = table.insertRow();
+          // Add data to rowsData array for sorting
+          rowsData.push({
+            uid,
+            userData,
+            feedbackData,
+          });
+        });
 
+        promises.push(userPromise);
+      });
+
+      Promise.all(promises).then(() => {
+        // Sort rowsData alphabetically based on lastname, firstname, middlename
+        rowsData.sort((a, b) => {
+          const aName = `${a.userData.lastname} ${a.userData.firstname} ${a.userData.middlename}`;
+          const bName = `${b.userData.lastname} ${b.userData.firstname} ${b.userData.middlename}`;
+          return aName.localeCompare(bName);
+        });
+
+        rowsData.forEach(({ uid, userData, feedbackData }) => {
+          const newRow = table.insertRow();
           const numCell = newRow.insertCell(0);
           const profilePicCell = newRow.insertCell(1);
           const nameCell = newRow.insertCell(2);
@@ -132,10 +152,6 @@ function updateFeedbackTable() {
           }
         });
 
-        promises.push(userPromise);
-      });
-
-      Promise.all(promises).then(() => {
         const averageRating =
           totalFeedbacks > 0 ? (totalRating / totalFeedbacks).toFixed(1) : 0.0;
         overallOutput.textContent = `${averageRating}`;
@@ -157,6 +173,7 @@ function updateFeedbackTable() {
       });
     }
   });
+
   function updatePercentageAverage(elementId, count, totalFeedbacks) {
     const percentage =
       totalFeedbacks > 0 ? ((count / totalFeedbacks) * 100).toFixed(1) : 0.0;
