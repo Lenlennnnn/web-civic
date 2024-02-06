@@ -75,11 +75,12 @@ function openEventModal(eventData) {
   }
 
   eventDetailsContainer.innerHTML = `
-        <img src="${
-          eventData.image || "N/A"
-        }" alt="Event Image" class="eventpic" id="upcompostpic" />
-          <strong id= "labelImage" style="display: none; margin-top:10px;">Choose an Image:</strong>
-        <input class="form-control" type="file" id="imagePost" name="image" accept="image/*" required style="display: none; margin-bottom:10px;">
+      <img src="${
+        eventData.image || "img/placeholderpic.jpg"
+      }" alt="Event Image" class="eventpic" id="upcompostpic" />
+<strong id="labelImage" style="display: none; margin-top:10px;">Choose an Image:</strong>
+<input class="form-control" type="file" id="imagePost" name="image" accept="image/*" required style="display: none; margin-bottom:10px;">
+
         
           <p style="margin-top: 30px;">
   <strong>Uploaders UID:</strong>
@@ -512,10 +513,13 @@ function displayEventData(searchTerm = "", selectedCampus = "") {
 
         const newRow = tableBody.insertRow();
         newRow.innerHTML = `
-          <td>${rowNumber}</td>
-           <td style="width: 120px; height: 80px; overflow: hidden;">
-  <img src="${image}" class="eventpic" alt="Event Image" style="width: 100%; height: 100%; object-fit: cover;">
+ <td>${rowNumber}</td>
+<td style="width: 120px; height: 80px; overflow: hidden;">
+  <img src="${
+    image || "img/placeholderpic.jpg"
+  }" class="eventpic" alt="Event Image" style="width: 100%; height: 100%; object-fit: cover;">
 </td>
+
           <td>${titleEvent || "N/A"}</td>
           <td>${category || "N/A"}</td>
           <td>${location || "N/A"}</td>
@@ -942,13 +946,14 @@ function tableParticipants(eventId) {
               newRow.innerHTML = `
                 <td>${uid}</td>
                 <td>${userData.srcode}</td>
-                   <td>
-        <a href="#" style="display: block; overflow: hidden; height: 80px; width: 80px; border-radius: 50%;">
-            <img src="${
-              userData.ImageProfile
-            }" class="profilePic" alt="Avatar" id="profilePic" style="width: 100%; height: 100%; object-fit: cover;"/>
-        </a>
-    </td>
+           <td>
+  <a href="#" style="display: block; overflow: hidden; height: 80px; width: 80px; border-radius: 50%;">
+    <img src="${
+      userData.ImageProfile || "img/profilePic.jpg"
+    }" class="profilePic" alt="Avatar" id="profilePic" style="width: 100%; height: 100%; object-fit: cover;"/>
+  </a>
+</td>
+
                 <td>${userData.lastname}, ${userData.firstname}, ${
                 userData.middlename
               }</td>

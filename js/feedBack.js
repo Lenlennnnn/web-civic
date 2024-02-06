@@ -34,6 +34,8 @@ function updateFeedbackTable() {
   const feedbackRef = ref(db, "Feedback");
   const overallOutput = document.getElementById("overallOutput");
   const totalRatingElement = document.getElementById("totalRating");
+  const oneYearAgo = new Date();
+  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
   onValue(feedbackRef, (snapshot) => {
     table.innerHTML = "";
@@ -65,13 +67,25 @@ function updateFeedbackTable() {
 
       snapshot.forEach((childSnapshot) => {
         const feedbackData = childSnapshot.val();
-        totalRating += parseFloat(feedbackData.rating);
-        totalFeedbacks++;
         const uid = childSnapshot.key;
 
+        // Check lastLogin timestamp
         const userRef = ref(db, `Users/${uid}`);
         const userPromise = get(userRef).then((userSnapshot) => {
           const userData = userSnapshot.val();
+
+          if (userData && userData.lastLogin) {
+            const lastLoginTimestamp = new Date(userData.lastLogin);
+
+            // Check if last login was more than 1 year ago
+            if (lastLoginTimestamp < oneYearAgo) {
+              // Skip processing this user's feedback
+              return;
+            }
+          }
+
+          totalRating += parseFloat(feedbackData.rating);
+          totalFeedbacks++;
 
           // Add data to rowsData array for sorting
           rowsData.push({
@@ -108,7 +122,11 @@ function updateFeedbackTable() {
           }
 
           numCell.textContent = uid;
-          profilePicCell.innerHTML = `<a href="#" style="display: block; overflow: hidden; height: 80px; width: 80px; border-radius: 50%;"><img src="${userData.ImageProfile}" class="eventpic" alt="Avatar" id="profilePic" style="width: 100%; height: 100%; object-fit: cover;"/></a>`;
+          profilePicCell.innerHTML = `<a href="#" style="display: block; overflow: hidden; height: 80px; width: 80px; border-radius: 50%;">
+  <img src="${
+    userData.ImageProfile || "img/profilePic.jpg"
+  }" class="eventpic" alt="Avatar" id="profilePic" style="width: 100%; height: 100%; object-fit: cover;"/>
+</a>`;
 
           // Check if user data is available
           if (userData) {

@@ -255,7 +255,7 @@
         left: 36%;
       }
       #searchfilterSec {
-        margin-top: 15px;
+        margin-top: 5%;
       }
       #inputSearch {
         margin-left: 10px;
@@ -294,6 +294,14 @@
       }
 
       table.table .eventpic {
+        margin: 0px;
+        width: 80px;
+        height: 80px;
+        padding: 0px;
+
+        border-radius: 50%;
+      }
+      .eventpics {
         margin: 0px;
         width: 80px;
         height: 80px;
@@ -345,9 +353,10 @@
       }
       #btnfilterSec {
         position: relative;
-        left: 2px;
-        top: 15px;
+        left: 10px;
+        margin-top: -4%;
       }
+
       #eventfilter {
         position: relative;
         right: 30px;
@@ -379,7 +388,7 @@
       }
       #searchfieldcontainerSec {
         position: relative;
-        right: 5px;
+        right: 50px;
       }
       #tableevents {
         position: relative;
@@ -479,7 +488,11 @@
       }
 
       .eventpic {
-        border: black 2px solid;
+        border: black 1px solid;
+        cursor: default;
+      }
+      .eventpics {
+        border: black 1px solid;
         cursor: default;
       }
       .profilepic {
@@ -582,6 +595,107 @@
         overflow-wrap: break-word;
         word-wrap: break-word;
         word-break: break-word;
+      }
+
+      #reportBtn {
+        position: relative;
+        margin-bottom: 1%;
+        margin-left: -18%;
+        margin-top: -2%;
+      }
+      .notification-link {
+        position: relative;
+        display: inline-block;
+      }
+      .notification-badge {
+        position: absolute;
+        top: -15px;
+        right: -10px;
+        background-color: red;
+        color: white;
+        border-radius: 50%;
+        padding: 5px 10px;
+        font-size: 12px;
+      }
+      #valBtn {
+        white-space: nowrap;
+
+        text-overflow: ellipsis;
+        background-color: #fd7e14;
+      }
+
+      .custom-button {
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+        margin-left: 50%;
+        transition: background-color 0.3s, color 0.3s, transform 0.3s;
+        z-index: 1;
+      }
+
+      .custom-button:hover {
+        color: #fff;
+        transform: translate(-50%, -50%) scale(1.05);
+      }
+      #myModalat {
+        z-index: 1001; /* Use a value higher than the z-index of eventModalupcom */
+      }
+      .modalat {
+        display: none;
+        position: fixed;
+        z-index: 999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      .modal-contentat {
+        background-color: #fff;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      #myModalatt .modal-headeratt {
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+      }
+      .modal-headerat h2 {
+        margin: 0;
+      }
+      .closeat {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        position: relative;
+        bottom: 10px;
+      }
+
+      .closeat:hover,
+      .closeat:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .table-containerSec {
+        max-height: 400px;
+        margin-top: 12%;
+        width: 100%;
+        position: relative;
+        bottom: 60px;
+      }
+      table.table-striped tbody tr:nth-of-type(odd) {
+        background-color: #fcfcfc;
+      }
+      table.table-striped.table-hover tbody tr:hover {
+        background: #f5f5f5;
       }
     </style>
   </head>
@@ -734,6 +848,17 @@
           </div>
         </div>
       </div>
+      <div id="reportBtn">
+        <a id="studentValidation" class="notification-link">
+          <button
+            type="button"
+            class="btn btn-primary custom-button"
+            id="valBtn">
+            View Reports
+            <span id="notificationBadge" class="notification-badge">0</span>
+          </button>
+        </a>
+      </div>
 
       <div class="upcomingEvents">
         <div class="container-xl">
@@ -772,6 +897,7 @@
                   </div>
                 </div>
               </div>
+
               <div class="table-container">
                 <table class="table table-striped table-hover" id="tableevents">
                   <thead class="table-fix">
@@ -815,7 +941,120 @@
           </div>
         </div>
       </div>
+      <div id="myModalat" class="modalat">
+        <div class="modal-contentat" style="width: 95%; height: 95%">
+          <div class="modal-headerat">
+            <span class="closeat">&times;</span>
+            <h4>Problem Reports</h4>
+            <p style="margin-top: 2%">
+              Total Reports: <span id="totalAttend">0</span>
+            </p>
+          </div>
+
+          <hr />
+          <div id="searchfieldcontainerSec" style="float: right; width: 25%">
+            <div class="filter-group" id="searchfilterSec">
+              <label>Search </label>
+              <input id="inputSearch" type="text" class="form-control" />
+              <button type="button" id="btnfilterSec" class="btn btn-primary">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="filter-group" id="attendedFilter">
+            <label style="margin-top: -x5p">Campus</label>
+
+            <select class="form-control">
+              <option value="" disabled selected>Filter Campus</option>
+              <option value="ARASOF Nasugbu Campus">
+                ARASOF Nasugbu Campus
+              </option>
+              <option value="Balayan Campus">Balayan Campus</option>
+              <option value="JPLPC Malvar Campus">JPLPC Malvar Campus</option>
+              <option value="Lemery Campus">Lemery Campus</option>
+              <option value="Lipa Campus">Lipa Campus</option>
+              <option value="Lobo Campus">Lobo Campus</option>
+              <option value="Mabini Campus">Mabini Campus</option>
+              <option value="Pablo Borbon Campus I">
+                Pablo Borbon Campus I
+              </option>
+              <option value=" Pablo Borbon Campus II">
+                Pablo Borbon Campus II
+              </option>
+              <option value="Rosario Campus">Rosario Campus</option>
+              <option value="San Juan Campus">San Juan Campus</option>
+              <option value="All Campus">All Campus</option>
+            </select>
+            <i
+              class="fas fa-chevron-down"
+              style="margin-left: -30px; margin-top: -12px"></i>
+          </div>
+
+          <div class="table-containerSec">
+            <table
+              id="tableParticipants"
+              class="table-striped"
+              style="width: 100%">
+              <thead class="headerr">
+                <tr>
+                  <th>UID</th>
+                  <th>Profile Picture</th>
+                  <th>Name</th>
+                  <th>Campus</th>
+                  <th>Issue</th>
+                  <th>Description</th>
+                  <th>Proof</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Loading....</td>
+
+                  <td>
+                    <a href="#"
+                      ><img
+                        src="img/profilePic.jpg"
+                        class="eventpics"
+                        alt="Avatar"
+                        id="profilePics"
+                    /></a>
+                  </td>
+                  <td>Loading....</td>
+                  <td>Loading....</td>
+                  <td>Loading....</td>
+                  <td>Loading....</td>
+                  <td>
+                    <a
+                      href="#"
+                      id="proof"
+                      style="color: #dc3545; text-decoration: underline"
+                      >View the file</a
+                    >
+                  </td>
+                </tr>
+                <!-- Add more rows if needed -->
+              </tbody>
+            </table>
+
+            <!-- Message should be within the modal-bodyat div -->
+            <p
+              id="noDataMessage"
+              style="
+                display: none;
+                color: red;
+                text-align: center;
+                font-size: 20px;
+                margin-bottom: 15px;
+              ">
+              No relevant data found for your criteria
+            </p>
+          </div>
+          <hr />
+        </div>
+      </div>
     </div>
+
     <script>
       // JavaScript to handle the smooth transition
       const links = document.querySelectorAll(".page-transition");
@@ -839,12 +1078,32 @@
       const table = document.getElementById("tableevents");
 
       if (table && tableContainer) {
-        tableContainer.style.maxHeight = "350px"; // Adjust the maximum height as needed
+        tableContainer.style.maxHeight = "400px"; // Adjust the maximum height as needed
 
         // Hide or show the scrollbar based on content overflow
         const checkOverflow = () => {
           tableContainer.style.overflowY =
             tableContainer.scrollHeight > tableContainer.clientHeight
+              ? "scroll"
+              : "auto";
+        };
+
+        // Initially check for overflow
+        checkOverflow();
+
+        // Re-check overflow on window resize
+        window.addEventListener("resize", checkOverflow);
+      }
+      const tableContainers = document.querySelector(".table-containerSec");
+      const tables = document.getElementById("tableParticipants");
+
+      if (tables && tableContainers) {
+        tableContainers.style.maxHeight = "400px"; // Adjust the maximum height as needed
+
+        // Hide or show the scrollbar based on content overflow
+        const checkOverflow = () => {
+          tableContainers.style.overflowY =
+            tableContainers.scrollHeight > tableContainers.clientHeight
               ? "scroll"
               : "auto";
         };
@@ -863,5 +1122,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script type="module" src="js/feedBack.js"></script>
+    <script type="module" src="js/feedbackReport.js"></script>
   </body>
 </html>

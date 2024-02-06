@@ -1418,6 +1418,9 @@
                       <option value="Not-Engaged">Not Confirmed</option>
                       <option value="All Participants">All Participants</option>
                     </select>
+                    <i
+                      class="fas fa-chevron-down"
+                      style="margin-left: -30px; margin-top: -12px"></i>
                   </div>
                   <div class="table-containerSec">
                     <table
@@ -1786,7 +1789,7 @@
       const table = document.getElementById("tableevents");
 
       if (table && tableContainer) {
-        tableContainer.style.maxHeight = "350px"; // Adjust the maximum height as needed
+        tableContainer.style.maxHeight = "400px"; // Adjust the maximum height as needed
 
         // Hide or show the scrollbar based on content overflow
         const checkOverflow = () => {
@@ -1806,7 +1809,7 @@
       const tables = document.getElementById("tableParticipants");
 
       if (tables && tableContainers) {
-        tableContainers.style.maxHeight = "350px"; // Adjust the maximum height as needed
+        tableContainers.style.maxHeight = "400px"; // Adjust the maximum height as needed
 
         // Hide or show the scrollbar based on content overflow
         const checkOverflow = () => {
