@@ -1,21 +1,22 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-
 import {
   getDatabase,
   ref,
   get,
   set,
-  update,
   onValue,
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 import {
   getAuth,
   onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-storage.js"; // Import Firebase Storage module
 import firebaseConfig from "./firebaseConfig.js";
+
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
+const storage = getStorage(app);
 let currentUserUID;
 onAuthStateChanged(auth, (user) => {
   // You can handle authentication state changes here
@@ -47,6 +48,29 @@ document.addEventListener("DOMContentLoaded", function () {
     if (event.target === modal) {
       modal.style.display = "none";
     }
+    const inputSearch = document.getElementById("inputSearch");
+
+    // Add event listener for input event
+    inputSearch.addEventListener("input", function () {
+      // Get the value of the input field
+      const searchText = inputSearch.value.toLowerCase();
+
+      // Get all table rows except the header row
+      const rows = document.querySelectorAll("#tableParticipants tbody tr");
+
+      // Loop through each row
+      rows.forEach((row) => {
+        // Get the text content of each row and convert it to lowercase
+        const rowText = row.textContent.toLowerCase();
+
+        // If the row contains the search text, display it, otherwise hide it
+        if (rowText.includes(searchText)) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+    });
   });
 });
 // Function to populate the tableParticipants

@@ -855,7 +855,7 @@
             class="btn btn-primary custom-button"
             id="valBtn">
             View Reports
-            <span id="notificationBadge" class="notification-badge">0</span>
+            <span id="reportNumber" class="notification-badge">0</span>
           </button>
         </a>
       </div>
@@ -946,9 +946,6 @@
           <div class="modal-headerat">
             <span class="closeat">&times;</span>
             <h4>Problem Reports</h4>
-            <p style="margin-top: 2%">
-              Total Reports: <span id="totalAttend">0</span>
-            </p>
           </div>
 
           <hr />
@@ -1067,7 +1064,7 @@
       const tables = document.getElementById("tableParticipants");
 
       if (tables && tableContainers) {
-        tableContainers.style.maxHeight = "400px"; // Adjust the maximum height as needed
+        tableContainers.style.maxHeight = "500px"; // Adjust the maximum height as needed
 
         // Hide or show the scrollbar based on content overflow
         const checkOverflow = () => {

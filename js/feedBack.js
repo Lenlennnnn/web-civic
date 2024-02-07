@@ -266,6 +266,44 @@ function getStarRating(message) {
       return ""; // No stars for unknown messages
   }
 }
+// Function to update the report count
+function updateReportCount() {
+  const reportedProblemsRef = ref(db, "ReportedProblems");
+
+  // Reset report count
+  let reportCount = 0;
+
+  // Listen for changes in the ReportedProblems node
+  onValue(reportedProblemsRef, (snapshot) => {
+    reportCount = 0; // Reset report count
+    snapshot.forEach((uidSnapshot) => {
+      // Increment report count for each UID
+      uidSnapshot.forEach(() => {
+        reportCount++;
+      });
+    });
+
+    // Update the report number element
+    const reportNumberElement = document.getElementById("reportNumber");
+    if (reportNumberElement) {
+      reportNumberElement.textContent = formatNumber(reportCount);
+    }
+  });
+}
+
+// Function to format the number
+function formatNumber(num) {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1) + "M";
+  } else if (num >= 1000) {
+    return (num / 1000).toFixed(1) + "k";
+  } else {
+    return num.toString();
+  }
+}
+
+// Call the function to initially update the report count
+updateReportCount();
 
 // Call the function to initially populate the table
 updateFeedbackTable();
