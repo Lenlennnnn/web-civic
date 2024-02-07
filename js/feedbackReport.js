@@ -57,50 +57,88 @@ function populateTable() {
     .getElementsByTagName("tbody")[0];
   const reportedProblemsRef = ref(db, "ReportedProblems");
 
-  // Clear existing rows
-  table.innerHTML = "";
-
-  // Retrieve data from ReportedProblems node
   onValue(reportedProblemsRef, (snapshot) => {
-    snapshot.forEach((childSnapshot) => {
-      const uid = childSnapshot.key;
-      const problems = childSnapshot.val(); // Get all problems under this UID
+    // Clear existing rows
+    table.innerHTML = "";
 
-      // Loop through each problem
-      for (const postId in problems) {
-        if (Object.hasOwnProperty.call(problems, postId)) {
-          const problem = problems[postId];
+    // Check if there are no problem reports
+    if (!snapshot.exists()) {
+      const noDataMessageRow = table.insertRow();
+      const messageCell = noDataMessageRow.insertCell();
+      messageCell.colSpan = "7"; // Span the entire row
+      const message = "No problem reports as of the moment.";
+      messageCell.innerHTML = `<div style="text-align: center; font-size: larger; color: #dc3545;">${message}</div>`;
+    } else {
+      snapshot.forEach((childSnapshot) => {
+        const uid = childSnapshot.key;
+        const problems = childSnapshot.val(); // Get all problems under this UID
 
-          // Retrieve related user data from Users node
-          const userRef = ref(db, "Users/" + uid);
-          get(userRef).then((userSnapshot) => {
-            const user = userSnapshot.val();
+        // Loop through each problem
+        for (const postId in problems) {
+          if (Object.hasOwnProperty.call(problems, postId)) {
+            const problem = problems[postId];
 
-            // Create a new row
-            const row = table.insertRow();
+            // Retrieve related user data from Users node
+            const userRef = ref(db, "Users/" + uid);
+            get(userRef).then((userSnapshot) => {
+              const user = userSnapshot.val();
 
-            // Populate columns
-            row.insertCell(0).innerText = uid;
-            row.insertCell(
-              1
-            ).innerText = `${user.lastname}, ${user.firstname} ${user.middlename}`;
-            row.insertCell(2).innerText = user.campus;
-            row.insertCell(3).innerText = problem.issue;
-            // Splitting the message into lines of maximum 40 characters
-            const messageLines = problem.message.match(/.{1,40}/g) || [];
+              // Create a new row
+              const row = table.insertRow();
 
-            // Joining the lines with a line break
-            const formattedMessage = messageLines.join("\n");
+              // Populate columns
+              row.insertCell(0).innerText = uid;
+              row.insertCell(
+                1
+              ).innerText = `${user.lastname}, ${user.firstname} ${user.middlename}`;
+              row.insertCell(2).innerText = user.campus;
+              row.insertCell(3).innerText = problem.issue;
+              // Splitting the message into lines of maximum 40 characters
+              const messageLines = problem.message.match(/.{1,40}/g) || [];
 
-            // Setting the inner text with the formatted message
-            row.insertCell(4).innerText = formattedMessage;
+              // Joining the lines with a line break
+              const formattedMessage = messageLines.join("\n");
 
-            const proofCell = row.insertCell(5);
-            proofCell.innerHTML = `<a href="${problem.imageUrl}" target="_blank" style="color: #dc3545; text-decoration: underline">View the file</a>`;
-          });
+              // Setting the inner text with the formatted message
+              row.insertCell(4).innerText = formattedMessage;
+
+              const proofCell = row.insertCell(5);
+              proofCell.innerHTML = `<a href="${problem.imageUrl}" target="_blank" style="color: #dc3545; text-decoration: underline">View the file</a>`;
+
+              // Add delete button in column 6
+              const deleteCell = row.insertCell(6);
+              const deleteButton = document.createElement("button");
+              deleteButton.className = "btn btn-danger";
+              deleteButton.innerText = "Delete";
+              deleteButton.addEventListener("click", () => {
+                // Show confirmation dialog
+                const confirmation = confirm(
+                  "Are you sure you want to delete this problem report?"
+                );
+
+                // If user confirms deletion
+                if (confirmation) {
+                  // Delete data from Firebase Realtime Database
+                  const problemRef = ref(
+                    db,
+                    `ReportedProblems/${uid}/${postId}`
+                  );
+                  set(problemRef, null) // Set to null to delete the data
+                    .then(() => {
+                      // Alert for successful deletion
+                      alert("Problem report deleted successfully.");
+                    })
+                    .catch((error) => {
+                      console.error("Error deleting problem report:", error);
+                    });
+                }
+              });
+              deleteCell.appendChild(deleteButton);
+            });
+          }
         }
-      }
-    });
+      });
+    }
   });
 }
 
