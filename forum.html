@@ -33,7 +33,7 @@
 
       .h1-group {
         position: relative;
-        bottom: 58px;
+        bottom: 76px;
         right: 180px;
       }
 
@@ -205,6 +205,7 @@
         top: 0;
         left: 0;
         width: 100%;
+
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5);
         justify-content: center;
@@ -218,7 +219,7 @@
         border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         position: relative;
-        max-width: 1100px;
+        max-width: 1000px;
         width: 100%;
         max-height: 80vh;
         height: 100%;
@@ -236,10 +237,12 @@
       .modal-footer {
         position: fixed;
         bottom: 0;
-        left: 80px;
-        width: 87.3%;
+        max-width: 1000px;
+        border-radius: 5px;
+        width: 100%;
         margin: 0;
-        padding: 20px; /* Adjust padding as needed */
+        margin-left: -1.2%;
+        padding: 20px;
         background-color: #fff;
         text-align: center;
       }
@@ -278,7 +281,7 @@
 
       .options-icon {
         position: absolute;
-        left: 960px; /* Adjust the right position as needed */
+        left: 810px; /* Adjust the right position as needed */
         color: #888; /* Adjust the color as needed */
         cursor: pointer;
       }
@@ -287,13 +290,15 @@
         color: #333; /* Adjust the hover color as needed */
       }
 
-      /* Default styles for both icons */
+      #reportIconSec,
+      #deleteIconSec,
       #reportIcon,
       #deleteIcon {
         transition: transform 0.3s ease; /* Add a smooth transition effect */
       }
 
-      /* Specific styles for the report icon */
+      #reportIconSec,
+      #deleteIconSec,
       #reportIcon {
         color: blue;
         position: relative;
@@ -302,7 +307,7 @@
         font-size: large;
       }
 
-      /* Specific styles for the delete icon */
+      #deleteIconSec,
       #deleteIcon {
         color: red;
         position: relative;
@@ -310,8 +315,8 @@
         right: 4px;
         font-size: large; /* Change the color if needed */
       }
-
-      /* Hover effect to enlarge the icons */
+      #reportIconSec:hover,
+      #deleteIconSec:hover,
       #reportIcon:hover,
       #deleteIcon:hover {
         transform: scale(1.2); /* Enlarge the icons on hover */
@@ -375,29 +380,30 @@
         background-color: #696969; /* Darker gray color on hover */
       }
 
-      /* Styles for the textarea */
       #inpdto {
         font-weight: normal; /* Set font-weight to normal to make text not bold */
         resize: vertical; /* Allow vertical resizing */
         margin-top: 5px; /* Adjust as needed */
         padding: 5px; /* Adjust as needed */
       }
-
+      #myModalvmSec,
       #myModalvm {
         display: none;
         position: fixed;
         z-index: 1;
         left: 0;
         top: 0;
+
         width: 100%;
         height: 100%;
-        overflow: auto;
+        overflow: hidden;
         background-color: rgba(0, 0, 0, 0.7);
       }
-
+      #modal-contentvmSec,
       #modal-contentvm {
         background-color: #fefefe;
         margin: 15% auto;
+        margin-top: 5%;
         padding: 20px;
         border: 1px solid #888;
         width: 70%;
@@ -416,18 +422,47 @@
       #cssmo:hover {
         transform: scale(1.2); /* Enlarge the span on hover */
       }
-
-      #modal-bodyvm table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
+      #modal-bodyvm,
+      #modal-bodyvmSec {
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 10px;
+        }
       }
 
       #modal-bodyvm th,
-      #modal-bodyvm td {
+      #modal-bodyvm td,
+      #modal-bodyvmSec th,
+      #modal-bodyvmSec td {
         border: 1px solid #ddd;
         padding: 8px;
         text-align: center;
+      }
+
+      .container.bootdey {
+        margin-left: 18%;
+        border-radius: 100px;
+        max-width: 1000px; /* Optional: Set a maximum width for the container */
+      }
+
+      .closepo {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .closepo:hover,
+      .closepo:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .closepo {
+        display: block;
       }
     </style>
   </head>
@@ -446,14 +481,30 @@
           type="module"
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
       </div>
+      <h1 class="h1-group">Open Forum</h1>
       <div class="container bootdey">
         <div class="col-md-12 bootstrap snippets">
           <div class="panel">
             <div class="panel-body">
+              <input
+                type="image"
+                id="imagepost"
+                name="image"
+                alt="Upload Image"
+                src="img/handsHD.jpg"
+                style="
+                  width: 100%;
+                  height: 500px;
+                  object-fit: cover;
+                  border-radius: 10px;
+                  margin-bottom: 2%;
+                  display: none;
+                " />
+
               <textarea
                 class="form-control"
                 rows="2"
-                placeholder="What are you thinking?"></textarea>
+                placeholder="What's on your mind?"></textarea>
               <div class="mar-top clearfix">
                 <button class="btn btn-sm btn-primary pull-right" type="submit">
                   Post
@@ -476,16 +527,39 @@
                   ><img
                     class="img-circle img-sm"
                     alt="Profile Picture"
-                    src="img/admin.jpg"
+                    src="img/profilePic.jpg"
                 /></a>
                 <div class="media-body">
                   <div class="mar-btm">
                     <p class="text-semibold media-heading box-inline">
-                      Malvar Admin
+                      Leonard Mallorca
+                      <img
+                        src="img/reportto.png"
+                        alt="Report"
+                        style="width: 15px"
+                        class="enlarge-on-hover"
+                        id="hoverreport"
+                        onclick="openModal()" />
+                      <span id="notificationBadge" class="notification-badge"
+                        >0</span
+                      >
+                      <a
+                        class="options-icon"
+                        id="optionito"
+                        onclick="toggleOptions()">
+                        <i class="fas fa-ellipsis-v"></i>
+                        <i
+                          class="fas fa-ban"
+                          id="reportIcon"
+                          style="display: none"></i>
+                        <i
+                          class="fas fa-trash-alt"
+                          id="deleteIcon"
+                          style="display: none"></i>
+                      </a>
                     </p>
-
                     <p class="text-muted text-sm">
-                      <i class="fa fa-desktop fa-lg"></i> - 11 min ago
+                      <i class="fa fa-mobile fa-lg"></i> - 11 min ago
                     </p>
                   </div>
                   <p>
@@ -496,7 +570,12 @@
                     class="img-responsive thumbnail"
                     src="img/cleaning.jpg"
                     alt="Image"
-                    style="width: 500px" />
+                    style="
+                      width: 100%;
+                      height: 400px;
+                      object-fit: cover;
+                      margin-left: -10%;
+                    " />
                   <div class="pad-ver">
                     <div class="btn-group">
                       <a
@@ -516,61 +595,24 @@
                       <i class="fas fa-comment"> 1</i>
                     </a>
                   </div>
-                  <hr style="border: 1px solid black" />
+                  <hr style="border: 1px solid black; margin-right: 10%" />
                 </div>
               </div>
-              <div class="modalpl" id="myModalpl">
+              <div class="modalpl" id="modalDiscussion">
                 <div class="modal-contentpl">
-                  <span class="close-btn" onclick="closeModalpl()"
-                    >&times;</span
-                  >
+                  <span
+                    class="closepo"
+                    onclick="closeModalpl()"
+                    id="closeModaldetail">
+                    <ion-icon name="close"></ion-icon>
+                  </span>
+
                   <div class="modal-header">
                     <h3 style="padding: 0%">Discussion</h3>
                   </div>
 
                   <div class="modal-body">
                     <div class="media-block">
-                      <a class="media-left" href="#"
-                        ><img
-                          class="img-circle img-sm"
-                          alt="Profile Picture"
-                          src="img/admin.jpg"
-                      /></a>
-                      <div class="media-body">
-                        <div class="mar-btm">
-                          <p class="text-semibold media-heading box-inline">
-                            Malvar Admin
-                          </p>
-
-                          <p class="text-muted text-sm">
-                            <i class="fa fa-desktop fa-lg"></i> - 11 min ago
-                          </p>
-                        </div>
-                        <p>
-                          Students, magkakaroon tayo ng malawakang event na
-                          gaganapin sa JPLPC Malvar Campus sa kabilang month!
-                        </p>
-                        <img
-                          class="img-responsive thumbnail"
-                          src="img/cleaning.jpg"
-                          alt="Image"
-                          style="width: 500px" />
-                        <div class="pad-ver">
-                          <div class="btn-group">
-                            <a
-                              class="btn btn-sm btn-default btn-hover-success"
-                              href="#"
-                              ><i class="fas fa-arrow-up"></i
-                            ></a>
-                            <a
-                              class="btn btn-sm btn-default btn-hover-danger"
-                              href="#"
-                              ><i class="fa fa-arrow-down"></i
-                            ></a>
-                          </div>
-                        </div>
-                        <hr style="border: 1px solid black" />
-                      </div>
                       <div
                         class="media-block"
                         style="margin-left: 5%; margin-top: 2%">
@@ -583,17 +625,34 @@
                         <div class="media-body">
                           <div class="mar-btm">
                             <p class="text-semibold media-heading box-inline">
-                              Kurt
+                              Leonard
                               <img
                                 src="img/reportto.png"
                                 alt="Report"
                                 style="width: 15px"
                                 class="enlarge-on-hover"
-                                id="hoverreport" />
+                                id="hoverreport"
+                                onclick="openModalSec()" />
+                              <span
+                                id="notificationBadgeSec"
+                                class="notification-badge"
+                                >0</span
+                              >
+                              <a
+                                class="options-icon"
+                                id="optionito"
+                                onclick="toggleOptionSec()">
+                                <i class="fas fa-ellipsis-v"></i>
+                                <i
+                                  class="fas fa-ban"
+                                  id="reportIconSec"
+                                  style="display: none"></i>
+                                <i
+                                  class="fas fa-trash-alt"
+                                  id="deleteIconSec"
+                                  style="display: none"></i>
+                              </a>
                             </p>
-                            <a class="options-icon">
-                              <i class="fas fa-ellipsis-v"></i>
-                            </a>
 
                             <p class="text-muted text-sm">
                               <i class="fa fa-mobile fa-lg"></i> - 5 seconds ago
@@ -616,6 +675,202 @@
                           </div>
                         </div>
                       </div>
+                      <hr style="border: 1px solid black" />
+                    </div>
+                    <div class="media-block">
+                      <div
+                        class="media-block"
+                        style="margin-left: 5%; margin-top: 2%">
+                        <a class="media-left" href="#"
+                          ><img
+                            class="img-circle img-sm"
+                            alt="Profile Picture"
+                            src="img/kert.png"
+                        /></a>
+                        <div class="media-body">
+                          <div class="mar-btm">
+                            <p class="text-semibold media-heading box-inline">
+                              Leonard
+                              <img
+                                src="img/reportto.png"
+                                alt="Report"
+                                style="width: 15px"
+                                class="enlarge-on-hover"
+                                id="hoverreport"
+                                onclick="openModalSec()" />
+                              <span
+                                id="notificationBadgeSec"
+                                class="notification-badge"
+                                >0</span
+                              >
+                              <a
+                                class="options-icon"
+                                id="optionito"
+                                onclick="toggleOptionSec()">
+                                <i class="fas fa-ellipsis-v"></i>
+                                <i
+                                  class="fas fa-ban"
+                                  id="reportIconSec"
+                                  style="display: none"></i>
+                                <i
+                                  class="fas fa-trash-alt"
+                                  id="deleteIconSec"
+                                  style="display: none"></i>
+                              </a>
+                            </p>
+
+                            <p class="text-muted text-sm">
+                              <i class="fa fa-mobile fa-lg"></i> - 5 seconds ago
+                            </p>
+                          </div>
+                          <p>Let's go!</p>
+                          <div class="pad-ver">
+                            <div class="btn-group">
+                              <a
+                                class="btn btn-sm btn-default btn-hover-success"
+                                href="#"
+                                ><i class="fas fa-arrow-up"></i
+                              ></a>
+                              <a
+                                class="btn btn-sm btn-default btn-hover-danger"
+                                href="#"
+                                ><i class="fa fa-arrow-down"></i
+                              ></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr style="border: 1px solid black" />
+                    </div>
+                    <div class="media-block">
+                      <div
+                        class="media-block"
+                        style="margin-left: 5%; margin-top: 2%">
+                        <a class="media-left" href="#"
+                          ><img
+                            class="img-circle img-sm"
+                            alt="Profile Picture"
+                            src="img/kert.png"
+                        /></a>
+                        <div class="media-body">
+                          <div class="mar-btm">
+                            <p class="text-semibold media-heading box-inline">
+                              Leonard
+                              <img
+                                src="img/reportto.png"
+                                alt="Report"
+                                style="width: 15px"
+                                class="enlarge-on-hover"
+                                id="hoverreport"
+                                onclick="openModalSec()" />
+                              <span
+                                id="notificationBadgeSec"
+                                class="notification-badge"
+                                >0</span
+                              >
+                              <a
+                                class="options-icon"
+                                id="optionito"
+                                onclick="toggleOptionSec()">
+                                <i class="fas fa-ellipsis-v"></i>
+                                <i
+                                  class="fas fa-ban"
+                                  id="reportIconSec"
+                                  style="display: none"></i>
+                                <i
+                                  class="fas fa-trash-alt"
+                                  id="deleteIconSec"
+                                  style="display: none"></i>
+                              </a>
+                            </p>
+
+                            <p class="text-muted text-sm">
+                              <i class="fa fa-mobile fa-lg"></i> - 5 seconds ago
+                            </p>
+                          </div>
+                          <p>Let's go!</p>
+                          <div class="pad-ver">
+                            <div class="btn-group">
+                              <a
+                                class="btn btn-sm btn-default btn-hover-success"
+                                href="#"
+                                ><i class="fas fa-arrow-up"></i
+                              ></a>
+                              <a
+                                class="btn btn-sm btn-default btn-hover-danger"
+                                href="#"
+                                ><i class="fa fa-arrow-down"></i
+                              ></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr style="border: 1px solid black" />
+                    </div>
+                    <div class="media-block">
+                      <div
+                        class="media-block"
+                        style="margin-left: 5%; margin-top: 2%">
+                        <a class="media-left" href="#"
+                          ><img
+                            class="img-circle img-sm"
+                            alt="Profile Picture"
+                            src="img/kert.png"
+                        /></a>
+                        <div class="media-body">
+                          <div class="mar-btm">
+                            <p class="text-semibold media-heading box-inline">
+                              Leonard
+                              <img
+                                src="img/reportto.png"
+                                alt="Report"
+                                style="width: 15px"
+                                class="enlarge-on-hover"
+                                id="hoverreport"
+                                onclick="openModalSec()" />
+                              <span
+                                id="notificationBadgeSec"
+                                class="notification-badge"
+                                >0</span
+                              >
+                              <a
+                                class="options-icon"
+                                id="optionito"
+                                onclick="toggleOptionSec()">
+                                <i class="fas fa-ellipsis-v"></i>
+                                <i
+                                  class="fas fa-ban"
+                                  id="reportIconSec"
+                                  style="display: none"></i>
+                                <i
+                                  class="fas fa-trash-alt"
+                                  id="deleteIconSec"
+                                  style="display: none"></i>
+                              </a>
+                            </p>
+
+                            <p class="text-muted text-sm">
+                              <i class="fa fa-mobile fa-lg"></i> - 5 seconds ago
+                            </p>
+                          </div>
+                          <p>Let's go!</p>
+                          <div class="pad-ver">
+                            <div class="btn-group">
+                              <a
+                                class="btn btn-sm btn-default btn-hover-success"
+                                href="#"
+                                ><i class="fas fa-arrow-up"></i
+                              ></a>
+                              <a
+                                class="btn btn-sm btn-default btn-hover-danger"
+                                href="#"
+                                ><i class="fa fa-arrow-down"></i
+                              ></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr style="border: 1px solid black" />
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -625,160 +880,23 @@
                       placeholder="Add a comment..." />
 
                     <button class="post-btn" onclick="postComment()">
-                      Post
+                      Send
                     </button>
                   </div>
                 </div>
               </div>
 
-              <div class="media-block pad-all">
-                <a class="media-left" href="#"
-                  ><img
-                    class="img-circle img-sm"
-                    alt="Profile Picture"
-                    src="img/rr.jpg"
-                /></a>
-                <div class="media-body">
-                  <div class="mar-btm">
-                    <p class="text-semibold media-heading box-inline">
-                      Leonard
-                      <img
-                        src="img/reportto.png"
-                        alt="Report"
-                        style="width: 15px"
-                        class="enlarge-on-hover"
-                        id="hoverreport"
-                        onclick="openModal()" />
-                      <span id="notificationBadge" class="notification-badge"
-                        >0</span
-                      >
-                      <a
-                        class="options-icon"
-                        id="optionito"
-                        onclick="toggleOptions()">
-                        <i class="fas fa-ellipsis-v"></i>
-                        <i
-                          class="fas fa-flag"
-                          id="reportIcon"
-                          style="display: none"></i>
-                        <i
-                          class="fas fa-trash-alt"
-                          id="deleteIcon"
-                          style="display: none"></i>
-                      </a>
-                    </p>
-                    <p class="text-muted text-sm">
-                      <i class="fa fa-mobile fa-lg"></i> - 11 min ago
-                    </p>
-                  </div>
-                  <p>
-                    Announcement! Planting Trees in on Monday (December 20,
-                    2023)
-                  </p>
-
-                  <div class="pad-ver">
-                    <div class="btn-group">
-                      <a
-                        class="btn btn-sm btn-default btn-hover-success"
-                        href="#"
-                        ><i class="fas fa-arrow-up"></i
-                      ></a>
-                      <a
-                        class="btn btn-sm btn-default btn-hover-danger"
-                        href="#"
-                        ><i class="fa fa-arrow-down"></i
-                      ></a>
-                    </div>
-                    <a
-                      class="btn btn-sm btn-default btn-hover-primary"
-                      id="openModalpl">
-                      <i class="fas fa-comment"></i>
-                    </a>
-                  </div>
-                  <hr />
-                </div>
-                <div class="modalrt" id="modalrt">
-                  <div
-                    class="modal-headerrt"
-                    style="border-bottom: 1px solid #ddd">
-                    <span class="closert" onclick="closeModal()"></span>
-                    <h3>Report</h3>
-                  </div>
-                  <div
-                    class="modal-bodyrt"
-                    style="border-bottom: 1px solid #ddd">
-                    <p>Choose reasons for reporting:</p>
-                    <label>
-                      <input type="checkbox" name="reason" value="spam" /> Spam
-                    </label>
-                    <br />
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="reason"
-                        value="hate_speech" />
-                      Hate Speech
-                    </label>
-                    <br />
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="reason"
-                        value="false_information" />
-                      False Information
-                    </label>
-                    <br />
-                    <label>
-                      <input type="checkbox" name="reason" value="harassment" />
-                      Harassment
-                    </label>
-                    <br />
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="reason"
-                        value="not_connected" />
-                      Not Connected
-                    </label>
-                    <br />
-                    <label>
-                      <input type="checkbox" name="reason" value="nudity" />
-                      Nudity
-                    </label>
-                    <br />
-                    <label>
-                      <input type="checkbox" name="reason" value="violence" />
-                      Violence
-                    </label>
-                    <br />
-                    Other:
-                    <br />
-                    <!-- Add a textarea for "Other" -->
-
-                    <textarea
-                      name="otherReason"
-                      rows="4"
-                      cols="30"
-                      id="inpdto"></textarea>
-                  </div>
-                  <div class="modal-footerrt" style="margin-top: 10px">
-                    <button id="submitButton" onclick="confirmAndSubmit()">
-                      Submit
-                    </button>
-                    <button id="closmrt" onclick="closeModal()">Close</button>
-                  </div>
-                </div>
-              </div>
               <div id="myModalvm">
                 <div id="modal-contentvm">
                   <!-- Modal Header -->
                   <div id="modal-headervm">
                     <span
-                      id="cssmo"
+                      class="closepo"
                       onclick="closeModal()"
-                      style="float: right; cursor: pointer"
-                      >&times;</span
-                    >
+                      id="closeModaldetail">
+                      <ion-icon name="close"></ion-icon>
+                    </span>
+
                     <h3>View Report</h3>
                     <hr
                       style="
@@ -789,14 +907,15 @@
                   </div>
 
                   <!-- Modal Body Content -->
-                  <div id="modal-bodyvm">
+                  <div style id="modal-bodyvm">
                     <table>
                       <thead>
                         <tr
-                          id="whitenam"
+                          id="tableReport"
                           style="background-color: #343a40; color: white">
-                          <th style="width: 50px">No.</th>
-                          <th style="width: 300px">Name</th>
+                          <th>UID</th>
+                          <th>Name</th>
+                          <th>Campus</th>
                           <th>Reasons</th>
                         </tr>
                       </thead>
@@ -804,6 +923,53 @@
                         <tr>
                           <td>1</td>
                           <td>JJ Mallorca</td>
+                          <td>JPLPC Malvar Campus</td>
+                          <td>Ni-report ko si JJ kasi maingay sa forum</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div id="myModalvmSec">
+                <div id="modal-contentvmSec">
+                  <!-- Modal Header -->
+                  <div id="modal-headervmSec">
+                    <span
+                      class="closepo"
+                      onclick="closeModalSec()"
+                      id="closeModaldetailSec">
+                      <ion-icon name="close"></ion-icon>
+                    </span>
+
+                    <h3>View Report</h3>
+                    <hr
+                      style="
+                        border-bottom: 1px solid black;
+                        margin-bottom: 20px;
+                        margin-top: 30px;
+                      " />
+                  </div>
+
+                  <!-- Modal Body Content -->
+                  <div id="modal-bodyvmSec">
+                    <table>
+                      <thead>
+                        <tr
+                          id="tableReportSec"
+                          style="background-color: #343a40; color: white">
+                          <th>UID</th>
+                          <th>Name</th>
+                          <th>Campus</th>
+                          <th>Reasons</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>1</td>
+                          <td>JJ Mallorca</td>
+                          <td>JPLPC Malvar Campus</td>
                           <td>Ni-report ko si JJ kasi maingay sa forum</td>
                         </tr>
                       </tbody>
@@ -867,7 +1033,7 @@
       });
 
       // Get references to the modal and open button
-      var modalpl = document.getElementById("myModalpl");
+      var modalpl = document.getElementById("modalDiscussion");
       var openModalBtnpl = document.getElementById("openModalpl");
 
       // Show the modal
@@ -937,6 +1103,24 @@
         deleteIcon.style.display =
           deleteIcon.style.display === "none" ? "inline-block" : "none";
       }
+      function toggleOptionSec() {
+        var reportIcon = document.getElementById("reportIconSec");
+        var deleteIcon = document.getElementById("deleteIconSec");
+        var modalDiscussion = document.getElementById("modalDiscussion");
+
+        // Set z-index for icons to be in front of the modal
+        var modalZIndex = window
+          .getComputedStyle(modalDiscussion)
+          .getPropertyValue("z-index");
+        reportIcon.style.zIndex = parseInt(modalZIndex) + 1;
+        deleteIcon.style.zIndex = parseInt(modalZIndex) + 1;
+
+        // Toggle visibility of the report and delete icons
+        reportIcon.style.display =
+          reportIcon.style.display === "none" ? "inline-block" : "none";
+        deleteIcon.style.display =
+          deleteIcon.style.display === "none" ? "inline-block" : "none";
+      }
 
       // Function to handle the click event on the delete icon
       function handleDeleteIconClick() {
@@ -982,22 +1166,29 @@
       function openModal() {
         document.getElementById("myModalvm").style.display = "block";
       }
+      function openModalSec() {
+        // Set the display style of myModalvmSec to "block" to show the modal
+        document.getElementById("myModalvmSec").style.display = "block";
+
+        // Ensure that the modal with ID modalDiscussion stays behind by setting its z-index lower than myModalvmSec
+        document.getElementById("modalDiscussion").style.zIndex = "1";
+      }
 
       // Function to close the modal
       function closeModal() {
-        var modalrt = document.getElementById("modalrt");
         var myModalvm = document.getElementById("myModalvm");
-
-        // Close both modals if they are open
-        if (modalrt.style.display === "block") {
-          modalrt.style.display = "none";
-        }
 
         if (myModalvm.style.display === "block") {
           myModalvm.style.display = "none";
         }
       }
+      function closeModalSec() {
+        var myModalvm = document.getElementById("myModalvmSec");
 
+        if (myModalvm.style.display === "block") {
+          myModalvm.style.display = "none";
+        }
+      }
       // Add a click event listener to the close button in modalrt
       document
         .getElementsByClassName("closert")[0]
@@ -1008,5 +1199,49 @@
         .getElementsByClassName("close-btn")[0]
         .addEventListener("click", closeModal);
     </script>
+    <script>
+      // JavaScript to initialize table scrolling
+      const tableContainer = document.querySelector("#modal-bodyvm");
+      const table = document.getElementById("tableReport");
+
+      if (table && tableContainer) {
+        tableContainer.style.maxHeight = "400px"; // Adjust the maximum height as needed
+
+        // Hide or show the scrollbar based on content overflow
+        const checkOverflow = () => {
+          tableContainer.style.overflowY =
+            tableContainer.scrollHeight > tableContainer.clientHeight
+              ? "scroll"
+              : "auto";
+        };
+
+        // Initially check for overflow
+        checkOverflow();
+
+        // Re-check overflow on window resize
+        window.addEventListener("resize", checkOverflow);
+      }
+      const tableContainers = document.querySelector("#modal-bodyvmSec");
+      const tables = document.getElementById("tableReportSec");
+
+      if (tables && tableContainers) {
+        tableContainers.style.maxHeight = "400px"; // Adjust the maximum height as needed
+
+        // Hide or show the scrollbar based on content overflow
+        const checkOverflow = () => {
+          tableContainers.style.overflowY =
+            tableContainers.scrollHeight > tableContainers.clientHeight
+              ? "scroll"
+              : "auto";
+        };
+
+        // Initially check for overflow
+        checkOverflow();
+
+        // Re-check overflow on window resize
+        window.addEventListener("resize", checkOverflow);
+      }
+    </script>
+    <script type="module" src="js/forum.js"></script>
   </body>
 </html>
