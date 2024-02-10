@@ -523,7 +523,7 @@ function displayEventData(searchTerm = "", selectedCampus = "") {
           <td>${titleEvent || "N/A"}</td>
           <td>${category || "N/A"}</td>
           <td>${location || "N/A"}</td>
-          <td>${campus || "N/A"}</td>
+          <td style="line-height: 1.5;">${campus || "N/A"}</td>
           <td>${startDate.toLocaleString() || "N/A"} -- ${endDate || "N/A"}</td>
           <td>
               <button type="button" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>

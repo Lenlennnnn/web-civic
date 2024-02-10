@@ -83,7 +83,7 @@ function fetchForumPosts() {
         container.innerHTML = `
             <div class="panel-body">
               <div class="media-block">
-                  <a class="media-left" href="#">
+                  <a style="margin-top:-0.5%"class="media-left" href="#">
                       <img style="object-fit: cover" class="img-circle img-sm" alt="Profile Picture" id="profileImage-${postKey}" src="${profileImage}">
                   </a>
                   <div class="media-body">
@@ -91,13 +91,19 @@ function fetchForumPosts() {
                           <p id="nameForum-${postKey}" class="text-semibold media-heading box-inline">
                               ${firstName} ${middleName} ${lastName}
                           </p>
-                          <p class="text-muted text-sm">
-                              <i class="fa fa-mobile fa-lg"></i> - ${
-                                postData.postTime
+                            <p style="line-height: 1.5;" class="text-muted text-sm">
+                              <i class="fa fa-globe fa-lg"></i> - ${
+                                postData.campus
                               }
                           </p>
+                          <p class="text-muted text-sm">
+                     ${postData.postTime}
+                          </p>
+                           
                       </div>
-                      <p id="forumText-${postKey}">${postData.postText}</p>
+                      <p style="margin-top:4%" id="forumText-${postKey}">${
+          postData.postText
+        }</p>
                       <img class="img-responsive thumbnail" src="${
                         postData.postImage
                       }" id="postImage-${postKey}" alt="Image" style="width: 100%; height: 400px; object-fit: cover; margin-left: -10%; ${
@@ -124,6 +130,12 @@ function fetchForumPosts() {
                       </div>
                   </div>
               </div>
+               <div style="margin-top:3%; margin-left:85%" class="bottom-right-text">
+            <p  class="text-muted text-sm" id="categoryForum-${postKey}" > # ${
+          postData.category
+        }
+                          </p>
+        </div>
           </div>
         `;
 
