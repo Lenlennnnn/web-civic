@@ -31,6 +31,15 @@ onAuthStateChanged(auth, (user) => {
     console.log("User is logged out");
   }
 });
+function formatNumber(number) {
+  if (number < 1000) {
+    return number.toString();
+  } else if (number < 1000000) {
+    return (number / 1000).toFixed(1) + "k";
+  } else {
+    return (number / 1000000).toFixed(1) + "M";
+  }
+}
 // Fetch data from Firebase and update HTML elements
 function fetchForumPosts() {
   const forumBody = document.getElementById("forumBody");
@@ -38,9 +47,20 @@ function fetchForumPosts() {
   const forumPostRef = ref(db, "Forum_Post");
 
   onValue(forumPostRef, (snapshot) => {
+    const posts = []; // Array to hold posts for sorting
+
     snapshot.forEach((childSnapshot) => {
-      const postKey = childSnapshot.key;
       const postData = childSnapshot.val();
+      const postTime = new Date(postData.postTime); // Convert postTime to Date object
+      posts.push({ key: childSnapshot.key, postTime, data: postData }); // Push post data along with key and postTime
+    });
+
+    // Sort posts based on postTime in descending order
+    posts.sort((a, b) => b.postTime - a.postTime);
+
+    posts.forEach((post) => {
+      const postKey = post.key;
+      const postData = post.data;
       let container = document.getElementById(`container-${postKey}`);
 
       if (!container) {
@@ -61,7 +81,7 @@ function fetchForumPosts() {
         const profileImage = uploaderData.ImageProfile || "img/profilePic.jpg";
 
         container.innerHTML = `
-          <div class="panel-body">
+            <div class="panel-body">
               <div class="media-block">
                   <a class="media-left" href="#">
                       <img style="object-fit: cover" class="img-circle img-sm" alt="Profile Picture" id="profileImage-${postKey}" src="${profileImage}">
@@ -85,11 +105,15 @@ function fetchForumPosts() {
         }">
                       <div class="pad-ver">
                           <div class="btn-group">
-                              <a class="btn btn-sm btn-default btn-hover-success" id="upReact-${postKey}">
-                                  <i id="upNum-${postKey}" class="fas fa-arrow-up"></i>
+                              <a style="margin-right:1px" class="btn btn-sm btn-default btn-hover-success" id="upReact-${postKey}">
+                                  <i id="upNum-${postKey}" class="fas fa-arrow-up"> ${formatNumber(
+          postData.upReactCount
+        )}</i>
                               </a>
                               <a class="btn btn-sm btn-default btn-hover-danger" id="downReact-${postKey}">
-                                  <i id="downNum-${postKey}" class="fa fa-arrow-down"></i>
+                                  <i id="downNum-${postKey}" class="fa fa-arrow-down"> ${formatNumber(
+          postData.downReactCount
+        )}</i>
                               </a>
                           </div>
                           <a class="btn btn-sm btn-default btn-hover-primary" id="openModalpl-${postKey}">
@@ -103,52 +127,51 @@ function fetchForumPosts() {
           </div>
         `;
 
-        // Add event listeners to react buttons
         const upReactBtn = container.querySelector(`#upReact-${postKey}`);
         const downReactBtn = container.querySelector(`#downReact-${postKey}`);
 
-        // Handle upReact click
+        // Function to update button appearance based on reaction
+        // Function to update button appearance based on reaction
+        function updateButtonAppearance(btn, reaction, btnType) {
+          btn.classList.remove("reacted", "not-reacted");
+          if (reaction === btnType) {
+            btn.classList.add("reacted");
+            btn.style.borderColor = "red"; // Add red border color for the reacted button
+          } else {
+            btn.classList.add("not-reacted");
+            btn.style.borderColor = ""; // Reset border color if not reacted
+          }
+        }
+
         // Handle upReact click
         upReactBtn.addEventListener("click", (event) => {
-          event.preventDefault(); // Prevent default behavior (scrolling)
-          // Get user's UID
+          event.preventDefault();
           const user = auth.currentUser;
           if (user) {
             const uid = user.uid;
             const reactRef = ref(db, `Forum_Post/${postKey}/React/${uid}`);
 
-            // Check if the user has already reacted and the type of reaction
             get(reactRef)
               .then((snapshot) => {
                 const existingReaction = snapshot.val();
-                if (!existingReaction || existingReaction === "down") {
-                  // Add up reaction to the post
-                  const newReaction = existingReaction === "down" ? "up" : "up";
-                  set(
-                    ref(db, `Forum_Post/${postKey}/React/${uid}`),
-                    newReaction
-                  ).then(() => {
-                    // Update the reaction count directly
-                    const upNumElement = container.querySelector(
-                      `#upNum-${postKey}`
-                    );
-                    const downNumElement = container.querySelector(
-                      `#downNum-${postKey}`
-                    );
-                    if (existingReaction === "down") {
-                      const downCount = parseInt(downNumElement.textContent);
-                      downNumElement.textContent = downCount - 1;
-                    }
-                    const upCount = parseInt(upNumElement.textContent);
-                    upNumElement.textContent =
-                      newReaction === "up" ? upCount + 1 : upCount;
-                  });
+                let newReaction;
+                if (existingReaction === "up") {
+                  newReaction = null; // User is un-reacting
                 } else {
-                  console.log("You have already reacted to this post with up.");
+                  newReaction = "up"; // User is reacting
                 }
+                set(ref(db, `Forum_Post/${postKey}/React/${uid}`), newReaction)
+                  .then(() => {
+                    updateReactCounts(postKey, existingReaction, newReaction);
+                    updateButtonAppearance(upReactBtn, newReaction);
+                    updateButtonAppearance(downReactBtn, null);
+                  })
+                  .catch((error) => {
+                    console.error("Error toggling reaction:", error);
+                  });
               })
               .catch((error) => {
-                console.error("Error checking reaction:", error);
+                console.error("Error toggling reaction:", error);
               });
           } else {
             console.log("User is not logged in.");
@@ -157,53 +180,49 @@ function fetchForumPosts() {
 
         // Handle downReact click
         downReactBtn.addEventListener("click", (event) => {
-          event.preventDefault(); // Prevent default behavior (scrolling)
-          // Get user's UID
+          event.preventDefault();
           const user = auth.currentUser;
           if (user) {
             const uid = user.uid;
             const reactRef = ref(db, `Forum_Post/${postKey}/React/${uid}`);
 
-            // Check if the user has already reacted and the type of reaction
             get(reactRef)
               .then((snapshot) => {
                 const existingReaction = snapshot.val();
-                if (!existingReaction || existingReaction === "up") {
-                  // Add down reaction to the post
-                  const newReaction =
-                    existingReaction === "up" ? "down" : "down";
-                  set(
-                    ref(db, `Forum_Post/${postKey}/React/${uid}`),
-                    newReaction
-                  ).then(() => {
-                    // Update the reaction count directly
-                    const upNumElement = container.querySelector(
-                      `#upNum-${postKey}`
-                    );
-                    const downNumElement = container.querySelector(
-                      `#downNum-${postKey}`
-                    );
-                    if (existingReaction === "up") {
-                      const upCount = parseInt(upNumElement.textContent);
-                      upNumElement.textContent = upCount - 1;
-                    }
-                    const downCount = parseInt(downNumElement.textContent);
-                    downNumElement.textContent =
-                      newReaction === "down" ? downCount + 1 : downCount;
-                  });
+                let newReaction;
+                if (existingReaction === "down") {
+                  newReaction = null; // User is un-reacting
                 } else {
-                  console.log(
-                    "You have already reacted to this post with down."
-                  );
+                  newReaction = "down"; // User is reacting
                 }
+                set(ref(db, `Forum_Post/${postKey}/React/${uid}`), newReaction)
+                  .then(() => {
+                    updateReactCounts(postKey, existingReaction, newReaction);
+                    updateButtonAppearance(downReactBtn, newReaction);
+                    updateButtonAppearance(upReactBtn, null);
+                  })
+                  .catch((error) => {
+                    console.error("Error toggling reaction:", error);
+                  });
               })
               .catch((error) => {
-                console.error("Error checking reaction:", error);
+                console.error("Error toggling reaction:", error);
               });
           } else {
             console.log("User is not logged in.");
           }
         });
+
+        // Initialize button appearance
+        get(ref(db, `Forum_Post/${postKey}/React/${auth.currentUser.uid}`))
+          .then((snapshot) => {
+            const reaction = snapshot.val();
+            updateButtonAppearance(upReactBtn, reaction, "up");
+            updateButtonAppearance(downReactBtn, reaction, "down");
+          })
+          .catch((error) => {
+            console.error("Error getting reaction:", error);
+          });
       });
 
       // Append the container to the forumBody
@@ -211,6 +230,34 @@ function fetchForumPosts() {
     });
   });
 }
+function updateReactCounts(postKey, previousReaction, newReaction) {
+  const container = document.getElementById(`container-${postKey}`);
+  const upNumElement = container.querySelector(`#upNum-${postKey}`);
+  const downNumElement = container.querySelector(`#downNum-${postKey}`);
+  let upCount = parseInt(upNumElement.textContent);
+  let downCount = parseInt(downNumElement.textContent);
 
+  if (previousReaction === "up") {
+    upCount--; // Decrement up count if user un-reacts
+  } else if (previousReaction === "down") {
+    downCount--; // Decrement down count if user un-reacts
+  }
+
+  if (newReaction === "up") {
+    upCount++; // Increment up count if user reacts
+  } else if (newReaction === "down") {
+    downCount++; // Increment down count if user reacts
+  }
+
+  // Update UI with new counts
+  upNumElement.textContent = upCount;
+  downNumElement.textContent = downCount;
+
+  // Update database with new counts
+  update(ref(db, `Forum_Post/${postKey}`), {
+    upReactCount: upCount,
+    downReactCount: downCount,
+  });
+}
 // Call the function to fetch and display forum posts
 fetchForumPosts();
