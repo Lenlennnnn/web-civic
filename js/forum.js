@@ -117,9 +117,9 @@ function fetchForumPosts() {
                               </a>
                           </div>
                           <a class="btn btn-sm btn-default btn-hover-primary" id="openModalpl-${postKey}">
-                              <i class="fas fa-comment"> ${
+                              <i class="fas fa-comment"> ${formatNumber(
                                 postData.commentCount
-                              }</i>
+                              )}</i>
                           </a>
                       </div>
                   </div>
