@@ -465,6 +465,43 @@
       .closepo {
         display: block;
       }
+      .toggle-switch {
+        display: inline-block;
+        width: 60px;
+        height: 28px;
+        position: relative;
+      }
+      .toggle-switch input[type="checkbox"] {
+        display: none;
+      }
+      .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        border-radius: 34px;
+        transition: 0.4s;
+      }
+      .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        border-radius: 50%;
+        transition: 0.4s;
+      }
+      input[type="checkbox"]:checked + .toggle-slider {
+        background-color: #2196f3;
+      }
+      input[type="checkbox"]:checked + .toggle-slider:before {
+        transform: translateX(26px);
+      }
     </style>
   </head>
 
@@ -567,32 +604,22 @@
             </div>
           </div>
           <div
-            style="margin-left: 70%; margin-bottom: 2%"
+            style="margin-right: 80%; margin-bottom: -7%"
             class="filter-group"
-            id="campusfilter">
-            <label style="margin-top: -5px">Campus</label>
-
-            <select class="form-control" style="margin-top: -5px">
-              <option value="" disabled selected>Filter Campus</option>
-              <option value="ARASOF Nasugbu Campus">
-                ARASOF Nasugbu Campus
-              </option>
-              <option value="Balayan Campus">Balayan Campus</option>
-              <option value="JPLPC Malvar Campus">JPLPC Malvar Campus</option>
-              <option value="Lemery Campus">Lemery Campus</option>
-              <option value="Lipa Campus">Lipa Campus</option>
-              <option value="Lobo Campus">Lobo Campus</option>
-              <option value="Mabini Campus">Mabini Campus</option>
-              <option value="Pablo Borbon Campus I">
-                Pablo Borbon Campus I
-              </option>
-              <option value=" Pablo Borbon Campus II">
-                Pablo Borbon Campus II
-              </option>
-              <option value="Rosario Campus">Rosario Campus</option>
-              <option value="San Juan Campus">San Juan Campus</option>
-              <option value="All Campus">All Campus</option>
-            </select>
+            id="reportFilter">
+            <label style="margin-top: -5px">Post Report Snapshot</label>
+            <label class="toggle-switch">
+              <input type="checkbox" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div
+            id="searchfieldcontainerSec"
+            style="width: 25%; margin-bottom: 3%; margin-left: 75%">
+            <div class="filter-group" id="searchfilterSec">
+              <label>Search </label>
+              <input id="inputSearch" type="text" class="form-control" />
+            </div>
           </div>
           <div id="container" class="panel">
             <div class="panel-body">

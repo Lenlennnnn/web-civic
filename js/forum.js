@@ -41,8 +41,55 @@ function formatNumber(number) {
   }
 }
 // Fetch data from Firebase and update HTML elements
+document
+  .getElementById("reportFilter")
+  .addEventListener("change", togglePostReportFilter);
+
+let filterEnabled = false; // Variable to track if the filter is enabled
+
+// Function to toggle the post report filter
+function togglePostReportFilter(event) {
+  filterEnabled = event.target.checked;
+  fetchForumPosts(); // Re-fetch forum posts to apply the filter
+}
+document.getElementById("inputSearch").addEventListener("input", handleSearch);
+
+function handleSearch() {
+  const searchTerm = document.getElementById("inputSearch").value.toLowerCase();
+  const forumBody = document.getElementById("forumBody");
+  const forumPosts = forumBody.querySelectorAll(".panel");
+
+  forumPosts.forEach((post) => {
+    const name = post.querySelector(".media-heading").textContent.toLowerCase();
+    const campus = post
+      .querySelector(".text-muted:nth-of-type(1)")
+      .textContent.toLowerCase();
+    const category = post
+      .querySelector(".bottom-right-text")
+      .textContent.toLowerCase();
+    const postText = post.querySelector(".mar-btm").textContent.toLowerCase();
+    const postTime = post
+      .querySelector(".text-muted.text-sm")
+      .textContent.toLowerCase();
+
+    if (
+      name.includes(searchTerm) ||
+      campus.includes(searchTerm) ||
+      category.includes(searchTerm) ||
+      postText.includes(searchTerm) ||
+      postTime.includes(searchTerm)
+    ) {
+      post.style.display = "block";
+    } else {
+      post.style.display = "none";
+    }
+  });
+}
+
+// Modified fetchForumPosts function with filtering logic
 function fetchForumPosts() {
   const forumBody = document.getElementById("forumBody");
+  forumBody.innerHTML = ""; // Clear previous posts
 
   const forumPostRef = ref(db, "Forum_Post");
 
@@ -51,12 +98,31 @@ function fetchForumPosts() {
 
     snapshot.forEach((childSnapshot) => {
       const postData = childSnapshot.val();
-      const postTime = new Date(postData.postTime); // Convert postTime to Date object
-      posts.push({ key: childSnapshot.key, postTime, data: postData }); // Push post data along with key and postTime
+
+      // Check if filtering is enabled and the post has PostReport child
+      if (!filterEnabled || postData.PostReport) {
+        const postTime = new Date(postData.postTime); // Convert postTime to Date object
+        const postReportCount = postData.PostReport
+          ? Object.keys(postData.PostReport).length
+          : 0;
+        posts.push({
+          key: childSnapshot.key,
+          postTime,
+          data: postData,
+          postReportCount,
+        });
+      }
     });
 
     // Sort posts based on postTime in descending order
-    posts.sort((a, b) => b.postTime - a.postTime);
+    posts.sort((a, b) => {
+      // If filtering is enabled, sort based on postReportCount
+      if (filterEnabled) {
+        return b.postReportCount - a.postReportCount; // Sort in descending order of postReportCount
+      } else {
+        return b.postTime - a.postTime; // Sort based on postTime if filtering is not enabled
+      }
+    });
 
     posts.forEach((post) => {
       const postKey = post.key;
@@ -242,6 +308,7 @@ function fetchForumPosts() {
     });
   });
 }
+
 function updateReactCounts(postKey, previousReaction, newReaction) {
   const container = document.getElementById(`container-${postKey}`);
   const upNumElement = container.querySelector(`#upNum-${postKey}`);
