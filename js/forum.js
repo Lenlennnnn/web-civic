@@ -11,6 +11,7 @@ import {
   get,
   set,
   update,
+  remove,
   onValue,
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 import {
@@ -154,9 +155,22 @@ function fetchForumPosts() {
                   </a>
                   <div class="media-body">
                       <div class="mar-btm">
-                          <p id="nameForum-${postKey}" class="text-semibold media-heading box-inline">
-                              ${firstName} ${middleName} ${lastName}
-                          </p>
+                    
+<p id="nameForum-${postKey}" class="text-semibold media-heading box-inline">
+  ${firstName} ${middleName} ${lastName}
+  <img src="img/reportto.png" alt="Report" style="width: 15px" class="enlarge-on-hover" id="hoverreport"/>
+<span id="notificationBadge" class="notification-badge">${formatNumber(
+          post.postReportCount
+        )}</span>
+     
+
+</p>
+<a  class="options-icon" id="optionito-${postKey}" style="margin-left:5%">
+  <i class="fas fa-ellipsis-v" id="ellipsisIcon-${postKey}"></i>
+  <i class="fas fa-ban" id="reportIcon-${postKey}" style="display: none"></i>
+  <i class="fas fa-trash-alt" id="deleteIcon-${postKey}" style="display: none"></i>
+</a>
+
                             <p style="line-height: 1.5;" class="text-muted text-sm">
                               <i class="fa fa-globe fa-lg"></i> - ${
                                 postData.campus
@@ -307,6 +321,180 @@ function fetchForumPosts() {
       forumBody.appendChild(container);
     });
   });
+}
+document.addEventListener("click", function (event) {
+  // Check if the clicked element is ellipsisIcon
+  if (event.target && event.target.id.startsWith("ellipsisIcon-")) {
+    const postKey = event.target.id.replace("ellipsisIcon-", ""); // Extract postKey
+    const reportIcon = document.getElementById(`reportIcon-${postKey}`);
+    const deleteIcon = document.getElementById(`deleteIcon-${postKey}`);
+
+    // Toggle the visibility of reportIcon and deleteIcon
+    if (reportIcon.style.display === "none") {
+      reportIcon.style.display = "block";
+      reportIcon.style.color = "red";
+      reportIcon.style.marginBottom = "10px";
+      reportIcon.style.marginLeft = "-5px";
+      reportIcon.style.marginTop = "10px";
+      reportIcon.style.fontSize = "19px"; // Increase the size of reportIcon
+      deleteIcon.style.display = "block";
+      deleteIcon.style.marginLeft = "-5px";
+      deleteIcon.style.color = "blue"; // Apply additional styles if needed
+      deleteIcon.style.fontSize = "19px"; // Increase the size of deleteIcon
+    } else {
+      reportIcon.style.display = "none";
+      deleteIcon.style.display = "none";
+    }
+  }
+});
+document.addEventListener("click", function (event) {
+  if (event.target && event.target.id.startsWith("deleteIcon-")) {
+    const postKey = event.target.id.replace("deleteIcon-", ""); // Extract postKey
+
+    // Confirm deletion with user
+    const confirmDelete = confirm("Are you sure you want to delete this post?");
+    if (confirmDelete) {
+      // Delete the post from the database
+      const postRef = ref(db, `Forum_Post/${postKey}`);
+      remove(postRef)
+        .then(() => {
+          console.log("Post deleted successfully");
+          // Remove the corresponding HTML element from the DOM
+          const container = document.getElementById(`container-${postKey}`);
+          if (container) {
+            container.remove();
+          } else {
+            console.log("Container not found for post key:", postKey);
+          }
+        })
+        .catch((error) => {
+          console.error("Error deleting post:", error);
+        });
+    }
+  }
+});
+function generateTimestamp() {
+  const currentDate = new Date();
+  const options = {
+    timeZone: "Asia/Manila",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  };
+  return currentDate.toLocaleString("en-US", options).replace(",", "");
+}
+
+document.addEventListener("click", function (event) {
+  if (event.target && event.target.id.startsWith("reportIcon-")) {
+    const postKey = event.target.id.replace("reportIcon-", ""); // Extract postKey
+
+    // Retrieve the uploaderUID from the Forum_Post node
+    const forumPostRef = ref(db, `Forum_Post/${postKey}`);
+    get(forumPostRef)
+      .then((snapshot) => {
+        const postData = snapshot.val();
+        const uploaderUID = postData.uploadersUID;
+
+        // Retrieve the verificationStatus of the user from the Users node
+        const userRef = ref(db, `Users/${uploaderUID}`);
+        get(userRef)
+          .then((userSnapshot) => {
+            const userData = userSnapshot.val();
+            const verificationStatus = userData.verificationStatus;
+
+            // Check if the user is already banned
+            if (verificationStatus === false) {
+              alert("This user is already banned.");
+              return; // Exit function without performing ban action
+            }
+
+            // Prompt the user to confirm the action
+            const confirmBan = confirm(
+              "Are you sure you want to ban this user?"
+            );
+            if (confirmBan) {
+              // Update verificationStatus to false in Users node
+              update(userRef, {
+                verificationStatus: false,
+                banTimeStamp: generateTimestamp(),
+              })
+                .then(() => {
+                  console.log("User banned successfully");
+                  alert("User banned successfully");
+                })
+                .catch((error) => {
+                  console.error("Error banning user:", error);
+                });
+
+              // Delete corresponding UID child in User_Verification node
+              const userVerificationRef = ref(
+                db,
+                `User_Verification/${uploaderUID}`
+              );
+              remove(userVerificationRef)
+                .then(() => {
+                  console.log("User verification data deleted successfully");
+                })
+                .catch((error) => {
+                  console.error(
+                    "Error deleting user verification data:",
+                    error
+                  );
+                });
+            }
+          })
+          .catch((error) => {
+            console.error("Error retrieving user data:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error retrieving forum post data:", error);
+      });
+  }
+});
+document.addEventListener("click", function (event) {
+  if (event.target && event.target.id === "hoverreport") {
+    const postKey = event.target.closest(".panel").id.replace("container-", "");
+    const modal = document.getElementById("reportMain");
+    const reportTableBody = document.getElementById("reportTableBody");
+
+    // Clear previous report data
+    reportTableBody.innerHTML = "";
+
+    // Fetch and populate report data based on PostReport child in the forum post
+    const postReportRef = ref(db, `Forum_Post/${postKey}/PostReport`);
+    onValue(postReportRef, (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        const uid = childSnapshot.key; // Get the UID from the snapshot key
+        const reason = childSnapshot.val(); // Get the reason from the snapshot value
+        const userRef = ref(db, `Users/${uid}`);
+        get(userRef).then((userSnapshot) => {
+          const userData = userSnapshot.val();
+          const { firstname, middlename, lastname, campus } = userData;
+          reportTableBody.innerHTML += `
+            <tr>
+              <td>${uid}</td>
+              <td>${lastname}, ${firstname} ${middlename}</td>
+              <td>${campus}</td>
+              <td>${reason}</td>
+            </tr>
+          `;
+        });
+      });
+    });
+
+    // Display the modal
+    modal.style.display = "block";
+  }
+});
+
+// Close the modal
+function closeModal() {
+  const modal = document.getElementById("reportMain");
+  modal.style.display = "none";
 }
 
 function updateReactCounts(postKey, previousReaction, newReaction) {

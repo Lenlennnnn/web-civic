@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+< !DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -78,9 +78,8 @@
 
       .panel {
         box-shadow: 0 2px 0 rgba(0, 0, 0, 0.075);
-        border-radius: 10px;
+        border-radius: 0;
         border: 0;
-
         margin-bottom: 15px;
       }
 
@@ -465,43 +464,6 @@
       .closepo {
         display: block;
       }
-      .toggle-switch {
-        display: inline-block;
-        width: 60px;
-        height: 28px;
-        position: relative;
-      }
-      .toggle-switch input[type="checkbox"] {
-        display: none;
-      }
-      .toggle-slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        border-radius: 34px;
-        transition: 0.4s;
-      }
-      .toggle-slider:before {
-        position: absolute;
-        content: "";
-        height: 20px;
-        width: 20px;
-        left: 4px;
-        bottom: 4px;
-        background-color: white;
-        border-radius: 50%;
-        transition: 0.4s;
-      }
-      input[type="checkbox"]:checked + .toggle-slider {
-        background-color: #2196f3;
-      }
-      input[type="checkbox"]:checked + .toggle-slider:before {
-        transform: translateX(26px);
-      }
     </style>
   </head>
 
@@ -538,52 +500,7 @@
                   margin-bottom: 2%;
                   display: none;
                 " />
-              <div
-                style="margin-left: 26%; margin-bottom: -3.8%; width: 25%"
-                class="filter-group"
-                id="campusfilter">
-                <select class="form-control" style="margin-top: -5px">
-                  <option value="" disabled selected>
-                    Discussion Category
-                  </option>
-                  <option value="Tree Planting">Tree Planting</option>
-                  <option value="Fund Raising">Fund Raising</option>
-                  <option value="Donation">Donation</option>
-                  <option value="Clean Up Drive">Clean Up Drive</option>
-                  <option value="Feeding Program">Feeding Program</option>
-                  <option value="Relief Operation">Relief Operation</option>
-                  <option value="Seminar Training">Seminar Training</option>
-                  <option value="Teaching Literacy">Teaching Literacy</option>
-                </select>
-              </div>
-              <div
-                style="margin-right: 70%; margin-bottom: 2%; width: 25%"
-                class="filter-group"
-                id="campusfilter">
-                <select class="form-control" style="margin-top: -5px">
-                  <option value="" disabled selected>Choose a Campus</option>
-                  <option value="ARASOF Nasugbu Campus">
-                    ARASOF Nasugbu Campus
-                  </option>
-                  <option value="Balayan Campus">Balayan Campus</option>
-                  <option value="JPLPC Malvar Campus">
-                    JPLPC Malvar Campus
-                  </option>
-                  <option value="Lemery Campus">Lemery Campus</option>
-                  <option value="Lipa Campus">Lipa Campus</option>
-                  <option value="Lobo Campus">Lobo Campus</option>
-                  <option value="Mabini Campus">Mabini Campus</option>
-                  <option value="Pablo Borbon Campus I">
-                    Pablo Borbon Campus I
-                  </option>
-                  <option value=" Pablo Borbon Campus II">
-                    Pablo Borbon Campus II
-                  </option>
-                  <option value="Rosario Campus">Rosario Campus</option>
-                  <option value="San Juan Campus">San Juan Campus</option>
-                  <option value="All Campus">All Campus</option>
-                </select>
-              </div>
+
               <textarea
                 class="form-control"
                 rows="2"
@@ -603,27 +520,86 @@
               </div>
             </div>
           </div>
-          <div
-            style="margin-right: 80%; margin-bottom: -7%"
-            class="filter-group"
-            id="reportFilter">
-            <label style="margin-top: -5px">Post Report Snapshot</label>
-            <label class="toggle-switch">
-              <input type="checkbox" />
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-          <div
-            id="searchfieldcontainerSec"
-            style="width: 25%; margin-bottom: 3%; margin-left: 75%">
-            <div class="filter-group" id="searchfilterSec">
-              <label>Search </label>
-              <input id="inputSearch" type="text" class="form-control" />
-            </div>
-          </div>
-          <div id="container" class="panel">
+          <div class="panel">
             <div class="panel-body">
-              <div id="forumBody" class="media-block"></div>
+              <div id="forum" class="media-block">
+                <a class="media-left" href="#"
+                  ><img
+                    class="img-circle img-sm"
+                    alt="Profile Picture"
+                    id="profileImage"
+                    src="img/profilePic.jpg"
+                /></a>
+                <div class="media-body">
+                  <div class="mar-btm">
+                    <p
+                      id="nameForum"
+                      class="text-semibold media-heading box-inline">
+                      Leonard Mallorca
+                      <img
+                        src="img/reportto.png"
+                        alt="Report"
+                        style="width: 15px"
+                        class="enlarge-on-hover"
+                        id="hoverreport"
+                        onclick="openModal()" />
+                      <span id="notificationBadge" class="notification-badge"
+                        >0</span
+                      >
+                      <a
+                        class="options-icon"
+                        id="optionito"
+                        onclick="toggleOptions()">
+                        <i class="fas fa-ellipsis-v"></i>
+                        <i
+                          class="fas fa-ban"
+                          id="reportIcon"
+                          style="display: none"></i>
+                        <i
+                          class="fas fa-trash-alt"
+                          id="deleteIcon"
+                          style="display: none"></i>
+                      </a>
+                    </p>
+                    <p class="text-muted text-sm">
+                      <i class="fa fa-mobile fa-lg"></i> - 11 min ago
+                    </p>
+                  </div>
+                  <p id="forumText">Loading...</p>
+                  <img
+                    class="img-responsive thumbnail"
+                    src="img/cleaning.jpg"
+                    id="postImage"
+                    alt="Image"
+                    style="
+                      width: 100%;
+                      height: 400px;
+                      object-fit: cover;
+                      margin-left: -10%;
+                      display: none;
+                    " />
+                  <div class="pad-ver">
+                    <div class="btn-group">
+                      <a
+                        class="btn btn-sm btn-default btn-hover-success"
+                        href="#"
+                        ><i class="fas fa-arrow-up"></i
+                      ></a>
+                      <a
+                        class="btn btn-sm btn-default btn-hover-danger"
+                        href="#"
+                        ><i class="fa fa-arrow-down"></i
+                      ></a>
+                    </div>
+                    <a
+                      class="btn btn-sm btn-default btn-hover-primary"
+                      id="openModalpl">
+                      <i class="fas fa-comment"> 1</i>
+                    </a>
+                  </div>
+                  <hr style="border: 1px solid black; margin-right: 10%" />
+                </div>
+              </div>
               <div class="modalpl" id="modalDiscussion">
                 <div class="modal-contentpl">
                   <span
@@ -716,8 +692,7 @@
                   </div>
                 </div>
               </div>
-              <!-- Add this modal markup at the end of your HTML body -->
-              <div id="reportMain" style="display: none">
+              <div id="reportMain">
                 <div id="modal-forum">
                   <!-- Modal Header -->
                   <div id="modal-headerForum">
@@ -727,6 +702,7 @@
                       id="closeModaldetail">
                       <ion-icon name="close"></ion-icon>
                     </span>
+
                     <h3>View Report</h3>
                     <hr
                       style="
@@ -735,6 +711,7 @@
                         margin-top: 30px;
                       " />
                   </div>
+
                   <!-- Modal Body Content -->
                   <div style id="modal-bodyvm">
                     <table>
@@ -748,11 +725,19 @@
                           <th>Reasons</th>
                         </tr>
                       </thead>
-                      <tbody id="reportTableBody"></tbody>
+                      <tbody>
+                        <tr>
+                          <td>1</td>
+                          <td>JJ Mallorca</td>
+                          <td>JPLPC Malvar Campus</td>
+                          <td>Ni-report ko si JJ kasi maingay sa forum</td>
+                        </tr>
+                      </tbody>
                     </table>
                   </div>
                 </div>
               </div>
+
               <div id="reportSec">
                 <div id="modal-forumSec">
                   <!-- Modal Header -->
