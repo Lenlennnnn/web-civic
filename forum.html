@@ -24,6 +24,7 @@
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="css/post.css" />
     <style type="text/css">
       .container {
         position: relative;
@@ -502,6 +503,96 @@
       input[type="checkbox"]:checked + .toggle-slider:before {
         transform: translateX(26px);
       }
+
+      .modal-contentnm {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 40%;
+        z-index: 3;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .closenm {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .closenm:hover,
+      .closenm:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      #selectAllBtnn {
+        background-color: darkgray;
+        /* Other button styles */
+      }
+
+      #selectAllBtnn:hover {
+        background-color: lightgray; /* Change background color on hover */
+        /* Additional styles for hover state */
+      }
+
+      /* Deselect All button */
+      #deselectAllBtnn {
+        background-color: gray;
+        /* Other button styles */
+      }
+
+      #deselectAllBtnn:hover {
+        background-color: silver; /* Change background color on hover */
+        /* Additional styles for hover state */
+      }
+      .checkboxna {
+        position: relative;
+        top: 2px;
+        right: 290px;
+      }
+      .labelnato {
+        position: relative;
+        left: 50px;
+        margin: -20px;
+      }
+      .labelnato {
+        position: relative;
+        left: 50px;
+        margin: -20px;
+      }
+
+      #okButton {
+        margin-left: 85%;
+      }
+
+      #okButton {
+        background-color: black;
+        /* Other button styles */
+      }
+
+      #okButton:hover {
+        background-color: darkgray; /* Change background color on hover */
+        /* Additional styles for hover state */
+      }
+      #campusTarget {
+        background-color: #fff; /* Dark background color */
+        color: black; /* Text color */
+        height: 15%;
+        border: 1px solid #ccc; /* Dark border */
+        padding: 8px 16px; /* Adjust padding as needed */
+        cursor: pointer; /* Change cursor on hover */
+        transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+      }
+
+      #campusTarget:hover {
+        background-color: #aaa; /* Darker background color on hover */
+        border-color: #aaa; /* Darker border color on hover */
+        color: #fff; /* Text color on hover */
+      }
     </style>
   </head>
 
@@ -539,10 +630,13 @@
                   display: none;
                 " />
               <div
-                style="margin-left: 26%; margin-bottom: -3.8%; width: 25%"
+                style="margin-left: 27%; margin-bottom: -3.8%; width: 25%"
                 class="filter-group"
-                id="campusfilter">
-                <select class="form-control" style="margin-top: -5px">
+                id="categoryFilters">
+                <select
+                  id="categoryFilter"
+                  class="form-control"
+                  style="margin-top: -5px">
                   <option value="" disabled selected>
                     Discussion Category
                   </option>
@@ -557,36 +651,26 @@
                 </select>
               </div>
               <div
-                style="margin-right: 70%; margin-bottom: 2%; width: 25%"
+                style="
+                  margin-right: 70%;
+                  margin-bottom: 2%;
+                  width: 25%;
+                  margin-top: -49px;
+                "
                 class="filter-group"
                 id="campusfilter">
-                <select class="form-control" style="margin-top: -5px">
-                  <option value="" disabled selected>Choose a Campus</option>
-                  <option value="ARASOF Nasugbu Campus">
-                    ARASOF Nasugbu Campus
-                  </option>
-                  <option value="Balayan Campus">Balayan Campus</option>
-                  <option value="JPLPC Malvar Campus">
-                    JPLPC Malvar Campus
-                  </option>
-                  <option value="Lemery Campus">Lemery Campus</option>
-                  <option value="Lipa Campus">Lipa Campus</option>
-                  <option value="Lobo Campus">Lobo Campus</option>
-                  <option value="Mabini Campus">Mabini Campus</option>
-                  <option value="Pablo Borbon Campus I">
-                    Pablo Borbon Campus I
-                  </option>
-                  <option value=" Pablo Borbon Campus II">
-                    Pablo Borbon Campus II
-                  </option>
-                  <option value="Rosario Campus">Rosario Campus</option>
-                  <option value="San Juan Campus">San Juan Campus</option>
-                  <option value="All Campus">All Campus</option>
-                </select>
+                <input
+                  type="text"
+                  id="campusTarget"
+                  name="campusTarget"
+                  required
+                  readonly
+                  placeholder="Enter Campus" />
               </div>
               <textarea
                 class="form-control"
                 rows="2"
+                id="forumText"
                 placeholder="What's on your mind?"></textarea>
               <div class="mar-top clearfix">
                 <button class="btn btn-sm btn-primary pull-right" type="submit">
@@ -597,9 +681,6 @@
                   href="#"
                   id="filena"></a>
                 <input type="file" style="display: none" id="fileInput" />
-
-                <!-- Replace the existing input with this one -->
-                <input type="text" id="imgname" readonly />
               </div>
             </div>
           </div>
@@ -802,6 +883,117 @@
           </div>
         </div>
       </div>
+      <div id="myModalnm" class="modal" style="display: none">
+        <div class="modal-contentnm">
+          <span class="closenm">&times;</span>
+          <div class="modal-bodyat">
+            <button id="selectAllBtnn">Select All</button>
+            <button id="deselectAllBtnn">Deselect All</button><br />
+            <hr style="margin: 10px" />
+            <form id="campusForm">
+              <input
+                type="checkbox"
+                id="arasof"
+                class="checkboxna"
+                name="campus"
+                value="ARASOF Nasugbu Campus" />
+              <label for="arasof" class="labelnato">ARASOF Nasugbu Campus</label
+              ><br />
+
+              <input
+                type="checkbox"
+                id="balayan"
+                class="checkboxna"
+                name="campus"
+                value="Balayan Campus" />
+              <label for="balayan" class="labelnato">Balayan Campus</label
+              ><br />
+
+              <input
+                type="checkbox"
+                id="jplpc"
+                class="checkboxna"
+                name="campus"
+                value="JPLPC Malvar Campus" />
+              <label for="jplpc" class="labelnato">JPLPC Malvar Campus</label
+              ><br />
+
+              <input
+                type="checkbox"
+                id="lemery"
+                class="checkboxna"
+                name="campus"
+                value="Lemery Campus" />
+              <label for="lemery" class="labelnato">Lemery Campus</label><br />
+
+              <input
+                type="checkbox"
+                id="lipa"
+                class="checkboxna"
+                name="campus"
+                value="Lipa Campus" />
+              <label for="lipa" class="labelnato">Lipa Campus</label><br />
+
+              <input
+                type="checkbox"
+                id="lobo"
+                class="checkboxna"
+                name="campus"
+                value="Lobo Campus" />
+              <label for="lobo" class="labelnato">Lobo Campus</label><br />
+
+              <input
+                type="checkbox"
+                id="mabini"
+                class="checkboxna"
+                name="campus"
+                value="Mabini Campus" />
+              <label for="mabini" class="labelnato">Mabini Campus</label><br />
+
+              <input
+                type="checkbox"
+                id="pablo1"
+                class="checkboxna"
+                name="campus"
+                value="Pablo Borbon Campus I" />
+              <label for="pablo1" class="labelnato">Pablo Borbon Campus I</label
+              ><br />
+
+              <input
+                type="checkbox"
+                id="pablo2"
+                class="checkboxna"
+                name="campus"
+                value="Pablo Borbon Campus II" />
+              <label for="pablo2" class="labelnato"
+                >Pablo Borbon Campus II</label
+              ><br />
+
+              <input
+                type="checkbox"
+                id="rosario"
+                class="checkboxna"
+                name="campus"
+                value="Rosario Campus" />
+              <label for="rosario" class="labelnato">Rosario Campus</label
+              ><br />
+
+              <input
+                type="checkbox"
+                id="sanjuan"
+                class="checkboxna"
+                name="campus"
+                value="San Juan Campus" />
+              <label for="sanjuan" class="labelnato">San Juan Campus</label
+              ><br />
+            </form>
+
+            <hr style="margin: 10px" />
+          </div>
+
+          <button id="okButton">Ok</button>
+        </div>
+      </div>
     </div>
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -887,33 +1079,6 @@
         closeModalpl();
       }
 
-      // Function to handle file selection
-      function chooseFile() {
-        document.getElementById("fileInput").click();
-      }
-
-      // Attach the click event to the paperclip icon
-      document.getElementById("filena").addEventListener("click", chooseFile);
-
-      // Function to handle file input change
-      function handleFileInput() {
-        var fileInput = document.getElementById("fileInput");
-        var imgNameInput = document.getElementById("imgname");
-
-        if (fileInput.files.length > 0) {
-          // Display the selected file name
-          imgNameInput.value = fileInput.files[0].name;
-        } else {
-          // Reset the input field if no file is selected
-          imgNameInput.value = "";
-        }
-      }
-
-      // Attach the change event to the file input
-      document
-        .getElementById("fileInput")
-        .addEventListener("change", handleFileInput);
-
       function toggleOptions() {
         var reportIcon = document.getElementById("reportIcon");
         var deleteIcon = document.getElementById("deleteIcon");
@@ -943,45 +1108,9 @@
           deleteIcon.style.display === "none" ? "inline-block" : "none";
       }
 
-      // Function to handle the click event on the delete icon
-      function handleDeleteIconClick() {
-        // Show confirmation alert
-        var isConfirmed = window.confirm("Are you sure?");
-
-        // Check the user's response
-        if (isConfirmed) {
-          // Show success alert
-          window.alert("Success");
-        }
-      }
-
-      // Add a click event listener to the delete icon
-      document
-        .getElementById("deleteIcon")
-        .addEventListener("click", handleDeleteIconClick);
-
       // Function to show the modal
       function showModal() {
         document.getElementById("modalrt").style.display = "block";
-      }
-
-      // Add a click event listener to the report icon
-      document
-        .getElementById("reportIcon")
-        .addEventListener("click", showModal);
-
-      function confirmAndSubmit() {
-        // Display confirmation dialog
-        var confirmResult = confirm("Are you sure?");
-
-        // Check user's response
-        if (confirmResult) {
-          // Display success alert
-          alert("Success");
-
-          // Close the modal (assuming there is a close function named closeModal)
-          closeModal();
-        }
       }
 
       function openModal() {
@@ -1064,5 +1193,6 @@
       }
     </script>
     <script type="module" src="js/forum.js"></script>
+    <script type="module" src="js/forumPost.js"></script>
   </body>
 </html>
