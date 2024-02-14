@@ -140,89 +140,123 @@ function fetchForumPosts() {
       const uploaderUID = postData.uploadersUID;
       const uploaderRef = ref(db, `Users/${uploaderUID}`);
 
-      get(uploaderRef).then((uploaderSnapshot) => {
-        const uploaderData = uploaderSnapshot.val();
+      // Check if uploaderUID is not found in Users node
+      get(uploaderRef)
+        .then((uploaderSnapshot) => {
+          const uploaderData = uploaderSnapshot.val();
+          if (!uploaderData) {
+            // If uploaderUID not found in Users, check in SuperAdminAcc and SubAdminAcc
+            const superAdminRef = ref(db, `SuperAdminAcc/${uploaderUID}`);
+            const subAdminRef = ref(db, `SubAdminAcc/${uploaderUID}`);
+
+            // Check in SuperAdminAcc
+            get(superAdminRef).then((superAdminSnapshot) => {
+              const superAdminData = superAdminSnapshot.val();
+              if (superAdminData) {
+                // If found in SuperAdminAcc, use that data
+                handleUploaderData(superAdminData);
+              } else {
+                // If not found in SuperAdminAcc, check in SubAdminAcc
+                get(subAdminRef).then((subAdminSnapshot) => {
+                  const subAdminData = subAdminSnapshot.val();
+                  if (subAdminData) {
+                    // If found in SubAdminAcc, use that data
+                    handleUploaderData(subAdminData);
+                  } else {
+                    console.error("Uploader data not found in any node");
+                  }
+                });
+              }
+            });
+          } else {
+            // If uploaderUID found in Users, use that data
+            handleUploaderData(uploaderData);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching uploader data:", error);
+        });
+
+      function handleUploaderData(uploaderData) {
         const firstName = uploaderData.firstname || "";
         const lastName = uploaderData.lastname || "";
         const middleName = uploaderData.middlename || "";
         const profileImage = uploaderData.ImageProfile || "img/profilePic.jpg";
 
         container.innerHTML = `
-            <div class="panel-body">
-              <div class="media-block">
-                  <a style="margin-top:-0.5%"class="media-left" href="#">
-                      <img style="object-fit: cover" class="img-circle img-sm" alt="Profile Picture" id="profileImage-${postKey}" src="${profileImage}">
-                  </a>
-                  <div class="media-body">
-                      <div class="mar-btm">
-                    
-<p id="nameForum-${postKey}" class="text-semibold media-heading box-inline">
-  ${firstName} ${middleName} ${lastName}
-  <img src="img/reportto.png" alt="Report" style="width: 15px" class="enlarge-on-hover" id="hoverreport"/>
-<span id="notificationBadge" class="notification-badge">${formatNumber(
-          post.postReportCount
-        )}</span>
-     
-
-</p>
-<a  class="options-icon" id="optionito-${postKey}" style="margin-left:5%">
-  <i class="fas fa-ellipsis-v" id="ellipsisIcon-${postKey}"></i>
-  <i class="fas fa-ban" id="reportIcon-${postKey}" style="display: none"></i>
-  <i class="fas fa-trash-alt" id="deleteIcon-${postKey}" style="display: none"></i>
-</a>
-
-                            <p style="line-height: 1.5;" class="text-muted text-sm">
-                              <i class="fa fa-globe fa-lg"></i> - ${
-                                postData.campus
-                              }
-                          </p>
-                          <p class="text-muted text-sm">
-                     ${postData.postTime}
-                          </p>
-                           
-                      </div>
-                      <p style="margin-top:4%" id="forumText-${postKey}">${
-          postData.postText
-        }</p>
-                      <img class="img-responsive thumbnail" src="${
-                        postData.postImage
-                      }" id="postImage-${postKey}" alt="Image" style="width: 100%; height: 400px; object-fit: cover; margin-left: -10%; ${
+    <div class="panel-body">
+      <div class="media-block">
+        <a style="margin-top:-0.5%" class="media-left" href="#">
+          <img style="object-fit: cover" class="img-circle img-sm" alt="Profile Picture" id="profileImage-${postKey}" src="${profileImage}">
+        </a>
+        <div class="media-body">
+          <div class="mar-btm">
+            <p id="nameForum-${postKey}" class="text-semibold media-heading box-inline">
+              ${firstName} ${middleName} ${lastName}
+              ${
+                uploaderData.role !== "superadmin" &&
+                uploaderData.role !== "subadmin"
+                  ? `
+              <img src="img/reportto.png" alt="Report" style="width: 15px" class="enlarge-on-hover" id="hoverreport"/>
+              <span id="notificationBadge"  class="notification-badge">${formatNumber(
+                post.postReportCount
+              )}</span>`
+                  : ""
+              }
+            </p>
+            <a class="options-icon" id="optionito-${postKey}" style="margin-left:5%">
+              <i class="fas fa-ellipsis-v" id="ellipsisIcon-${postKey}"></i>
+          
+          <i class="fas fa-ban" id="reportIcon-${postKey}" style="display: none"></i>
+                  <i class="fas fa-trash-alt" id="deleteIcon-${postKey}" style="display: none"></i>
+            </a>
+            <p style="line-height: 1.5;" class="text-muted text-sm">
+              <i class="fa fa-globe fa-lg"></i> - ${postData.campus}
+            </p>
+            <p class="text-muted text-sm">
+              ${postData.postTime}
+            </p>
+          </div>
+          <p style="margin-top:4%" id="forumText-${postKey}">
+            ${postData.postText}
+          </p>
+          <img class="img-responsive thumbnail" src="${
+            postData.postImage
+          }" id="postImage-${postKey}" alt="Image" style="width: 100%; height: 400px; object-fit: cover; margin-left: -10%; ${
           postData.postImage ? "" : "display: none;"
         }">
-                      <div class="pad-ver">
-                          <div class="btn-group">
-                              <a style="margin-right:1px" class="btn btn-sm btn-default btn-hover-success" id="upReact-${postKey}">
-                                  <i id="upNum-${postKey}" class="fas fa-arrow-up"> ${formatNumber(
+          <div class="pad-ver">
+            <div class="btn-group">
+              <a style="margin-right:1px" class="btn btn-sm btn-default btn-hover-success" id="upReact-${postKey}">
+                <i id="upNum-${postKey}" class="fas fa-arrow-up"> ${formatNumber(
           postData.upReactCount
         )}</i>
-                              </a>
-                              <a class="btn btn-sm btn-default btn-hover-danger" id="downReact-${postKey}">
-                                  <i id="downNum-${postKey}" class="fa fa-arrow-down"> ${formatNumber(
+              </a>
+              <a class="btn btn-sm btn-default btn-hover-danger" id="downReact-${postKey}">
+                <i id="downNum-${postKey}" class="fa fa-arrow-down"> ${formatNumber(
           postData.downReactCount
         )}</i>
-                              </a>
-                          </div>
-                          <a class="btn btn-sm btn-default btn-hover-primary" id="openModalpl-${postKey}">
-                              <i class="fas fa-comment"> ${formatNumber(
-                                postData.commentCount
-                              )}</i>
-                          </a>
-                      </div>
-                  </div>
-              </div>
-               <div style="margin-top:3%; margin-left:85%" class="bottom-right-text">
-            <p  class="text-muted text-sm" id="categoryForum-${postKey}" > # ${
-          postData.category
-        }
-                          </p>
-        </div>
+              </a>
+            </div>
+            <a class="btn btn-sm btn-default btn-hover-primary" id="openModalpl-${postKey}">
+              <i class="fas fa-comment"> ${formatNumber(
+                postData.commentCount
+              )}</i>
+            </a>
           </div>
-        `;
+        </div>
+      </div>
+      <div style="margin-top:3%; margin-left:85%" class="bottom-right-text">
+        <p class="text-muted text-sm" id="categoryForum-${postKey}" > # ${
+          postData.category
+        }</p>
+      </div>
+    </div>
+  `;
 
         const upReactBtn = container.querySelector(`#upReact-${postKey}`);
         const downReactBtn = container.querySelector(`#downReact-${postKey}`);
 
-        // Function to update button appearance based on reaction
         // Function to update button appearance based on reaction
         function updateButtonAppearance(btn, reaction, btnType) {
           btn.classList.remove("reacted", "not-reacted");
@@ -315,13 +349,14 @@ function fetchForumPosts() {
           .catch((error) => {
             console.error("Error getting reaction:", error);
           });
-      });
+      }
 
       // Append the container to the forumBody
       forumBody.appendChild(container);
     });
   });
 }
+
 document.addEventListener("click", function (event) {
   // Check if the clicked element is ellipsisIcon
   if (event.target && event.target.id.startsWith("ellipsisIcon-")) {
@@ -398,56 +433,79 @@ document.addEventListener("click", function (event) {
         const postData = snapshot.val();
         const uploaderUID = postData.uploadersUID;
 
-        // Retrieve the verificationStatus of the user from the Users node
-        const userRef = ref(db, `Users/${uploaderUID}`);
-        get(userRef)
-          .then((userSnapshot) => {
-            const userData = userSnapshot.val();
-            const verificationStatus = userData.verificationStatus;
+        // Check if the uploaderUID is from SuperAdminAcc or SubAdminAcc
+        const superAdminRef = ref(db, `SuperAdminAcc/${uploaderUID}`);
+        const subAdminRef = ref(db, `SubAdminAcc/${uploaderUID}`);
 
-            // Check if the user is already banned
-            if (verificationStatus === false) {
-              alert("This user is already banned.");
-              return; // Exit function without performing ban action
+        Promise.all([get(superAdminRef), get(subAdminRef)])
+          .then(([superAdminSnapshot, subAdminSnapshot]) => {
+            const isSuperAdmin = superAdminSnapshot.exists();
+            const isSubAdmin = subAdminSnapshot.exists();
+
+            if (isSuperAdmin || isSubAdmin) {
+              // If uploader is an admin, show alert and return
+              alert("Admins cannot be banned.");
+
+              return;
             }
 
-            // Prompt the user to confirm the action
-            const confirmBan = confirm(
-              "Are you sure you want to ban this user?"
-            );
-            if (confirmBan) {
-              // Update verificationStatus to false in Users node
-              update(userRef, {
-                verificationStatus: false,
-                banTimeStamp: generateTimestamp(),
-              })
-                .then(() => {
-                  console.log("User banned successfully");
-                  alert("User banned successfully");
-                })
-                .catch((error) => {
-                  console.error("Error banning user:", error);
-                });
+            // Proceed with ban action for non-admin users
+            // Retrieve the verificationStatus of the user from the Users node
+            const userRef = ref(db, `Users/${uploaderUID}`);
+            get(userRef)
+              .then((userSnapshot) => {
+                const userData = userSnapshot.val();
+                const verificationStatus = userData.verificationStatus;
 
-              // Delete corresponding UID child in User_Verification node
-              const userVerificationRef = ref(
-                db,
-                `User_Verification/${uploaderUID}`
-              );
-              remove(userVerificationRef)
-                .then(() => {
-                  console.log("User verification data deleted successfully");
-                })
-                .catch((error) => {
-                  console.error(
-                    "Error deleting user verification data:",
-                    error
+                // Check if the user is already banned
+                if (verificationStatus === false) {
+                  alert("This user is already banned.");
+                  return; // Exit function without performing ban action
+                }
+
+                // Prompt the user to confirm the action
+                const confirmBan = confirm(
+                  "Are you sure you want to ban this user?"
+                );
+                if (confirmBan) {
+                  // Update verificationStatus to false in Users node
+                  update(userRef, {
+                    verificationStatus: false,
+                    banTimeStamp: generateTimestamp(),
+                  })
+                    .then(() => {
+                      console.log("User banned successfully");
+                      alert("User banned successfully");
+                    })
+                    .catch((error) => {
+                      console.error("Error banning user:", error);
+                    });
+
+                  // Delete corresponding UID child in User_Verification node
+                  const userVerificationRef = ref(
+                    db,
+                    `User_Verification/${uploaderUID}`
                   );
-                });
-            }
+                  remove(userVerificationRef)
+                    .then(() => {
+                      console.log(
+                        "User verification data deleted successfully"
+                      );
+                    })
+                    .catch((error) => {
+                      console.error(
+                        "Error deleting user verification data:",
+                        error
+                      );
+                    });
+                }
+              })
+              .catch((error) => {
+                console.error("Error retrieving user data:", error);
+              });
           })
           .catch((error) => {
-            console.error("Error retrieving user data:", error);
+            console.error("Error checking admin status:", error);
           });
       })
       .catch((error) => {
@@ -455,6 +513,7 @@ document.addEventListener("click", function (event) {
       });
   }
 });
+
 document.addEventListener("click", function (event) {
   if (event.target && event.target.id === "hoverreport") {
     const postKey = event.target.closest(".panel").id.replace("container-", "");

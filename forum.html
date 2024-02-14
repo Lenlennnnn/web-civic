@@ -731,36 +731,6 @@
                         /></a>
                         <div class="media-body">
                           <div class="mar-btm">
-                            <p class="text-semibold media-heading box-inline">
-                              Leonard
-                              <img
-                                src="img/reportto.png"
-                                alt="Report"
-                                style="width: 15px"
-                                class="enlarge-on-hover"
-                                id="hoverreport"
-                                onclick="openModalSec()" />
-                              <span
-                                id="notificationBadgeSec"
-                                class="notification-badge"
-                                >0</span
-                              >
-                              <a
-                                class="options-icon"
-                                id="optionito"
-                                onclick="toggleOptionSec()">
-                                <i class="fas fa-ellipsis-v"></i>
-                                <i
-                                  class="fas fa-ban"
-                                  id="reportIconSec"
-                                  style="display: none"></i>
-                                <i
-                                  class="fas fa-trash-alt"
-                                  id="deleteIconSec"
-                                  style="display: none"></i>
-                              </a>
-                            </p>
-
                             <p class="text-muted text-sm">
                               <i class="fa fa-mobile fa-lg"></i> - 5 seconds ago
                             </p>
@@ -1077,35 +1047,6 @@
         console.log("Posted comment:", comment);
         // Close the modal after posting
         closeModalpl();
-      }
-
-      function toggleOptions() {
-        var reportIcon = document.getElementById("reportIcon");
-        var deleteIcon = document.getElementById("deleteIcon");
-
-        // Toggle visibility of the report and delete icons
-        reportIcon.style.display =
-          reportIcon.style.display === "none" ? "inline-block" : "none";
-        deleteIcon.style.display =
-          deleteIcon.style.display === "none" ? "inline-block" : "none";
-      }
-      function toggleOptionSec() {
-        var reportIcon = document.getElementById("reportIconSec");
-        var deleteIcon = document.getElementById("deleteIconSec");
-        var modalDiscussion = document.getElementById("modalDiscussion");
-
-        // Set z-index for icons to be in front of the modal
-        var modalZIndex = window
-          .getComputedStyle(modalDiscussion)
-          .getPropertyValue("z-index");
-        reportIcon.style.zIndex = parseInt(modalZIndex) + 1;
-        deleteIcon.style.zIndex = parseInt(modalZIndex) + 1;
-
-        // Toggle visibility of the report and delete icons
-        reportIcon.style.display =
-          reportIcon.style.display === "none" ? "inline-block" : "none";
-        deleteIcon.style.display =
-          deleteIcon.style.display === "none" ? "inline-block" : "none";
       }
 
       // Function to show the modal

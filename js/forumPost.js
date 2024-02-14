@@ -118,6 +118,7 @@ onAuthStateChanged(auth, (user) => {
 });
 
 // Function to post content to the forum
+// Function to post content to the forum
 function postToForum() {
   // Confirm with the user before posting
   if (!confirm("Are you sure to post this in Forum?")) {
@@ -176,6 +177,9 @@ function postToForum() {
               fileInput.value = null;
               imagepost.style.display = "none";
               imagepost.src = ""; // Reset image source
+
+              // Alert for successful posting
+              alert("Post successful!");
             })
             .catch((error) => {
               console.error("Error adding post: ", error);
@@ -192,6 +196,7 @@ function postToForum() {
       alert("Error uploading image. Please try again.");
     });
 }
+
 // Event listener for when the Post button is clicked
 document
   .querySelector(".btn-primary[type='submit']")
