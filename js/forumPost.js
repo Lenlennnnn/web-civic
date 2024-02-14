@@ -118,7 +118,6 @@ onAuthStateChanged(auth, (user) => {
 });
 
 // Function to post content to the forum
-// Function to post content to the forum
 function postToForum() {
   // Confirm with the user before posting
   if (!confirm("Are you sure to post this in Forum?")) {
@@ -132,68 +131,81 @@ function postToForum() {
   const file = fileInput.files[0];
 
   // Validate inputs
-  if (!campus || !category || !forumText || !file) {
-    alert("Please fill in all fields and select an image.");
+  if (!campus || !category || !forumText) {
+    alert("Please fill in all fields.");
     return;
   }
 
-  // Upload image to storage
-  const fileRef = storageRef(
-    getStorage(app),
-    "Forum_Post_Images/" + Date.now() + "_forumImage"
-  );
-  uploadBytes(fileRef, file)
-    .then((snapshot) => {
-      // Get download URL of the uploaded image
-      getDownloadURL(snapshot.ref)
-        .then((downloadURL) => {
-          // Get current user's UID
-          const currentUser = auth.currentUser;
-          const currentUserUID = currentUser ? currentUser.uid : "";
+  // Upload image to storage if a file is provided
+  let postImage = ""; // Initialize postImage variable
+  if (file) {
+    const fileRef = storageRef(
+      getStorage(app),
+      "Forum_Post_Images/" + Date.now() + "_forumImage"
+    );
+    uploadBytes(fileRef, file)
+      .then((snapshot) => {
+        // Get download URL of the uploaded image
+        getDownloadURL(snapshot.ref)
+          .then((downloadURL) => {
+            postImage = downloadURL; // Set postImage URL
+            // Call function to save post data to the database
+            savePostData(campus, category, forumText, postImage);
+          })
+          .catch((error) => {
+            console.error("Error getting download URL: ", error);
+            alert("Error uploading image. Please try again.");
+          });
+      })
+      .catch((error) => {
+        console.error("Error uploading image: ", error);
+        alert("Error uploading image. Please try again.");
+      });
+  } else {
+    // Call function to save post data to the database without an image
+    savePostData(campus, category, forumText, postImage);
+  }
+}
 
-          // Create a new post object
-          const newPost = {
-            campus: campus,
-            category: category,
-            postImage: downloadURL,
-            postText: forumText,
-            uploadersUID: currentUserUID,
-            postTime: generateTimestamp(),
-            commentCount: 0,
-            downReactCount: 0,
-            hidden: false,
-            upReactCount: 0,
-          };
+// Function to save post data to the database
+function savePostData(campus, category, forumText, postImage) {
+  // Get current user's UID
+  const currentUser = auth.currentUser;
+  const currentUserUID = currentUser ? currentUser.uid : "";
 
-          // Push the new post to the database under 'Forum_Post'
-          const postRef = databaseRef(db, "Forum_Post");
-          const newPostRef = push(postRef); // Use push method on reference
-          set(newPostRef, newPost)
-            .then(() => {
-              // Reset form fields after successful posting
-              document.getElementById("campusTarget").value = "";
-              document.getElementById("categoryFilter").value = "";
-              document.getElementById("forumText").value = "";
-              fileInput.value = null;
-              imagepost.style.display = "none";
-              imagepost.src = ""; // Reset image source
+  // Create a new post object
+  const newPost = {
+    campus: campus,
+    category: category,
+    postImage: postImage,
+    postText: forumText,
+    uploadersUID: currentUserUID,
+    postTime: generateTimestamp(),
+    commentCount: 0,
+    downReactCount: 0,
+    hidden: false,
+    upReactCount: 0,
+  };
 
-              // Alert for successful posting
-              alert("Post successful!");
-            })
-            .catch((error) => {
-              console.error("Error adding post: ", error);
-              alert("Error adding post. Please try again.");
-            });
-        })
-        .catch((error) => {
-          console.error("Error getting download URL: ", error);
-          alert("Error uploading image. Please try again.");
-        });
+  // Push the new post to the database under 'Forum_Post'
+  const postRef = databaseRef(db, "Forum_Post");
+  const newPostRef = push(postRef); // Use push method on reference
+  set(newPostRef, newPost)
+    .then(() => {
+      // Reset form fields after successful posting
+      document.getElementById("campusTarget").value = "";
+      document.getElementById("categoryFilter").value = "";
+      document.getElementById("forumText").value = "";
+      fileInput.value = null;
+      imagepost.style.display = "none";
+      imagepost.src = ""; // Reset image source
+
+      // Alert for successful posting
+      alert("Post successful!");
     })
     .catch((error) => {
-      console.error("Error uploading image: ", error);
-      alert("Error uploading image. Please try again.");
+      console.error("Error adding post: ", error);
+      alert("Error adding post. Please try again.");
     });
 }
 

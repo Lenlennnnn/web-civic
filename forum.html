@@ -702,15 +702,12 @@
               <input id="inputSearch" type="text" class="form-control" />
             </div>
           </div>
-          <div id="container" class="panel">
+          <div id="containerSec" class="panel">
             <div class="panel-body">
               <div id="forumBody" class="media-block"></div>
               <div class="modalpl" id="modalDiscussion">
                 <div class="modal-contentpl">
-                  <span
-                    class="closepo"
-                    onclick="closeModalpl()"
-                    id="closeModaldetail">
+                  <span class="closepo" id="closeModaldetail">
                     <ion-icon name="close"></ion-icon>
                   </span>
 
@@ -727,15 +724,47 @@
                           ><img
                             class="img-circle img-sm"
                             alt="Profile Picture"
+                            style="margin-top: -5px"
                             src="img/kert.png"
                         /></a>
                         <div class="media-body">
                           <div class="mar-btm">
-                            <p class="text-muted text-sm">
-                              <i class="fa fa-mobile fa-lg"></i> - 5 seconds ago
+                            <p class="text-semibold media-heading box-inline">
+                              Name
+                              <img
+                                src="img/reportto.png"
+                                alt="Report"
+                                style="width: 15px"
+                                class="enlarge-on-hover"
+                                id="hoverreport" />
+                              <span
+                                id="notificationBadgeSec"
+                                class="notification-badge"
+                                >0</span
+                              >
+                              <a class="options-icon" id="optionitoSec">
+                                <i class="fas fa-ellipsis-v"></i>
+                                <i
+                                  class="fas fa-ban"
+                                  id="reportIconSec"
+                                  style="display: none"></i>
+                                <i
+                                  class="fas fa-trash-alt"
+                                  id="deleteIconSec"
+                                  style="display: none"></i>
+                              </a>
+                            </p>
+                            <p
+                              style="line-height: 1.5"
+                              id="campus"
+                              class="text-muted text-sm">
+                              <i class="fa fa-globe fa-lg"></i> Campus
+                            </p>
+                            <p id="dateTime" class="text-muted text-sm">
+                              - 5 seconds ago
                             </p>
                           </div>
-                          <p>Let's go!</p>
+                          <p id="commentText">comment</p>
                           <div class="pad-ver">
                             <div class="btn-group">
                               <a
@@ -768,8 +797,9 @@
                 </div>
               </div>
               <!-- Add this modal markup at the end of your HTML body -->
-              <div id="reportMain" style="display: none">
-                <div id="modal-forum">
+
+              <div id="reportSec" style="display: none">
+                <div id="modal-forumSec">
                   <!-- Modal Header -->
                   <div id="modal-headerForum">
                     <span
@@ -787,45 +817,7 @@
                       " />
                   </div>
                   <!-- Modal Body Content -->
-                  <div style id="modal-bodyvm">
-                    <table>
-                      <thead>
-                        <tr
-                          id="tableReport"
-                          style="background-color: #343a40; color: white">
-                          <th>UID</th>
-                          <th>Name</th>
-                          <th>Campus</th>
-                          <th>Reasons</th>
-                        </tr>
-                      </thead>
-                      <tbody id="reportTableBody"></tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div id="reportSec">
-                <div id="modal-forumSec">
-                  <!-- Modal Header -->
-                  <div id="modal-headerForumSec">
-                    <span
-                      class="closepo"
-                      onclick="closeModalSec()"
-                      id="closeModaldetailSec">
-                      <ion-icon name="close"></ion-icon>
-                    </span>
-
-                    <h3>View Report</h3>
-                    <hr
-                      style="
-                        border-bottom: 1px solid black;
-                        margin-bottom: 20px;
-                        margin-top: 30px;
-                      " />
-                  </div>
-
-                  <!-- Modal Body Content -->
-                  <div id="modal-bodyvmSec">
+                  <div style id="modal-bodyvmSec">
                     <table>
                       <thead>
                         <tr
@@ -837,14 +829,7 @@
                           <th>Reasons</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>JJ Mallorca</td>
-                          <td>JPLPC Malvar Campus</td>
-                          <td>Ni-report ko si JJ kasi maingay sa forum</td>
-                        </tr>
-                      </tbody>
+                      <tbody id="reportTableBodySec"></tbody>
                     </table>
                   </div>
                 </div>
@@ -962,6 +947,39 @@
           </div>
 
           <button id="okButton">Ok</button>
+        </div>
+      </div>
+      <div id="reportMain" style="display: none">
+        <div id="modal-forum">
+          <!-- Modal Header -->
+          <div id="modal-headerForum">
+            <span class="closepo" onclick="closeModal()" id="closeModaldetail">
+              <ion-icon name="close"></ion-icon>
+            </span>
+            <h3>View Report</h3>
+            <hr
+              style="
+                border-bottom: 1px solid black;
+                margin-bottom: 20px;
+                margin-top: 30px;
+              " />
+          </div>
+          <!-- Modal Body Content -->
+          <div style id="modal-bodyvm">
+            <table>
+              <thead>
+                <tr
+                  id="tableReport"
+                  style="background-color: #343a40; color: white">
+                  <th>UID</th>
+                  <th>Name</th>
+                  <th>Campus</th>
+                  <th>Reasons</th>
+                </tr>
+              </thead>
+              <tbody id="reportTableBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
