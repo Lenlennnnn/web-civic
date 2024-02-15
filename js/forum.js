@@ -563,6 +563,10 @@ function updateReactCounts(postKey, previousReaction, newReaction) {
   let upCount = parseInt(upNumElement.textContent);
   let downCount = parseInt(downNumElement.textContent);
 
+  // Ensure counts never go below zero
+  upCount = Math.max(upCount, 0);
+  downCount = Math.max(downCount, 0);
+
   if (previousReaction === "up") {
     upCount--; // Decrement up count if user un-reacts
   } else if (previousReaction === "down") {
@@ -587,3 +591,249 @@ function updateReactCounts(postKey, previousReaction, newReaction) {
 }
 // Call the function to fetch and display forum posts
 fetchForumPosts();
+let postKey;
+
+document.addEventListener("click", function (event) {
+  const openModalButton = event.target.closest("[id^='openModalpl-']");
+  const openModalIcon = event.target.closest("[id^='openModalpl-'] i");
+  const closeModalButton = event.target.closest("#closeModaldetail");
+  if (openModalButton || openModalIcon) {
+    postKey = (openModalButton || openModalIcon).id.replace("openModalpl-", "");
+
+    // Retrieve comments data for the specific post
+    const commentsRef = ref(db, `Forum_Post/${postKey}/Comments`);
+    get(commentsRef)
+      .then((snapshot) => {
+        const comments = [];
+        snapshot.forEach((childSnapshot) => {
+          const commentKey = childSnapshot.key; // Extract commentKey
+          const commentData = childSnapshot.val();
+          comments.push({ commentKey, ...commentData });
+        });
+
+        // Populate the modal with comments data
+        const modal = document.getElementById("modalDiscussion");
+        const commentContainer = modal.querySelector(".modal-body");
+
+        commentContainer.innerHTML = "";
+
+        if (comments.length === 0) {
+          // Display image for no comments
+          commentContainer.innerHTML = `
+         <div class="text-center">
+  <img src="img/startconvo.png" alt="Be the first to start the conversation" style="max-width: 90%; height: auto;">
+</div>
+`;
+        } else {
+          // Iterate through comments and populate the modal
+          comments.forEach((comment) => {
+            const commenterUID = comment.commenterUID;
+
+            // Retrieve commenter data from Users, SuperAdminAcc, SubAdminAcc nodes
+            let commenterRef;
+            if (commenterUID) {
+              commenterRef = ref(db, `Users/${commenterUID}`);
+            } else {
+              console.error("Commenter UID is missing for comment:", comment);
+              return; // Skip this comment if commenterUID is missing
+            }
+
+            get(commenterRef)
+              .then((commenterSnapshot) => {
+                const commenterData = commenterSnapshot.val();
+                if (commenterData) {
+                  const { firstname, middlename, lastname, campus } =
+                    commenterData;
+
+                  // Hide campus field if commenter is from SuperAdminAcc
+                  const campusDisplay =
+                    commenterData.role === "superadmin" ? "none" : "block";
+
+                  commentContainer.innerHTML += `
+                    <div class="media-block" style="margin-right: 5%; margin-top: 2%">
+                      <a class="media-left" href="#">
+                        <img style="object-fit: cover" class="img-circle img-sm" alt="Profile Picture" id="imageProfile" src="${
+                          commenterData.ImageProfile || "img/defaultProfile.jpg"
+                        }"/>
+                      </a>
+                      <div class="media-body">
+                        <div class="mar-btm">
+                          <p id="name" class="text-semibold media-heading box-inline">
+                            ${firstname} ${middlename} ${lastname}
+                          </p>
+                          <p style="line-height: 1.5" id="campus" class="text-muted text-sm" style="display: ${campusDisplay}">
+                            <i class="fa fa-university fa-lg"></i> ${campus}
+                          </p>
+                          <p id="dateTime" class="text-muted text-sm">
+                            ${comment.commentTime}
+                          </p>
+                        </div>
+                        <p style="margin-top:3%; margin-bottom:2%" id="commentText">${
+                          comment.commentText
+                        }</p>
+                        <div class="pad-ver">
+                          <div class="btn-group">
+                            <a style="margin-right:1px" class="btn btn-sm btn-default btn-hover-success" id="upReactComment-${
+                              comment.commentKey
+                            }">
+                              <i id="upNum-${
+                                comment.commentKey
+                              }" class="fas fa-arrow-up">  ${formatNumber(
+                    comment.upReactCount
+                  )}</i>
+                            </a>
+                            <a class="btn btn-sm btn-default btn-hover-danger" id="downReactComment-${
+                              comment.commentKey
+                            }">
+                              <i id="downNum-${
+                                comment.commentKey
+                              }" class="fa fa-arrow-down">  ${formatNumber(
+                    comment.downReactCount
+                  )}</i>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr style="border: 1px solid black" />
+                  `;
+                } else {
+                  console.error(
+                    "Commenter data not found for UID:",
+                    commenterUID
+                  );
+                }
+              })
+              .catch((error) => {
+                console.error("Error fetching commenter data:", error);
+              });
+          });
+        }
+
+        // Display the modal
+        modal.style.display = "block";
+      })
+      .catch((error) => {
+        console.error("Error retrieving comments data:", error);
+      });
+  }
+  if (closeModalButton) {
+    const modal = document.getElementById("modalDiscussion");
+    modal.style.display = "none";
+  }
+});
+function handleCommentReaction(postKey, commentKey, reactionType) {
+  const user = auth.currentUser;
+  if (user) {
+    const uid = user.uid;
+    const reactRef = ref(
+      db,
+      `Forum_Post/${postKey}/Comments/${commentKey}/ReactComment/${uid}`
+    );
+
+    get(reactRef)
+      .then((snapshot) => {
+        const existingReaction = snapshot.val();
+        let newReaction;
+        if (existingReaction === reactionType) {
+          newReaction = null; // User is un-reacting
+        } else {
+          newReaction = reactionType; // User is reacting
+        }
+        set(reactRef, newReaction)
+          .then(() => {
+            updateCommentReactCounts(
+              postKey,
+              commentKey,
+              existingReaction,
+              newReaction
+            );
+            updateCommentButtonAppearance(commentKey, newReaction);
+          })
+          .catch((error) => {
+            console.error("Error toggling comment reaction:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error toggling comment reaction:", error);
+      });
+  } else {
+    console.log("User is not logged in.");
+  }
+}
+function updateCommentButtonAppearance(commentKey, reaction) {
+  const upReactBtn = document.getElementById(`upReactComment-${commentKey}`);
+  const downReactBtn = document.getElementById(
+    `downReactComment-${commentKey}`
+  );
+
+  // Remove red border from both buttons
+  upReactBtn.style.borderColor = "";
+  downReactBtn.style.borderColor = "";
+
+  // Check which button is clicked and add red border accordingly
+  if (reaction === "up") {
+    upReactBtn.style.borderColor = "red";
+  } else if (reaction === "down") {
+    downReactBtn.style.borderColor = "red";
+  }
+}
+
+document.addEventListener("click", function (event) {
+  const upReactBtn = event.target.closest("[id^='upReactComment-']");
+  const downReactBtn = event.target.closest("[id^='downReactComment-']");
+
+  if (upReactBtn) {
+    const commentKey = upReactBtn.id.replace("upReactComment-", "");
+    handleCommentReaction(postKey, commentKey, "up");
+  } else if (downReactBtn) {
+    const commentKey = downReactBtn.id.replace("downReactComment-", "");
+    handleCommentReaction(postKey, commentKey, "down");
+  }
+});
+
+function updateCommentReactCounts(
+  postKey,
+  commentKey,
+  previousReaction,
+  newReaction
+) {
+  const commentRef = ref(db, `Forum_Post/${postKey}/Comments/${commentKey}`);
+  get(commentRef)
+    .then((snapshot) => {
+      const commentData = snapshot.val();
+      let upReactCount = commentData.upReactCount || 0;
+      let downReactCount = commentData.downReactCount || 0;
+
+      // Ensure counts never go below zero
+      upReactCount = Math.max(upReactCount, 0);
+      downReactCount = Math.max(downReactCount, 0);
+
+      if (previousReaction === "up") {
+        upReactCount--; // Decrement up count if user un-reacts
+      } else if (previousReaction === "down") {
+        downReactCount--; // Decrement down count if user un-reacts
+      }
+
+      if (newReaction === "up") {
+        upReactCount++; // Increment up count if user reacts
+      } else if (newReaction === "down") {
+        downReactCount++; // Increment down count if user reacts
+      }
+
+      // Update UI with new counts
+      const upNumElement = document.getElementById(`upNum-${commentKey}`);
+      const downNumElement = document.getElementById(`downNum-${commentKey}`);
+      upNumElement.textContent = upReactCount;
+      downNumElement.textContent = downReactCount;
+
+      // Update database with new counts
+      update(commentRef, {
+        upReactCount: upReactCount,
+        downReactCount: downReactCount,
+      });
+    })
+    .catch((error) => {
+      console.error("Error updating comment react counts:", error);
+    });
+}

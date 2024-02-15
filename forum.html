@@ -220,33 +220,27 @@
         padding: 20px;
         border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        position: relative;
         max-width: 1000px;
         width: 100%;
         max-height: 80vh;
-        height: 100%;
         overflow-y: auto;
-        margin-top: 20px;
-        margin-bottom: 80px; /* Adjust the margin to accommodate the footer height */
+        margin: 20px auto; /* Adjust the margin to accommodate the footer height */
+      }
+
+      .modal-footer {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        text-align: center;
+        border-top: 1px solid #ccc;
+        border-radius: 5px;
       }
 
       .modal-header {
         text-align: center;
         margin: 0%;
         padding: 0%;
-      }
-
-      .modal-footer {
-        position: fixed;
-        bottom: 0;
-        max-width: 1000px;
-        border-radius: 5px;
-        width: 100%;
-        margin: 0;
-        margin-left: -1.2%;
-        padding: 20px;
-        background-color: #fff;
-        text-align: center;
       }
 
       .comment-input {
@@ -451,6 +445,7 @@
       .closepo {
         color: #aaa;
         float: right;
+
         font-size: 28px;
         font-weight: bold;
         cursor: pointer;
@@ -716,86 +711,19 @@
                   </div>
 
                   <div class="modal-body">
-                    <div class="media-block">
-                      <div
-                        class="media-block"
-                        style="margin-left: 5%; margin-top: 2%">
-                        <a class="media-left" href="#"
-                          ><img
-                            class="img-circle img-sm"
-                            alt="Profile Picture"
-                            style="margin-top: -5px"
-                            src="img/kert.png"
-                        /></a>
-                        <div class="media-body">
-                          <div class="mar-btm">
-                            <p class="text-semibold media-heading box-inline">
-                              Name
-                              <img
-                                src="img/reportto.png"
-                                alt="Report"
-                                style="width: 15px"
-                                class="enlarge-on-hover"
-                                id="hoverreport" />
-                              <span
-                                id="notificationBadgeSec"
-                                class="notification-badge"
-                                >0</span
-                              >
-                              <a class="options-icon" id="optionitoSec">
-                                <i class="fas fa-ellipsis-v"></i>
-                                <i
-                                  class="fas fa-ban"
-                                  id="reportIconSec"
-                                  style="display: none"></i>
-                                <i
-                                  class="fas fa-trash-alt"
-                                  id="deleteIconSec"
-                                  style="display: none"></i>
-                              </a>
-                            </p>
-                            <p
-                              style="line-height: 1.5"
-                              id="campus"
-                              class="text-muted text-sm">
-                              <i class="fa fa-globe fa-lg"></i> Campus
-                            </p>
-                            <p id="dateTime" class="text-muted text-sm">
-                              - 5 seconds ago
-                            </p>
-                          </div>
-                          <p id="commentText">comment</p>
-                          <div class="pad-ver">
-                            <div class="btn-group">
-                              <a
-                                class="btn btn-sm btn-default btn-hover-success"
-                                href="#"
-                                ><i class="fas fa-arrow-up"></i
-                              ></a>
-                              <a
-                                class="btn btn-sm btn-default btn-hover-danger"
-                                href="#"
-                                ><i class="fa fa-arrow-down"></i
-                              ></a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <hr style="border: 1px solid black" />
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <input
-                      type="text"
-                      class="comment-input"
-                      placeholder="Add a comment..." />
-
-                    <button class="post-btn" onclick="postComment()">
-                      Send
-                    </button>
+                    <div class="media-block"></div>
                   </div>
                 </div>
+
+                <div class="modal-footer">
+                  <input
+                    type="text"
+                    class="comment-input"
+                    placeholder="Add a comment..." />
+                  <button class="post-btn">Send</button>
+                </div>
               </div>
+
               <!-- Add this modal markup at the end of your HTML body -->
 
               <div id="reportSec" style="display: none">
