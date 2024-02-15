@@ -592,7 +592,6 @@ function updateReactCounts(postKey, previousReaction, newReaction) {
 // Call the function to fetch and display forum posts
 fetchForumPosts();
 let postKey;
-
 document.addEventListener("click", function (event) {
   const openModalButton = event.target.closest("[id^='openModalpl-']");
   const openModalIcon = event.target.closest("[id^='openModalpl-'] i");
@@ -632,81 +631,89 @@ document.addEventListener("click", function (event) {
             // Retrieve commenter data from Users, SuperAdminAcc, SubAdminAcc nodes
             let commenterRef;
             if (commenterUID) {
-              commenterRef = ref(db, `Users/${commenterUID}`);
+              const usersRef = ref(db, `Users/${commenterUID}`);
+              const superAdminRef = ref(db, `SuperAdminAcc/${commenterUID}`);
+              const subAdminRef = ref(db, `SubAdminAcc/${commenterUID}`);
+
+              Promise.all([get(usersRef), get(superAdminRef), get(subAdminRef)])
+                .then(
+                  ([userSnapshot, superAdminSnapshot, subAdminSnapshot]) => {
+                    const commenterData =
+                      userSnapshot.val() ||
+                      superAdminSnapshot.val() ||
+                      subAdminSnapshot.val();
+                    if (commenterData) {
+                      const { firstname, middlename, lastname, campus, role } =
+                        commenterData;
+
+                      // Hide campus field if commenter is from SuperAdminAcc
+                      const campusDisplay =
+                        role === "superadmin" ? "none" : "block";
+
+                      commentContainer.innerHTML += `
+                      <div class="media-block" style="margin-right: 5%; margin-top: 2%">
+                        <a class="media-left" href="#">
+                          <img style="object-fit: cover" class="img-circle img-sm" alt="Profile Picture" id="imageProfile" src="${
+                            commenterData.ImageProfile ||
+                            "img/defaultProfile.jpg"
+                          }"/>
+                        </a>
+                        <div class="media-body">
+                          <div class="mar-btm">
+                            <p id="name" class="text-semibold media-heading box-inline">
+                              ${firstname} ${middlename} ${lastname}
+                            </p>
+                            <p style="line-height: 1.5" id="campus" class="text-muted text-sm" style="display: ${campusDisplay}">
+                              <i class="fa fa-university fa-lg"></i> ${campus}
+                            </p>
+                            <p id="dateTime" class="text-muted text-sm">
+                              ${comment.commentTime}
+                            </p>
+                          </div>
+                          <p style="margin-top:3%; margin-bottom:2%" id="commentText">${
+                            comment.commentText
+                          }</p>
+                          <div class="pad-ver">
+                            <div class="btn-group">
+                              <a style="margin-right:1px" class="btn btn-sm btn-default btn-hover-success" id="upReactComment-${
+                                comment.commentKey
+                              }">
+                                <i id="upNum-${
+                                  comment.commentKey
+                                }" class="fas fa-arrow-up">  ${formatNumber(
+                        comment.upReactCount
+                      )}</i>
+                              </a>
+                              <a class="btn btn-sm btn-default btn-hover-danger" id="downReactComment-${
+                                comment.commentKey
+                              }">
+                                <i id="downNum-${
+                                  comment.commentKey
+                                }" class="fa fa-arrow-down">  ${formatNumber(
+                        comment.downReactCount
+                      )}</i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr style="border: 1px solid black" />
+                    `;
+                    } else {
+                      console.error(
+                        "Commenter data not found for UID:",
+                        commenterUID
+                      );
+                    }
+                  }
+                )
+                .catch((error) => {
+                  console.error("Error fetching commenter data:", error);
+                });
             } else {
               console.error("Commenter UID is missing for comment:", comment);
               return; // Skip this comment if commenterUID is missing
             }
-
-            get(commenterRef)
-              .then((commenterSnapshot) => {
-                const commenterData = commenterSnapshot.val();
-                if (commenterData) {
-                  const { firstname, middlename, lastname, campus } =
-                    commenterData;
-
-                  // Hide campus field if commenter is from SuperAdminAcc
-                  const campusDisplay =
-                    commenterData.role === "superadmin" ? "none" : "block";
-
-                  commentContainer.innerHTML += `
-                    <div class="media-block" style="margin-right: 5%; margin-top: 2%">
-                      <a class="media-left" href="#">
-                        <img style="object-fit: cover" class="img-circle img-sm" alt="Profile Picture" id="imageProfile" src="${
-                          commenterData.ImageProfile || "img/defaultProfile.jpg"
-                        }"/>
-                      </a>
-                      <div class="media-body">
-                        <div class="mar-btm">
-                          <p id="name" class="text-semibold media-heading box-inline">
-                            ${firstname} ${middlename} ${lastname}
-                          </p>
-                          <p style="line-height: 1.5" id="campus" class="text-muted text-sm" style="display: ${campusDisplay}">
-                            <i class="fa fa-university fa-lg"></i> ${campus}
-                          </p>
-                          <p id="dateTime" class="text-muted text-sm">
-                            ${comment.commentTime}
-                          </p>
-                        </div>
-                        <p style="margin-top:3%; margin-bottom:2%" id="commentText">${
-                          comment.commentText
-                        }</p>
-                        <div class="pad-ver">
-                          <div class="btn-group">
-                            <a style="margin-right:1px" class="btn btn-sm btn-default btn-hover-success" id="upReactComment-${
-                              comment.commentKey
-                            }">
-                              <i id="upNum-${
-                                comment.commentKey
-                              }" class="fas fa-arrow-up">  ${formatNumber(
-                    comment.upReactCount
-                  )}</i>
-                            </a>
-                            <a class="btn btn-sm btn-default btn-hover-danger" id="downReactComment-${
-                              comment.commentKey
-                            }">
-                              <i id="downNum-${
-                                comment.commentKey
-                              }" class="fa fa-arrow-down">  ${formatNumber(
-                    comment.downReactCount
-                  )}</i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <hr style="border: 1px solid black" />
-                  `;
-                } else {
-                  console.error(
-                    "Commenter data not found for UID:",
-                    commenterUID
-                  );
-                }
-              })
-              .catch((error) => {
-                console.error("Error fetching commenter data:", error);
-              });
           });
         }
 
@@ -722,6 +729,7 @@ document.addEventListener("click", function (event) {
     modal.style.display = "none";
   }
 });
+
 function handleCommentReaction(postKey, commentKey, reactionType) {
   const user = auth.currentUser;
   if (user) {
