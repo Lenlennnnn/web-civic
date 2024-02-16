@@ -288,7 +288,9 @@ function fetchForumPosts() {
                 }
                 set(ref(db, `Forum_Post/${postKey}/React/${uid}`), newReaction)
                   .then(() => {
+                    // Update reaction counts once the reaction is updated
                     updateReactCounts(postKey, existingReaction, newReaction);
+                    // Update button appearance
                     updateButtonAppearance(upReactBtn, newReaction);
                     updateButtonAppearance(downReactBtn, null);
                   })
@@ -323,7 +325,9 @@ function fetchForumPosts() {
                 }
                 set(ref(db, `Forum_Post/${postKey}/React/${uid}`), newReaction)
                   .then(() => {
+                    // Update reaction counts once the reaction is updated
                     updateReactCounts(postKey, existingReaction, newReaction);
+                    // Update button appearance
                     updateButtonAppearance(downReactBtn, newReaction);
                     updateButtonAppearance(upReactBtn, null);
                   })
@@ -556,38 +560,38 @@ function closeModal() {
   modal.style.display = "none";
 }
 
-function updateReactCounts(postKey, previousReaction, newReaction) {
-  const container = document.getElementById(`container-${postKey}`);
-  const upNumElement = container.querySelector(`#upNum-${postKey}`);
-  const downNumElement = container.querySelector(`#downNum-${postKey}`);
-  let upCount = parseInt(upNumElement.textContent);
-  let downCount = parseInt(downNumElement.textContent);
+function updateReactCounts(postKey, existingReaction, newReaction) {
+  // Fetch current values once
+  const postRef = ref(db, `Forum_Post/${postKey}`);
+  get(postRef)
+    .then((snapshot) => {
+      const postData = snapshot.val();
+      let upReactCount = postData.upReactCount || 0;
+      let downReactCount = postData.downReactCount || 0;
 
-  // Ensure counts never go below zero
-  upCount = Math.max(upCount, 0);
-  downCount = Math.max(downCount, 0);
+      // Update counts based on the reaction changes
+      if (existingReaction === "up") {
+        upReactCount -= 1; // Decrement upReactCount if un-reacting from up
+      } else if (existingReaction === "down") {
+        downReactCount -= 1; // Decrement downReactCount if un-reacting from down
+      }
+      if (newReaction === "up") {
+        upReactCount += 1; // Increment upReactCount if reacting with up
+      } else if (newReaction === "down") {
+        downReactCount += 1; // Increment downReactCount if reacting with down
+      }
 
-  if (previousReaction === "up") {
-    upCount--; // Decrement up count if user un-reacts
-  } else if (previousReaction === "down") {
-    downCount--; // Decrement down count if user un-reacts
-  }
-
-  if (newReaction === "up") {
-    upCount++; // Increment up count if user reacts
-  } else if (newReaction === "down") {
-    downCount++; // Increment down count if user reacts
-  }
-
-  // Update UI with new counts
-  upNumElement.textContent = upCount;
-  downNumElement.textContent = downCount;
-
-  // Update database with new counts
-  update(ref(db, `Forum_Post/${postKey}`), {
-    upReactCount: upCount,
-    downReactCount: downCount,
-  });
+      // Update the database with new counts
+      update(ref(db, `Forum_Post/${postKey}`), {
+        upReactCount,
+        downReactCount,
+      }).catch((error) => {
+        console.error("Error updating reaction counts:", error);
+      });
+    })
+    .catch((error) => {
+      console.error("Error fetching post data:", error);
+    });
 }
 // Call the function to fetch and display forum posts
 fetchForumPosts();
@@ -646,59 +650,73 @@ document.addEventListener("click", function (event) {
                       const { firstname, middlename, lastname, campus, role } =
                         commenterData;
 
-                      // Hide campus field if commenter is from SuperAdminAcc
                       const campusDisplay =
                         role === "superadmin" ? "none" : "block";
 
+                      // Set campus text, defaulting to "BatStateU TNEU" if campus is undefined
+                      const campusText = campus ? campus : "BatStateU TNEU";
                       commentContainer.innerHTML += `
-                      <div class="media-block" style="margin-right: 5%; margin-top: 2%">
-                        <a class="media-left" href="#">
-                          <img style="object-fit: cover" class="img-circle img-sm" alt="Profile Picture" id="imageProfile" src="${
-                            commenterData.ImageProfile ||
-                            "img/defaultProfile.jpg"
-                          }"/>
-                        </a>
-                        <div class="media-body">
-                          <div class="mar-btm">
-                            <p id="name" class="text-semibold media-heading box-inline">
-                              ${firstname} ${middlename} ${lastname}
-                            </p>
-                            <p style="line-height: 1.5" id="campus" class="text-muted text-sm" style="display: ${campusDisplay}">
-                              <i class="fa fa-university fa-lg"></i> ${campus}
-                            </p>
-                            <p id="dateTime" class="text-muted text-sm">
-                              ${comment.commentTime}
-                            </p>
-                          </div>
-                          <p style="margin-top:3%; margin-bottom:2%" id="commentText">${
-                            comment.commentText
-                          }</p>
-                          <div class="pad-ver">
-                            <div class="btn-group">
-                              <a style="margin-right:1px" class="btn btn-sm btn-default btn-hover-success" id="upReactComment-${
-                                comment.commentKey
-                              }">
-                                <i id="upNum-${
-                                  comment.commentKey
-                                }" class="fas fa-arrow-up">  ${formatNumber(
+    <div class="media-block" style="margin-right: 5%; margin-top: 2%">
+        <a class="media-left" href="#">
+            <img style="object-fit: cover" class="img-circle img-sm" alt="Profile Picture" id="imageProfile" src="${
+              commenterData.ImageProfile || "img/defaultProfile.jpg"
+            }"/>
+        </a>
+        <div class="media-body">
+            <div class="mar-btm">
+                <p id="name" class="text-semibold media-heading box-inline">
+                      ${firstname} ${middlename} ${lastname}
+              ${
+                commenterData.role !== "superadmin" &&
+                commenterData.role !== "subadmin"
+                  ? `
+              <img src="img/reportto.png" alt="Report" style="width: 15px" class="enlarge-on-hover" id="hoverreportSec"/>
+              <span id="notificationBadgeSec"  class="notification-badge">0</span>`
+                  : ""
+              }
+            </p>
+            <a class="options-icon" id="optionitoSec" style="margin-left:5%">
+              <i class="fas fa-ellipsis-v" id="ellipsisIconSec"></i>
+          
+          <i class="fas fa-ban" id="reportIconSec" style="display: none"></i>
+                  <i class="fas fa-trash-alt" id="deleteIconSec" style="display: none"></i>
+            </a>
+                <p style="line-height: 1.5" id="campus" class="text-muted text-sm" style="display: ${campusDisplay}">
+                    <i class="fa fa-university fa-lg"></i> ${campusText}
+                </p>
+                <p id="dateTime" class="text-muted text-sm">
+                    ${comment.commentTime}
+                </p>
+            </div>
+            <p style="margin-top:3%; margin-bottom:2%" id="commentText">${
+              comment.commentText
+            }</p>
+            <div class="pad-ver">
+                <div class="btn-group">
+                    <a style="margin-right:1px" class="btn btn-sm btn-default btn-hover-success" id="upReactComment-${
+                      comment.commentKey
+                    }">
+                        <i id="upNum-${
+                          comment.commentKey
+                        }" class="fas fa-arrow-up">  ${formatNumber(
                         comment.upReactCount
                       )}</i>
-                              </a>
-                              <a class="btn btn-sm btn-default btn-hover-danger" id="downReactComment-${
-                                comment.commentKey
-                              }">
-                                <i id="downNum-${
-                                  comment.commentKey
-                                }" class="fa fa-arrow-down">  ${formatNumber(
+                    </a>
+                    <a class="btn btn-sm btn-default btn-hover-danger" id="downReactComment-${
+                      comment.commentKey
+                    }">
+                        <i id="downNum-${
+                          comment.commentKey
+                        }" class="fa fa-arrow-down">  ${formatNumber(
                         comment.downReactCount
                       )}</i>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <hr style="border: 1px solid black" />
-                    `;
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr style="border: 1px solid black" />
+`;
                     } else {
                       console.error(
                         "Commenter data not found for UID:",
@@ -729,6 +747,7 @@ document.addEventListener("click", function (event) {
     modal.style.display = "none";
   }
 });
+// Add event listener to handle clicks on hoverreportSec
 
 function handleCommentReaction(postKey, commentKey, reactionType) {
   const user = auth.currentUser;
@@ -799,6 +818,7 @@ document.addEventListener("click", function (event) {
     handleCommentReaction(postKey, commentKey, "down");
   }
 });
+// Add event listener to handle click on "Report" icon within a comment
 
 function updateCommentReactCounts(
   postKey,

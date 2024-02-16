@@ -382,7 +382,17 @@
         margin-top: 5px; /* Adjust as needed */
         padding: 5px; /* Adjust as needed */
       }
-      #reportSec,
+      #reportSec {
+        display: none;
+        position: fixed;
+        z-index: 99999999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: rgba(0, 0, 0, 0.7);
+      }
       #reportMain {
         display: none;
         position: fixed;
@@ -732,8 +742,8 @@
                   <div id="modal-headerForum">
                     <span
                       class="closepo"
-                      onclick="closeModal()"
-                      id="closeModaldetail">
+                      onclick="closeModalSec()"
+                      id="closeModaldetailSec">
                       <ion-icon name="close"></ion-icon>
                     </span>
                     <h3>View Report</h3>
@@ -1003,13 +1013,6 @@
       function openModal() {
         document.getElementById("reportMain").style.display = "block";
       }
-      function openModalSec() {
-        // Set the display style of reportSec to "block" to show the modal
-        document.getElementById("reportSec").style.display = "block";
-
-        // Ensure that the modal with ID modalDiscussion stays behind by setting its z-index lower than reportSec
-        document.getElementById("modalDiscussion").style.zIndex = "1";
-      }
 
       // Function to close the modal
       function closeModal() {
@@ -1019,11 +1022,12 @@
           reportMain.style.display = "none";
         }
       }
+      // Function to close the modal
       function closeModalSec() {
-        var reportSec = document.getElementById("reportSec");
+        var reportMain = document.getElementById("reportSec");
 
-        if (reportSec.style.display === "block") {
-          reportSec.style.display = "none";
+        if (reportMain.style.display === "block") {
+          reportMain.style.display = "none";
         }
       }
       // Add a click event listener to the close button in modalrt
