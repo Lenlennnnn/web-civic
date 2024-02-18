@@ -659,7 +659,7 @@ document.addEventListener("click", function (event) {
     <div class="media-block" style="margin-right: 5%; margin-top: 2%">
         <a class="media-left" href="#">
             <img style="object-fit: cover" class="img-circle img-sm" alt="Profile Picture" id="imageProfile" src="${
-              commenterData.ImageProfile || "img/defaultProfile.jpg"
+              commenterData.ImageProfile || "img/profilePic.jpg"
             }"/>
         </a>
         <div class="media-body">
@@ -747,7 +747,6 @@ document.addEventListener("click", function (event) {
     modal.style.display = "none";
   }
 });
-// Add event listener to handle clicks on hoverreportSec
 
 function handleCommentReaction(postKey, commentKey, reactionType) {
   const user = auth.currentUser;
@@ -864,4 +863,182 @@ function updateCommentReactCounts(
     .catch((error) => {
       console.error("Error updating comment react counts:", error);
     });
+}
+
+document.addEventListener("change", function (event) {
+  if (event.target && event.target.type === "checkbox") {
+    const toggleSwitch = event.target;
+    if (toggleSwitch.checked) {
+      // Toggle switch is turned on
+      fetchAndFilterComments();
+    } else {
+      // Toggle switch is turned off, reset the modal to display all comments
+      resetModal();
+    }
+  }
+});
+
+function fetchAndFilterComments() {
+  const commentsRef = ref(db, `Forum_Post/${postKey}/Comments`);
+  get(commentsRef)
+    .then((snapshot) => {
+      const comments = [];
+      snapshot.forEach((childSnapshot) => {
+        const commentKey = childSnapshot.key; // Extract commentKey
+        const commentData = childSnapshot.val();
+        comments.push({ commentKey, ...commentData });
+      });
+
+      // Filter comments with CommentReport
+      const filteredComments = comments.filter(
+        (comment) => comment.CommentReport
+      );
+
+      // Sort comments by the number of uid entries within CommentReport
+      filteredComments.sort((a, b) => {
+        return (
+          Object.keys(b.CommentReport).length -
+          Object.keys(a.CommentReport).length
+        );
+      });
+
+      // Populate the modal with the sorted comments
+      populateModal(filteredComments);
+    })
+    .catch((error) => {
+      console.error("Error retrieving and filtering comments:", error);
+    });
+}
+
+function resetModal() {
+  // Reset the modal to display all comments
+  fetchAndPopulateAllComments(); // Fetch and populate all comments
+}
+
+function fetchAndPopulateAllComments() {
+  const commentsRef = ref(db, `Forum_Post/${postKey}/Comments`);
+  get(commentsRef)
+    .then((snapshot) => {
+      const comments = [];
+      snapshot.forEach((childSnapshot) => {
+        const commentKey = childSnapshot.key; // Extract commentKey
+        const commentData = childSnapshot.val();
+        comments.push({ commentKey, ...commentData });
+      });
+
+      // Populate the modal with all comments
+      populateModal(comments);
+    })
+    .catch((error) => {
+      console.error("Error retrieving and populating comments:", error);
+    });
+}
+
+function populateModal(comments) {
+  // Populate the modal with the filtered and sorted comments
+  const modal = document.getElementById("modalDiscussion");
+  const commentContainer = modal.querySelector(".modal-body");
+
+  commentContainer.innerHTML = "";
+
+  // Iterate through comments and populate the modal
+  comments.forEach((comment) => {
+    const commenterUID = comment.commenterUID;
+
+    // Retrieve commenter data from Users, SuperAdminAcc, SubAdminAcc nodes
+    let commenterRef;
+    if (commenterUID) {
+      const usersRef = ref(db, `Users/${commenterUID}`);
+      const superAdminRef = ref(db, `SuperAdminAcc/${commenterUID}`);
+      const subAdminRef = ref(db, `SubAdminAcc/${commenterUID}`);
+
+      Promise.all([get(usersRef), get(superAdminRef), get(subAdminRef)])
+        .then(([userSnapshot, superAdminSnapshot, subAdminSnapshot]) => {
+          const commenterData =
+            userSnapshot.val() ||
+            superAdminSnapshot.val() ||
+            subAdminSnapshot.val();
+          if (commenterData) {
+            const { firstname, middlename, lastname, campus, role } =
+              commenterData;
+
+            const campusDisplay = role === "superadmin" ? "none" : "block";
+
+            // Set campus text, defaulting to "BatStateU TNEU" if campus is undefined
+            const campusText = campus ? campus : "BatStateU TNEU";
+
+            // Append HTML for the comment to the modal
+            commentContainer.innerHTML += `
+            <div class="media-block" style="margin-right: 5%; margin-top: 2%">
+              <a class="media-left" href="#">
+                <img style="object-fit: cover" class="img-circle img-sm" alt="Profile Picture" id="imageProfile" src="${
+                  commenterData.ImageProfile || "img/profilePic.jpg"
+                }"/>
+              </a>
+              <div class="media-body">
+                <div class="mar-btm">
+                  <p id="name" class="text-semibold media-heading box-inline">
+                    ${firstname} ${middlename} ${lastname}
+                    ${
+                      commenterData.role !== "superadmin" &&
+                      commenterData.role !== "subadmin"
+                        ? `
+                          <img src="img/reportto.png" alt="Report" style="width: 15px" class="enlarge-on-hover" id="hoverreportSec"/>
+                          <span id="notificationBadgeSec"  class="notification-badge">0</span>`
+                        : ""
+                    }
+                  </p>
+                  <a class="options-icon" id="optionitoSec" style="margin-left:5%">
+                    <i class="fas fa-ellipsis-v" id="ellipsisIconSec"></i>
+                    <i class="fas fa-ban" id="reportIconSec" style="display: none"></i>
+                    <i class="fas fa-trash-alt" id="deleteIconSec" style="display: none"></i>
+                  </a>
+                  <p style="line-height: 1.5" id="campus" class="text-muted text-sm" style="display: ${campusDisplay}">
+                    <i class="fa fa-university fa-lg"></i> ${campusText}
+                  </p>
+                  <p id="dateTime" class="text-muted text-sm">
+                    ${comment.commentTime}
+                  </p>
+                </div>
+                <p style="margin-top:3%; margin-bottom:2%" id="commentText">${
+                  comment.commentText
+                }</p>
+                <div class="pad-ver">
+                  <div class="btn-group">
+                    <a style="margin-right:1px" class="btn btn-sm btn-default btn-hover-success" id="upReactComment-${
+                      comment.commentKey
+                    }">
+                      <i id="upNum-${
+                        comment.commentKey
+                      }" class="fas fa-arrow-up">  ${formatNumber(
+              comment.upReactCount
+            )}</i>
+                    </a>
+                    <a class="btn btn-sm btn-default btn-hover-danger" id="downReactComment-${
+                      comment.commentKey
+                    }">
+                      <i id="downNum-${
+                        comment.commentKey
+                      }" class="fa fa-arrow-down">  ${formatNumber(
+              comment.downReactCount
+            )}</i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr style="border: 1px solid black" />
+          `;
+          } else {
+            console.error("Commenter data not found for UID:", commenterUID);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching commenter data:", error);
+        });
+    } else {
+      console.error("Commenter UID is missing for comment:", comment);
+      return; // Skip this comment if commenterUID is missing
+    }
+  });
 }
