@@ -737,9 +737,17 @@ function populateComment(comment, commentContainer) {
                     }
                   </p>
                   <a class="options-icon" id="optionitoSec" style="margin-left:5%">
-                    <i class="fas fa-ellipsis-v" id="ellipsisIconSec"></i>
-                    <i class="fas fa-ban" id="reportIconSec" style="display: none"></i>
-                    <i class="fas fa-trash-alt" id="deleteIconSec" style="display: none"></i>
+         <i class="fas fa-ellipsis-v" id="ellipsisIconSec" data-postKey="${postKey}" data-commentKey="${
+            comment.commentKey
+          }"></i>
+
+             <i class="fas fa-ban" id="reportIconSec" style="display: none" data-postKey="${postKey}" data-commentKey="${
+            comment.commentKey
+          }"></i>
+<i class="fas fa-trash-alt" id="deleteIconSec" style="display: none" data-postKey="${postKey}" data-commentKey="${
+            comment.commentKey
+          }"></i>
+
                   </a>
                   <p style="line-height: 1.5" id="campus" class="text-muted text-sm" style="display: ${campusDisplay}">
                     <i class="fa fa-university fa-lg"></i> ${campusText}
@@ -1020,5 +1028,117 @@ document.addEventListener("click", function (event) {
 
     // Open the report modal for the specific comment
     openReportModal(postKey, commentKey);
+  }
+});
+
+document.addEventListener("click", function (event) {
+  const ellipsisIconSec = event.target.closest("#ellipsisIconSec");
+  if (ellipsisIconSec) {
+    const reportIconSec = ellipsisIconSec.nextElementSibling;
+    const deleteIconSec = reportIconSec.nextElementSibling;
+
+    // Toggle visibility of report and delete icons
+    reportIconSec.style.display =
+      reportIconSec.style.display === "none" ? "inline-block" : "none";
+    deleteIconSec.style.display =
+      deleteIconSec.style.display === "none" ? "inline-block" : "none";
+  }
+
+  const reportIconSec = event.target.closest("#reportIconSec");
+  if (reportIconSec) {
+    const postKey = reportIconSec.getAttribute("data-postKey");
+    const commentKey = reportIconSec.getAttribute("data-commentKey");
+
+    // Fetch commenterUID from the database
+    const commenterUIDRef = ref(
+      db,
+      `Forum_Post/${postKey}/Comments/${commentKey}/commenterUID`
+    );
+    get(commenterUIDRef)
+      .then((snapshot) => {
+        const commenterUID = snapshot.val();
+
+        // Check if commenterUID belongs to SuperAdminAcc or SubAdminAcc
+        const superAdminRef = ref(db, `SuperAdminAcc/${commenterUID}`);
+        const subAdminRef = ref(db, `SubAdminAcc/${commenterUID}`);
+        Promise.all([get(superAdminRef), get(subAdminRef)])
+          .then(([superAdminSnapshot, subAdminSnapshot]) => {
+            if (superAdminSnapshot.exists() || subAdminSnapshot.exists()) {
+              alert("Admins cannot be banned.");
+            } else {
+              // Check verification status of the user
+              const userRef = ref(db, `Users/${commenterUID}`);
+              get(userRef).then((userSnapshot) => {
+                const userData = userSnapshot.val();
+                if (userData && userData.verificationStatus === false) {
+                  alert("This user is already banned.");
+                  return;
+                }
+
+                // Prompt confirmation for unverifying the commenter's account
+                const confirmation = confirm(
+                  "Are you sure to unverify this account?"
+                );
+                if (confirmation) {
+                  // Update verification status to false in Users node
+                  update(userRef, {
+                    verificationStatus: false,
+                  })
+                    .then(() => {
+                      console.log("User unverified successfully");
+                      alert("User unverified successfully");
+
+                      // Remove UID from User_Verification node
+                      remove(ref(db, `User_Verification/${commenterUID}`))
+                        .then(() => {
+                          console.log(
+                            "UID removed from User_Verification node"
+                          );
+                        })
+                        .catch((error) => {
+                          console.error(
+                            "Error removing UID from User_Verification node:",
+                            error
+                          );
+                        });
+                    })
+                    .catch((error) => {
+                      console.error("Error unverifying user:", error);
+                    });
+                }
+              });
+            }
+          })
+          .catch((error) => {
+            console.error("Error checking admin status:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error retrieving commenter UID:", error);
+      });
+  }
+
+  const deleteIconSec = event.target.closest("#deleteIconSec");
+  if (deleteIconSec) {
+    const postKey = deleteIconSec.getAttribute("data-postKey");
+    const commentKey = deleteIconSec.getAttribute("data-commentKey");
+
+    // Prompt confirmation for deleting the comment
+    const confirmation = confirm("Are you sure to delete this comment?");
+    if (confirmation) {
+      // Delete the comment by removing the commentKey
+      const commentRef = ref(
+        db,
+        `Forum_Post/${postKey}/Comments/${commentKey}`
+      );
+      remove(commentRef)
+        .then(() => {
+          console.log("Comment deleted successfully");
+          alert("Comment deleted successfully");
+        })
+        .catch((error) => {
+          console.error("Error deleting comment:", error);
+        });
+    }
   }
 });
