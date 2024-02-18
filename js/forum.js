@@ -517,7 +517,6 @@ document.addEventListener("click", function (event) {
       });
   }
 });
-
 document.addEventListener("click", function (event) {
   if (event.target && event.target.id === "hoverreport") {
     const postKey = event.target.closest(".panel").id.replace("container-", "");
@@ -630,111 +629,9 @@ document.addEventListener("click", function (event) {
         } else {
           // Iterate through comments and populate the modal
           comments.forEach((comment) => {
-            const commenterUID = comment.commenterUID;
-
-            // Retrieve commenter data from Users, SuperAdminAcc, SubAdminAcc nodes
-            let commenterRef;
-            if (commenterUID) {
-              const usersRef = ref(db, `Users/${commenterUID}`);
-              const superAdminRef = ref(db, `SuperAdminAcc/${commenterUID}`);
-              const subAdminRef = ref(db, `SubAdminAcc/${commenterUID}`);
-
-              Promise.all([get(usersRef), get(superAdminRef), get(subAdminRef)])
-                .then(
-                  ([userSnapshot, superAdminSnapshot, subAdminSnapshot]) => {
-                    const commenterData =
-                      userSnapshot.val() ||
-                      superAdminSnapshot.val() ||
-                      subAdminSnapshot.val();
-                    if (commenterData) {
-                      const { firstname, middlename, lastname, campus, role } =
-                        commenterData;
-
-                      const campusDisplay =
-                        role === "superadmin" ? "none" : "block";
-
-                      // Set campus text, defaulting to "BatStateU TNEU" if campus is undefined
-                      const campusText = campus ? campus : "BatStateU TNEU";
-                      commentContainer.innerHTML += `
-    <div class="media-block" style="margin-right: 5%; margin-top: 2%">
-        <a class="media-left" href="#">
-            <img style="object-fit: cover" class="img-circle img-sm" alt="Profile Picture" id="imageProfile" src="${
-              commenterData.ImageProfile || "img/profilePic.jpg"
-            }"/>
-        </a>
-        <div class="media-body">
-            <div class="mar-btm">
-                <p id="name" class="text-semibold media-heading box-inline">
-                      ${firstname} ${middlename} ${lastname}
-              ${
-                commenterData.role !== "superadmin" &&
-                commenterData.role !== "subadmin"
-                  ? `
-              <img src="img/reportto.png" alt="Report" style="width: 15px" class="enlarge-on-hover" id="hoverreportSec"/>
-              <span id="notificationBadgeSec"  class="notification-badge">0</span>`
-                  : ""
-              }
-            </p>
-            <a class="options-icon" id="optionitoSec" style="margin-left:5%">
-              <i class="fas fa-ellipsis-v" id="ellipsisIconSec"></i>
-          
-          <i class="fas fa-ban" id="reportIconSec" style="display: none"></i>
-                  <i class="fas fa-trash-alt" id="deleteIconSec" style="display: none"></i>
-            </a>
-                <p style="line-height: 1.5" id="campus" class="text-muted text-sm" style="display: ${campusDisplay}">
-                    <i class="fa fa-university fa-lg"></i> ${campusText}
-                </p>
-                <p id="dateTime" class="text-muted text-sm">
-                    ${comment.commentTime}
-                </p>
-            </div>
-            <p style="margin-top:3%; margin-bottom:2%" id="commentText">${
-              comment.commentText
-            }</p>
-            <div class="pad-ver">
-                <div class="btn-group">
-                    <a style="margin-right:1px" class="btn btn-sm btn-default btn-hover-success" id="upReactComment-${
-                      comment.commentKey
-                    }">
-                        <i id="upNum-${
-                          comment.commentKey
-                        }" class="fas fa-arrow-up">  ${formatNumber(
-                        comment.upReactCount
-                      )}</i>
-                    </a>
-                    <a class="btn btn-sm btn-default btn-hover-danger" id="downReactComment-${
-                      comment.commentKey
-                    }">
-                        <i id="downNum-${
-                          comment.commentKey
-                        }" class="fa fa-arrow-down">  ${formatNumber(
-                        comment.downReactCount
-                      )}</i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <hr style="border: 1px solid black" />
-`;
-                    } else {
-                      console.error(
-                        "Commenter data not found for UID:",
-                        commenterUID
-                      );
-                    }
-                  }
-                )
-                .catch((error) => {
-                  console.error("Error fetching commenter data:", error);
-                });
-            } else {
-              console.error("Commenter UID is missing for comment:", comment);
-              return; // Skip this comment if commenterUID is missing
-            }
+            populateComment(comment, commentContainer);
           });
         }
-
         // Display the modal
         modal.style.display = "block";
       })
@@ -787,6 +684,112 @@ function handleCommentReaction(postKey, commentKey, reactionType) {
     console.log("User is not logged in.");
   }
 }
+function populateComment(comment, commentContainer) {
+  const commenterUID = comment.commenterUID;
+
+  // Retrieve commenter data from Users, SuperAdminAcc, SubAdminAcc nodes
+  let commenterRef;
+  if (commenterUID) {
+    const usersRef = ref(db, `Users/${commenterUID}`);
+    const superAdminRef = ref(db, `SuperAdminAcc/${commenterUID}`);
+    const subAdminRef = ref(db, `SubAdminAcc/${commenterUID}`);
+
+    Promise.all([get(usersRef), get(superAdminRef), get(subAdminRef)])
+      .then(([userSnapshot, superAdminSnapshot, subAdminSnapshot]) => {
+        const commenterData =
+          userSnapshot.val() ||
+          superAdminSnapshot.val() ||
+          subAdminSnapshot.val();
+        if (commenterData) {
+          const { firstname, middlename, lastname, campus, role } =
+            commenterData;
+
+          const campusDisplay = role === "superadmin" ? "none" : "block";
+
+          // Set campus text, defaulting to "BatStateU TNEU" if campus is undefined
+          const campusText = campus ? campus : "BatStateU TNEU";
+
+          // Count number of reports
+          const reportCount = comment.CommentReport
+            ? Object.keys(comment.CommentReport).length
+            : 0;
+
+          // Append HTML for the comment to the modal
+          commentContainer.innerHTML += `
+            <div class="media-block" style="margin-right: 5%; margin-top: 2%">
+              <a class="media-left" href="#">
+                <img style="object-fit: cover" class="img-circle img-sm" alt="Profile Picture" id="imageProfile" src="${
+                  commenterData.ImageProfile || "img/profilePic.jpg"
+                }"/>
+              </a>
+              <div class="media-body">
+                <div class="mar-btm">
+                  <p id="name" class="text-semibold media-heading box-inline">
+                    ${firstname} ${middlename} ${lastname}
+                    ${
+                      commenterData.role !== "superadmin" &&
+                      commenterData.role !== "subadmin"
+                        ? `
+                        <img src="img/reportto.png" alt="Report" style="width: 15px" class="enlarge-on-hover" id="hoverreportSec" data-postKey="${postKey}" data-commentKey="${comment.commentKey}" />
+
+                          <span id="notificationBadgeSec" class="notification-badge">${reportCount}</span>`
+                        : ""
+                    }
+                  </p>
+                  <a class="options-icon" id="optionitoSec" style="margin-left:5%">
+                    <i class="fas fa-ellipsis-v" id="ellipsisIconSec"></i>
+                    <i class="fas fa-ban" id="reportIconSec" style="display: none"></i>
+                    <i class="fas fa-trash-alt" id="deleteIconSec" style="display: none"></i>
+                  </a>
+                  <p style="line-height: 1.5" id="campus" class="text-muted text-sm" style="display: ${campusDisplay}">
+                    <i class="fa fa-university fa-lg"></i> ${campusText}
+                  </p>
+                  <p id="dateTime" class="text-muted text-sm">
+                    ${comment.commentTime}
+                  </p>
+                </div>
+                <p style="margin-top:3%; margin-bottom:2%" id="commentText">${
+                  comment.commentText
+                }</p>
+                <div class="pad-ver">
+                  <div class="btn-group">
+                    <a style="margin-right:1px" class="btn btn-sm btn-default btn-hover-success" id="upReactComment-${
+                      comment.commentKey
+                    }">
+                      <i id="upNum-${
+                        comment.commentKey
+                      }" class="fas fa-arrow-up">  ${formatNumber(
+            comment.upReactCount
+          )}</i>
+                    </a>
+                    <a class="btn btn-sm btn-default btn-hover-danger" id="downReactComment-${
+                      comment.commentKey
+                    }">
+                      <i id="downNum-${
+                        comment.commentKey
+                      }" class="fa fa-arrow-down">  ${formatNumber(
+            comment.downReactCount
+          )}</i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr style="border: 1px solid black" />
+          `;
+        } else {
+          console.error("Commenter data not found for UID:", commenterUID);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching commenter data:", error);
+      });
+  } else {
+    console.error("Commenter UID is missing for comment:", comment);
+    return; // Skip this comment if commenterUID is missing
+  }
+}
+
 function updateCommentButtonAppearance(commentKey, reaction) {
   const upReactBtn = document.getElementById(`upReactComment-${commentKey}`);
   const downReactBtn = document.getElementById(
@@ -943,102 +946,79 @@ function populateModal(comments) {
 
   // Iterate through comments and populate the modal
   comments.forEach((comment) => {
-    const commenterUID = comment.commenterUID;
-
-    // Retrieve commenter data from Users, SuperAdminAcc, SubAdminAcc nodes
-    let commenterRef;
-    if (commenterUID) {
-      const usersRef = ref(db, `Users/${commenterUID}`);
-      const superAdminRef = ref(db, `SuperAdminAcc/${commenterUID}`);
-      const subAdminRef = ref(db, `SubAdminAcc/${commenterUID}`);
-
-      Promise.all([get(usersRef), get(superAdminRef), get(subAdminRef)])
-        .then(([userSnapshot, superAdminSnapshot, subAdminSnapshot]) => {
-          const commenterData =
-            userSnapshot.val() ||
-            superAdminSnapshot.val() ||
-            subAdminSnapshot.val();
-          if (commenterData) {
-            const { firstname, middlename, lastname, campus, role } =
-              commenterData;
-
-            const campusDisplay = role === "superadmin" ? "none" : "block";
-
-            // Set campus text, defaulting to "BatStateU TNEU" if campus is undefined
-            const campusText = campus ? campus : "BatStateU TNEU";
-
-            // Append HTML for the comment to the modal
-            commentContainer.innerHTML += `
-            <div class="media-block" style="margin-right: 5%; margin-top: 2%">
-              <a class="media-left" href="#">
-                <img style="object-fit: cover" class="img-circle img-sm" alt="Profile Picture" id="imageProfile" src="${
-                  commenterData.ImageProfile || "img/profilePic.jpg"
-                }"/>
-              </a>
-              <div class="media-body">
-                <div class="mar-btm">
-                  <p id="name" class="text-semibold media-heading box-inline">
-                    ${firstname} ${middlename} ${lastname}
-                    ${
-                      commenterData.role !== "superadmin" &&
-                      commenterData.role !== "subadmin"
-                        ? `
-                          <img src="img/reportto.png" alt="Report" style="width: 15px" class="enlarge-on-hover" id="hoverreportSec"/>
-                          <span id="notificationBadgeSec"  class="notification-badge">0</span>`
-                        : ""
-                    }
-                  </p>
-                  <a class="options-icon" id="optionitoSec" style="margin-left:5%">
-                    <i class="fas fa-ellipsis-v" id="ellipsisIconSec"></i>
-                    <i class="fas fa-ban" id="reportIconSec" style="display: none"></i>
-                    <i class="fas fa-trash-alt" id="deleteIconSec" style="display: none"></i>
-                  </a>
-                  <p style="line-height: 1.5" id="campus" class="text-muted text-sm" style="display: ${campusDisplay}">
-                    <i class="fa fa-university fa-lg"></i> ${campusText}
-                  </p>
-                  <p id="dateTime" class="text-muted text-sm">
-                    ${comment.commentTime}
-                  </p>
-                </div>
-                <p style="margin-top:3%; margin-bottom:2%" id="commentText">${
-                  comment.commentText
-                }</p>
-                <div class="pad-ver">
-                  <div class="btn-group">
-                    <a style="margin-right:1px" class="btn btn-sm btn-default btn-hover-success" id="upReactComment-${
-                      comment.commentKey
-                    }">
-                      <i id="upNum-${
-                        comment.commentKey
-                      }" class="fas fa-arrow-up">  ${formatNumber(
-              comment.upReactCount
-            )}</i>
-                    </a>
-                    <a class="btn btn-sm btn-default btn-hover-danger" id="downReactComment-${
-                      comment.commentKey
-                    }">
-                      <i id="downNum-${
-                        comment.commentKey
-                      }" class="fa fa-arrow-down">  ${formatNumber(
-              comment.downReactCount
-            )}</i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <hr style="border: 1px solid black" />
-          `;
-          } else {
-            console.error("Commenter data not found for UID:", commenterUID);
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching commenter data:", error);
-        });
-    } else {
-      console.error("Commenter UID is missing for comment:", comment);
-      return; // Skip this comment if commenterUID is missing
-    }
+    populateComment(comment, commentContainer);
   });
 }
+// Function to open the report modal for a specific comment
+function openReportModal(postKey, commentKey) {
+  // Fetch the comment's report data
+  const commentReportRef = ref(
+    db,
+    `Forum_Post/${postKey}/Comments/${commentKey}/CommentReport`
+  );
+
+  get(commentReportRef)
+    .then((snapshot) => {
+      const reportData = snapshot.val();
+
+      // Populate the report modal with the fetched data
+      const reportTableBodySec = document.getElementById("reportTableBodySec");
+      reportTableBodySec.innerHTML = "";
+
+      for (const uid in reportData) {
+        if (reportData.hasOwnProperty(uid)) {
+          const reason = reportData[uid];
+
+          // Fetch user data from the Users node
+          const userRef = ref(db, `Users/${uid}`);
+
+          get(userRef)
+            .then((userSnapshot) => {
+              const userData = userSnapshot.val();
+              if (userData) {
+                const { firstname, middlename, lastname, campus } = userData;
+
+                // Append the report data to the modal table
+                reportTableBodySec.innerHTML += `
+                  <tr>
+                    <td>${uid}</td>
+                    <td>${lastname}, ${firstname} ${middlename}</td>
+                    <td>${campus}</td>
+                    <td>${reason}</td>
+                  </tr>
+                `;
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching user data:", error);
+            });
+        }
+      }
+
+      // Display the report modal
+      const reportModal = document.getElementById("reportSec");
+      reportModal.style.display = "block";
+    })
+    .catch((error) => {
+      console.error("Error fetching comment report data:", error);
+    });
+}
+
+// Function to close the report modal
+function closeModalSec() {
+  const reportModal = document.getElementById("reportSec");
+  reportModal.style.display = "none";
+}
+
+// Event listener for opening the report modal when clicking on the hoverreportSec icon
+document.addEventListener("click", function (event) {
+  const hoverreportSec = event.target.closest("#hoverreportSec");
+  if (hoverreportSec) {
+    // Extract the postKey and commentKey from the hoverreportSec element's data attributes
+    const postKey = hoverreportSec.getAttribute("data-postKey");
+    const commentKey = hoverreportSec.getAttribute("data-commentKey");
+
+    // Open the report modal for the specific comment
+    openReportModal(postKey, commentKey);
+  }
+});
