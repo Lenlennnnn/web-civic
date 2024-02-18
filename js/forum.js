@@ -11,6 +11,7 @@ import {
   get,
   set,
   update,
+  push,
   remove,
   onValue,
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
@@ -730,9 +731,13 @@ function populateComment(comment, commentContainer) {
                       commenterData.role !== "superadmin" &&
                       commenterData.role !== "subadmin"
                         ? `
-                        <img src="img/reportto.png" alt="Report" style="width: 15px" class="enlarge-on-hover" id="hoverreportSec" data-postKey="${postKey}" data-commentKey="${comment.commentKey}" />
+                        <img src="img/reportto.png" alt="Report" style="width: 15px" class="enlarge-on-hover" id="hoverreportSec" data-postKey="${postKey}" data-commentKey="${
+                            comment.commentKey
+                          }" />
 
-                          <span id="notificationBadgeSec" class="notification-badge">${reportCount}</span>`
+                          <span id="notificationBadgeSec" class="notification-badge">${formatNumber(
+                            reportCount
+                          )}</span>`
                         : ""
                     }
                   </p>
@@ -1140,5 +1145,91 @@ document.addEventListener("click", function (event) {
           console.error("Error deleting comment:", error);
         });
     }
+  }
+});
+document.addEventListener("click", function (event) {
+  const openModalButton = event.target.closest("[id^='openModalpl-']");
+  const openModalIcon = event.target.closest("[id^='openModalpl-'] i");
+  if (openModalButton || openModalIcon) {
+    postKey = (openModalButton || openModalIcon).id.replace("openModalpl-", "");
+
+    // Retrieve comments data for the specific post
+    const commentsRef = ref(db, `Forum_Post/${postKey}/Comments`);
+    get(commentsRef)
+      .then((snapshot) => {
+        const comments = [];
+        snapshot.forEach((childSnapshot) => {
+          const commentKey = childSnapshot.key; // Extract commentKey
+          const commentData = childSnapshot.val();
+          comments.push({ commentKey, ...commentData });
+        });
+
+        // Populate the modal with comments data
+        const modal = document.getElementById("modalDiscussion");
+        const commentContainer = modal.querySelector(".modal-body");
+
+        // Generate unique IDs for input field and button
+        const commentInput = modal.querySelector(".comment-input");
+        const postButton = modal.querySelector(".post-btn");
+        const commentTextId = `commentText-${postKey}`;
+        const postBtnId = `postBtn-${postKey}`;
+        commentInput.id = commentTextId;
+        postButton.id = postBtnId;
+
+        commentContainer.innerHTML = "";
+
+        if (comments.length === 0) {
+          // Display image for no comments
+          commentContainer.innerHTML = `
+            <div class="text-center">
+              <img src="img/startconvo.png" alt="Be the first to start the conversation" style="max-width: 90%; height: auto;">
+            </div>
+          `;
+        } else {
+          // Iterate through comments and populate the modal
+          comments.forEach((comment) => {
+            populateComment(comment, commentContainer);
+          });
+        }
+        // Display the modal
+        modal.style.display = "block";
+
+        // Add event listener to post button
+        const postBtn = document.getElementById(postBtnId);
+        postBtn.addEventListener("click", function () {
+          const commentInput = document.getElementById(commentTextId).value;
+          if (commentInput.trim() === "") {
+            alert("Please enter a comment before posting.");
+          } else {
+            const confirmation = confirm("Are you sure to post this comment?");
+            if (confirmation) {
+              // Generate timestamp
+              const commentTime = generateTimestamp();
+
+              // Save comment data in the database
+              const newCommentRef = push(
+                ref(db, `Forum_Post/${postKey}/Comments`)
+              );
+              set(newCommentRef, {
+                commentText: commentInput,
+                commenterUID: auth.currentUser.uid,
+                commentKey: newCommentRef.key,
+                commentTime: commentTime,
+                downReactCount: 0,
+                upReactCount: 0,
+              })
+                .then(() => {
+                  alert("Comment posted successfully.");
+                })
+                .catch((error) => {
+                  console.error("Error posting comment:", error);
+                });
+            }
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Error retrieving comments data:", error);
+      });
   }
 });
