@@ -615,6 +615,7 @@ document.addEventListener("click", function (event) {
         });
 
         // Populate the modal with comments data
+        // Populate the modal with comments data
         const modal = document.getElementById("modalDiscussion");
         const commentContainer = modal.querySelector(".modal-body");
 
@@ -631,16 +632,22 @@ document.addEventListener("click", function (event) {
         if (comments.length === 0) {
           // Display image for no comments
           commentContainer.innerHTML = `
-            <div class="text-center">
-              <img src="img/startconvo.png" alt="Be the first to start the conversation" style="max-width: 90%; height: auto;">
-            </div>
-          `;
+    <div class="text-center">
+      <img src="img/startconvo.png" alt="Be the first to start the conversation" style="max-width: 90%; height: auto;">
+    </div>
+  `;
         } else {
+          // Sort comments based on commentTime in descending order (recent first)
+          comments.sort((a, b) => {
+            return new Date(b.commentTime) - new Date(a.commentTime);
+          });
+
           // Iterate through comments and populate the modal
           comments.forEach((comment) => {
             populateComment(comment, commentContainer);
           });
         }
+
         // Display the modal
         modal.style.display = "block";
 
@@ -688,8 +695,8 @@ document.addEventListener("click", function (event) {
                   // Clear comment text
                   document.getElementById(commentTextId).value = "";
 
-                  // Detach event listener after successful comment posting
-                  postBtn.removeEventListener("click", postComment);
+                  // Reload modal content after successful comment posting
+                  reloadModalContent(postKey);
                 })
                 .catch((error) => {
                   console.error("Error posting comment:", error);
@@ -710,6 +717,189 @@ document.addEventListener("click", function (event) {
     toggleSwitch.checked = false;
   }
 });
+
+// Function to reload modal content after successful comment posting
+function reloadModalContent(postKey) {
+  const commentsRef = ref(db, `Forum_Post/${postKey}/Comments`);
+  get(commentsRef)
+    .then((snapshot) => {
+      const comments = [];
+      snapshot.forEach((childSnapshot) => {
+        const commentKey = childSnapshot.key; // Extract commentKey
+        const commentData = childSnapshot.val();
+        comments.push({ commentKey, ...commentData });
+      });
+
+      // Populate the modal with comments data
+      const modal = document.getElementById("modalDiscussion");
+      const commentContainer = modal.querySelector(".modal-body");
+
+      commentContainer.innerHTML = "";
+
+      if (comments.length === 0) {
+        // Display image for no comments
+        commentContainer.innerHTML = `
+    <div class="text-center">
+      <img src="img/startconvo.png" alt="Be the first to start the conversation" style="max-width: 90%; height: auto;">
+    </div>
+  `;
+      } else {
+        // Sort comments based on commentTime in descending order (recent first)
+        comments.sort((a, b) => {
+          return new Date(b.commentTime) - new Date(a.commentTime);
+        });
+
+        // Iterate through comments and populate the modal
+        comments.forEach((comment) => {
+          populateComment(comment, commentContainer);
+        });
+      }
+    })
+    .catch((error) => {
+      console.error("Error reloading modal content:", error);
+    });
+}
+
+function populateComment(comment, commentContainer) {
+  const commenterUID = comment.commenterUID;
+  const user = auth.currentUser;
+
+  // Retrieve commenter data from Users, SuperAdminAcc, SubAdminAcc nodes
+  // and also check if the current user has reacted to this comment
+  let commenterRef;
+  if (commenterUID) {
+    const usersRef = ref(db, `Users/${commenterUID}`);
+    const superAdminRef = ref(db, `SuperAdminAcc/${commenterUID}`);
+    const subAdminRef = ref(db, `SubAdminAcc/${commenterUID}`);
+    const reactRef = ref(
+      db,
+      `Forum_Post/${postKey}/Comments/${comment.commentKey}/ReactComment/${user.uid}`
+    );
+
+    Promise.all([
+      get(usersRef),
+      get(superAdminRef),
+      get(subAdminRef),
+      get(reactRef),
+    ])
+      .then(
+        ([
+          userSnapshot,
+          superAdminSnapshot,
+          subAdminSnapshot,
+          reactSnapshot,
+        ]) => {
+          const commenterData =
+            userSnapshot.val() ||
+            superAdminSnapshot.val() ||
+            subAdminSnapshot.val();
+          const userReaction = reactSnapshot.val();
+
+          if (commenterData) {
+            const { firstname, middlename, lastname, campus, role } =
+              commenterData;
+
+            const campusDisplay = role === "superadmin" ? "none" : "block";
+
+            // Set campus text, defaulting to "BatStateU TNEU" if campus is undefined
+            const campusText = campus ? campus : "BatStateU TNEU";
+
+            // Count number of reports
+            const reportCount = comment.CommentReport
+              ? Object.keys(comment.CommentReport).length
+              : 0;
+
+            // Append HTML for the comment to the modal
+            commentContainer.innerHTML += `
+          <div class="media-block" style="margin-right: 5%; margin-top: 2%">
+            <a class="media-left" href="#">
+              <img style="object-fit: cover" class="img-circle img-sm" alt="Profile Picture" id="imageProfile" src="${
+                commenterData.ImageProfile || "img/profilePic.jpg"
+              }"/>
+            </a>
+            <div class="media-body">
+              <div class="mar-btm">
+                <p id="name" class="text-semibold media-heading box-inline">
+                  ${firstname} ${middlename} ${lastname}
+                  ${
+                    commenterData.role !== "superadmin" &&
+                    commenterData.role !== "subadmin"
+                      ? `
+                      <img src="img/reportto.png" alt="Report" style="width: 15px" class="enlarge-on-hover" id="hoverreportSec" data-postKey="${postKey}" data-commentKey="${
+                          comment.commentKey
+                        }" />
+                        <span id="notificationBadgeSec" class="notification-badge">${formatNumber(
+                          reportCount
+                        )}</span>`
+                      : ""
+                  }
+                </p>
+                <a class="options-icon" id="optionitoSec" style="margin-left:5%">
+       <i class="fas fa-ellipsis-v" id="ellipsisIconSec" data-postKey="${postKey}" data-commentKey="${
+              comment.commentKey
+            }"></i>
+
+           <i class="fas fa-ban" id="reportIconSec" style="display: none" data-postKey="${postKey}" data-commentKey="${
+              comment.commentKey
+            }"></i>
+<i class="fas fa-trash-alt" id="deleteIconSec" style="display: none" data-postKey="${postKey}" data-commentKey="${
+              comment.commentKey
+            }"></i>
+
+                </a>
+                <p style="line-height: 1.5" id="campus" class="text-muted text-sm" style="display: ${campusDisplay}">
+                  <i class="fa fa-university fa-lg"></i> ${campusText}
+                </p>
+                <p id="dateTime" class="text-muted text-sm">
+                  ${comment.commentTime}
+                </p>
+              </div>
+              <p style="margin-top:3%; margin-bottom:2%" id="commentText">${
+                comment.commentText
+              }</p>
+              <div class="pad-ver">
+                <div class="btn-group">
+                  <a style="margin-right:1px" class="btn btn-sm btn-default btn-hover-success" id="upReactComment-${
+                    comment.commentKey
+                  }">
+                    <i id="upNum-${
+                      comment.commentKey
+                    }" class="fas fa-arrow-up">  ${formatNumber(
+              comment.upReactCount
+            )}</i>
+                  </a>
+                  <a class="btn btn-sm btn-default btn-hover-danger" id="downReactComment-${
+                    comment.commentKey
+                  }">
+                    <i id="downNum-${
+                      comment.commentKey
+                    }" class="fa fa-arrow-down">  ${formatNumber(
+              comment.downReactCount
+            )}</i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr style="border: 1px solid black" />
+        `;
+
+            // Check if the user has reacted to this comment and apply red border if necessary
+            updateCommentButtonAppearance(comment.commentKey, userReaction);
+          } else {
+            console.error("Commenter data not found for UID:", commenterUID);
+          }
+        }
+      )
+      .catch((error) => {
+        console.error("Error fetching commenter data:", error);
+      });
+  } else {
+    console.error("Commenter UID is missing for comment:", comment);
+    return; // Skip this comment if commenterUID is missing
+  }
+}
+
 function handleCommentReaction(postKey, commentKey, reactionType) {
   const user = auth.currentUser;
   if (user) {
@@ -747,123 +937,6 @@ function handleCommentReaction(postKey, commentKey, reactionType) {
       });
   } else {
     console.log("User is not logged in.");
-  }
-}
-function populateComment(comment, commentContainer) {
-  const commenterUID = comment.commenterUID;
-
-  // Retrieve commenter data from Users, SuperAdminAcc, SubAdminAcc nodes
-  let commenterRef;
-  if (commenterUID) {
-    const usersRef = ref(db, `Users/${commenterUID}`);
-    const superAdminRef = ref(db, `SuperAdminAcc/${commenterUID}`);
-    const subAdminRef = ref(db, `SubAdminAcc/${commenterUID}`);
-
-    Promise.all([get(usersRef), get(superAdminRef), get(subAdminRef)])
-      .then(([userSnapshot, superAdminSnapshot, subAdminSnapshot]) => {
-        const commenterData =
-          userSnapshot.val() ||
-          superAdminSnapshot.val() ||
-          subAdminSnapshot.val();
-        if (commenterData) {
-          const { firstname, middlename, lastname, campus, role } =
-            commenterData;
-
-          const campusDisplay = role === "superadmin" ? "none" : "block";
-
-          // Set campus text, defaulting to "BatStateU TNEU" if campus is undefined
-          const campusText = campus ? campus : "BatStateU TNEU";
-
-          // Count number of reports
-          const reportCount = comment.CommentReport
-            ? Object.keys(comment.CommentReport).length
-            : 0;
-
-          // Append HTML for the comment to the modal
-          commentContainer.innerHTML += `
-            <div class="media-block" style="margin-right: 5%; margin-top: 2%">
-              <a class="media-left" href="#">
-                <img style="object-fit: cover" class="img-circle img-sm" alt="Profile Picture" id="imageProfile" src="${
-                  commenterData.ImageProfile || "img/profilePic.jpg"
-                }"/>
-              </a>
-              <div class="media-body">
-                <div class="mar-btm">
-                  <p id="name" class="text-semibold media-heading box-inline">
-                    ${firstname} ${middlename} ${lastname}
-                    ${
-                      commenterData.role !== "superadmin" &&
-                      commenterData.role !== "subadmin"
-                        ? `
-                        <img src="img/reportto.png" alt="Report" style="width: 15px" class="enlarge-on-hover" id="hoverreportSec" data-postKey="${postKey}" data-commentKey="${
-                            comment.commentKey
-                          }" />
-
-                          <span id="notificationBadgeSec" class="notification-badge">${formatNumber(
-                            reportCount
-                          )}</span>`
-                        : ""
-                    }
-                  </p>
-                  <a class="options-icon" id="optionitoSec" style="margin-left:5%">
-         <i class="fas fa-ellipsis-v" id="ellipsisIconSec" data-postKey="${postKey}" data-commentKey="${
-            comment.commentKey
-          }"></i>
-
-             <i class="fas fa-ban" id="reportIconSec" style="display: none" data-postKey="${postKey}" data-commentKey="${
-            comment.commentKey
-          }"></i>
-<i class="fas fa-trash-alt" id="deleteIconSec" style="display: none" data-postKey="${postKey}" data-commentKey="${
-            comment.commentKey
-          }"></i>
-
-                  </a>
-                  <p style="line-height: 1.5" id="campus" class="text-muted text-sm" style="display: ${campusDisplay}">
-                    <i class="fa fa-university fa-lg"></i> ${campusText}
-                  </p>
-                  <p id="dateTime" class="text-muted text-sm">
-                    ${comment.commentTime}
-                  </p>
-                </div>
-                <p style="margin-top:3%; margin-bottom:2%" id="commentText">${
-                  comment.commentText
-                }</p>
-                <div class="pad-ver">
-                  <div class="btn-group">
-                    <a style="margin-right:1px" class="btn btn-sm btn-default btn-hover-success" id="upReactComment-${
-                      comment.commentKey
-                    }">
-                      <i id="upNum-${
-                        comment.commentKey
-                      }" class="fas fa-arrow-up">  ${formatNumber(
-            comment.upReactCount
-          )}</i>
-                    </a>
-                    <a class="btn btn-sm btn-default btn-hover-danger" id="downReactComment-${
-                      comment.commentKey
-                    }">
-                      <i id="downNum-${
-                        comment.commentKey
-                      }" class="fa fa-arrow-down">  ${formatNumber(
-            comment.downReactCount
-          )}</i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <hr style="border: 1px solid black" />
-          `;
-        } else {
-          console.error("Commenter data not found for UID:", commenterUID);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching commenter data:", error);
-      });
-  } else {
-    console.error("Commenter UID is missing for comment:", comment);
-    return; // Skip this comment if commenterUID is missing
   }
 }
 
@@ -1204,6 +1277,28 @@ document.addEventListener("click", function (event) {
         .then(() => {
           console.log("Comment deleted successfully");
           alert("Comment deleted successfully");
+
+          // Fetch the current commentCount value
+          const postRef = ref(db, `Forum_Post/${postKey}`);
+          get(postRef)
+            .then((snapshot) => {
+              const postData = snapshot.val();
+              let currentCommentCount = postData.commentCount || 0;
+
+              // Decrement commentCount by 1
+              currentCommentCount--;
+
+              // Update the commentCount value in the database
+              update(ref(db, `Forum_Post/${postKey}`), {
+                commentCount: currentCommentCount,
+              }).catch((error) => {
+                console.error("Error updating comment count:", error);
+              });
+              reloadModalContent(postKey);
+            })
+            .catch((error) => {
+              console.error("Error fetching post data:", error);
+            });
         })
         .catch((error) => {
           console.error("Error deleting comment:", error);
