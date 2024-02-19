@@ -398,7 +398,7 @@ document.addEventListener("click", function (event) {
       const postRef = ref(db, `Forum_Post/${postKey}`);
       remove(postRef)
         .then(() => {
-          console.log("Post deleted successfully");
+          alert("Post deleted successfully");
           // Remove the corresponding HTML element from the DOM
           const container = document.getElementById(`container-${postKey}`);
           if (container) {
