@@ -184,6 +184,14 @@ function fetchForumPosts() {
         const middleName = uploaderData.middlename || "";
         const profileImage = uploaderData.ImageProfile || "img/profilePic.jpg";
 
+        // Check if the uploader is from SuperAdminAcc or SubAdminAcc
+        const isAdmin =
+          uploaderData.role === "superadmin" ||
+          uploaderData.role === "subadmin";
+        const uploaderName = isAdmin
+          ? `Admin: ${firstName} ${middleName} ${lastName}`
+          : `${firstName} ${middleName} ${lastName}`;
+
         container.innerHTML = `
     <div class="panel-body">
       <div class="media-block">
@@ -193,10 +201,9 @@ function fetchForumPosts() {
         <div class="media-body">
           <div class="mar-btm">
             <p id="nameForum-${postKey}" class="text-semibold media-heading box-inline">
-              ${firstName} ${middleName} ${lastName}
+              ${uploaderName}
               ${
-                uploaderData.role !== "superadmin" &&
-                uploaderData.role !== "subadmin"
+                !isAdmin
                   ? `
               <img src="img/reportto.png" alt="Report" style="width: 15px" class="enlarge-on-hover" id="hoverreport"/>
               <span id="notificationBadge"  class="notification-badge">${formatNumber(
@@ -799,6 +806,11 @@ function populateComment(comment, commentContainer) {
             const { firstname, middlename, lastname, campus, role } =
               commenterData;
 
+            const isAdmin = role === "superadmin" || role === "subadmin";
+            const commenterName = isAdmin
+              ? `Admin: ${firstname} ${middlename} ${lastname}`
+              : `${firstname} ${middlename} ${lastname}`;
+
             const campusDisplay = role === "superadmin" ? "none" : "block";
 
             // Set campus text, defaulting to "BatStateU TNEU" if campus is undefined
@@ -820,10 +832,9 @@ function populateComment(comment, commentContainer) {
             <div class="media-body">
               <div class="mar-btm">
                 <p id="name" class="text-semibold media-heading box-inline">
-                  ${firstname} ${middlename} ${lastname}
+                  ${commenterName}
                   ${
-                    commenterData.role !== "superadmin" &&
-                    commenterData.role !== "subadmin"
+                    !isAdmin
                       ? `
                       <img src="img/reportto.png" alt="Report" style="width: 15px" class="enlarge-on-hover" id="hoverreportSec" data-postKey="${postKey}" data-commentKey="${
                           comment.commentKey
