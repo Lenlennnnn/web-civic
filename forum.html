@@ -738,7 +738,7 @@
                 <div class="modal-footer">
                   <input
                     type="text"
-                    id="commentText"
+                    id="commenText"
                     class="comment-input"
                     placeholder="Add a comment..." />
                   <button id="postBtn" class="post-btn">Send</button>
@@ -994,6 +994,8 @@
       // Close the modal
       function closeModalpl() {
         modalpl.style.display = "none";
+        const toggleSwitch = document.getElementById("toggleReport");
+        toggleSwitch.checked = false;
       }
 
       // Close the modal when clicking outside of it
