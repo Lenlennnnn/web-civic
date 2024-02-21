@@ -310,13 +310,13 @@ function viewUserDetails(userId) {
           userData.ContactEme || "N/A"
         }" readonly ></input></strong></p>
         <p><strong>Current Engagement:<input class="form-control" id="currentEngfield" type="text" value="${
-          userData.CurrentEngagement || "N/A"
+          userData.CurrentEngagement || "0"
         }" readonly ></input></strong></p>
         <p><strong>Finish Activity:<input class="form-control" id="finishActfield" type="text" value="${
-          userData.finishactivity || "N/A"
+          userData.finishactivity || "0"
         }" readonly ></input></strong></p>
         <p><strong>Active Points:<input class="form-control" id="activePtsfield" type="text" value="${
-          userData.activepts || "N/A"
+          userData.activepts || "0"
         }" readonly ></input></strong></p>
         <p><u><h5>Academic Information:</h5></u></p>
         <p><strong>Campus:<input class="form-control" id="campusfield" type="text" value="${

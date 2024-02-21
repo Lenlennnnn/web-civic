@@ -326,20 +326,24 @@
       }
 
       .modal-contentm {
-        background-color: #fefefe;
-        margin: auto;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+       width: 40%;
+        height: 95%;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         padding: 20px;
-        border: 1px solid #888;
-        width: 70%;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        position: relative;
+        overflow-y: auto;
       }
 
       .closem {
         color: #aaa;
         position: absolute;
-        top: 5px;
-        right: 10px;
+        top: 10px;
+        right: 20px;
         font-size: 28px;
         font-weight: bold;
         cursor: pointer;
@@ -533,14 +537,18 @@ width: 114%;
         </button>
         </button>
       </a>
-      <div class="modalm" id="myModalm">
+      <div class="modal" id="myModalm">
         <div class="modal-contentm" id="modalcentm">
           <span class="closem" id="closeModalEx">&times;</span>
           <h4>Add Multiple Accounts</h4>
           <hr />
-          <button type="button" id="addrow" class="btn btn-dark">
+          <button style="margin-bottom:2% ;" type="button" id="addrow" class="btn btn-dark">
             Add row
           </button>
+             <p style="margin-bottom: 15px">
+                          Total Rows:
+                          <span id="totalRows">0</span>
+                        </p>
           <form id="formadd">
             <div class="row" id="inputrow" style="width: 200%"></div>
             <button type="submit" id="subac">Submit</button>

@@ -34,19 +34,9 @@ addgrBtn.addEventListener("click", function () {
   modal.style.display = "block";
 });
 
-function closeModal() {
-  modal.style.display = "none";
-}
-
-// Close the modal if user clicks outside the modal content
-window.onclick = function (event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-};
-
 let counter = 1; // Initialize a counter for unique IDs
 
+// Function to add a new row of input fields
 // Function to add a new row of input fields
 function addRow() {
   var inputRow = document.getElementById("inputrow");
@@ -78,6 +68,16 @@ function addRow() {
 
   // Append the new row to the container
   inputRow.appendChild(newRow);
+
+  // Update the total number of rows displayed
+  updateTotalRows();
+}
+
+// Function to update the total number of rows displayed
+function updateTotalRows() {
+  var totalRowsElement = document.getElementById("totalRows");
+  var inputRow = document.getElementById("inputrow");
+  totalRowsElement.innerText = inputRow.children.length;
 }
 
 // Add an event listener to the "Add row" button
@@ -219,10 +219,9 @@ function removeAddedRows() {
     inputRow.removeChild(inputRow.firstChild);
   }
 
-  // Reset the form
   var form = document.getElementById("formadd");
   form.reset(); // Reset the form
-
+  resetTotalRows();
   // Close the specific modal
   closeSpecificModal(); // Function to close a specific modal
 }
@@ -245,13 +244,15 @@ document
     if (confirm("Are you sure?")) {
       // If 'Yes' is clicked, show success message
       alert("Success");
-
+      resetTotalRows();
       // Close all open modals
       closeAllModals();
     }
   });
 document.getElementById("closeModalEx").addEventListener("click", function () {
   closeSpecificModal();
+  resetTotalRows();
+  removeAddedRows();
 });
 // Function to close all open modals
 function closeAllModals() {
@@ -259,4 +260,8 @@ function closeAllModals() {
   modals.forEach(function (modal) {
     modal.style.display = "none";
   });
+}
+function resetTotalRows() {
+  var totalRowsElement = document.getElementById("totalRows");
+  totalRowsElement.innerText = "0";
 }
