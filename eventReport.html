@@ -276,6 +276,48 @@
         border: black 1px solid;
         cursor: default;
       }
+
+        .table-filter .filter-group {
+        margin-left: 850px;
+        margin-top: -10%;
+      }
+      .table-filter input,
+      .table-filter select {
+        height: 40px;
+        border-radius: 3px;
+        border-color: #ddd;
+        box-shadow: none;
+        margin-top: 10px;
+        margin-right: 20px;
+      }
+
+      .table-filter .btn {
+        height: 34px;
+        margin-top: 10px;
+      }
+
+      .table-filter select,
+      .table-filter input {
+        display: inline-block;
+        margin-left: 5px;
+      }
+      .table-filter input {
+        width: 200px;
+        display: inline-block;
+      }
+       #searchfieldcontainer {
+        position: relative;
+        right: 24px;
+      }
+         #btnfilter {
+        position: relative;
+        left: 146%;
+        top: -15px;
+      }
+        #searchfilter {
+        position: relative;
+        left: 36%;
+      }
     </style>
   </head>
 
@@ -302,50 +344,52 @@
           User Report
         </button>
       </a>
-
- 
-
+      
       <div class="container py-5">
         <div class="row">
-          <table id="example" class="table table-striped" style="width: 110%">
+          <div class="table-filter">
+                <div class="row">
+                  <div class="col-sm-9">
+                    <div id="searchfieldcontainer">
+                      <button
+                        type="button"
+                        id="btnfilter"
+                        class="btn btn-primary">
+                        <i class="fa fa-search"></i>
+                      </button>
+
+                      <div
+                        class="filter-group"
+                        id="searchfilter">
+                        <label style="margin-top: 10px">Search</label>
+
+                        <input
+                          id="searchInput"
+                          type="text"
+                          class="form-control" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          <table id="example" class="table table-striped" style="width: 110%;">
             <thead class="headerr">
+              
               <tr>
                 <th>No.</th>
-                    <th>Event Poster</th>
+                <th>Poster</th>
                 <th>Title</th>
-                           <th>Campus</th>
+                <th>Campus</th>
                 <th>Schedule</th>
                 <th>Status</th>
-                   <th>Current Participants</th>
-                <th>Total Confirmed Attendance</th>
-  
+                <th>Total Participant</th>
+                <th>Total Confirmed Participants</th>
               </tr>
             </thead>
             <tbody id="eventTable">
-              <tr>
-                <td id="number">1</td>
-                    <td>
-                        <a href="#"
-                          ><img
-                            src="img/cleaning.jpg"
-                            class="eventpic"
-                            alt="Avatar"
-                            id="eventpicimg"
-                        /></a>
-                      </td>
-              <td id="title">Loading.....</td>
-                 <td id="campus">Loading.....</td>
-                      <td id="schedule">Loading.....</td>
-                      <td id="status">Loading.....</td>
-                      <td id="currentParty">Loading.....</td>
-                      <td id="totalConfirmed">Loading.....</td>
-              </tr>
-            
-              </tr>
             </tbody>
             </tbody>
           </table>
-          <!-- Modal for Event Details -->
         </div>
       </div>
     </div>
@@ -353,8 +397,16 @@
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-      new DataTable("#example");
+  
+       $(document).ready(function() {
+        $('#example').DataTable({
+            searching: false
+        });
+    });
     </script>
+     <script type="module" src="js/eventReport.js"></script>
   </body>
 </html>
