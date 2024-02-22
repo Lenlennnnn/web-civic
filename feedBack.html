@@ -1046,6 +1046,9 @@
       if (table && tableContainer) {
         tableContainer.style.maxHeight = "400px"; // Adjust the maximum height as needed
 
+        const thead = table.querySelector("thead");
+        thead.style.position = "sticky";
+        thead.style.top = 0;
         // Hide or show the scrollbar based on content overflow
         const checkOverflow = () => {
           tableContainer.style.overflowY =
@@ -1066,6 +1069,9 @@
       if (tables && tableContainers) {
         tableContainers.style.maxHeight = "500px"; // Adjust the maximum height as needed
 
+        const thead = table.querySelector("thead");
+        thead.style.position = "sticky";
+        thead.style.top = 0;
         // Hide or show the scrollbar based on content overflow
         const checkOverflow = () => {
           tableContainers.style.overflowY =

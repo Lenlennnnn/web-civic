@@ -995,6 +995,7 @@
       }
       .upcomingEvents {
         margin-left: -35%;
+        margin-top: -2%;
         justify-content: center;
       }
       #declineConfirmationModal {
@@ -1050,7 +1051,7 @@
       <div class="upcomingEvents">
         <div class="container-xl">
           <div class="table-responsive">
-            <div class="table-wrapper" style="height: 600px">
+            <div class="table-wrapper" style="height: 690px">
               <div class="table-title">
                 <div class="row">
                   <div class="col-sm-4">
@@ -1789,8 +1790,10 @@
       const table = document.getElementById("tableevents");
 
       if (table && tableContainer) {
-        tableContainer.style.maxHeight = "400px"; // Adjust the maximum height as needed
-
+        tableContainer.style.maxHeight = "520px"; // Adjust the maximum height as needed
+        const thead = table.querySelector("thead");
+        thead.style.position = "sticky";
+        thead.style.top = 0;
         // Hide or show the scrollbar based on content overflow
         const checkOverflow = () => {
           tableContainer.style.overflowY =

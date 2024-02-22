@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Event Reports</title>
+    <title>Engagement Report</title>
     <link rel="icon" type="image/png" href="login/images/icons/civicon.png" />
     <link rel="stylesheet" href="css/dashboard.css" />
     <link
@@ -12,115 +12,31 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
     <link
       rel="stylesheet"
-      href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+      href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.15.4/css/ionicons.min.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
-    <style>
-      .container {
-        position: relative;
-        right: 235px;
-        width: 200%;
-        bottom: 25px;
-      }
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
+    <link rel="stylesheet" href="css/post.css" />
+
+    <style>
       .h1-group {
         position: relative;
         bottom: 58px;
         right: 180px;
       }
 
-      /* for modal */
-      .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-      }
-
-      .modal-content {
-        position: absolute;
-        top: 50%;
-        /* Position at the vertical center of the viewport */
-        left: 50%;
-        /* Position at the horizontal center of the viewport */
-        transform: translate(-50%, -50%);
-        /* Center the content */
-        max-width: 48%;
-        /* Limit the width of the content */
-        height: 80%;
-        width: 80%;
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        overflow-y: auto;
-        /* Add scrollbar if content exceeds modal height */
-      }
-
-      .close {
-        position: relative;
-        top: -10px;
-        font-size: 25px;
-        font-weight: bold;
-        cursor: pointer;
-        margin-left: 476px;
-      }
-
-      /* Styles for elements inside .container-popup */
-      .container-popup {
-        width: 537px;
-        padding: 20px;
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      .container-popup h2 {
-        text-align: center;
-      }
-
-      .container-popup label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-      }
-
-      .container-popup input,
-      .container-popup select {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-      }
-
-      .container-popup button {
+      .custom-button:hover {
         background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
-        cursor: pointer;
-        width: 100%;
-      }
-
-      .container-popup button:hover {
-        background-color: #0056b3;
-      }
-
-      .custom-button {
-        position: absolute;
-        top: 100px;
-        left: -165px;
-        transform: translate(-50%, -50%);
-        cursor: pointer;
-        z-index: 1;
+        /* Change background color on hover */
+        color: #fff;
+        /* Change text color on hover */
+        transform: translate(-50%, -50%) scale(1.05);
+        /* Scale up slightly on hover */
       }
 
       .upper-container {
@@ -135,10 +51,6 @@
         /* Place the container behind the main content */
       }
 
-      thead {
-        border: solid 1px black;
-      }
-
       .back-button:hover {
         background-color: #8c0000;
         /* Change background color on hover */
@@ -148,138 +60,155 @@
         /* Slightly scale up on hover */
       }
 
-      /* background color */
-
-      .main {
-        background-color: #e1e1e1;
-        border-radius: 50% 0px 0px 50%;
+      thead {
+        border: solid 1px black;
       }
-
       body {
         background-color: #e1e1e1;
       }
 
-      #archivebtn {
-        margin-left: 120px;
+      .main {
+        background-color: #e1e1e1;
       }
 
-      #printbtn {
-        margin-left: 109.2%;
-      }
-      /* Styles for the modal */
-      .modalqq {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.5);
+      #evntimgpic {
+        border: solid black;
+        border-radius: 10px;
+        margin-bottom: 20px;
       }
 
-      .modal-contentqq {
-        background-color: #fefefe;
-        margin: auto;
-        padding: 20px;
-        border: 1px solid #888;
-        border-radius: 8px;
-        width: 80%;
-        max-width: 700px;
-        position: relative;
-      }
-
-      .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
+      label {
         font-weight: bold;
       }
 
-      .close:hover,
-      .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-      }
-
-      #closeModalqq {
+      .modal-content {
+        width: 130%;
         position: relative;
-        left: 86%;
-      }
-
-      #exampleModalIcon {
-        position: relative;
-        left: 90%;
-        font-size: 50px;
-      }
-
-      #modalTitleqq {
-        position: relative;
-        right: 78%;
-      }
-
-      .user-icon {
-        position: relative;
-        left: 90%;
-        font-size: 50px;
-        transition: transform 0.3s ease; /* Adding transition for smooth effect */
-        cursor: pointer;
-      }
-
-      /* Enlarge effect on hover */
-      .user-icon:hover {
-        transform: scale(1.2); /* Change the scale factor as desired */
+        right: 80px;
       }
 
       #newcnt {
-        max-width: 1000px;
-        width: 900px;
-        height: 500px;
         position: relative;
-        top: 280px;
+        right: 50%;
+        width: 200%;
+        max-height: 800px;
+        height: 540px;
       }
 
-      /* Ensure the form elements are displayed in-line */
       .form-row .form-group {
         display: inline-block;
         width: 47.2%; /* Adjust the width as per your layout needs */
         margin-right: 5%; /* Adjust the spacing between elements */
         vertical-align: top; /* Align elements at the top */
-      }
+      } /* Ensure the form elements are displayed in-line */
 
       /* Clear margin for the last element in the row */
       .form-row .form-group:last-child {
         margin-right: 0;
       }
 
-      #kulayan.thead-dark th {
-        background-color: black !important; /* Change to your preferred color */
-        color: white; /* Set text color to white for better contrast */
-      }
-      .dataTables_wrapper .dataTables_filter {
-        width: 120%;
-      }
-      /* Adjust the position of DataTables pagination */
-      .dataTables_wrapper .dataTables_paginate {
-        width: 117%;
-      }
-      table.table .eventpic {
-        margin: 0px;
-        width: 110px;
-        height: 70px;
-        padding: 0px;
-        border-radius: 3%;
-      }
-     .eventpic {
-        border: black 1px solid;
-        cursor: default;
+      .search {
+        position: relative;
+        top: 10px;
       }
 
-        .table-filter .filter-group {
-        margin-left: 850px;
-        margin-top: -10%;
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      th,
+      td {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        text-align: left;
+      }
+
+      thead {
+        background-color: #f2f2f2;
+      }
+
+      th {
+        background-color: #333;
+        color: white;
+      }
+      /* ============================ dropdown menu ============================== */
+
+      /* Style for the transition effect */
+      .page-transition {
+        opacity: 1;
+        transition: opacity 0.5s ease-in-out;
+      }
+
+      /* Style for the page being loaded */
+      .page-loading {
+        opacity: 0;
+      }
+
+      .table-responsive {
+        width: 112%;
+        justify-content: center;
+        overflow-x: auto;
+      }
+
+      .table-wrapper {
+        min-width: 700px;
+
+        background: #fff;
+        padding: 20px 25px;
+        border-radius: 3px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+      }
+      .table-wrapper .btn {
+        float: right;
+        color: red;
+        background-color: #fff;
+        border-radius: 3px;
+        border: none;
+        outline: none !important;
+        margin-left: 10px;
+      }
+
+      .table-wrapper .btn:hover {
+        color: #fff;
+        background: #10c469;
+      }
+      .table-wrapper .btn.btn-primary {
+        color: #fff;
+        background: #03a9f4;
+      }
+      .table-wrapper .btn.btn-primary:hover {
+        background: #03a3e7;
+      }
+      .table-title .btn {
+        font-size: 13px;
+        border: none;
+      }
+      .table-title .btn i {
+        float: left;
+        font-size: 21px;
+        margin-right: 5px;
+      }
+      .table-title .btn span {
+        float: left;
+        margin-top: 2px;
+      }
+      .table-title {
+        color: #fff;
+        background: #343a40;
+        padding: 16px 25px;
+
+        margin: -20px -25px 10px;
+        border-radius: 3px 3px 0 0;
+      }
+      .table-title h2 {
+        margin: 5px 0 0;
+        font-size: 23px;
+      }
+
+      .table-filter .filter-group {
+        margin-left: 15px;
       }
       .table-filter input,
       .table-filter select {
@@ -305,18 +234,607 @@
         width: 200px;
         display: inline-block;
       }
-       #searchfieldcontainer {
+      .filter-group select.form-control {
+        width: 250px;
+      }
+      .filter-icon {
+        float: right;
+        margin-top: 7px;
+      }
+      .filter-icon i {
+        font-size: 18px;
+        opacity: 0.7;
+      }
+
+      .filter-group {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-bottom: 10px;
+      }
+
+      .filter-group select {
+        margin-left: 10px; /* Adjust as needed */
+      }
+
+      .filter-group label {
+        font-weight: normal;
+        margin-left: 5px; /* Adjust as needed */
+      }
+
+      #searchfilter {
+        position: relative;
+        left: 36%;
+      }
+      #searchfilterSec {
+        margin-top: 15px;
+      }
+      #inputSearch {
+        margin-left: 10px;
+      }
+      table.table tr th,
+      table.table tr td {
+        border-color: #e1e1e1;
+        padding: 12px 15px;
+        vertical-align: middle;
+      }
+      table.table tr th:first-child {
+        width: 60px;
+      }
+      table.table tr th:last-child {
+        width: 80px;
+      }
+
+      table.table th i {
+        font-size: 13px;
+        margin: 0 5px;
+        cursor: pointer;
+      }
+
+      table.table td a:hover {
+        color: #2196f3;
+      }
+
+      table.table .eventpic {
+        margin: 0px;
+        width: 110px;
+        height: 70px;
+        padding: 0px;
+        border-radius: 3%;
+      }
+      table.table .profilepic {
+        width: 75px;
+        height: 75px;
+        border-radius: 100%;
+      }
+      .text-success {
+        color: #10c469;
+      }
+      .text-info {
+        color: #62c9e8;
+      }
+      .text-warning {
+        color: #ffc107;
+      }
+      .text-danger {
+        color: #dc3545;
+      }
+      /* Targeting the button inside the .col-sm-8 */
+      .col-sm-8 a.btn {
+        /* Your styles here */
+        display: inline-block;
+        background-color: #28a745;
+        color: #ffffff;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        position: relative;
+        bottom: 35px;
+      }
+
+      .col-sm-8 a.btn:hover {
+        /* Styles when hovering over the button */
+        background-color: #1f7f3b;
+        color: white;
+      }
+
+      #btnfilter {
+        position: relative;
+        left: 34%;
+        top: 2px;
+      }
+      #btnfilterSec {
+        position: relative;
+        left: 2px;
+        top: 15px;
+      }
+      #eventfilter {
+        position: relative;
+        right: 30px;
+        bottom: 60px;
+        float: left;
+      }
+
+      #campusfilter {
+        position: relative;
+        right: 30px;
+        bottom: 60px;
+        float: left;
+      }
+      #campusfilterSec {
+        position: relative;
+        left: 10px;
+        margin-top: 15px;
+        float: left;
+      }
+      #attendedFilter {
+        position: relative;
+        margin-left: 10px;
+        margin-top: 15px;
+        float: left;
+      }
+      #searchfieldcontainer {
         position: relative;
         right: 24px;
       }
-         #btnfilter {
+      #searchfieldcontainerSec {
         position: relative;
-        left: 146%;
-        top: -15px;
+        right: 5px;
       }
-        #searchfilter {
+      #tableevents {
         position: relative;
-        left: 36%;
+        bottom: 10px;
+      }
+
+      /* Style for the button */
+      .vieweventdet {
+        background-color: #dc3545;
+        color: white;
+        border-radius: 5px;
+        border: none;
+        padding: 8px 16px;
+        font-size: 16px;
+        transition: background-color 0.3s, transform 0.3s;
+      }
+
+      /* Hover effect: Darker color and larger size */
+      .vieweventdet:hover {
+        background-color: #9c2e3b; /* Darker color */
+        transform: scale(1.1); /* Enlarge button */
+        cursor: pointer;
+      }
+      /* Style the table cells */
+      #tableevents th,
+      #tableevents td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ccc; /* Add a border for separation */
+      }
+
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+      .eventpic {
+        border: black 2px solid;
+        cursor: default;
+      }
+      .profilepic {
+        border: #6c757d 1px solid;
+        cursor: default;
+      }
+      #iconto {
+        position: inherit;
+        top: 5px;
+      }
+      #titleto {
+        position: inherit;
+        top: 5px;
+        font-size: 20px;
+      }
+
+      #btnparaview {
+        background-color: #dc3545;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      #btnparaview:hover {
+        background-color: #9c232f; /* Darker color for hover */
+        transform: scale(1.1); /* Enlarge the button on hover */
+      }
+
+      /* Styling for the modal not functioning */
+      .modalevnts {
+        display: none; /* Hide the modal by default */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+      }
+
+      .modal-contentevnts {
+        background-color: #fff;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 70%;
+        max-width: 600px;
+        border-radius: 5px;
+      }
+
+      .modal-headerevnts,
+      .modal-bodyevnts,
+      .modal-footerevnts {
+        padding: 10px 0;
+      }
+
+      .modal-headerevnts {
+        border-bottom: 1px solid #ccc;
+      }
+
+      .modal-footerevnts {
+        border-top: 1px solid #ccc;
+        text-align: right;
+      }
+
+      #closeModalevnts {
+        background-color: #6c757d; /* Light color */
+        color: #fff; /* Text color */
+        /* Add any other necessary styling */
+      }
+
+      /* Darker hover effect */
+      #closeModalevnts:hover {
+        background-color: #495057; /* Darker color on hover */
+      }
+
+      #evntimgpicnew {
+        width: 555px;
+        border-radius: 5%;
+        border: black solid 2px;
+      }
+
+      #modalAttendee {
+        position: relative;
+        bottom: 10px;
+        margin-bottom: -40px;
+        font-size: 45px;
+        transition: transform 0.3s ease-in-out;
+        color: #495057;
+        cursor: pointer;
+      }
+
+      #modalAttendee:hover {
+        transform: scale(1.2);
+      }
+
+      .modal-headerevnts {
+        padding-top: 0%;
+        margin-top: 0%;
+        height: 35px;
+      }
+
+      .modal-contentevnts {
+        position: relative;
+        bottom: 150px;
+      }
+
+      #editmov {
+        position: relative;
+        bottom: 55px;
+      }
+
+      /* modal for att */
+      /* Styling for your specific modal IDs */
+      #myModalatt {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+      }
+
+      #myModalatt .modal-dialogatt {
+        position: relative;
+        width: auto;
+        max-width: 600px;
+        margin: 10% auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+      }
+
+      #myModalatt .modal-headeratt {
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+      }
+
+      #myModalatt .modal-titleatt {
+        margin: 0;
+      }
+
+      #myModalatt .modal-bodyatt {
+        padding: 20px 0;
+      }
+
+      #myModalatt .modal-footeratt {
+        border-top: 1px solid #ccc;
+        padding-top: 10px;
+        text-align: right;
+      }
+
+      #myModalatt .closeatt {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+      }
+      .closeat {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        position: relative;
+        bottom: 10px;
+      }
+
+      .closeat:hover,
+      .closeat:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      #myModalatt .btnatt {
+        padding: 8px 20px;
+        border-radius: 4px;
+        border: none;
+        color: #fff;
+        background-color: #dc3545;
+        cursor: pointer;
+      }
+
+      #myModalatt .btnatt:hover {
+        background-color: #c82333;
+      }
+
+      .modalpo {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 2;
+        overflow: auto; /* Ito ang binago: ginamit na 'overflow: auto' dito */
+      }
+
+      .modal-contentpo {
+        background-color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        text-align: center;
+        width: 50%;
+        max-height: 100%;
+        overflow-y: auto;
+      }
+
+      .closepo {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .closepo:hover,
+      .closepo:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .closepo {
+        display: block;
+      }
+
+      .modal-contentpo #lblpt,
+      .modal-contentpo #hederrr {
+        display: block;
+      }
+
+      #campusTarget {
+        background-color: #fff; /* Dark background color */
+        color: black; /* Text color */
+        border: 1px solid #ccc; /* Dark border */
+        padding: 8px 16px; /* Adjust padding as needed */
+        cursor: pointer; /* Change cursor on hover */
+        transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+      }
+
+      #campusTarget:hover {
+        background-color: #aaa; /* Darker background color on hover */
+        border-color: #aaa; /* Darker border color on hover */
+        color: #fff; /* Text color on hover */
+      }
+      #campusField {
+        background-color: #fff; /* Dark background color */
+        color: black; /* Text color */
+        border: 1px solid #ccc; /* Dark border */
+        padding: 8px 16px; /* Adjust padding as needed */
+        cursor: pointer; /* Change cursor on hover */
+        transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+      }
+
+      #campusField:hover {
+        background-color: #aaa; /* Darker background color on hover */
+        border-color: #aaa; /* Darker border color on hover */
+        color: #fff; /* Text color on hover */
+      }
+      #myModalnm {
+        z-index: 999999999;
+      }
+
+      .modal-contentnm {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 40%;
+        z-index: 3;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .closenm {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .closenm:hover,
+      .closenm:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .checkboxna {
+        position: relative;
+        top: 10px;
+        right: 290px;
+      }
+
+      .labelnato {
+        position: relative;
+        left: 50px;
+        margin: -20px;
+      }
+
+      #okButton {
+        margin-left: 85%;
+      }
+
+      #okButton {
+        background-color: black;
+        /* Other button styles */
+      }
+
+      #okButton:hover {
+        background-color: darkgray; /* Change background color on hover */
+        /* Additional styles for hover state */
+      }
+
+      /* Select All button */
+      #selectAllBtnn {
+        background-color: darkgray;
+        /* Other button styles */
+      }
+
+      #selectAllBtnn:hover {
+        background-color: lightgray; /* Change background color on hover */
+        /* Additional styles for hover state */
+      }
+
+      /* Deselect All button */
+      #deselectAllBtnn {
+        background-color: gray;
+        /* Other button styles */
+      }
+
+      #deselectAllBtnn:hover {
+        background-color: silver; /* Change background color on hover */
+        /* Additional styles for hover state */
+      }
+      #introductionField,
+      #objectiveField,
+      #instructionField {
+        line-height: 1.8; /* You can adjust this value to increase or decrease the vertical spacing */
+      }
+      .btn.btn-danger {
+        background-color: #dc3545;
+        color: #fff;
+      }
+
+      .btn.btn-danger:hover {
+        background: #bd2130; /* Change this color to your desired hover color */
+      }
+      #categoryField:disabled {
+        opacity: 10;
+        color: black;
+      }
+      .modalat {
+        display: none;
+        position: fixed;
+        z-index: 999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      .modal-contentat {
+        background-color: #fff;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .modal-headerat h2 {
+        margin: 0;
+      }
+      #myModalat {
+        z-index: 1001; /* Use a value higher than the z-index of eventModalupcom */
+      }
+      #logoutForm {
+        height: 25%;
+      }
+      .center-text {
+        text-align: center;
+        font-size: 18px;
+      }
+      .upcomingEvents {
+        margin-left: -35%;
+        margin-top: -2%;
+        justify-content: center;
+      }
+      #declineConfirmationModal {
+        z-index: 1050;
+      }
+      .table-fix th {
+        background-color: #6c757d;
+        position: sticky;
+        color: #fff;
+        z-index: 2;
       }
     </style>
   </head>
@@ -335,19 +853,22 @@
           type="module"
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
       </div>
-      <h1 class="h1-group">Event Reports</h1>
-      <a href="userReport.html" id="openModalBtn">
-        <button
-          type="button"
-          class="btn btn-success custom-button"
-          id="userbtn">
-          User Report
-        </button>
-      </a>
-      
-      <div class="container py-5">
-        <div class="row">
-          <div class="table-filter">
+      <h1 class="h1-group">Engagement Report</h1>
+
+      <!-- =============================================== upcoming Events ================================================ -->
+
+      <div class="upcomingEvents">
+        <div class="container-xl">
+          <div class="table-responsive">
+            <div class="table-wrapper" style="height: 690px">
+              <div class="table-title">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <h2>Engagement Report Table</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="table-filter">
                 <div class="row">
                   <div class="col-sm-9">
                     <div id="searchfieldcontainer">
@@ -358,9 +879,7 @@
                         <i class="fa fa-search"></i>
                       </button>
 
-                      <div
-                        class="filter-group"
-                        id="searchfilter">
+                      <div class="filter-group" id="searchfilter">
                         <label style="margin-top: 10px">Search</label>
 
                         <input
@@ -369,44 +888,116 @@
                           class="form-control" />
                       </div>
                     </div>
+                    <div class="filter-group" id="campusfilter">
+                      <label style="margin-top: -5px">Campus</label>
+
+                      <select class="form-control" style="margin-top: -5px">
+                        <option value="" disabled selected>
+                          Filter Campus
+                        </option>
+                        <option value="ARASOF Nasugbu Campus">
+                          ARASOF Nasugbu Campus
+                        </option>
+                        <option value="Balayan Campus">Balayan Campus</option>
+                        <option value="JPLPC Malvar Campus">
+                          JPLPC Malvar Campus
+                        </option>
+                        <option value="Lemery Campus">Lemery Campus</option>
+                        <option value="Lipa Campus">Lipa Campus</option>
+                        <option value="Lobo Campus">Lobo Campus</option>
+                        <option value="Mabini Campus">Mabini Campus</option>
+                        <option value="Pablo Borbon Campus I">
+                          Pablo Borbon Campus I
+                        </option>
+                        <option value=" Pablo Borbon Campus II">
+                          Pablo Borbon Campus II
+                        </option>
+                        <option value="Rosario Campus">Rosario Campus</option>
+                        <option value="San Juan Campus">San Juan Campus</option>
+                        <option value="All Campus">All Campus</option>
+                      </select>
+                      <i
+                        class="fas fa-chevron-down"
+                        style="margin-left: -45px; margin-top: -15px"></i>
+                    </div>
                   </div>
                 </div>
               </div>
-          <table id="example" class="table table-striped" style="width: 110%;">
-            <thead class="headerr">
-              
-              <tr>
-                <th>No.</th>
-                <th>Poster</th>
-                <th>Title</th>
-                <th>Campus</th>
-                <th>Schedule</th>
-                <th>Status</th>
-                <th>Total Participant</th>
-                <th>Total Confirmed Participants</th>
-              </tr>
-            </thead>
-            <tbody id="eventTable">
-            </tbody>
-            </tbody>
-          </table>
+              <div style="margin-top: -5%" class="table-container">
+                <table class="table table-striped table-hover" id="tableevents">
+                  <thead class="table-fix">
+                    <tr>
+                      <th>No.</th>
+                      <th>Poster</th>
+                      <th>Title</th>
+                      <th>Campus</th>
+                      <th>Schedule</th>
+                      <th>Status</th>
+                      <th>Total Participant</th>
+                      <th>Total Confirmed Participants</th>
+                    </tr>
+                  </thead>
+                  <tbody id="eventTable"></tbody>
+                </table>
+                <!-- Updated Modal Structure -->
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <script src="js/addAdmin.js"></script>
+    <script>
+      // JavaScript to handle the smooth transition
+      const links = document.querySelectorAll(".page-transition");
+
+      links.forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault(); // Prevent the default navigation
+
+          // Apply the transition effect
+          document.body.classList.add("page-loading");
+
+          // Navigate to the new page after a short delay (for the transition effect)
+          setTimeout(() => {
+            window.location.href = link.href;
+          }, 500); // Adjust the delay time as needed
+        });
+      });
+
+      // JavaScript to initialize table scrolling
+      const tableContainer = document.querySelector(".table-container");
+      const table = document.getElementById("tableevents");
+
+      if (table && tableContainer) {
+        tableContainer.style.maxHeight = "520px"; // Adjust the maximum height as needed
+
+        // Fix the header position
+        const thead = table.querySelector("thead");
+        thead.style.position = "sticky";
+        thead.style.top = 0;
+
+        // Hide or show the scrollbar based on content overflow
+        const checkOverflow = () => {
+          tableContainer.style.overflowY =
+            tableContainer.scrollHeight > tableContainer.clientHeight
+              ? "scroll"
+              : "auto";
+        };
+
+        // Initially check for overflow
+        checkOverflow();
+
+        // Re-check overflow on window resize
+        window.addEventListener("resize", checkOverflow);
+      }
+    </script>
+
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script>
-  
-       $(document).ready(function() {
-        $('#example').DataTable({
-            searching: false
-        });
-    });
-    </script>
-     <script type="module" src="js/eventReport.js"></script>
+    <script type="module" src="js/eventReport.js"></script>
   </body>
 </html>
