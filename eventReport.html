@@ -30,15 +30,6 @@
         right: 180px;
       }
 
-      .custom-button:hover {
-        background-color: #007bff;
-        /* Change background color on hover */
-        color: #fff;
-        /* Change text color on hover */
-        transform: translate(-50%, -50%) scale(1.05);
-        /* Scale up slightly on hover */
-      }
-
       .upper-container {
         width: 100%;
         height: 50px;
@@ -170,10 +161,6 @@
         margin-left: 10px;
       }
 
-      .table-wrapper .btn:hover {
-        color: #fff;
-        background: #10c469;
-      }
       .table-wrapper .btn.btn-primary {
         color: #fff;
         background: #03a9f4;
@@ -266,33 +253,9 @@
         position: relative;
         left: 36%;
       }
-      #searchfilterSec {
-        margin-top: 15px;
-      }
+
       #inputSearch {
         margin-left: 10px;
-      }
-      table.table tr th,
-      table.table tr td {
-        border-color: #e1e1e1;
-        padding: 12px 15px;
-        vertical-align: middle;
-      }
-      table.table tr th:first-child {
-        width: 60px;
-      }
-      table.table tr th:last-child {
-        width: 80px;
-      }
-
-      table.table th i {
-        font-size: 13px;
-        margin: 0 5px;
-        cursor: pointer;
-      }
-
-      table.table td a:hover {
-        color: #2196f3;
       }
 
       table.table .eventpic {
@@ -302,58 +265,11 @@
         padding: 0px;
         border-radius: 3%;
       }
-      table.table .profilepic {
-        width: 75px;
-        height: 75px;
-        border-radius: 100%;
-      }
-      .text-success {
-        color: #10c469;
-      }
-      .text-info {
-        color: #62c9e8;
-      }
-      .text-warning {
-        color: #ffc107;
-      }
-      .text-danger {
-        color: #dc3545;
-      }
-      /* Targeting the button inside the .col-sm-8 */
-      .col-sm-8 a.btn {
-        /* Your styles here */
-        display: inline-block;
-        background-color: #28a745;
-        color: #ffffff;
-        padding: 10px 20px;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-        position: relative;
-        bottom: 35px;
-      }
-
-      .col-sm-8 a.btn:hover {
-        /* Styles when hovering over the button */
-        background-color: #1f7f3b;
-        color: white;
-      }
 
       #btnfilter {
         position: relative;
         left: 34%;
         top: 2px;
-      }
-      #btnfilterSec {
-        position: relative;
-        left: 2px;
-        top: 15px;
-      }
-      #eventfilter {
-        position: relative;
-        right: 30px;
-        bottom: 60px;
-        float: left;
       }
 
       #campusfilter {
@@ -362,48 +278,7 @@
         bottom: 60px;
         float: left;
       }
-      #campusfilterSec {
-        position: relative;
-        left: 10px;
-        margin-top: 15px;
-        float: left;
-      }
-      #attendedFilter {
-        position: relative;
-        margin-left: 10px;
-        margin-top: 15px;
-        float: left;
-      }
-      #searchfieldcontainer {
-        position: relative;
-        right: 24px;
-      }
-      #searchfieldcontainerSec {
-        position: relative;
-        right: 5px;
-      }
-      #tableevents {
-        position: relative;
-        bottom: 10px;
-      }
 
-      /* Style for the button */
-      .vieweventdet {
-        background-color: #dc3545;
-        color: white;
-        border-radius: 5px;
-        border: none;
-        padding: 8px 16px;
-        font-size: 16px;
-        transition: background-color 0.3s, transform 0.3s;
-      }
-
-      /* Hover effect: Darker color and larger size */
-      .vieweventdet:hover {
-        background-color: #9c2e3b; /* Darker color */
-        transform: scale(1.1); /* Enlarge button */
-        cursor: pointer;
-      }
       /* Style the table cells */
       #tableevents th,
       #tableevents td {
@@ -422,399 +297,7 @@
           transform: translate(-50%, -50%) scale(1);
         }
       }
-      .eventpic {
-        border: black 2px solid;
-        cursor: default;
-      }
-      .profilepic {
-        border: #6c757d 1px solid;
-        cursor: default;
-      }
-      #iconto {
-        position: inherit;
-        top: 5px;
-      }
-      #titleto {
-        position: inherit;
-        top: 5px;
-        font-size: 20px;
-      }
 
-      #btnparaview {
-        background-color: #dc3545;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-      }
-
-      #btnparaview:hover {
-        background-color: #9c232f; /* Darker color for hover */
-        transform: scale(1.1); /* Enlarge the button on hover */
-      }
-
-      /* Styling for the modal not functioning */
-      .modalevnts {
-        display: none; /* Hide the modal by default */
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-      }
-
-      .modal-contentevnts {
-        background-color: #fff;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 70%;
-        max-width: 600px;
-        border-radius: 5px;
-      }
-
-      .modal-headerevnts,
-      .modal-bodyevnts,
-      .modal-footerevnts {
-        padding: 10px 0;
-      }
-
-      .modal-headerevnts {
-        border-bottom: 1px solid #ccc;
-      }
-
-      .modal-footerevnts {
-        border-top: 1px solid #ccc;
-        text-align: right;
-      }
-
-      #closeModalevnts {
-        background-color: #6c757d; /* Light color */
-        color: #fff; /* Text color */
-        /* Add any other necessary styling */
-      }
-
-      /* Darker hover effect */
-      #closeModalevnts:hover {
-        background-color: #495057; /* Darker color on hover */
-      }
-
-      #evntimgpicnew {
-        width: 555px;
-        border-radius: 5%;
-        border: black solid 2px;
-      }
-
-      #modalAttendee {
-        position: relative;
-        bottom: 10px;
-        margin-bottom: -40px;
-        font-size: 45px;
-        transition: transform 0.3s ease-in-out;
-        color: #495057;
-        cursor: pointer;
-      }
-
-      #modalAttendee:hover {
-        transform: scale(1.2);
-      }
-
-      .modal-headerevnts {
-        padding-top: 0%;
-        margin-top: 0%;
-        height: 35px;
-      }
-
-      .modal-contentevnts {
-        position: relative;
-        bottom: 150px;
-      }
-
-      #editmov {
-        position: relative;
-        bottom: 55px;
-      }
-
-      /* modal for att */
-      /* Styling for your specific modal IDs */
-      #myModalatt {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 9999;
-      }
-
-      #myModalatt .modal-dialogatt {
-        position: relative;
-        width: auto;
-        max-width: 600px;
-        margin: 10% auto;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 5px;
-      }
-
-      #myModalatt .modal-headeratt {
-        border-bottom: 1px solid #ccc;
-        padding-bottom: 10px;
-      }
-
-      #myModalatt .modal-titleatt {
-        margin: 0;
-      }
-
-      #myModalatt .modal-bodyatt {
-        padding: 20px 0;
-      }
-
-      #myModalatt .modal-footeratt {
-        border-top: 1px solid #ccc;
-        padding-top: 10px;
-        text-align: right;
-      }
-
-      #myModalatt .closeatt {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-      }
-      .closeat {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        position: relative;
-        bottom: 10px;
-      }
-
-      .closeat:hover,
-      .closeat:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-      }
-      #myModalatt .btnatt {
-        padding: 8px 20px;
-        border-radius: 4px;
-        border: none;
-        color: #fff;
-        background-color: #dc3545;
-        cursor: pointer;
-      }
-
-      #myModalatt .btnatt:hover {
-        background-color: #c82333;
-      }
-
-      .modalpo {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 2;
-        overflow: auto; /* Ito ang binago: ginamit na 'overflow: auto' dito */
-      }
-
-      .modal-contentpo {
-        background-color: white;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        padding: 20px;
-        text-align: center;
-        width: 50%;
-        max-height: 100%;
-        overflow-y: auto;
-      }
-
-      .closepo {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-      }
-
-      .closepo:hover,
-      .closepo:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-      }
-
-      .closepo {
-        display: block;
-      }
-
-      .modal-contentpo #lblpt,
-      .modal-contentpo #hederrr {
-        display: block;
-      }
-
-      #campusTarget {
-        background-color: #fff; /* Dark background color */
-        color: black; /* Text color */
-        border: 1px solid #ccc; /* Dark border */
-        padding: 8px 16px; /* Adjust padding as needed */
-        cursor: pointer; /* Change cursor on hover */
-        transition: background-color 0.3s, color 0.3s; /* Smooth transition */
-      }
-
-      #campusTarget:hover {
-        background-color: #aaa; /* Darker background color on hover */
-        border-color: #aaa; /* Darker border color on hover */
-        color: #fff; /* Text color on hover */
-      }
-      #campusField {
-        background-color: #fff; /* Dark background color */
-        color: black; /* Text color */
-        border: 1px solid #ccc; /* Dark border */
-        padding: 8px 16px; /* Adjust padding as needed */
-        cursor: pointer; /* Change cursor on hover */
-        transition: background-color 0.3s, color 0.3s; /* Smooth transition */
-      }
-
-      #campusField:hover {
-        background-color: #aaa; /* Darker background color on hover */
-        border-color: #aaa; /* Darker border color on hover */
-        color: #fff; /* Text color on hover */
-      }
-      #myModalnm {
-        z-index: 999999999;
-      }
-
-      .modal-contentnm {
-        background-color: #fefefe;
-        margin: auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 40%;
-        z-index: 3;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-
-      .closenm {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-      }
-
-      .closenm:hover,
-      .closenm:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-      }
-
-      .checkboxna {
-        position: relative;
-        top: 10px;
-        right: 290px;
-      }
-
-      .labelnato {
-        position: relative;
-        left: 50px;
-        margin: -20px;
-      }
-
-      #okButton {
-        margin-left: 85%;
-      }
-
-      #okButton {
-        background-color: black;
-        /* Other button styles */
-      }
-
-      #okButton:hover {
-        background-color: darkgray; /* Change background color on hover */
-        /* Additional styles for hover state */
-      }
-
-      /* Select All button */
-      #selectAllBtnn {
-        background-color: darkgray;
-        /* Other button styles */
-      }
-
-      #selectAllBtnn:hover {
-        background-color: lightgray; /* Change background color on hover */
-        /* Additional styles for hover state */
-      }
-
-      /* Deselect All button */
-      #deselectAllBtnn {
-        background-color: gray;
-        /* Other button styles */
-      }
-
-      #deselectAllBtnn:hover {
-        background-color: silver; /* Change background color on hover */
-        /* Additional styles for hover state */
-      }
-      #introductionField,
-      #objectiveField,
-      #instructionField {
-        line-height: 1.8; /* You can adjust this value to increase or decrease the vertical spacing */
-      }
-      .btn.btn-danger {
-        background-color: #dc3545;
-        color: #fff;
-      }
-
-      .btn.btn-danger:hover {
-        background: #bd2130; /* Change this color to your desired hover color */
-      }
-      #categoryField:disabled {
-        opacity: 10;
-        color: black;
-      }
-      .modalat {
-        display: none;
-        position: fixed;
-        z-index: 999;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.5);
-      }
-      .modal-contentat {
-        background-color: #fff;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 50%;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-      .modal-headerat h2 {
-        margin: 0;
-      }
-      #myModalat {
-        z-index: 1001; /* Use a value higher than the z-index of eventModalupcom */
-      }
       #logoutForm {
         height: 25%;
       }
@@ -847,7 +330,17 @@
             <ion-icon name="return-down-back-outline"></ion-icon>
           </div>
         </a>
-
+        <a
+          href="userReport.html"
+          style="margin-top: 4%; margin-right: 6%"
+          id="openModalBtn">
+          <button
+            type="button"
+            class="btn btn-primary custom-button"
+            id="userBtn">
+            User Report
+          </button>
+        </a>
         <!-- ====== ionicons ======= -->
         <script
           type="module"
