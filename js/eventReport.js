@@ -20,10 +20,24 @@ import {
   onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 import firebaseConfig from "./firebaseConfig.js";
+
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 const storages = getStorage(app);
+const eventTable = document.getElementById("eventTable");
+const searchInput = document.getElementById("searchInput");
+const campusSelect = document.getElementById("campusSelect");
+
+// Event listener for search input
+searchInput.addEventListener("input", () => {
+  filterTable();
+});
+
+// Event listener for campus filter
+campusSelect.addEventListener("change", () => {
+  filterTable();
+});
 
 onAuthStateChanged(auth, (user) => {
   // You can handle authentication state changes here
@@ -33,16 +47,9 @@ onAuthStateChanged(auth, (user) => {
     console.log("User is logged out");
   }
 });
+
 // Function to fetch and populate data
 function populateEventData() {
-  const eventTable = document.getElementById("eventTable");
-  const searchInput = document.getElementById("searchInput");
-
-  searchInput.addEventListener("input", () => {
-    filterTable(eventTable, searchInput.value.toLowerCase());
-  });
-
-  // Fetch data from Firebase
   const eventsRef = ref(db, "Upload_Engagement");
   get(eventsRef)
     .then((snapshot) => {
@@ -52,7 +59,10 @@ function populateEventData() {
 
         // Convert the object into an array for sorting
         for (let key in eventsData) {
-          eventsArray.push(eventsData[key]);
+          // Check if verificationStatus is true
+          if (eventsData[key].verificationStatus === true) {
+            eventsArray.push(eventsData[key]);
+          }
         }
 
         // Sort events based on startDate and endDate
@@ -73,34 +83,34 @@ function populateEventData() {
         eventsArray.forEach((event, index) => {
           const row = document.createElement("tr");
           row.innerHTML = `
-          <td id="number">${index + 1}</td>
-          <td>
-            <a href="#"><img src="${
-              event.image
-            }"style="object-fit: cover" class="eventpic" alt="Event Poster"/></a>
-          </td>
-          <td style="line-height: 1.8; min-width: 250px;" id="title">${
-            event.titleEvent
-          }</td>
-          <td style="line-height: 1.8; min-width: 350px;" id="campus">${
-            event.campus
-          }</td>
-          <td style="min-width: 150px;" id="schedule">${event.startDate} -- ${
+            <td id="number">${index + 1}</td>
+            <td>
+              <a href="#"><img src="${
+                event.image
+              }" style="object-fit: cover" class="eventpic" alt="Event Poster"/></a>
+            </td>
+            <td style="line-height: 1.8; min-width: 250px;" id="title">${
+              event.titleEvent
+            }</td>
+            <td style="line-height: 1.8; min-width: 350px;" id="campus">${
+              event.campus
+            }</td>
+            <td style="min-width: 150px;" id="schedule">${event.startDate} -- ${
             event.endDate
           }</td>
-          <td id="status">${getStatus(event.startDate, event.endDate)}</td>
-          <td  style="text-align: center;" id="currentParty">${
-            Object.keys(event.Participants || {}).length
-          }</td>
-          <td  style="text-align: center;" id="totalConfirmed">${getConfirmedParticipants(
-            event.Participants
-          )}</td>
-        `;
+            <td id="status">${getStatus(event.startDate, event.endDate)}</td>
+            <td  style="text-align: center;" id="currentParty">${
+              Object.keys(event.Participants || {}).length
+            }</td>
+            <td  style="text-align: center;" id="totalConfirmed">${getConfirmedParticipants(
+              event.Participants
+            )}</td>
+          `;
           eventTable.appendChild(row);
         });
 
-        // Filter table based on search input
-        filterTable(eventTable, searchInput.value.toLowerCase());
+        // Filter table based on search input and campus selection
+        filterTable();
       } else {
         console.log("No data available");
       }
@@ -110,8 +120,10 @@ function populateEventData() {
     });
 }
 
-function filterTable(table, searchTerm) {
-  const rows = table.getElementsByTagName("tr");
+function filterTable() {
+  const rows = eventTable.getElementsByTagName("tr");
+  const searchTerm = searchInput.value.toLowerCase();
+  const selectedCampus = campusSelect.value.toLowerCase();
 
   for (let i = 0; i < rows.length; i++) {
     const title = rows[i].querySelector("#title").textContent.toLowerCase();
@@ -127,13 +139,17 @@ function filterTable(table, searchTerm) {
       .querySelector("#totalConfirmed")
       .textContent.toLowerCase();
 
+    const campusFilterCondition =
+      selectedCampus === "all campus" || campus.includes(selectedCampus);
+
     if (
-      title.includes(searchTerm) ||
-      campus.includes(searchTerm) ||
-      schedule.includes(searchTerm) ||
-      status.includes(searchTerm) ||
-      currentParty.includes(searchTerm) ||
-      totalConfirmed.includes(searchTerm)
+      (title.includes(searchTerm) ||
+        campus.includes(searchTerm) ||
+        schedule.includes(searchTerm) ||
+        status.includes(searchTerm) ||
+        currentParty.includes(searchTerm) ||
+        totalConfirmed.includes(searchTerm)) &&
+      campusFilterCondition
     ) {
       rows[i].style.display = "";
     } else {

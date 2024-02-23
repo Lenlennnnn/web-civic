@@ -890,8 +890,10 @@
                     </div>
                     <div class="filter-group" id="campusfilter">
                       <label style="margin-top: -5px">Campus</label>
-
-                      <select class="form-control" style="margin-top: -5px">
+                      <select
+                        class="form-control"
+                        style="margin-top: -5px"
+                        id="campusSelect">
                         <option value="" disabled selected>
                           Filter Campus
                         </option>
@@ -909,7 +911,7 @@
                         <option value="Pablo Borbon Campus I">
                           Pablo Borbon Campus I
                         </option>
-                        <option value=" Pablo Borbon Campus II">
+                        <option value="Pablo Borbon Campus II">
                           Pablo Borbon Campus II
                         </option>
                         <option value="Rosario Campus">Rosario Campus</option>
@@ -933,8 +935,8 @@
                       <th>Campus</th>
                       <th>Schedule</th>
                       <th>Status</th>
-                      <th>Total Participant</th>
-                      <th>Total Confirmed Participants</th>
+                      <th>Participants</th>
+                      <th>Confirmed Participants</th>
                     </tr>
                   </thead>
                   <tbody id="eventTable"></tbody>
