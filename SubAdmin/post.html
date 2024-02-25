@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Program Form</title>
+    <link rel="stylesheet" href="css/post.css" />
+    <style>
+      /* Style for the location field container */
+      .location-input {
+        display: flex;
+        align-items: center;
+        position: relative;
+      }
+
+      /* Style for the input field */
+      .location-input input[type="text"] {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      /* Style for the "Set Location" button */
+      .set-location-button {
+        position: absolute;
+        top: 35%;
+        transform: translateY(-50%);
+        left: 10px;
+        text-decoration: none;
+        color: #dc3545;
+        /* Change this to your desired color */
+      }
+
+      /* Style for the icon within the button */
+      .set-location-button ion-icon {
+        font-size: 20px;
+        vertical-align: middle;
+      }
+
+      /* Style for the input field placeholder text */
+      #location::placeholder {
+        text-indent: 26px; /* Adjust this value to change the margin-left */
+      }
+
+      label {
+        color: black;
+      }
+      #heder {
+        color: #dc3545;
+        text-align: center;
+      }
+      .form-row {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .form-group {
+        flex-basis: 48%; /* Adjust the width as needed */
+        display: flex;
+        flex-direction: column;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container-post">
+      <h2 id="heder">Post an event</h2>
+      <form>
+        <label for="image">Upload Image:</label>
+        <input
+          type="file"
+          id="imagepost"
+          name="image"
+          accept="image/*"
+          required
+        />
+
+        <label for="campus">Category:</label>
+        <select id="campuspost" name="campus" required>
+          <option value="" disabled selected>Civic Engagement</option>
+          <option value="treeplanting">Tree Planting</option>
+          <option value="fundraising" id="fund">Fund Raising</option>
+          <option value="donations" id="donation">Donations</option>
+          <option value="cleanupdrive">Clean Up Drive</option>
+          <option value="feedingprogram">Feeding Program</option>
+          <option value="reliefoperation">Relief Operations</option>
+          <option value="seminatraining">Seminar Training</option>
+          <option value="teachingliteracy">Teaching Literacy</option>
+        </select>
+        <div id="additionalFields" style="display: none">
+          <label for="additionalField1">Payment Method:</label>
+          <select id="additionalField1" name="additionalField1">
+            <option value="GCash">GCash</option>
+            <option value="PayMaya">Pay Maya</option>
+            <option value="PayPal">PayPal</option>
+          </select>
+        </div>
+        <label for="title">Title:</label>
+        <input
+          type="text"
+          id="titlepost"
+          name="title"
+          required
+          placeholder="Event title"
+        />
+
+        <label for="Introduction">Introduction:</label>
+        <textarea
+          id="Introductionpost"
+          name="Introduction"
+          rows="6"
+          required
+          placeholder="Add text"
+        ></textarea>
+        <label for="Description">Description:</label>
+        <textarea
+          id="Descriptionpost"
+          name="Description"
+          rows="6"
+          required
+          placeholder="Add text"
+        ></textarea>
+        <label for="Instruction">Instruction:</label>
+        <textarea
+          id="Instructionpost"
+          name="Instruction"
+          rows="6"
+          required
+          placeholder="Add text"
+        ></textarea>
+        <label for="Location">Location:</label>
+        <input
+          type="text"
+          id="Locationpost"
+          name="Location"
+          required
+          placeholder="Address"
+        />
+        <div class="form-row">
+          <div class="form-group">
+            <label for="startdate">Start Date & Time:</label>
+            <input
+              type="datetime-local"
+              id="startdate"
+              name="startdate"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="enddate">End Date & Time:</label>
+            <input type="datetime-local" id="enddate" name="enddate" required />
+          </div>
+        </div>
+
+        <label for="campus">Target Campus:</label>
+        <select id="campus" name="campus" required>
+          <option value="" disabled selected>Choose Campus</option>
+          <option value="ARASOF Nasugbu Campus">ARASOF Nasugbu Campus</option>
+          <option value="Balayan Campus">Balayan Campus</option>
+          <option value="JPLPC Malvar Campus">JPLPC Malvar Campus</option>
+          <option value="Lemery Campus">Lemery Campus</option>
+          <option value="Lipa Campus">Lipa Campus</option>
+          <option value="Lobo Campus">Lobo Campus</option>
+          <option value="Mabini Campus">Mabini Campus</option>
+          <option value="Pablo Borbon Campus I">Pablo Borbon Campus I</option>
+          <option value=" Pablo Borbon Campus II">
+            Pablo Borbon Campus II
+          </option>
+          <option value="Rosario Campus">Rosario Campus</option>
+          <option value="San Juan Campus">San Juan Campus</option>
+        </select>
+
+        <label for="targparty">Target Participant:</label>
+        <input
+          type="text"
+          id="targparty"
+          name="targparty"
+          required
+          placeholder="Insert count"
+        />
+        <label for="actpts">Active Points:</label>
+        <input
+          type="text"
+          id="actpts"
+          name="actpts"
+          required
+          placeholder="Insert count"
+        />
+        <!-- Google Maps Location Field -->
+        <label for="facname">Facilitator's Name:</label>
+        <input
+          type="text"
+          id="facname"
+          name="facname"
+          required
+          placeholder="Insert name"
+        />
+        <!-- Google Maps Location Field -->
+        <label for="facnamecon">Facilitator's Email or Contact:</label>
+        <input
+          type="text"
+          id="facnamecon"
+          name="facnamecon"
+          required
+          placeholder="Insert Contact"
+        />
+
+        <button id="postB" type="submit">Post</button>
+        <button type="button" id="cancelButton">Cancel</button>
+      </form>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var campusSelect = document.getElementById("campuspost");
+        var additionalFieldsDiv = document.getElementById("additionalFields");
+
+        campusSelect.addEventListener("change", function () {
+          var selectedOption = campusSelect.value;
+
+          if (
+            selectedOption === "fundraising" ||
+            selectedOption === "donations"
+          ) {
+            additionalFieldsDiv.style.display = "block"; // Show the additional fields
+          } else {
+            additionalFieldsDiv.style.display = "none"; // Hide the additional fields
+          }
+        });
+      });
+    </script>
+    <script src="js/post.js"></script>
+  </body>
+</html>
