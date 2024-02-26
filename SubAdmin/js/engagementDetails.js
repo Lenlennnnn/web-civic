@@ -24,9 +24,25 @@ const auth = getAuth(app);
 const storages = getStorage(app);
 
 onAuthStateChanged(auth, (user) => {
-  // You can handle authentication state changes here
   if (user) {
-    console.log("User is logged in:", user);
+    // Get the current user's UID
+    const currentUserUID = user.uid;
+
+    // Reference to the current user's data in SubAdminAcc
+    const currentUserRef = ref(db, `SubAdminAcc/${currentUserUID}`);
+
+    // Fetch the current user's data
+    get(currentUserRef)
+      .then((userSnapshot) => {
+        // Extract the current user's campus from the snapshot
+        const currentUserCampus = userSnapshot.val().campus;
+
+        // Call displayEventData function with the current user's campus
+        displayEventData("", currentUserCampus);
+      })
+      .catch((error) => {
+        console.error("Error fetching current user's data:", error);
+      });
   } else {
     console.log("User is logged out");
   }
@@ -438,7 +454,7 @@ searchInput.addEventListener("input", function () {
     campusFilterSelect.value === "All Campus" ? "" : campusFilterSelect.value;
   displayEventData(searchTerm, selectedCampus);
 });
-function displayEventData(searchTerm = "", selectedCampus = "") {
+function displayEventData(searchTerm = "", currentUserCampus = "") {
   const uploadEngagementRef = ref(db, "Upload_Engagement");
 
   onValue(uploadEngagementRef, (snapshot) => {
@@ -468,10 +484,10 @@ function displayEventData(searchTerm = "", selectedCampus = "") {
 
         // Check if the event has already ended
         if (!hasEventEnded(endDate)) {
-          // Check if the selected campus is present in the campus field
+          // Check if the current user's campus is in the list of campuses for this event
           if (
-            selectedCampus === "" ||
-            campus.toLowerCase().includes(selectedCampus.toLowerCase())
+            currentUserCampus &&
+            campus.toLowerCase().includes(currentUserCampus.toLowerCase())
           ) {
             events.push({
               id: childSnapshot.key,
