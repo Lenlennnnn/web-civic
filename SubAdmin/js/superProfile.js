@@ -87,7 +87,7 @@ onAuthStateChanged(auth, (user) => {
 
       // Update the DOM elements with user data
       document.getElementById("profileImage").src =
-        userData.ImageProfile || "img/profile.png";
+        userData.ImageProfile || "../img/profile.png";
       document.getElementById("firstname").value = userData.firstname || "";
       document.getElementById("lastname").value = userData.lastname || "";
       document.getElementById("middlename").value = userData.middlename || "";

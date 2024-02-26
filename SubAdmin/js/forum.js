@@ -182,7 +182,8 @@ function fetchForumPosts() {
         const firstName = uploaderData.firstname || "";
         const lastName = uploaderData.lastname || "";
         const middleName = uploaderData.middlename || "";
-        const profileImage = uploaderData.ImageProfile || "img/profilePic.jpg";
+        const profileImage =
+          uploaderData.ImageProfile || "../img/profilePic.jpg";
 
         // Check if the uploader is from SuperAdminAcc or SubAdminAcc
         const isAdmin =
@@ -205,7 +206,7 @@ function fetchForumPosts() {
               ${
                 !isAdmin
                   ? `
-              <img src="img/reportto.png" alt="Report" style="width: 15px" class="enlarge-on-hover" id="hoverreport"/>
+              <img src="../img/reportto.png" alt="Report" style="width: 15px" class="enlarge-on-hover" id="hoverreport"/>
               <span id="notificationBadge"  class="notification-badge">${formatNumber(
                 post.postReportCount
               )}</span>`
@@ -640,7 +641,7 @@ document.addEventListener("click", function (event) {
           // Display image for no comments
           commentContainer.innerHTML = `
     <div class="text-center">
-      <img src="img/startconvo.png" alt="Be the first to start the conversation" style="max-width: 90%; height: auto;">
+      <img src="../img/startconvo.png" alt="Be the first to start the conversation" style="max-width: 90%; height: auto;">
     </div>
   `;
         } else {
@@ -747,7 +748,7 @@ function reloadModalContent(postKey) {
         // Display image for no comments
         commentContainer.innerHTML = `
     <div class="text-center">
-      <img src="img/startconvo.png" alt="Be the first to start the conversation" style="max-width: 90%; height: auto;">
+      <img src="../img/startconvo.png" alt="Be the first to start the conversation" style="max-width: 90%; height: auto;">
     </div>
   `;
       } else {
@@ -826,7 +827,7 @@ function populateComment(comment, commentContainer) {
           <div class="media-block" style="margin-right: 5%; margin-top: 2%">
             <a class="media-left" href="#">
               <img style="object-fit: cover" class="img-circle img-sm" alt="Profile Picture" id="imageProfile" src="${
-                commenterData.ImageProfile || "img/profilePic.jpg"
+                commenterData.ImageProfile || "../img/profilePic.jpg"
               }"/>
             </a>
             <div class="media-body">
@@ -836,7 +837,7 @@ function populateComment(comment, commentContainer) {
                   ${
                     !isAdmin
                       ? `
-                      <img src="img/reportto.png" alt="Report" style="width: 15px" class="enlarge-on-hover" id="hoverreportSec" data-postKey="${postKey}" data-commentKey="${
+                      <img src="../img/reportto.png" alt="Report" style="width: 15px" class="enlarge-on-hover" id="hoverreportSec" data-postKey="${postKey}" data-commentKey="${
                           comment.commentKey
                         }" />
                         <span id="notificationBadgeSec" class="notification-badge">${formatNumber(

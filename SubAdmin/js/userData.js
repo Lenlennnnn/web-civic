@@ -275,7 +275,7 @@ function viewUserDetails(userId) {
 
       const modalBodyContent = document.getElementById("modalBodyContent");
       if (userData) {
-        const imageSrc = userData.ImageProfile || "img/profile.png";
+        const imageSrc = userData.ImageProfile || "../img/profile.png";
         modalBodyContent.innerHTML = `
         <div class="image-container"><img src="${imageSrc}" class="rounded-image"></div>
         <p><u><h5>Personal Information:</h5></u></p>

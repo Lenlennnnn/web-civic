@@ -76,7 +76,7 @@ function openEventModal(eventData) {
 
   eventDetailsContainer.innerHTML = `
      <img src="${
-       eventData.image || "img/placeholderpic.jpg"
+       eventData.image || "../img/placeholderpic.jpg"
      }" alt="Event Image" class="eventpic" id="upcompostpic" />
 <strong id="labelImage" style="display: none; margin-top:10px;">Choose an Image:</strong>
 <input class="form-control" type="file" id="imagePost" name="image" accept="image/*" required style="display: none; margin-bottom:10px;">
@@ -491,7 +491,7 @@ function displayEventData(searchTerm = "", selectedCampus = "") {
           <td>${rowNumber}</td>
   <td style="width: 120px; height: 80px; overflow: hidden;">
   <img src="${
-    image || "img/placeholderpic.jpg"
+    image || "../img/placeholderpic.jpg"
   }" class="eventpic" alt="Event Image" style="width: 100%; height: 100%; object-fit: cover;">
 </td>
 
@@ -516,7 +516,7 @@ function displayEventData(searchTerm = "", selectedCampus = "") {
         <td id="numid">0</td>
         <td>
           <a href="#">
-            <img src="img/cleaning.jpg" class="eventpic" alt="Avatar" id="eventpicimg" />
+            <img src="../img/cleaning.jpg" class="eventpic" alt="Avatar" id="eventpicimg" />
           </a>
         <td colspan="7" style="text-align: center;">
           No Civic Engagement Requests are currently available.

@@ -42,7 +42,10 @@ document.addEventListener("DOMContentLoaded", function () {
       onValue(userRef, (userSnapshot) => {
         const user = userSnapshot.val();
 
-        $("#profileImage").attr("src", user.ImageProfile || "img/profile.png");
+        $("#profileImage").attr(
+          "src",
+          user.ImageProfile || "../img/profile.png"
+        );
         $("#fullName").val(
           displayNA(`${user.lastname}, ${user.firstname}, ${user.middlename}`)
         );

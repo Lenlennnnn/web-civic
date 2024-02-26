@@ -19,7 +19,7 @@ const auth = getAuth(app);
 onAuthStateChanged(auth, (user) => {
   if (user) {
     const uid = user.uid;
-    const userRef = ref(db, `SuperAdminAcc/${uid}`);
+    const userRef = ref(db, `SubAdminAcc/${uid}`);
 
     get(userRef).then((snapshot) => {
       const userData = snapshot.val();
@@ -31,8 +31,8 @@ onAuthStateChanged(auth, (user) => {
 
       // Update the DOM elements with user data
       document.getElementById("profileImage").src =
-        userData.ImageProfile || "img/profile.png";
-      document.getElementById("superName").textContent = `${
+        userData.ImageProfile || "../img/profile.png";
+      document.getElementById("subName").textContent = `${
         userData.lastname || "N/A"
       }, ${userData.firstname || "N/A"} ${middlenameInitial}`;
     });

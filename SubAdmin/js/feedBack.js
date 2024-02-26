@@ -54,7 +54,7 @@ function updateFeedbackTable() {
         <td id="numid">0</td>
         <td>
           <a href="#">
-            <img src="img/profilePic.jpg" class="eventpic" alt="Avatar" id="eventpicimg" />
+            <img src="../img/profilePic.jpg" class="eventpic" alt="Avatar" id="eventpicimg" />
           </a>
         </td>
         <td colspan="5" style="text-align: center;">
@@ -124,7 +124,7 @@ function updateFeedbackTable() {
           numCell.textContent = uid;
           profilePicCell.innerHTML = `<a href="#" style="display: block; overflow: hidden; height: 80px; width: 80px; border-radius: 50%;">
   <img src="${
-    userData.ImageProfile || "img/profilePic.jpg"
+    userData.ImageProfile || "../img/profilePic.jpg"
   }" class="eventpic" alt="Avatar" id="profilePic" style="width: 100%; height: 100%; object-fit: cover;"/>
 </a>`;
 

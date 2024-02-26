@@ -81,7 +81,7 @@ function populateUserData() {
 <td>
   <a href="#">
     <img src="${
-      user.ImageProfile || "img/profilePic.jpg"
+      user.ImageProfile || "../img/profilePic.jpg"
     }" style="object-fit: cover" class="eventpic" alt="Avatar" id="profilePic"/>
   </a>
 </td>

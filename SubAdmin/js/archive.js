@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Check if user exists and has ImageProfile property
         const imageUrl =
-          user && user.ImageProfile ? user.ImageProfile : "img/profile.png";
+          user && user.ImageProfile ? user.ImageProfile : "../img/profile.png";
 
         $("#profileImage").attr("src", imageUrl);
         $("#fullName").val(
