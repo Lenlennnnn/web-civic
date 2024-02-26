@@ -100,11 +100,16 @@ function RegisterAdmin(event) {
       // Store additional user data in the database
       saveUserData(user.uid);
 
-      // Close the modal and reset form fields after a short delay
+      // Clear form fields
+      resetFormFields();
+
+      // Close the modal after a short delay
       setTimeout(() => {
         closeModal();
-        resetFormFields();
       }, 500);
+
+      // Alert for successful account creation
+      alert("Are you sure to create this Account?");
     })
     .catch((error) => {
       // Handle errors here
@@ -112,6 +117,7 @@ function RegisterAdmin(event) {
       console.error(error);
     });
 }
+
 function areAllFieldsFilled() {
   // Define an array of field elements
   const fieldElements = [
