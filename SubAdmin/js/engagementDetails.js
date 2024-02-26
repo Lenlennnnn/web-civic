@@ -438,23 +438,39 @@ function handleCategoryChange() {
     payDiv.style.display = "block";
   }
 }
-
-const campusFilterSelect = document.querySelector("#campusfilter select");
 const searchInput = document.querySelector("#searchfilter input");
+const categoryFilter = document.getElementById("categoryFilter");
 
-campusFilterSelect.addEventListener("change", function () {
-  let selectedCampus = this.value === "All Campus" ? "" : this.value;
+function handleFilterChange() {
   const searchTerm = searchInput.value.trim();
-  displayEventData(searchTerm, selectedCampus);
-});
+  const selectedCategory = categoryFilter.value;
+  const currentUser = auth.currentUser;
 
-searchInput.addEventListener("input", function () {
-  const searchTerm = this.value.trim();
-  const selectedCampus =
-    campusFilterSelect.value === "All Campus" ? "" : campusFilterSelect.value;
-  displayEventData(searchTerm, selectedCampus);
-});
-function displayEventData(searchTerm = "", currentUserCampus = "") {
+  if (currentUser) {
+    const currentUserUID = currentUser.uid;
+    const currentUserRef = ref(db, `SubAdminAcc/${currentUserUID}`);
+    get(currentUserRef)
+      .then((userSnapshot) => {
+        const currentUserCampus = userSnapshot.val().campus;
+        displayEventData(searchTerm, currentUserCampus, selectedCategory);
+      })
+      .catch((error) => {
+        console.error("Error fetching current user's data:", error);
+      });
+  } else {
+    console.log("User is logged out");
+    displayEventData(searchTerm, "", selectedCategory);
+  }
+}
+
+searchInput.addEventListener("input", handleFilterChange);
+categoryFilter.addEventListener("change", handleFilterChange);
+
+function displayEventData(
+  searchTerm = "",
+  currentUserCampus = "",
+  categoryFilter = ""
+) {
   const uploadEngagementRef = ref(db, "Upload_Engagement");
 
   onValue(uploadEngagementRef, (snapshot) => {
@@ -489,11 +505,18 @@ function displayEventData(searchTerm = "", currentUserCampus = "") {
             currentUserCampus &&
             campus.toLowerCase().includes(currentUserCampus.toLowerCase())
           ) {
-            events.push({
-              id: childSnapshot.key,
-              startDate: new Date(startDate),
-              data: uploadData,
-            });
+            // Check if the event matches the selected category filter
+            if (
+              categoryFilter === "" ||
+              category.toLowerCase() === categoryFilter.toLowerCase() ||
+              categoryFilter.toLowerCase() === "all category"
+            ) {
+              events.push({
+                id: childSnapshot.key,
+                startDate: new Date(startDate),
+                data: uploadData,
+              });
+            }
           }
         }
       }
@@ -525,26 +548,21 @@ function displayEventData(searchTerm = "", currentUserCampus = "") {
 
         const newRow = tableBody.insertRow();
         newRow.innerHTML = `
-                    <td>${rowNumber}</td>
-  <td style="width: 120px; height: 80px; overflow: hidden;">
-  <img src="${
-    image || "../img/placeholderpic.jpg"
-  }" class="eventpic" alt="Event Image" style="width: 100%; height: 100%; object-fit: cover;">
-</td>
-
-                    <td>${titleEvent || "N/A"}</td>
-                    <td>${category || "N/A"}</td>
-                     <td>${location || "N/A"}</td>
-        <td style="line-height: 1.5;">${campus || "N/A"}</td>
-
-
-                    <td>${startDate.toLocaleString() || "N/A"} -- ${
-          endDate || "N/A"
-        }</td>
-                    <td>
-                        <button type="button" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>
-                    </td>
-                `;
+          <td>${rowNumber}</td>
+          <td style="width: 120px; height: 80px; overflow: hidden;">
+            <img src="${
+              image || "../img/placeholderpic.jpg"
+            }" class="eventpic" alt="Event Image" style="width: 100%; height: 100%; object-fit: cover;">
+          </td>
+          <td>${titleEvent || "N/A"}</td>
+          <td>${category || "N/A"}</td>
+          <td>${location || "N/A"}</td>
+          <td style="line-height: 1.5;">${campus || "N/A"}</td>
+          <td>${startDate.toLocaleString() || "N/A"} -- ${endDate || "N/A"}</td>
+          <td>
+            <button type="button" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>
+          </td>
+        `;
         newRow.setAttribute("data-event-id", event.id); // Set the event ID as an attribute in the table row
         rowNumber++;
       });
@@ -553,16 +571,14 @@ function displayEventData(searchTerm = "", currentUserCampus = "") {
       const defaultRow = tableBody.insertRow();
       defaultRow.id = "defaultRow";
       defaultRow.innerHTML = `
-                <td id="numid">0</td>
-                <td>
-                    <a href="#">
-                        <img src="../img/cleaning.jpg" class="eventpic" alt="Avatar" id="eventpicimg" />
-                    </a>
-               <td colspan="7" style="text-align: center;">
-              No Civic Engagement events are currently available.
-
-            </td>
-            `;
+        <td id="numid">0</td>
+        <td>
+          <a href="#">
+            <img src="../img/cleaning.jpg" class="eventpic" alt="Avatar" id="eventpicimg" />
+          </a>
+        </td>
+        <td colspan="7" style="text-align: center;">No Civic Engagement events are currently available.</td>
+      `;
     }
   });
 }
