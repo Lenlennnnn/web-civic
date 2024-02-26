@@ -7,6 +7,7 @@ import {
   getDatabase,
   ref,
   push,
+  get,
   set,
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 import {
@@ -22,7 +23,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 const storage = getStorage(app);
-const currentUser = auth.currentUser;
+
 onAuthStateChanged(auth, (user) => {
   // You can handle authentication state changes here
   if (user) {
@@ -182,6 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("openPostModal")
     .addEventListener("click", function () {
       document.getElementById("postModalpo").style.display = "block";
+      preselectUserCampus();
     });
 
   document.getElementById("postBtn").addEventListener("click", function () {
@@ -221,27 +223,15 @@ document.addEventListener("DOMContentLoaded", function () {
     var campusForm = document.getElementById("campusForm");
     var campusTarget = document.getElementById("campusTarget");
 
-    // Get the current user's campus value from Firebase Authentication
+    // Get the selected campuses
+    var selectedCampuses = [];
+    var checkboxes = campusForm.querySelectorAll(".checkboxna:checked");
+    checkboxes.forEach(function (checkbox) {
+      selectedCampuses.push(checkbox.value);
+    });
 
-    const userCampus = currentUser ? currentUser.campus : "";
-
-    // If the user's campus value is not empty, select the corresponding checkboxes
-    if (userCampus) {
-      // Split the user's campus value into an array of campuses
-      const userCampusArray = userCampus.split(", ");
-
-      // Loop through all checkboxes in the campusForm
-      const checkboxes = campusForm.querySelectorAll(".checkboxna");
-      checkboxes.forEach((checkbox) => {
-        // If the user's campus array includes the value of the checkbox, mark it as checked
-        if (userCampusArray.includes(checkbox.value)) {
-          checkbox.checked = true;
-        }
-      });
-
-      // Update the campusTarget element with the user's campus value
-      campusTarget.value = userCampus;
-    }
+    // Update the campusTarget element with the selected campuses
+    campusTarget.value = selectedCampuses.join(", ");
   });
 
   // Add event listener to campusTarget element
@@ -273,6 +263,45 @@ document.addEventListener("DOMContentLoaded", function () {
       modal.style.display = "none";
     }
   };
+  function preselectUserCampus() {
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      const userUID = currentUser.uid;
+      const userRef = ref(db, "SubAdminAcc/" + userUID);
+      get(userRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            const userData = snapshot.val();
+            const userCampus = userData.campus;
+
+            // Get the form elements in the "myModalnm" modal
+            const campusForm = document.getElementById("campusForm");
+
+            // Get all checkboxes
+            const checkboxes = campusForm.querySelectorAll(".checkboxna");
+
+            // Check the checkbox corresponding to the user's campus
+            checkboxes.forEach((checkbox) => {
+              if (checkbox.value === userCampus) {
+                checkbox.checked = true;
+                checkbox.disabled = true; // Disable the checkbox
+              }
+            });
+
+            // Update the campusTarget element with the selected campus
+            const campusTarget = document.getElementById("campusTarget");
+            campusTarget.value = userCampus;
+          } else {
+            console.error("User data not found.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    } else {
+      console.error("Current user not found.");
+    }
+  }
 
   function selectAll() {
     var checkboxes = document.querySelectorAll(".checkboxna");
