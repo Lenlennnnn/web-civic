@@ -22,7 +22,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 const storage = getStorage(app);
-
+const currentUser = auth.currentUser;
 onAuthStateChanged(auth, (user) => {
   // You can handle authentication state changes here
   if (user) {
@@ -221,15 +221,27 @@ document.addEventListener("DOMContentLoaded", function () {
     var campusForm = document.getElementById("campusForm");
     var campusTarget = document.getElementById("campusTarget");
 
-    // Get the selected campuses
-    var selectedCampuses = [];
-    var checkboxes = campusForm.querySelectorAll(".checkboxna:checked");
-    checkboxes.forEach(function (checkbox) {
-      selectedCampuses.push(checkbox.value);
-    });
+    // Get the current user's campus value from Firebase Authentication
 
-    // Update the campusTarget element with the selected campuses
-    campusTarget.value = selectedCampuses.join(", ");
+    const userCampus = currentUser ? currentUser.campus : "";
+
+    // If the user's campus value is not empty, select the corresponding checkboxes
+    if (userCampus) {
+      // Split the user's campus value into an array of campuses
+      const userCampusArray = userCampus.split(", ");
+
+      // Loop through all checkboxes in the campusForm
+      const checkboxes = campusForm.querySelectorAll(".checkboxna");
+      checkboxes.forEach((checkbox) => {
+        // If the user's campus array includes the value of the checkbox, mark it as checked
+        if (userCampusArray.includes(checkbox.value)) {
+          checkbox.checked = true;
+        }
+      });
+
+      // Update the campusTarget element with the user's campus value
+      campusTarget.value = userCampus;
+    }
   });
 
   // Add event listener to campusTarget element
