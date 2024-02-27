@@ -12,6 +12,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 import {
   getAuth,
+  onAuthStateChanged,
   createUserWithEmailAndPassword,
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 
@@ -188,7 +189,8 @@ const initializeDataTable = () => {
 
 const dataTable = initializeDataTable();
 
-const populateDataTable = () => {
+// Function to populate data table with users from the same campus as the current user
+const populateDataTable = (currentUserCampus) => {
   onValue(UsersRef, (snapshot) => {
     const usersData = snapshot.val();
 
@@ -200,7 +202,10 @@ const populateDataTable = () => {
       Object.keys(usersData).forEach((userId) => {
         const user = usersData[userId];
 
-        if (user.verificationStatus) {
+        if (
+          user.verificationStatus &&
+          user.campus === currentUserCampus // Filter users based on campus
+        ) {
           // Check if user has verificationStatus set to true
           const lastLoginTimestamp = new Date(user.lastLogin);
 
@@ -225,7 +230,6 @@ const populateDataTable = () => {
             const email = user.email || "N/A";
             const gender = user.gender || "N/A";
             const yearAndSection = user.yearandSection || "N/A";
-            const campus = user.campus || "N/A";
             const userType = user.userType || "N/A";
             const nstp = user.nstp || "N/A";
 
@@ -236,7 +240,7 @@ const populateDataTable = () => {
               email: email,
               gender: gender,
               yearandSection: yearAndSection,
-              campus: campus,
+              campus: currentUserCampus, // Set campus to the current user's campus
               userType: userType,
               nstp: nstp,
               Details:
@@ -262,6 +266,27 @@ const populateDataTable = () => {
       .draw();
   });
 };
+
+// Update the onAuthStateChanged to fetch the current user's data and call populateDataTable with the current user's campus
+onAuthStateChanged(auth, (user) => {
+  // You can handle authentication state changes here
+  if (user) {
+    console.log("User is logged in:", user);
+    // Fetch the current user's data
+    const userRef = ref(db, `SubAdminAcc/${user.uid}`);
+    onValue(userRef, (snapshot) => {
+      const currentUserData = snapshot.val();
+      if (currentUserData) {
+        // Once you have the current user's data, proceed to update counts based on campus and user's campus
+        const currentUserCampus = currentUserData.campus;
+        populateDataTable(currentUserCampus); // Call populateDataTable with the current user's campus
+      }
+    });
+  } else {
+    console.log("User is logged out");
+  }
+});
+
 let eventListenersAdded = false;
 let currentUserId;
 function viewUserDetails(userId) {

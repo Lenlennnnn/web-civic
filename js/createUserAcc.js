@@ -37,7 +37,6 @@ addgrBtn.addEventListener("click", function () {
 let counter = 1; // Initialize a counter for unique IDs
 
 // Function to add a new row of input fields
-// Function to add a new row of input fields
 function addRow() {
   var inputRow = document.getElementById("inputrow");
   var newRow = document.createElement("div");
