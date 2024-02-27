@@ -312,8 +312,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function deselectAll() {
     var checkboxes = document.querySelectorAll(".checkboxna");
+    var currentUserCampus = document.getElementById("campusTarget").value;
     checkboxes.forEach(function (checkbox) {
-      checkbox.checked = false;
+      if (checkbox.value !== currentUserCampus) {
+        // Skip deselecting current user's campus
+        checkbox.checked = false;
+      }
     });
   }
 

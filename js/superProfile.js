@@ -27,13 +27,6 @@ onAuthStateChanged(auth, (user) => {
     const uid = user.uid;
     const userRef = ref(db, `SuperAdminAcc/${uid}`);
 
-    // Function to update the user data
-    const updateUserData = (field, value) => {
-      update(userRef, { [field]: value });
-      isEditing = true;
-      showSaveButton();
-    };
-
     // Function to show the "Save" button
     const showSaveButton = () => {
       const saveBtn = document.getElementById("saveBtn");
@@ -48,8 +41,22 @@ onAuthStateChanged(auth, (user) => {
     const handleSaveButtonClick = () => {
       const confirmation = confirm("Are you sure to save the changes?");
       if (confirmation) {
+        // Gather all updated data
+        const updatedData = {
+          firstname: document.getElementById("firstname").value,
+          lastname: document.getElementById("lastname").value,
+          middlename: document.getElementById("middlename").value,
+          contactNumber: document.getElementById("accountcontact").value,
+          gender: document.getElementById("accountgender").value,
+          birthday: document.getElementById("accountbday").value,
+          position: document.getElementById("accountposition").value,
+        };
+        // Push updated data to Firebase
+        update(userRef, updatedData);
         console.log("Changes saved!");
         showSuccessAlert();
+        isEditing = false; // Reset isEditing flag
+        showSaveButton(); // Hide the "Save" button
       } else {
         console.log("Changes not saved.");
       }
@@ -69,17 +76,12 @@ onAuthStateChanged(auth, (user) => {
         const storageRefVar = storageRef(storage, `profileSuperImages/${uid}`);
         uploadBytes(storageRefVar, file).then(() => {
           getDownloadURL(storageRefVar).then((downloadURL) => {
-            updateUserData("ImageProfile", downloadURL);
+            update(userRef, { ImageProfile: downloadURL });
+            alert("Profile picture changed successfully!");
             document.getElementById("profileSuperImage").src = downloadURL;
-            showImageChangeSuccessAlert();
           });
         });
       }
-    };
-
-    // Function to show image change success alert
-    const showImageChangeSuccessAlert = () => {
-      alert("Profile picture changed successfully!");
     };
 
     get(userRef).then((snapshot) => {
@@ -87,7 +89,7 @@ onAuthStateChanged(auth, (user) => {
 
       // Update the DOM elements with user data
       document.getElementById("profileImage").src =
-        userData.ImageProfile || "img/profile.png";
+        userData.ImageProfile || "../img/profile.png";
       document.getElementById("firstname").value = userData.firstname || "";
       document.getElementById("lastname").value = userData.lastname || "";
       document.getElementById("middlename").value = userData.middlename || "";
@@ -100,50 +102,49 @@ onAuthStateChanged(auth, (user) => {
         userData.position || "";
 
       // Event listener for editing the firstname
-      document
-        .getElementById("firstname")
-        .addEventListener("input", (event) => {
-          updateUserData("firstname", event.target.value);
-        });
+      document.getElementById("firstname").addEventListener("input", () => {
+        isEditing = true;
+        showSaveButton();
+      });
 
       // Event listener for editing the lastname
-      document.getElementById("lastname").addEventListener("input", (event) => {
-        updateUserData("lastname", event.target.value);
+      document.getElementById("lastname").addEventListener("input", () => {
+        isEditing = true;
+        showSaveButton();
       });
 
       // Event listener for editing the middlename
-      document
-        .getElementById("middlename")
-        .addEventListener("input", (event) => {
-          updateUserData("middlename", event.target.value);
-        });
+      document.getElementById("middlename").addEventListener("input", () => {
+        isEditing = true;
+        showSaveButton();
+      });
 
       // Event listener for editing the contactNumber
       document
         .getElementById("accountcontact")
-        .addEventListener("input", (event) => {
-          updateUserData("contactNumber", event.target.value);
+        .addEventListener("input", () => {
+          isEditing = true;
+          showSaveButton();
         });
 
       // Event listener for editing the gender
-      document
-        .getElementById("accountgender")
-        .addEventListener("input", (event) => {
-          updateUserData("gender", event.target.value);
-        });
+      document.getElementById("accountgender").addEventListener("input", () => {
+        isEditing = true;
+        showSaveButton();
+      });
 
       // Event listener for editing the birthday
-      document
-        .getElementById("accountbday")
-        .addEventListener("input", (event) => {
-          updateUserData("birthday", event.target.value);
-        });
+      document.getElementById("accountbday").addEventListener("input", () => {
+        isEditing = true;
+        showSaveButton();
+      });
 
       // Event listener for editing the position
       document
         .getElementById("accountposition")
-        .addEventListener("input", (event) => {
-          updateUserData("position", event.target.value);
+        .addEventListener("input", () => {
+          isEditing = true;
+          showSaveButton();
         });
 
       // Event listener for uploading a new profile image

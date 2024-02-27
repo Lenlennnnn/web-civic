@@ -58,7 +58,7 @@
       }
 
       .admin-info {
-        margin-top: 75%;
+        margin-top: 67%;
         margin-right: 10%;
       }
       .container-acc {
@@ -202,12 +202,23 @@
         <!-- =============== My account details ================ -->
         <div class="admin-info" id="adconpro">
           <div class="form-group">
-            <label for="email">Email Account:</label>
+            <label for="email">Email:</label>
             <div class="input-container">
               <input
                 type="email"
                 id="accountemail"
                 name="email"
+                value="Loading......"
+                readonly />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="account-id">Campus:</label>
+            <div class="input-container">
+              <input
+                type="text"
+                id="campus"
+                name="account-id"
                 value="Loading......"
                 readonly />
             </div>
@@ -326,6 +337,6 @@
         </script>
       </div>
     </div>
-    <script type="module" src="js/superProfile.js"></script>
+    <script type="module" src="js/subProfile.js"></script>
   </body>
 </html>
