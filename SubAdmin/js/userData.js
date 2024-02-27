@@ -53,7 +53,6 @@ function RegisterUser(event) {
     !password.value ||
     !confirmpassword.value ||
     !gender.value ||
-    !campus.value ||
     !email.value
   ) {
     alert("Please fill in all the fields.");
@@ -80,19 +79,33 @@ function RegisterUser(event) {
     alert("Passwords do not match. Please make sure the passwords match.");
     return;
   }
-  createUserWithEmailAndPassword(auth, email.value, password.value)
-    .then((userCredential) => {
-      // User registered successfully
-      const user = userCredential.user;
 
-      // Store additional user data in the database
-      saveUserData(user.uid);
-    })
-    .catch((error) => {
-      // Handle errors here
-      alert(error.message);
-      console.error(error);
-    });
+  // Get the current user's campus from onAuthStateChanged
+  let currentUserCampus;
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const userRef = ref(db, `SubAdminAcc/${user.uid}`);
+      onValue(userRef, (snapshot) => {
+        const currentUserData = snapshot.val();
+        if (currentUserData) {
+          currentUserCampus = currentUserData.campus;
+          // After obtaining the currentUserCampus, proceed to create the user
+          createUserWithEmailAndPassword(auth, email.value, password.value)
+            .then((userCredential) => {
+              // User registered successfully
+              const user = userCredential.user;
+              // Store additional user data in the database
+              saveUserData(user.uid, currentUserCampus);
+            })
+            .catch((error) => {
+              // Handle errors here
+              alert(error.message);
+              console.error(error);
+            });
+        }
+      });
+    }
+  });
 }
 function validatePassword(password) {
   const regex = /^(?=.*[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
@@ -116,7 +129,7 @@ function generateTimestamp() {
   return currentDate.toLocaleString("en-US", options).replace(",", "");
 }
 
-function saveUserData(userId) {
+function saveUserData(userId, currentUserCampus) {
   const dbRef = ref(db);
   const userRef = ref(db, `Users/${userId}`);
 
@@ -126,7 +139,7 @@ function saveUserData(userId) {
     middlename: middlename.value,
     lastname: lastname.value,
     gender: gender.value,
-    campus: campus.value,
+    campus: currentUserCampus, // Set the campus to currentUserCampus
     email: email.value,
     CurrentEngagement: 0,
     verificationStatus: true,

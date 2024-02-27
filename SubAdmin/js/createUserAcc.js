@@ -10,6 +10,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 import {
   getAuth,
+  onAuthStateChanged,
   createUserWithEmailAndPassword,
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 
@@ -36,7 +37,6 @@ addgrBtn.addEventListener("click", function () {
 
 let counter = 1; // Initialize a counter for unique IDs
 
-// Function to add a new row of input fields
 // Function to add a new row of input fields
 function addRow() {
   var inputRow = document.getElementById("inputrow");
@@ -103,12 +103,23 @@ document.getElementById("subac").addEventListener("click", function (event) {
 
   // Confirmation alert
   if (confirm("Are you sure you want to register these users?")) {
-    // Register users
-    registerUsers();
+    // Get the current user's campus from onAuthStateChanged
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const userRef = ref(db, `SubAdminAcc/${user.uid}`);
+        onValue(userRef, (snapshot) => {
+          const currentUserData = snapshot.val();
+          if (currentUserData) {
+            const currentUserCampus = currentUserData.campus;
+            registerUsers(currentUserCampus); // Pass currentUserCampus to registerUsers
+          }
+        });
+      }
+    });
   }
 });
 
-function registerUsers() {
+function registerUsers(currentUserCampus) {
   var inputRow = document.getElementById("inputrow");
   var emailInputs = inputRow.getElementsByClassName("emailInput");
 
@@ -123,7 +134,7 @@ function registerUsers() {
 
         if (email !== "") {
           // Register the user with the fetched default password
-          registerUser(email, defaultPassword);
+          registerUser(email, defaultPassword, currentUserCampus);
         }
       });
       removeAddedRows();
@@ -133,7 +144,7 @@ function registerUsers() {
   });
 }
 
-function registerUser(email, password) {
+function registerUser(email, password, currentUserCampus) {
   // Check if the email already exists
   checkIfEmailExists(email).then(function (emailExists) {
     if (!emailExists) {
@@ -143,7 +154,7 @@ function registerUser(email, password) {
           // User registered successfully
           var user = userCredential.user;
           alert("User with email " + email + " registered successfully!");
-          saveUserData(user.uid, email);
+          saveUserData(user.uid, email, currentUserCampus); // Pass currentUserCampus to saveUserData
         })
         .catch((error) => {
           // Handle errors during registration
@@ -180,7 +191,7 @@ function generateTimestamp() {
   };
   return currentDate.toLocaleString("en-US", options).replace(",", "");
 }
-function saveUserData(uid, email) {
+function saveUserData(uid, email, currentUserCampus) {
   // Save additional user data to the database
   var usersRef = ref(db, "Users/" + uid);
   set(usersRef, {
@@ -189,7 +200,7 @@ function saveUserData(uid, email) {
     activepts: 0,
     address: "",
     birthday: "",
-    campus: "",
+    campus: currentUserCampus, // Set campus to currentUserCampus
     course: "",
     nstp: "",
     ContactEme: "",
