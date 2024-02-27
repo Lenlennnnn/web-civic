@@ -5,18 +5,23 @@ import {
   get,
   onValue,
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
-
+import {
+  getAuth,
+  onAuthStateChanged,
+} from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 import firebaseConfig from "./firebaseConfig.js";
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const auth = getAuth(app);
 
-// Reference to the Users node
 const usersRef = ref(db, "Users");
 
 const notificationBadgeArchive = document.getElementById(
   "notificationBadgeArchive"
 );
+const notificationBadge = document.getElementById("notificationBadge");
+
 function formatNumber(num) {
   if (num >= 1000000) {
     return (num / 1000000).toFixed(1) + "M";
@@ -26,48 +31,46 @@ function formatNumber(num) {
     return num.toString();
   }
 }
-function countArchivedUsers(snapshot) {
+
+function countArchivedUsers(snapshot, currentUserCampus) {
   let archivedUsersCount = 0;
 
-  // Current date and time
   const currentDate = new Date();
-
-  // One year ago from the current date
   const oneYearAgo = new Date();
   oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
 
-  // Loop through the users
   snapshot.forEach((userSnapshot) => {
-    const verificationStatus = userSnapshot.child("verificationStatus").val();
-    const lastLogin = userSnapshot.child("lastLogin").val();
-    const lastLoginDate = new Date(lastLogin);
-    if (verificationStatus === true && lastLoginDate <= oneYearAgo) {
+    const user = userSnapshot.val();
+    const verificationStatus = user.verificationStatus;
+    const lastLogin = user.lastLogin ? new Date(user.lastLogin) : null;
+    const userCampus = user.campus;
+
+    if (
+      verificationStatus &&
+      lastLogin &&
+      lastLogin <= oneYearAgo &&
+      userCampus === currentUserCampus
+    ) {
       archivedUsersCount++;
     }
   });
 
   notificationBadgeArchive.textContent = formatNumber(archivedUsersCount);
 }
-onValue(usersRef, countArchivedUsers);
-const notificationBadge = document.getElementById("notificationBadge");
 
-// Listen for changes in the Users node
-onValue(usersRef, (snapshot) => {
-  // Reset badge count
+function updateNotificationBadge(snapshot, currentUserCampus) {
   let badgeCount = 0;
 
-  // Iterate through each user
   snapshot.forEach((userSnapshot) => {
     const user = userSnapshot.val();
     const uid = userSnapshot.key;
+    const verificationStatus = user.verificationStatus;
+    const userCampus = user.campus;
 
-    // Check if verificationStatus is false
-    if (user.verificationStatus === false) {
-      // Check if UID exists in User Verification node
+    if (!verificationStatus && userCampus === currentUserCampus) {
       const userVerificationRef = ref(db, "User_Verification/" + uid);
       get(userVerificationRef).then((verificationSnapshot) => {
         if (verificationSnapshot.exists()) {
-          // Increment badge count
           badgeCount++;
         }
 
@@ -75,4 +78,27 @@ onValue(usersRef, (snapshot) => {
       });
     }
   });
+}
+
+function populateDataTable(currentUserCampus) {
+  onValue(usersRef, (snapshot) => {
+    countArchivedUsers(snapshot, currentUserCampus);
+    updateNotificationBadge(snapshot, currentUserCampus);
+  });
+}
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("User is logged in:", user);
+    const userRef = ref(db, `SubAdminAcc/${user.uid}`);
+    onValue(userRef, (snapshot) => {
+      const currentUserData = snapshot.val();
+      if (currentUserData) {
+        const currentUserCampus = currentUserData.campus;
+        populateDataTable(currentUserCampus);
+      }
+    });
+  } else {
+    console.log("User is logged out");
+  }
 });
