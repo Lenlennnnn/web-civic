@@ -431,22 +431,25 @@ function handleCategoryChange() {
     payDiv.style.display = "block";
   }
 }
-const campusFilterSelect = document.querySelector("#campusfilter select");
+const categoryFilterSelect = document.querySelector("#categoryFilter select");
 const searchInput = document.querySelector("#searchfilter input");
 
-campusFilterSelect.addEventListener("change", function () {
-  let selectedCampus = this.value === "All Campus" ? "" : this.value;
+categoryFilterSelect.addEventListener("change", function () {
+  let selectedCategory = this.value === "All Category" ? "" : this.value;
   const searchTerm = searchInput.value.trim();
-  displayEventData(searchTerm, selectedCampus);
+  displayEventData(searchTerm, selectedCategory);
 });
 
 searchInput.addEventListener("input", function () {
   const searchTerm = this.value.trim();
-  const selectedCampus =
-    campusFilterSelect.value === "All Campus" ? "" : campusFilterSelect.value;
-  displayEventData(searchTerm, selectedCampus);
+  const selectedCategory =
+    categoryFilterSelect.value === "All Category"
+      ? ""
+      : categoryFilterSelect.value;
+  displayEventData(searchTerm, selectedCategory);
 });
-function displayEventData(searchTerm = "", selectedCampus = "") {
+
+function displayEventData(searchTerm = "", selectedCategory = "") {
   const uploadEngagementRef = ref(db, "Upload_Engagement");
 
   onValue(uploadEngagementRef, (snapshot) => {
@@ -460,7 +463,7 @@ function displayEventData(searchTerm = "", selectedCampus = "") {
       if (
         uploadData.hasOwnProperty("verificationStatus") &&
         uploadData.verificationStatus === true &&
-        uploadData.hasOwnProperty("approveBy") // Check if rejectReason does not exist
+        uploadData.hasOwnProperty("approveBy") // Check if approveBy exists
       ) {
         const {
           campus,
@@ -473,10 +476,10 @@ function displayEventData(searchTerm = "", selectedCampus = "") {
           // Add other fields you want to retrieve from Firebase
         } = uploadData;
 
-        // Check if the selected campus is present in the campus field
+        // Check if the selected category is present in the category field
         if (
-          selectedCampus === "" ||
-          campus.toLowerCase().includes(selectedCampus.toLowerCase())
+          selectedCategory === "" ||
+          category.toLowerCase().includes(selectedCategory.toLowerCase())
         ) {
           events.push({
             id: childSnapshot.key,
@@ -513,20 +516,19 @@ function displayEventData(searchTerm = "", selectedCampus = "") {
 
         const newRow = tableBody.insertRow();
         newRow.innerHTML = `
- <td>${rowNumber}</td>
-<td style="width: 120px; height: 80px; overflow: hidden;">
-  <img src="${
-    image || "../img/placeholderpic.jpg"
-  }" class="eventpic" alt="Event Image" style="width: 100%; height: 100%; object-fit: cover;">
-</td>
-
+          <td>${rowNumber}</td>
+          <td style="width: 120px; height: 80px; overflow: hidden;">
+            <img src="${
+              image || "../img/placeholderpic.jpg"
+            }" class="eventpic" alt="Event Image" style="width: 100%; height: 100%; object-fit: cover;">
+          </td>
           <td>${titleEvent || "N/A"}</td>
           <td>${category || "N/A"}</td>
           <td>${location || "N/A"}</td>
           <td style="line-height: 1.5;">${campus || "N/A"}</td>
           <td>${startDate.toLocaleString() || "N/A"} -- ${endDate || "N/A"}</td>
           <td>
-              <button type="button" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>
+            <button type="button" class="vieweventdet" title="View Details" data-toggle="tooltip">View</button>
           </td>
         `;
         newRow.setAttribute("data-event-id", event.id); // Set the event ID as an attribute in the table row
