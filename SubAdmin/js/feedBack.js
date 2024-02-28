@@ -27,7 +27,7 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-function updateFeedbackTable() {
+function updateFeedbackTable(currentUserCampus) {
   const table = document
     .getElementById("tableevents")
     .getElementsByTagName("tbody")[0];
@@ -84,15 +84,18 @@ function updateFeedbackTable() {
             }
           }
 
-          totalRating += parseFloat(feedbackData.rating);
-          totalFeedbacks++;
+          // Check if user's campus matches current user's campus
+          if (userData && userData.campus === currentUserCampus) {
+            totalRating += parseFloat(feedbackData.rating);
+            totalFeedbacks++;
 
-          // Add data to rowsData array for sorting
-          rowsData.push({
-            uid,
-            userData,
-            feedbackData,
-          });
+            // Add data to rowsData array for sorting
+            rowsData.push({
+              uid,
+              userData,
+              feedbackData,
+            });
+          }
         });
 
         promises.push(userPromise);
@@ -245,6 +248,32 @@ function updateFeedbackTable() {
   searchInput.addEventListener("input", applySearchFilter);
 }
 
+// Call the function to initially update the report count and populate the feedback table
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // Get the current user's UID
+    const currentUserUID = user.uid;
+
+    // Reference to the current user's data in SubAdminAcc
+    const currentUserRef = ref(db, `SubAdminAcc/${currentUserUID}`);
+
+    // Fetch the current user's data
+    get(currentUserRef)
+      .then((userSnapshot) => {
+        // Extract the current user's campus from the snapshot
+        const currentUserCampus = userSnapshot.val().campus;
+
+        // Call the function to update the feedback table with the current user's campus
+        updateFeedbackTable(currentUserCampus);
+      })
+      .catch((error) => {
+        console.error("Error fetching current user's data:", error);
+      });
+  } else {
+    console.log("User is logged out");
+  }
+});
+
 function getStarRating(message) {
   const goldColor = "#f2c300"; // Set your desired gold color
   const starSize = "1.2em"; // Set your desired star size
@@ -267,29 +296,71 @@ function getStarRating(message) {
   }
 }
 // Function to update the report count
-function updateReportCount() {
+function updateReportCount(currentUserCampus) {
   const reportedProblemsRef = ref(db, "ReportedProblems");
+  const usersRef = ref(db, "Users");
 
   // Reset report count
   let reportCount = 0;
 
-  // Listen for changes in the ReportedProblems node
-  onValue(reportedProblemsRef, (snapshot) => {
-    reportCount = 0; // Reset report count
-    snapshot.forEach((uidSnapshot) => {
-      // Increment report count for each UID
-      uidSnapshot.forEach(() => {
-        reportCount++;
-      });
+  // Listen for changes in the Users node
+  onValue(usersRef, (usersSnapshot) => {
+    // Fetch the UIDs with matching campus value
+    const relevantUIDs = [];
+    usersSnapshot.forEach((userSnapshot) => {
+      const userData = userSnapshot.val();
+      if (userData.campus === currentUserCampus) {
+        relevantUIDs.push(userSnapshot.key);
+      }
     });
 
-    // Update the report number element
-    const reportNumberElement = document.getElementById("reportNumber");
-    if (reportNumberElement) {
-      reportNumberElement.textContent = formatNumber(reportCount);
-    }
+    // Listen for changes in the ReportedProblems node
+    onValue(reportedProblemsRef, (snapshot) => {
+      reportCount = 0; // Reset report count
+      snapshot.forEach((uidSnapshot) => {
+        const uid = uidSnapshot.key;
+        // Check if the UID is relevant
+        if (relevantUIDs.includes(uid)) {
+          uidSnapshot.forEach(() => {
+            reportCount++; // Increment report count for each relevant UID
+          });
+        }
+      });
+
+      // Update the report number element
+      const reportNumberElement = document.getElementById("reportNumber");
+      if (reportNumberElement) {
+        reportNumberElement.textContent = formatNumber(reportCount);
+      }
+    });
   });
 }
+
+// Call the function to initially update the report count based on the currentUserCampus
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // Get the current user's UID
+    const currentUserUID = user.uid;
+
+    // Reference to the current user's data in SubAdminAcc
+    const currentUserRef = ref(db, `SubAdminAcc/${currentUserUID}`);
+
+    // Fetch the current user's data
+    get(currentUserRef)
+      .then((userSnapshot) => {
+        // Extract the current user's campus from the snapshot
+        const currentUserCampus = userSnapshot.val().campus;
+
+        // Call the function to update the report count with the current user's campus
+        updateReportCount(currentUserCampus);
+      })
+      .catch((error) => {
+        console.error("Error fetching current user's data:", error);
+      });
+  } else {
+    console.log("User is logged out");
+  }
+});
 
 // Function to format the number
 function formatNumber(num) {

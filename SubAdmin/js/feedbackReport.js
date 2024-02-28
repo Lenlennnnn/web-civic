@@ -19,14 +19,30 @@ const auth = getAuth(app);
 const storage = getStorage(app);
 let currentUserUID;
 onAuthStateChanged(auth, (user) => {
-  // You can handle authentication state changes here
   if (user) {
-    console.log("User is logged in:", user);
-    currentUserUID = user.uid;
+    // Get the current user's UID
+    const currentUserUID = user.uid;
+
+    // Reference to the current user's data in SubAdminAcc
+    const currentUserRef = ref(db, `SubAdminAcc/${currentUserUID}`);
+
+    // Fetch the current user's data
+    get(currentUserRef)
+      .then((userSnapshot) => {
+        // Extract the current user's campus from the snapshot
+        const currentUserCampus = userSnapshot.val().campus;
+
+        // Call populateTable function with the current user's campus
+        populateTable(currentUserCampus);
+      })
+      .catch((error) => {
+        console.error("Error fetching current user's data:", error);
+      });
   } else {
     console.log("User is logged out");
   }
 });
+
 document.addEventListener("DOMContentLoaded", function () {
   // Get the modal and the button
   const modal = document.getElementById("myModalat");
@@ -74,8 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 // Function to populate the tableParticipants
-// Function to populate the tableParticipants
-function populateTable() {
+function populateTable(currentUserCampus) {
   const table = document
     .getElementById("tableParticipants")
     .getElementsByTagName("tbody")[0];
@@ -91,7 +106,7 @@ function populateTable() {
       const messageCell = noDataMessageRow.insertCell();
       messageCell.colSpan = "7"; // Span the entire row
       const message = "No problem reports as of the moment.";
-      messageCell.innerHTML = `<div style="text-align: center; font-size: larger; color: #dc3545;">${message}</div>`;
+      messageCell.innerHTML = `<div style="text-align: center; font-size: larger; color:#black;">${message}</div>`;
     } else {
       snapshot.forEach((childSnapshot) => {
         const uid = childSnapshot.key;
@@ -107,57 +122,60 @@ function populateTable() {
             get(userRef).then((userSnapshot) => {
               const user = userSnapshot.val();
 
-              // Create a new row
-              const row = table.insertRow();
+              // Check if the user's campus matches the current user's campus
+              if (user.campus === currentUserCampus) {
+                // Create a new row
+                const row = table.insertRow();
 
-              // Populate columns
-              row.insertCell(0).innerText = uid;
-              row.insertCell(
-                1
-              ).innerText = `${user.lastname}, ${user.firstname} ${user.middlename}`;
-              row.insertCell(2).innerText = user.campus;
-              row.insertCell(3).innerText = problem.issue;
-              // Splitting the message into lines of maximum 40 characters
-              const messageLines = problem.message.match(/.{1,40}/g) || [];
+                // Populate columns
+                row.insertCell(0).innerText = uid;
+                row.insertCell(
+                  1
+                ).innerText = `${user.lastname}, ${user.firstname} ${user.middlename}`;
+                row.insertCell(2).innerText = user.campus;
+                row.insertCell(3).innerText = problem.issue;
+                // Splitting the message into lines of maximum 40 characters
+                const messageLines = problem.message.match(/.{1,40}/g) || [];
 
-              // Joining the lines with a line break
-              const formattedMessage = messageLines.join("\n");
+                // Joining the lines with a line break
+                const formattedMessage = messageLines.join("\n");
 
-              // Setting the inner text with the formatted message
-              row.insertCell(4).innerText = formattedMessage;
+                // Setting the inner text with the formatted message
+                row.insertCell(4).innerText = formattedMessage;
 
-              const proofCell = row.insertCell(5);
-              proofCell.innerHTML = `<a href="${problem.imageUrl}" target="_blank" style="color: #dc3545; text-decoration: underline">View the file</a>`;
+                const proofCell = row.insertCell(5);
+                proofCell.innerHTML = `<a href="${problem.imageUrl}" target="_blank" style="color: #dc3545; text-decoration: underline">View the file</a>`;
 
-              // Add delete button in column 6
-              const deleteCell = row.insertCell(6);
-              const deleteButton = document.createElement("button");
-              deleteButton.className = "btn btn-danger";
-              deleteButton.innerText = "Delete";
-              deleteButton.addEventListener("click", () => {
-                // Show confirmation dialog
-                const confirmation = confirm(
-                  "Are you sure you want to delete this problem report?"
-                );
-
-                // If user confirms deletion
-                if (confirmation) {
-                  // Delete data from Firebase Realtime Database
-                  const problemRef = ref(
-                    db,
-                    `ReportedProblems/${uid}/${postId}`
+                // Add delete button in column 6
+                const deleteCell = row.insertCell(6);
+                const deleteButton = document.createElement("button");
+                deleteButton.className = "btn btn-danger";
+                deleteButton.innerText = "Delete";
+                deleteButton.addEventListener("click", () => {
+                  // Show confirmation dialog
+                  const confirmation = confirm(
+                    "Are you sure you want to delete this problem report?"
                   );
-                  set(problemRef, null) // Set to null to delete the data
-                    .then(() => {
-                      // Alert for successful deletion
-                      alert("Problem report deleted successfully.");
-                    })
-                    .catch((error) => {
-                      console.error("Error deleting problem report:", error);
-                    });
-                }
-              });
-              deleteCell.appendChild(deleteButton);
+
+                  // If user confirms deletion
+                  if (confirmation) {
+                    // Delete data from Firebase Realtime Database
+                    const problemRef = ref(
+                      db,
+                      `ReportedProblems/${uid}/${postId}`
+                    );
+                    set(problemRef, null) // Set to null to delete the data
+                      .then(() => {
+                        // Alert for successful deletion
+                        alert("Problem report deleted successfully.");
+                      })
+                      .catch((error) => {
+                        console.error("Error deleting problem report:", error);
+                      });
+                  }
+                });
+                deleteCell.appendChild(deleteButton);
+              }
             });
           }
         }
