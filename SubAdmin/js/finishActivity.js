@@ -430,7 +430,7 @@ const searchInput = document.querySelector("#searchfilter input");
 categoryFilterSelect.addEventListener("change", function () {
   let selectedCategory = this.value === "All Category" ? "" : this.value;
   const searchTerm = searchInput.value.trim();
-  displayEventData(searchTerm, selectedCategory);
+  handleFilterChange(searchTerm, selectedCategory);
 });
 
 searchInput.addEventListener("input", function () {
@@ -439,10 +439,34 @@ searchInput.addEventListener("input", function () {
     categoryFilterSelect.value === "All Category"
       ? ""
       : categoryFilterSelect.value;
-  displayEventData(searchTerm, selectedCategory);
+  handleFilterChange(searchTerm, selectedCategory);
 });
 
-function displayEventData(searchTerm = "", selectedCategory = "") {
+function handleFilterChange(searchTerm, selectedCategory) {
+  const currentUser = auth.currentUser;
+
+  if (currentUser) {
+    const currentUserUID = currentUser.uid;
+    const currentUserRef = ref(db, `SubAdminAcc/${currentUserUID}`);
+    get(currentUserRef)
+      .then((userSnapshot) => {
+        const currentUserCampus = userSnapshot.val().campus;
+        displayEventData(searchTerm, currentUserCampus, selectedCategory);
+      })
+      .catch((error) => {
+        console.error("Error fetching current user's data:", error);
+      });
+  } else {
+    console.log("User is logged out");
+    displayEventData(searchTerm, "", selectedCategory);
+  }
+}
+
+function displayEventData(
+  searchTerm = "",
+  currentUserCampus = "",
+  selectedCategory = ""
+) {
   const uploadEngagementRef = ref(db, "Upload_Engagement");
 
   onValue(uploadEngagementRef, (snapshot) => {
@@ -455,7 +479,9 @@ function displayEventData(searchTerm = "", selectedCategory = "") {
       const uploadData = childSnapshot.val();
       if (
         uploadData.hasOwnProperty("verificationStatus") &&
-        uploadData.verificationStatus === true
+        uploadData.verificationStatus === true &&
+        uploadData.campus && // Ensure campus field exists
+        uploadData.campus.includes(currentUserCampus) // Check if current user's campus is included in the event's campus
       ) {
         const {
           campus,
@@ -546,6 +572,31 @@ function displayEventData(searchTerm = "", selectedCategory = "") {
     }
   });
 }
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // Get the current user's UID
+    const currentUserUID = user.uid;
+
+    // Reference to the current user's data in SubAdminAcc
+    const currentUserRef = ref(db, `SubAdminAcc/${currentUserUID}`);
+
+    // Fetch the current user's data
+    get(currentUserRef)
+      .then((userSnapshot) => {
+        // Extract the current user's campus from the snapshot
+        const currentUserCampus = userSnapshot.val().campus;
+
+        // Call displayEventData function with the current user's campus
+        displayEventData("", currentUserCampus);
+      })
+      .catch((error) => {
+        console.error("Error fetching current user's data:", error);
+      });
+  } else {
+    console.log("User is logged out");
+  }
+});
 
 const editableFields = [
   "upcompostpic",

@@ -369,12 +369,6 @@ function onDeleteClick() {
     }
   }
 }
-
-function hasEventEnded(endDate) {
-  const currentDateTime = new Date();
-  const eventEndDate = new Date(endDate);
-  return eventEndDate < currentDateTime;
-}
 function handleCategoryChange() {
   const selectedCategory = categoryField.value;
   const payRecipField = document.getElementById("payRecip");
