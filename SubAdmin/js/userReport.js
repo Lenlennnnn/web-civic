@@ -25,7 +25,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 const searchInput = document.getElementById("searchInput");
-const campusSelect = document.getElementById("campusSelect");
+const userSelect = document.getElementById("userSelect");
 const userTable = document.getElementById("userTable");
 const noMatchMessage = document.getElementById("noMatchMessage");
 
@@ -35,7 +35,7 @@ searchInput.addEventListener("input", () => {
 });
 
 // Event listener for campus filter
-campusSelect.addEventListener("change", () => {
+userSelect.addEventListener("change", () => {
   filterTable();
 });
 
@@ -115,22 +115,22 @@ function populateUserData() {
 function filterTable() {
   const rows = userTable.getElementsByTagName("tr");
   const searchTerm = searchInput.value.toLowerCase();
-  const selectedCampus = campusSelect.value.toLowerCase();
+  const selectedUser = userSelect.value.toLowerCase();
 
   let matchFound = false;
 
   for (let i = 0; i < rows.length; i++) {
-    const campus = rows[i].querySelector("#campusid").textContent.toLowerCase();
+    const userType = rows[i]
+      .querySelector("#usertype")
+      .textContent.toLowerCase();
 
-    const campusFilterCondition =
-      selectedCampus === "all campus" || campus.includes(selectedCampus);
+    const userFilterCondition =
+      selectedUser === "all user" || userType.includes(selectedUser);
 
     const uid = rows[i].querySelector("#uid").textContent.toLowerCase();
     const srcode = rows[i].querySelector("#srcode").textContent.toLowerCase();
     const name = rows[i].querySelector("#nameid").textContent.toLowerCase();
-    const userType = rows[i]
-      .querySelector("#usertype")
-      .textContent.toLowerCase();
+    const campus = rows[i].querySelector("#campusid").textContent.toLowerCase();
     const currentEvent = rows[i]
       .querySelector("#currentEvent")
       .textContent.toLowerCase();
@@ -142,13 +142,14 @@ function filterTable() {
     const searchTermFound =
       uid.includes(searchTerm) ||
       srcode.includes(searchTerm) ||
+      campus.includes(searchTerm) ||
       name.includes(searchTerm) ||
       userType.includes(searchTerm) ||
       currentEvent.includes(searchTerm) ||
       finish.includes(searchTerm) ||
       activepts.includes(searchTerm);
 
-    if (campusFilterCondition && searchTermFound) {
+    if (userFilterCondition && searchTermFound) {
       rows[i].style.display = "";
       matchFound = true;
     } else {

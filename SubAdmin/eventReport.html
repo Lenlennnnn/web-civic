@@ -272,7 +272,7 @@
         top: 2px;
       }
 
-      #campusfilter {
+      #categoryFilter {
         position: relative;
         right: 30px;
         bottom: 60px;
@@ -381,35 +381,32 @@
                           class="form-control" />
                       </div>
                     </div>
-                    <div class="filter-group" id="campusfilter">
-                      <label style="margin-top: -5px">Campus</label>
+                    <div class="filter-group" id="categoryFilter">
+                      <label style="margin-top: -5px">Category</label>
+
                       <select
+                        id="categorySelect"
                         class="form-control"
-                        style="margin-top: -5px"
-                        id="campusSelect">
+                        style="margin-top: -5px">
                         <option value="" disabled selected>
-                          Filter Campus
+                          Choose a Category
                         </option>
-                        <option value="ARASOF Nasugbu Campus">
-                          ARASOF Nasugbu Campus
+                        <option value="Tree Planting">Tree Planting</option>
+                        <option value="Fund Raising">Fund Raising</option>
+                        <option value="Donation">Donation</option>
+                        <option value="Clean Up Drive">Clean Up Drive</option>
+                        <option value="Feeding Program">Feeding Program</option>
+                        <option value="Relief Operation">
+                          Relief Operation
                         </option>
-                        <option value="Balayan Campus">Balayan Campus</option>
-                        <option value="JPLPC Malvar Campus">
-                          JPLPC Malvar Campus
+                        <option value="Seminar Training">
+                          Seminar Training
                         </option>
-                        <option value="Lemery Campus">Lemery Campus</option>
-                        <option value="Lipa Campus">Lipa Campus</option>
-                        <option value="Lobo Campus">Lobo Campus</option>
-                        <option value="Mabini Campus">Mabini Campus</option>
-                        <option value="Pablo Borbon Campus I">
-                          Pablo Borbon Campus I
+                        <option value="Teaching Literacy">
+                          Teaching Literacy
                         </option>
-                        <option value="Pablo Borbon Campus II">
-                          Pablo Borbon Campus II
-                        </option>
-                        <option value="Rosario Campus">Rosario Campus</option>
-                        <option value="San Juan Campus">San Juan Campus</option>
-                        <option value="All Campus">All Campus</option>
+
+                        <option value="All Category">All Category</option>
                       </select>
                       <i
                         class="fas fa-chevron-down"
@@ -425,6 +422,7 @@
                       <th>No.</th>
                       <th>Poster</th>
                       <th>Title</th>
+                      <th>Category</th>
                       <th>Campus</th>
                       <th>Schedule</th>
                       <th>Status</th>

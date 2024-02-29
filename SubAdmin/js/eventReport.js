@@ -27,7 +27,7 @@ const auth = getAuth(app);
 const storages = getStorage(app);
 const eventTable = document.getElementById("eventTable");
 const searchInput = document.getElementById("searchInput");
-const campusSelect = document.getElementById("campusSelect");
+const categorySelect = document.getElementById("categorySelect");
 
 // Event listener for search input
 searchInput.addEventListener("input", () => {
@@ -35,7 +35,7 @@ searchInput.addEventListener("input", () => {
 });
 
 // Event listener for campus filter
-campusSelect.addEventListener("change", () => {
+categorySelect.addEventListener("change", () => {
   filterTable();
 });
 
@@ -92,6 +92,9 @@ function populateEventData() {
             <td style="line-height: 1.8; min-width: 250px;" id="title">${
               event.titleEvent
             }</td>
+                <td style="line-height: 1.8; min-width: 120px;" id="category">${
+                  event.category
+                }</td>
             <td style="line-height: 1.8; min-width: 350px;" id="campus">${
               event.campus
             }</td>
@@ -123,10 +126,13 @@ function populateEventData() {
 function filterTable() {
   const rows = eventTable.getElementsByTagName("tr");
   const searchTerm = searchInput.value.toLowerCase();
-  const selectedCampus = campusSelect.value.toLowerCase();
+  const selectedCategory = categorySelect.value.toLowerCase();
 
   for (let i = 0; i < rows.length; i++) {
     const title = rows[i].querySelector("#title").textContent.toLowerCase();
+    const category = rows[i]
+      .querySelector("#category")
+      .textContent.toLowerCase();
     const campus = rows[i].querySelector("#campus").textContent.toLowerCase();
     const schedule = rows[i]
       .querySelector("#schedule")
@@ -139,17 +145,19 @@ function filterTable() {
       .querySelector("#totalConfirmed")
       .textContent.toLowerCase();
 
-    const campusFilterCondition =
-      selectedCampus === "all campus" || campus.includes(selectedCampus);
+    const categoryFilterCondition =
+      selectedCategory === "all category" ||
+      category.includes(selectedCategory);
 
     if (
       (title.includes(searchTerm) ||
+        category.includes(searchTerm) ||
         campus.includes(searchTerm) ||
         schedule.includes(searchTerm) ||
         status.includes(searchTerm) ||
         currentParty.includes(searchTerm) ||
         totalConfirmed.includes(searchTerm)) &&
-      campusFilterCondition
+      categoryFilterCondition
     ) {
       rows[i].style.display = "";
     } else {
