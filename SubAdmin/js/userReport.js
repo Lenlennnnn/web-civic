@@ -40,17 +40,32 @@ userSelect.addEventListener("change", () => {
 });
 
 onAuthStateChanged(auth, (user) => {
-  // You can handle authentication state changes here
   if (user) {
-    console.log("User is logged in:", user);
-    populateUserData();
+    // Get the current user's UID
+    const currentUserUID = user.uid;
+
+    // Reference to the current user's data in SubAdminAcc
+    const currentUserRef = ref(db, `SubAdminAcc/${currentUserUID}`);
+
+    // Fetch the current user's data
+    get(currentUserRef)
+      .then((userSnapshot) => {
+        // Extract the current user's campus from the snapshot
+        const currentUserCampus = userSnapshot.val().campus;
+
+        // Call populateUserData function with the current user's campus
+        populateUserData(currentUserCampus);
+      })
+      .catch((error) => {
+        console.error("Error fetching current user's data:", error);
+      });
   } else {
     console.log("User is logged out");
   }
 });
 
 // Function to fetch and populate user data
-function populateUserData() {
+function populateUserData(currentUserCampus) {
   const usersRef = ref(db, "Users");
   get(usersRef)
     .then((snapshot) => {
@@ -58,10 +73,14 @@ function populateUserData() {
         const usersData = snapshot.val();
         let usersArray = [];
 
-        // Convert the object into an array and filter based on verification status and last login
+        // Convert the object into an array and filter based on verification status and campus
         for (let uid in usersData) {
           const user = usersData[uid];
-          if (user.verificationStatus && isWithinOneYear(user.lastLogin)) {
+          if (
+            user.verificationStatus &&
+            user.campus &&
+            user.campus.includes(currentUserCampus)
+          ) {
             usersArray.push(user);
           }
         }
@@ -76,26 +95,29 @@ function populateUserData() {
         usersArray.forEach((user) => {
           const row = document.createElement("tr");
           row.innerHTML = `
-       <td id="uid">${user.uid || "N/A"}</td>
-<td id="srcode">${user.srcode || "N/A"}</td>
-<td>
-  <a href="#">
-    <img src="${
-      user.ImageProfile || "../img/profilePic.jpg"
-    }" style="object-fit: cover" class="eventpic" alt="Avatar" id="profilePic"/>
-  </a>
-</td>
-<td id="nameid">${user.lastname || "N/A"}, ${user.firstname || "N/A"}, ${
-            user.middlename || "N/A"
-          }</td>
-<td id="campusid">${user.campus || "N/A"}</td>
-<td id="usertype">${user.userType || "N/A"}</td>
-<td style="text-align: center;" id="currentEvent">${
-            user.CurrentEngagement || "0"
-          }</td>
-<td style="text-align: center;" id="finish">${user.finishactivity || "0"}</td>
-<td style="text-align: center;" id="activepts">${user.activepts || "0"}</td>
-
+            <td id="uid">${user.uid || "N/A"}</td>
+            <td id="srcode">${user.srcode || "N/A"}</td>
+            <td>
+              <a href="#">
+                <img src="${
+                  user.ImageProfile || "../img/profilePic.jpg"
+                }" style="object-fit: cover" class="eventpic" alt="Avatar" id="profilePic"/>
+              </a>
+            </td>
+            <td id="nameid">${user.lastname || "N/A"}, ${
+            user.firstname || "N/A"
+          }, ${user.middlename || "N/A"}</td>
+            <td id="campusid">${user.campus || "N/A"}</td>
+            <td id="usertype">${user.userType || "N/A"}</td>
+            <td style="text-align: center;" id="currentEvent">${
+              user.CurrentEngagement || "0"
+            }</td>
+            <td style="text-align: center;" id="finish">${
+              user.finishactivity || "0"
+            }</td>
+            <td style="text-align: center;" id="activepts">${
+              user.activepts || "0"
+            }</td>
           `;
           userTable.appendChild(row);
         });

@@ -34,22 +34,13 @@ searchInput.addEventListener("input", () => {
   filterTable();
 });
 
-// Event listener for campus filter
+// Event listener for category filter
 categorySelect.addEventListener("change", () => {
   filterTable();
 });
 
-onAuthStateChanged(auth, (user) => {
-  // You can handle authentication state changes here
-  if (user) {
-    console.log("User is logged in:", user);
-  } else {
-    console.log("User is logged out");
-  }
-});
-
-// Function to fetch and populate data
-function populateEventData() {
+// Function to fetch and populate data based on the current user's campus
+function populateEventData(currentUserCampus) {
   const eventsRef = ref(db, "Upload_Engagement");
   get(eventsRef)
     .then((snapshot) => {
@@ -60,7 +51,11 @@ function populateEventData() {
         // Convert the object into an array for sorting
         for (let key in eventsData) {
           // Check if verificationStatus is true
-          if (eventsData[key].verificationStatus === true) {
+          if (
+            eventsData[key].verificationStatus === true &&
+            eventsData[key].campus &&
+            eventsData[key].campus.includes(currentUserCampus)
+          ) {
             eventsArray.push(eventsData[key]);
           }
         }
@@ -123,6 +118,7 @@ function populateEventData() {
     });
 }
 
+// Function to handle filtering of the table
 function filterTable() {
   const rows = eventTable.getElementsByTagName("tr");
   const searchTerm = searchInput.value.toLowerCase();
@@ -165,6 +161,24 @@ function filterTable() {
     }
   }
 }
+
+// Listener for authentication state changes
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    const currentUserUID = user.uid;
+    const currentUserRef = ref(db, `SubAdminAcc/${currentUserUID}`);
+    get(currentUserRef)
+      .then((userSnapshot) => {
+        const currentUserCampus = userSnapshot.val().campus;
+        populateEventData(currentUserCampus);
+      })
+      .catch((error) => {
+        console.error("Error fetching current user's data:", error);
+      });
+  } else {
+    console.log("User is logged out");
+  }
+});
 
 // Function to determine event status
 function getStatus(startDate, endDate) {
