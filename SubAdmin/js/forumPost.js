@@ -9,6 +9,7 @@ import {
   getDatabase,
   ref as databaseRef,
   push,
+  get,
   set,
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 import {
@@ -75,6 +76,28 @@ fileInput.addEventListener("change", function () {
 // Event listener for when the campusTarget input is clicked
 campusTarget.addEventListener("click", function () {
   modal.style.display = "block";
+
+  // Retrieve current user's information
+  const currentUser = auth.currentUser;
+  if (currentUser) {
+    const currentUserUID = currentUser.uid;
+    const userRef = databaseRef(db, "SubAdminAcc/" + currentUserUID);
+    // Retrieve user's information from the database
+    get(userRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+        const userCampus = userData.campus;
+
+        // Iterate through checkboxes to find and check the checkbox corresponding to the user's campus
+        checkboxes.forEach((checkbox) => {
+          if (checkbox.value === userCampus) {
+            checkbox.checked = true;
+            checkbox.disabled = true; // Disable the checkbox
+          }
+        });
+      }
+    });
+  }
 });
 
 // Event listener for when the Ok button is clicked
@@ -99,7 +122,10 @@ selectAllBtn.addEventListener("click", function () {
 // Event listener for when the Deselect All button is clicked
 deselectAllBtn.addEventListener("click", function () {
   checkboxes.forEach((checkbox) => {
-    checkbox.checked = false;
+    if (!checkbox.disabled) {
+      // Skip deselecting the current user's campus checkbox
+      checkbox.checked = false;
+    }
   });
 });
 
