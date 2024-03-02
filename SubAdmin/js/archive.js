@@ -1,9 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
 import {
   getAuth,
-  deleteUser,
+  onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
-
 import {
   getDatabase,
   ref,
@@ -16,7 +15,37 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 let currentUserUID;
-document.addEventListener("DOMContentLoaded", function () {
+
+function displayNA(value) {
+  return value ? value : "N/A";
+}
+
+function isLastLoginOneYearAgoOrEarlier(lastLogin, currentDate) {
+  const oneYearAgo = new Date(currentDate);
+  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+  const lastLoginDate = new Date(lastLogin);
+
+  return lastLoginDate <= oneYearAgo;
+}
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("User is logged in:", user);
+    const userRef = ref(db, `SubAdminAcc/${user.uid}`);
+    onValue(userRef, (snapshot) => {
+      const currentUserData = snapshot.val();
+      if (currentUserData) {
+        const currentUserCampus = currentUserData.campus;
+        populateDataTable(currentUserCampus); // Call populateDataTable with the current user's campus
+      }
+    });
+  } else {
+    console.log("User is logged out");
+  }
+});
+
+function populateDataTable(currentUserCampus) {
   if (typeof $ !== "undefined" && typeof $.fn.dataTable !== "undefined") {
     const tableElement = $("#example");
     const usersRef = ref(db, "Users");
@@ -45,10 +74,8 @@ document.addEventListener("DOMContentLoaded", function () {
       onValue(userRef, (userSnapshot) => {
         const user = userSnapshot.val();
 
-        // Check if user exists and has ImageProfile property
         const imageUrl =
           user && user.ImageProfile ? user.ImageProfile : "../img/profile.png";
-
         $("#profileImage").attr("src", imageUrl);
         $("#fullName").val(
           displayNA(`${user.lastname}, ${user.firstname}, ${user.middlename}`)
@@ -66,13 +93,10 @@ document.addEventListener("DOMContentLoaded", function () {
         $("#nstp").val(displayNA(user.nstp));
         $("#lastLogin").val(displayNA(user.lastLogin));
 
-        // Show the modal
         $("#exampleModalLonggg").modal("show");
       });
     });
-    function displayNA(value) {
-      return value ? value : "N/A";
-    }
+
     onValue(usersRef, (snapshot) => {
       table.clear().draw();
 
@@ -81,11 +105,11 @@ document.addEventListener("DOMContentLoaded", function () {
       snapshot.forEach((userSnapshot) => {
         const user = userSnapshot.val();
 
-        // Check if verificationStatus is true and lastLogin is 1 year ago or earlier
         if (
           user &&
           user.verificationStatus === true &&
-          isLastLoginOneYearAgoOrEarlier(user.lastLogin, currentDate)
+          isLastLoginOneYearAgoOrEarlier(user.lastLogin, currentDate) &&
+          user.campus === currentUserCampus // Only include users from the same campus as the current user
         ) {
           const uid = user.uid || "";
           const srcode = displayNA(user.srcode);
@@ -120,35 +144,25 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
-    function isLastLoginOneYearAgoOrEarlier(lastLogin, currentDate) {
-      const oneYearAgo = new Date(currentDate);
-      oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+    const terminateButton = document.getElementById("terminate");
+    terminateButton.addEventListener("click", function () {
+      const uidToDelete = currentUserUID;
 
-      const lastLoginDate = new Date(lastLogin);
+      if (
+        confirm("Are you sure you want to delete the data of this Account?")
+      ) {
+        const userRef = ref(db, `Users/${uidToDelete}`);
+        remove(userRef);
 
-      return lastLoginDate <= oneYearAgo;
-    }
+        const userVerificationRef = ref(db, `User_Verification/${uidToDelete}`);
+        remove(userVerificationRef);
+
+        $("#exampleModalLonggg").modal("hide");
+
+        alert("Account Data Deleted Successfully");
+      }
+    });
   } else {
     console.error("jQuery or DataTables plugin is not available.");
   }
-  const terminateButton = document.getElementById("terminate");
-  terminateButton.addEventListener("click", function () {
-    const uidToDelete = currentUserUID;
-
-    if (confirm("Are you sure you want to delete the data of this Account?")) {
-      // Delete user data from Realtime Database
-      const userRef = ref(db, `Users/${uidToDelete}`);
-      remove(userRef);
-
-      // Delete the corresponding child under User Verification
-      const userVerificationRef = ref(db, `User_Verification/${uidToDelete}`);
-      remove(userVerificationRef);
-
-      // Close the modal after removing user data
-      $("#exampleModalLonggg").modal("hide");
-
-      // Show success alert
-      alert("Account Data Deleted Successfully");
-    }
-  });
-});
+}

@@ -6,14 +6,31 @@ import {
   set,
   onValue,
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+} from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 import firebaseConfig from "./firebaseConfig.js";
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 
-document.addEventListener("DOMContentLoaded", function () {
+function generateTimestamp() {
+  const currentDate = new Date();
+  const options = {
+    timeZone: "Asia/Manila",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  };
+  return currentDate.toLocaleString("en-US", options).replace(",", "");
+}
+
+function populateDataTable(currentUserCampus) {
   if (typeof $ !== "undefined" && typeof $.fn.dataTable !== "undefined") {
     const tableElement = $("#example");
     const usersRef = ref(db, "Users");
@@ -201,7 +218,11 @@ document.addEventListener("DOMContentLoaded", function () {
       snapshot.forEach((userSnapshot) => {
         const user = userSnapshot.val();
 
-        if (user && user.verificationStatus === false) {
+        if (
+          user &&
+          user.verificationStatus === false &&
+          user.campus === currentUserCampus
+        ) {
           const uid = user.uid || "";
           const userVerificationRef = ref(db, `User_Verification/${uid}`);
 
@@ -256,17 +277,23 @@ document.addEventListener("DOMContentLoaded", function () {
   } else {
     console.error("jQuery or DataTables plugin is not available.");
   }
-});
-function generateTimestamp() {
-  const currentDate = new Date();
-  const options = {
-    timeZone: "Asia/Manila",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  };
-  return currentDate.toLocaleString("en-US", options).replace(",", "");
 }
+
+onAuthStateChanged(auth, (user) => {
+  // You can handle authentication state changes here
+  if (user) {
+    console.log("User is logged in:", user);
+    // Fetch the current user's data
+    const userRef = ref(db, `SubAdminAcc/${user.uid}`);
+    onValue(userRef, (snapshot) => {
+      const currentUserData = snapshot.val();
+      if (currentUserData) {
+        // Once you have the current user's data, proceed to update counts based on campus and user's campus
+        const currentUserCampus = currentUserData.campus;
+        populateDataTable(currentUserCampus); // Call populateDataTable with the current user's campus
+      }
+    });
+  } else {
+    console.log("User is logged out");
+  }
+});
