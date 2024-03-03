@@ -225,7 +225,7 @@ function fetchForumPosts() {
               ${postData.postTime}
             </p>
           </div>
-          <p style="margin-top:4%" id="forumText-${postKey}">
+          <p class="text-muted text-sm" style="margin-top:4%" id="forumText-${postKey}">
             ${postData.postText}
           </p>
           <img class="img-responsive thumbnail" src="${

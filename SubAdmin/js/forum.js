@@ -42,21 +42,63 @@ function formatNumber(number) {
     return (number / 1000000).toFixed(1) + "M";
   }
 }
-// Fetch data from Firebase and update HTML elements
-document
-  .getElementById("reportFilter")
-  .addEventListener("change", togglePostReportFilter);
 
 let filterEnabled = false; // Variable to track if the filter is enabled
 
-// Function to toggle the post report filter
-function togglePostReportFilter(event) {
+function togglePostReportFilter(event, currentUserCampus) {
   filterEnabled = event.target.checked;
-  fetchForumPosts(); // Re-fetch forum posts to apply the filter
+  fetchForumPosts(currentUserCampus); // Re-fetch forum posts to apply the filter
 }
-document.getElementById("inputSearch").addEventListener("input", handleSearch);
 
-function handleSearch() {
+// Event listener for report filter
+document.getElementById("reportFilter").addEventListener("change", (event) => {
+  // Get the current user's UID
+  const currentUserUID = auth.currentUser.uid;
+
+  // Reference to the current user's data in SubAdminAcc
+  const currentUserRef = ref(db, `SubAdminAcc/${currentUserUID}`);
+
+  // Fetch the current user's data
+  get(currentUserRef)
+    .then((userSnapshot) => {
+      // Extract the current user's campus from the snapshot
+      const currentUserCampus = userSnapshot.val().campus;
+
+      // Call togglePostReportFilter with the current user's campus
+      togglePostReportFilter(event, currentUserCampus);
+    })
+    .catch((error) => {
+      console.error("Error fetching current user's data:", error);
+    });
+});
+document.getElementById("inputSearch").addEventListener("input", handleSearch);
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // Get the current user's UID
+    const currentUserUID = user.uid;
+
+    // Reference to the current user's data in SubAdminAcc
+    const currentUserRef = ref(db, `SubAdminAcc/${currentUserUID}`);
+
+    // Fetch the current user's data
+    get(currentUserRef)
+      .then((userSnapshot) => {
+        // Extract the current user's campus from the snapshot
+        const currentUserCampus = userSnapshot.val().campus;
+
+        // Call fetchForumPosts with the current user's campus
+        fetchForumPosts(currentUserCampus);
+      })
+      .catch((error) => {
+        console.error("Error fetching current user's data:", error);
+      });
+  } else {
+    console.log("User is logged out");
+  }
+});
+
+// Modify handleSearch function to filter based on the current user's campus
+function handleSearch(currentUserCampus) {
   const searchTerm = document.getElementById("inputSearch").value.toLowerCase();
   const forumBody = document.getElementById("forumBody");
   const forumPosts = forumBody.querySelectorAll(".panel");
@@ -89,7 +131,7 @@ function handleSearch() {
 }
 
 // Modified fetchForumPosts function with filtering logic
-function fetchForumPosts() {
+function fetchForumPosts(currentUserCampus) {
   const forumBody = document.getElementById("forumBody");
   forumBody.innerHTML = ""; // Clear previous posts
 
@@ -107,12 +149,19 @@ function fetchForumPosts() {
         const postReportCount = postData.PostReport
           ? Object.keys(postData.PostReport).length
           : 0;
-        posts.push({
-          key: childSnapshot.key,
-          postTime,
-          data: postData,
-          postReportCount,
-        });
+
+        // Check if the current user's campus is in the list of campuses for the post
+        if (postData.campus) {
+          const postCampuses = postData.campus.split(", ");
+          if (postCampuses.includes(currentUserCampus)) {
+            posts.push({
+              key: childSnapshot.key,
+              postTime,
+              data: postData,
+              postReportCount,
+            });
+          }
+        }
       }
     });
 
@@ -226,7 +275,7 @@ function fetchForumPosts() {
               ${postData.postTime}
             </p>
           </div>
-          <p style="margin-top:4%" id="forumText-${postKey}">
+          <p  class="text-muted text-sm" style="margin-top:4%" id="forumText-${postKey}">
             ${postData.postText}
           </p>
           <img class="img-responsive thumbnail" src="${
