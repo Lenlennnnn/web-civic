@@ -275,9 +275,10 @@ function fetchForumPosts(currentUserCampus) {
               ${postData.postTime}
             </p>
           </div>
-          <p  class="text-muted text-sm" style="margin-top:4%" id="forumText-${postKey}">
-            ${postData.postText}
-          </p>
+         <p class="text-muted text-sm" style="margin-top:4%; font-weight: bold; font-size: 14px;" id="forumText-${postKey}">
+    ${postData.postText}
+</p>
+
           <img class="img-responsive thumbnail" src="${
             postData.postImage
           }" id="postImage-${postKey}" alt="Image" style="width: 100%; height: 400px; object-fit: cover; margin-left: -10%; ${

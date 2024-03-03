@@ -994,6 +994,12 @@ $(document).ready(function () {
     // Get the value entered in the declineReasonInput textarea
     var declineReason = $("#declineReasonInput").val();
 
+    // Check if the reason for rejection is provided
+    if (!declineReason) {
+      alert("Please input your reason");
+      return; // Prevent further execution
+    }
+
     // Check if eventId is defined
     var selectedEvent = document.querySelector("tr.selected-event");
     if (selectedEvent) {
