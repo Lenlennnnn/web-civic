@@ -7,7 +7,7 @@
     <title>Forum</title>
     <link rel="icon" type="image/png" href="login/images/icons/civicon.png" />
     <link rel="stylesheet" href="css/dashboard.css" />
-    <link rel="stylesheet" type="text/css" href="css/forum.css" />
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
@@ -939,120 +939,6 @@
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-    <script>
-      $(document).ready(function () {
-        // Initialize counters for up and down reactions
-        var upCount = 0;
-        var downCount = 0;
-
-        // Function to handle up arrow click
-        $(".btn-hover-success").click(function (event) {
-          event.preventDefault(); // Prevent the default behavior (scrolling to the top)
-          upCount = toggleCount(upCount, $(this));
-
-          // If the down arrow had a count, reset it
-          if (downCount > 0) {
-            downCount = toggleCount(downCount, $(".btn-hover-danger"));
-          }
-        });
-
-        // Function to handle down arrow click
-        $(".btn-hover-danger").click(function (event) {
-          event.preventDefault(); // Prevent the default behavior (scrolling to the top)
-          downCount = toggleCount(downCount, $(this));
-
-          // If the up arrow had a count, reset it
-          if (upCount > 0) {
-            upCount = toggleCount(upCount, $(".btn-hover-success"));
-          }
-        });
-
-        // Function to toggle the count between 0 and 1
-        function toggleCount(count, element) {
-          if (count === 0) {
-            count = 1;
-            // Display the count next to the arrow
-            element.find("i").after('<span class="count">' + count + "</span>");
-          } else {
-            count = 0;
-            // Remove the count next to the arrow
-            element.find(".count").remove();
-          }
-          return count;
-        }
-      });
-
-      // Get references to the modal and open button
-      var modalpl = document.getElementById("modalDiscussion");
-      var openModalBtnpl = document.getElementById("openModalpl");
-
-      // Show the modal
-      function openModalpl() {
-        modalpl.style.display = "flex";
-      }
-
-      // Close the modal
-      function closeModalpl() {
-        modalpl.style.display = "none";
-        const toggleSwitch = document.getElementById("toggleReport");
-        toggleSwitch.checked = false;
-      }
-
-      // Close the modal when clicking outside of it
-      window.addEventListener("click", function (event) {
-        if (event.target === modalpl) {
-          closeModalpl();
-        }
-      });
-
-      // Attach the click event to the open button
-      openModalBtnpl.addEventListener("click", openModalpl);
-
-      // Function to handle posting comments (modify as needed)
-      function postComment() {
-        var commentInput = document.querySelector(".comment-input");
-        var comment = commentInput.value;
-        // Add your logic to handle the posted comment (e.g., send it to a server)
-        console.log("Posted comment:", comment);
-        // Close the modal after posting
-        closeModalpl();
-      }
-
-      // Function to show the modal
-      function showModal() {
-        document.getElementById("modalrt").style.display = "block";
-      }
-
-      function openModal() {
-        document.getElementById("reportMain").style.display = "block";
-      }
-
-      // Function to close the modal
-      function closeModal() {
-        var reportMain = document.getElementById("reportMain");
-
-        if (reportMain.style.display === "block") {
-          reportMain.style.display = "none";
-        }
-      }
-      // Function to close the modal
-      function closeModalSec() {
-        var reportMain = document.getElementById("reportSec");
-
-        if (reportMain.style.display === "block") {
-          reportMain.style.display = "none";
-        }
-      }
-      // Add a click event listener to the close button in modalrt
-      document
-        .getElementsByClassName("closert")[0]
-        .addEventListener("click", closeModal);
-
-      // Add a click event listener to the close button in myModalvm
-      document
-        .getElementsByClassName("close-btn")[0]
-        .addEventListener("click", closeModal);
-    </script>
     <script>
       // JavaScript to initialize table scrolling
       const tableContainer = document.querySelector("#modal-bodyvm");

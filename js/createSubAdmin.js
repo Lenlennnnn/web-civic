@@ -249,41 +249,72 @@ function viewUserDetails(userId) {
 
       if (userData) {
         modalBodyContent.innerHTML = `
-              <div class="image-container">
-  <img src="${
-    userData.ImageProfile || "img/profile.png"
-  }" class="rounded-image">
-</div>
+          <div class="image-container">
+            <img src="${
+              userData.ImageProfile || "img/profile.png"
+            }" class="rounded-image">
+          </div>
 
           <p><u><h5>Information:</h5></u></p>
-         <p><strong>Last Name:<input class="form-control" id="lastNamefield" type="text" value="${
-           userData.lastname || "N/A"
-         }" readonly></input></strong></p>
-        <p><strong>First Name:<input class="form-control" id="firstNamefield" type="text" value="${
-          userData.firstname || "N/A"
-        }" readonly></input></strong></p>
-        <p><strong>Middle Name:<input class="form-control" id="middleNamefield" type="text" value="${
-          userData.middlename || "N/A"
-        }" readonly></input></strong></p>
-                   <p><strong>Email:<input class="form-control" id ="emailfield" type="text" value="${
-                     userData.email || "N/A"
-                   }" readonly></input></strong></p>
-                        <p><strong>Campus:<input class="form-control" id ="campusfield" type="text" value="${
-                          userData.campus || "N/A"
-                        }" readonly></input></strong></p>
-          <p><strong>Gender:<input class="form-control" id ="genderfield" type="text" value="${
+          <p><strong>Last Name:<input class="form-control" id="lastNamefield" type="text" value="${
+            userData.lastname || "N/A"
+          }" readonly></strong></p>
+          <p><strong>First Name:<input class="form-control" id="firstNamefield" type="text" value="${
+            userData.firstname || "N/A"
+          }" readonly></strong></p>
+          <p><strong>Middle Name:<input class="form-control" id="middleNamefield" type="text" value="${
+            userData.middlename || "N/A"
+          }" readonly></strong></p>
+          <p><strong>Email:<input class="form-control" id="emailfield" type="text" value="${
+            userData.email || "N/A"
+          }" readonly></strong></p>
+          <p><strong>Campus:<select class="form-control" id="campusfield" disabled>
+            <option value="ARASOF Nasugbu Campus" ${
+              userData.campus === "ARASOF Nasugbu Campus" ? "selected" : ""
+            }>ARASOF Nasugbu Campus</option>
+            <option value="Balayan Campus" ${
+              userData.campus === "Balayan Campus" ? "selected" : ""
+            }>Balayan Campus</option>
+            <option value="JPLPC Malvar Campus" ${
+              userData.campus === "JPLPC Malvar Campus" ? "selected" : ""
+            }>JPLPC Malvar Campus</option>
+            <option value="Lemery Campus" ${
+              userData.campus === "Lemery Campus" ? "selected" : ""
+            }>Lemery Campus</option>
+            <option value="Lipa Campus" ${
+              userData.campus === "Lipa Campus" ? "selected" : ""
+            }>Lipa Campus</option>
+            <option value="Lobo Campus" ${
+              userData.campus === "Lobo Campus" ? "selected" : ""
+            }>Lobo Campus</option>
+            <option value="Mabini Campus" ${
+              userData.campus === "Mabini Campus" ? "selected" : ""
+            }>Mabini Campus</option>
+            <option value="Pablo Borbon Campus I" ${
+              userData.campus === "Pablo Borbon Campus I" ? "selected" : ""
+            }>Pablo Borbon Campus I</option>
+            <option value="Pablo Borbon Campus II" ${
+              userData.campus === "Pablo Borbon Campus II" ? "selected" : ""
+            }>Pablo Borbon Campus II</option>
+            <option value="Rosario Campus" ${
+              userData.campus === "Rosario Campus" ? "selected" : ""
+            }>Rosario Campus</option>
+            <option value="San Juan Campus" ${
+              userData.campus === "San Juan Campus" ? "selected" : ""
+            }>San Juan Campus</option>
+          </select></strong></p>
+          <p><strong>Gender:<input class="form-control" id="genderfield" type="text" value="${
             userData.gender || "N/A"
-          }" readonly></input></strong></p>
-          <p><strong>Birthday:<input class="form-control" id ="birthDayfield" type="text" value="${
+          }" readonly></strong></p>
+          <p><strong>Birthday:<input class="form-control" id="birthDayfield" type="text" value="${
             userData.birthday || "N/A"
-          }" readonly></input></strong></p>
-          <p><strong>Position:<input class="form-control" id ="positionfield" type="text" value="${
+          }" readonly></strong></p>
+          <p><strong>Position:<input class="form-control" id="positionfield" type="text" value="${
             userData.position || "N/A"
-          }" readonly></input></strong></p>
-          <p><strong>Contact Number:<input class="form-control" id ="contactNumfield" type="text" value="${
+          }" readonly></strong></p>
+          <p><strong>Contact Number:<input class="form-control" id="contactNumfield" type="text" value="${
             userData.contactNumber || "N/A"
-          }" readonly></input></strong></p>
-
+          }" readonly></strong></p>
         `;
       } else {
         modalBodyContent.innerHTML = `<p>No user details found.</p>`;
@@ -294,6 +325,8 @@ function viewUserDetails(userId) {
     .catch((error) => {
       console.error("Error fetching user details:", error);
     });
+
+  // Add close modal functionality
   const closeButton = document.getElementById("closemodalbtn");
 
   if (closeButton) {
@@ -301,6 +334,7 @@ function viewUserDetails(userId) {
       $("#exampleModalLong").modal("hide");
     });
   }
+
   const closeButtonex = document.getElementById("closeModalpo");
 
   if (closeButtonex) {
@@ -308,6 +342,7 @@ function viewUserDetails(userId) {
       $("#exampleModalLong").modal("hide");
     });
   }
+
   // Remove outside click close modal functionality
   $("#exampleModalLong").modal({
     backdrop: "static", // Prevents modal from closing when clicking outside
@@ -358,6 +393,7 @@ function toggleEditMode() {
   const inputFields = document.querySelectorAll(".form-control");
   const excludedFields = ["emailfield"];
   const saveButton = document.getElementById("saveBtn");
+  const campusField = document.getElementById("campusfield");
 
   inputFields.forEach((field) => {
     const fieldId = field.id;
@@ -380,6 +416,9 @@ function toggleEditMode() {
     saveButton.style.display =
       saveButton.style.display === "none" ? "block" : "none";
   }
+
+  // Toggle the disabled attribute for the campus field
+  campusField.disabled = !campusField.disabled;
 }
 // Function to save changes to the Users node
 function saveChanges() {
