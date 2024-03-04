@@ -113,6 +113,23 @@ function RegisterUser(event) {
 
       // Store additional user data in the database
       saveUserData(user.uid);
+
+      // Logout the current user
+      auth
+        .signOut()
+        .then(() => {
+          // Alert for successful registration and logout
+          alert(
+            "User registered successfully. You need to login again for authentication purposes."
+          );
+
+          // Redirect to login page
+          window.location.href = "login/suplogin.html";
+        })
+        .catch((error) => {
+          // Handle errors in logout
+          console.error("Error logging out:", error);
+        });
     })
     .catch((error) => {
       // Handle errors here
@@ -120,6 +137,7 @@ function RegisterUser(event) {
       console.error(error);
     });
 }
+
 function validatePassword(password) {
   const regex = /^(?=.*[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
   return regex.test(password);

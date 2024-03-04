@@ -170,6 +170,23 @@ function registerUser(email, password) {
           var user = userCredential.user;
           alert("User with email " + email + " registered successfully!");
           saveUserData(user.uid, email);
+
+          // Logout the current user
+          auth
+            .signOut()
+            .then(() => {
+              // Alert for successful registration and logout
+              alert(
+                "User registered successfully. You need to login again for authentication purposes."
+              );
+
+              // Redirect to login page
+              window.location.href = "login/suplogin.html";
+            })
+            .catch((error) => {
+              // Handle errors in logout
+              console.error("Error logging out:", error);
+            });
         })
         .catch((error) => {
           // Handle errors during registration
