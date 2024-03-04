@@ -20,7 +20,7 @@ const db = getDatabase(app);
 const loginBtn = document.getElementById("btnlogin");
 
 loginBtn.addEventListener("click", async function () {
-  const email = document.getElementById("usernamefield").value;
+  const email = document.getElementById("usernamefield").value.toLowerCase(); // Convert to lowercase
   const password = document.getElementById("passwordfield").value;
 
   try {
@@ -41,8 +41,8 @@ loginBtn.addEventListener("click", async function () {
     // Check if the snapshot exists and compare the passwords
     if (snapshot.exists()) {
       const userData = snapshot.val();
-      // Assuming 'email' is stored and is used for comparison
-      if (userData.email === email) {
+      // Convert stored email to lowercase for comparison
+      if (userData.email.toLowerCase() === email) {
         window.location.href = "../subdashboard.html";
       } else {
         alert("Login failed. Please check your credentials.");

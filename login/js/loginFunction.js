@@ -11,7 +11,6 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
-// import { LoginWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
 
 import firebaseConfig from "/../js/firebaseConfig.js";
 
@@ -44,7 +43,7 @@ loginBtn.addEventListener("click", async function () {
     if (snapshot.exists()) {
       const adminData = snapshot.val();
       // Assuming 'email' is stored and is used for comparison
-      if (adminData.email === email) {
+      if (adminData.email === email.toLowerCase()) {
         // Authentication successful, redirect to the dashboard
         window.location.href = "../supdashboard.html";
       } else {
@@ -58,6 +57,7 @@ loginBtn.addEventListener("click", async function () {
     alert("Login failed. Please check your credentials or try again later.");
   }
 });
+
 document
   .getElementById("usernamefield")
   .addEventListener("keydown", handleEnterKey);
@@ -72,6 +72,7 @@ function handleEnterKey(event) {
     loginBtn.click();
   }
 }
+
 let firstname = document.getElementById("firstname");
 let middlename = document.getElementById("middlename");
 let lastname = document.getElementById("lastname");
@@ -116,9 +117,12 @@ function RegisterUser(event) {
   const middlenameValue = middlename.value.trim();
   const lastnameValue = lastname.value.trim();
   const genderValue = gender.value;
-  const emailValue = email.value.trim();
+  let emailValue = email.value.trim(); // Make email value lowercase
   const passwordValue = password.value.trim();
   const confirmPasswordValue = confirmpassword.value.trim();
+
+  // Convert email to lowercase
+  emailValue = emailValue.toLowerCase();
 
   // Check if any field is empty
   if (
@@ -206,6 +210,7 @@ function saveUserData(userId) {
       console.error(error);
     });
 }
+
 // Get the modal elements
 const modal = document.getElementById("myModalsupreg");
 const openModalBtn = document.getElementById("openModalBtnsupreg");

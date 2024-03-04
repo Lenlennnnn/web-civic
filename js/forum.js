@@ -164,6 +164,7 @@ function fetchForumPosts() {
                     // If found in SubAdminAcc, use that data
                     handleUploaderData(subAdminData);
                   } else {
+                    console.error("Uploader data not found in any node");
                   }
                 });
               }

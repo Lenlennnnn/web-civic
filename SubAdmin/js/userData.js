@@ -510,7 +510,7 @@ function toggleEditMode() {
     "currentEngfield",
     "finishActfield",
     "activePtsfield",
-    // Add more field IDs to exclude as needed
+    "campusfield",
   ];
   const saveButton = document.getElementById("saveBtn");
 

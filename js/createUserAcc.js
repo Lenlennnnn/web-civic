@@ -10,6 +10,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 import {
   getAuth,
+  onAuthStateChanged,
   createUserWithEmailAndPassword,
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 
@@ -18,6 +19,32 @@ import firebaseConfig from "./firebaseConfig.js";
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
+
+let currentUserUID;
+onAuthStateChanged(auth, (user) => {
+  // You can handle authentication state changes here
+  if (user) {
+    // Check if the authenticated user is a SuperAdminAcc
+    const superAdminRef = ref(db, `SuperAdminAcc/${user.uid}`);
+    get(superAdminRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log("SuperAdminAcc is logged in:", user);
+          currentUserUID = user.uid;
+        } else {
+          // If not a SuperAdminAcc, log out the user
+          console.log("User is not a SuperAdminAcc. Logging out...");
+          currentUserUID = null;
+          auth.signOut();
+        }
+      })
+      .catch((error) => {
+        console.error("Error checking SuperAdminAcc:", error);
+      });
+  } else {
+    console.log("User is logged out");
+  }
+});
 
 // Close modified modal on clicking the close button or outside the modal
 document.getElementById("closeModalrr").addEventListener("click", function () {
