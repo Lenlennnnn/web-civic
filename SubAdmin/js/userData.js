@@ -22,32 +22,6 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 
-let currentUserUID;
-onAuthStateChanged(auth, (user) => {
-  // You can handle authentication state changes here
-  if (user) {
-    // Check if the authenticated user is a SubAdminAcc
-    const subAdminRef = ref(db, `SubAdminAcc/${user.uid}`);
-    get(subAdminRef)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          console.log("SubAdminAcc is logged in:", user);
-          currentUserUID = user.uid;
-        } else {
-          // If not a SubAdminAcc, log out the user
-          console.log("User is not a SubAdminAcc. Logging out...");
-          currentUserUID = null;
-          auth.signOut();
-        }
-      })
-      .catch((error) => {
-        console.error("Error checking SubAdminAcc:", error);
-      });
-  } else {
-    console.log("User is logged out");
-  }
-});
-
 let firstname = document.getElementById("firstname");
 let middlename = document.getElementById("middlename");
 let lastname = document.getElementById("lastname");
@@ -58,7 +32,6 @@ let email = document.getElementById("email");
 let submit = document.getElementById("createbtnacc"); // Update the submit button ID
 
 submit.addEventListener("click", RegisterUser);
-
 function RegisterUser(event) {
   event.preventDefault();
   const confirmed = window.confirm(
@@ -79,7 +52,6 @@ function RegisterUser(event) {
     !password.value ||
     !confirmpassword.value ||
     !gender.value ||
-    !campus.value ||
     !email.value
   ) {
     alert("Please fill in all the fields.");
@@ -106,36 +78,47 @@ function RegisterUser(event) {
     alert("Passwords do not match. Please make sure the passwords match.");
     return;
   }
-  createUserWithEmailAndPassword(auth, email.value, password.value)
-    .then((userCredential) => {
-      // User registered successfully
-      const user = userCredential.user;
 
-      // Store additional user data in the database
-      saveUserData(user.uid);
+  // Get the current user's campus from onAuthStateChanged
+  let currentUserCampus;
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const userRef = ref(db, `SubAdminAcc/${user.uid}`);
+      onValue(userRef, (snapshot) => {
+        const currentUserData = snapshot.val();
+        if (currentUserData) {
+          currentUserCampus = currentUserData.campus;
+          // After obtaining the currentUserCampus, proceed to create the user
+          createUserWithEmailAndPassword(auth, email.value, password.value)
+            .then((userCredential) => {
+              // User registered successfully
+              const user = userCredential.user;
+              // Store additional user data in the database
+              saveUserData(user.uid, currentUserCampus);
 
-      // Logout the current user
-      auth
-        .signOut()
-        .then(() => {
-          // Alert for successful registration and logout
-          alert(
-            "User registered successfully. You need to login again for authentication purposes."
-          );
-
-          // Redirect to login page
-          window.location.href = "login/suplogin.html";
-        })
-        .catch((error) => {
-          // Handle errors in logout
-          console.error("Error logging out:", error);
-        });
-    })
-    .catch((error) => {
-      // Handle errors here
-      alert(error.message);
-      console.error(error);
-    });
+              // Log out the current user
+              auth
+                .signOut()
+                .then(() => {
+                  // Redirect to the login page after logout
+                  alert(
+                    "User registered successfully. You need to login again for authentication purposes."
+                  );
+                  window.location.href = "login/sublogin.html";
+                })
+                .catch((error) => {
+                  console.error("Error logging out:", error);
+                });
+            })
+            .catch((error) => {
+              // Handle errors here
+              alert(error.message);
+              console.error(error);
+            });
+        }
+      });
+    }
+  });
 }
 
 function validatePassword(password) {
@@ -160,7 +143,7 @@ function generateTimestamp() {
   return currentDate.toLocaleString("en-US", options).replace(",", "");
 }
 
-function saveUserData(userId) {
+function saveUserData(userId, currentUserCampus) {
   const dbRef = ref(db);
   const userRef = ref(db, `Users/${userId}`);
 
@@ -170,7 +153,7 @@ function saveUserData(userId) {
     middlename: middlename.value,
     lastname: lastname.value,
     gender: gender.value,
-    campus: campus.value,
+    campus: currentUserCampus, // Set the campus to currentUserCampus
     email: email.value,
     CurrentEngagement: 0,
     verificationStatus: true,
@@ -233,7 +216,8 @@ const initializeDataTable = () => {
 
 const dataTable = initializeDataTable();
 
-const populateDataTable = () => {
+// Function to populate data table with users from the same campus as the current user
+const populateDataTable = (currentUserCampus) => {
   onValue(UsersRef, (snapshot) => {
     const usersData = snapshot.val();
 
@@ -245,7 +229,10 @@ const populateDataTable = () => {
       Object.keys(usersData).forEach((userId) => {
         const user = usersData[userId];
 
-        if (user.verificationStatus) {
+        if (
+          user.verificationStatus &&
+          user.campus === currentUserCampus // Filter users based on campus
+        ) {
           // Check if user has verificationStatus set to true
           const lastLoginTimestamp = new Date(user.lastLogin);
 
@@ -270,7 +257,6 @@ const populateDataTable = () => {
             const email = user.email || "N/A";
             const gender = user.gender || "N/A";
             const yearAndSection = user.yearandSection || "N/A";
-            const campus = user.campus || "N/A";
             const userType = user.userType || "N/A";
             const nstp = user.nstp || "N/A";
 
@@ -281,7 +267,7 @@ const populateDataTable = () => {
               email: email,
               gender: gender,
               yearandSection: yearAndSection,
-              campus: campus,
+              campus: currentUserCampus, // Set campus to the current user's campus
               userType: userType,
               nstp: nstp,
               Details:
@@ -307,6 +293,27 @@ const populateDataTable = () => {
       .draw();
   });
 };
+
+// Update the onAuthStateChanged to fetch the current user's data and call populateDataTable with the current user's campus
+onAuthStateChanged(auth, (user) => {
+  // You can handle authentication state changes here
+  if (user) {
+    console.log("User is logged in:", user);
+    // Fetch the current user's data
+    const userRef = ref(db, `SubAdminAcc/${user.uid}`);
+    onValue(userRef, (snapshot) => {
+      const currentUserData = snapshot.val();
+      if (currentUserData) {
+        // Once you have the current user's data, proceed to update counts based on campus and user's campus
+        const currentUserCampus = currentUserData.campus;
+        populateDataTable(currentUserCampus); // Call populateDataTable with the current user's campus
+      }
+    });
+  } else {
+    console.log("User is logged out");
+  }
+});
+
 let eventListenersAdded = false;
 let currentUserId;
 function viewUserDetails(userId) {
@@ -320,7 +327,7 @@ function viewUserDetails(userId) {
 
       const modalBodyContent = document.getElementById("modalBodyContent");
       if (userData) {
-        const imageSrc = userData.ImageProfile || "img/profile.png";
+        const imageSrc = userData.ImageProfile || "../img/profile.png";
         modalBodyContent.innerHTML = `
         <div class="image-container"><img src="${imageSrc}" class="rounded-image"></div>
         <p><u><h5>Personal Information:</h5></u></p>
@@ -517,7 +524,7 @@ function toggleEditMode() {
     "currentEngfield",
     "finishActfield",
     "activePtsfield",
-    // Add more field IDs to exclude as needed
+    "campusfield",
   ];
   const saveButton = document.getElementById("saveBtn");
 
