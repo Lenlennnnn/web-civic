@@ -20,6 +20,32 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 
+let currentUserUID;
+onAuthStateChanged(auth, (user) => {
+  // You can handle authentication state changes here
+  if (user) {
+    // Check if the authenticated user is a SubAdminAcc
+    const subAdminRef = ref(db, `SubAdminAcc/${user.uid}`);
+    get(subAdminRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log("SubAdminAcc is logged in:", user);
+          currentUserUID = user.uid;
+        } else {
+          // If not a SuperAdminAcc, log out the user
+          console.log("User is not a SubAdminAcc. Logging out...");
+          currentUserUID = null;
+          auth.signOut();
+        }
+      })
+      .catch((error) => {
+        console.error("Error checking SubAdminAcc:", error);
+      });
+  } else {
+    console.log("User is logged out");
+  }
+});
+
 // Close modified modal on clicking the close button or outside the modal
 document.getElementById("closeModalrr").addEventListener("click", function () {
   document.getElementById("myModalrr").style.display = "none";
@@ -103,23 +129,12 @@ document.getElementById("subac").addEventListener("click", function (event) {
 
   // Confirmation alert
   if (confirm("Are you sure you want to register these users?")) {
-    // Get the current user's campus from onAuthStateChanged
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const userRef = ref(db, `SubAdminAcc/${user.uid}`);
-        onValue(userRef, (snapshot) => {
-          const currentUserData = snapshot.val();
-          if (currentUserData) {
-            const currentUserCampus = currentUserData.campus;
-            registerUsers(currentUserCampus); // Pass currentUserCampus to registerUsers
-          }
-        });
-      }
-    });
+    // Register users
+    registerUsers();
   }
 });
 
-function registerUsers(currentUserCampus) {
+function registerUsers() {
   var inputRow = document.getElementById("inputrow");
   var emailInputs = inputRow.getElementsByClassName("emailInput");
 
@@ -134,7 +149,7 @@ function registerUsers(currentUserCampus) {
 
         if (email !== "") {
           // Register the user with the fetched default password
-          registerUser(email, defaultPassword, currentUserCampus);
+          registerUser(email, defaultPassword);
         }
       });
       removeAddedRows();
@@ -144,7 +159,7 @@ function registerUsers(currentUserCampus) {
   });
 }
 
-function registerUser(email, password, currentUserCampus) {
+function registerUser(email, password) {
   // Check if the email already exists
   checkIfEmailExists(email).then(function (emailExists) {
     if (!emailExists) {
@@ -154,7 +169,24 @@ function registerUser(email, password, currentUserCampus) {
           // User registered successfully
           var user = userCredential.user;
           alert("User with email " + email + " registered successfully!");
-          saveUserData(user.uid, email, currentUserCampus); // Pass currentUserCampus to saveUserData
+          saveUserData(user.uid, email);
+
+          // Logout the current user
+          auth
+            .signOut()
+            .then(() => {
+              // Alert for successful registration and logout
+              alert(
+                "User registered successfully. You need to login again for authentication purposes."
+              );
+
+              // Redirect to login page
+              window.location.href = "login/sublogin.html";
+            })
+            .catch((error) => {
+              // Handle errors in logout
+              console.error("Error logging out:", error);
+            });
         })
         .catch((error) => {
           // Handle errors during registration
@@ -191,7 +223,7 @@ function generateTimestamp() {
   };
   return currentDate.toLocaleString("en-US", options).replace(",", "");
 }
-function saveUserData(uid, email, currentUserCampus) {
+function saveUserData(uid, email) {
   // Save additional user data to the database
   var usersRef = ref(db, "Users/" + uid);
   set(usersRef, {
@@ -200,7 +232,7 @@ function saveUserData(uid, email, currentUserCampus) {
     activepts: 0,
     address: "",
     birthday: "",
-    campus: currentUserCampus, // Set campus to currentUserCampus
+    campus: "",
     course: "",
     nstp: "",
     ContactEme: "",
