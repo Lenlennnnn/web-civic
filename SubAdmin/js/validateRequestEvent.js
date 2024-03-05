@@ -205,7 +205,7 @@ function openEventModal(eventData) {
               : "N/A"
           }" readonly>
         </p>
-        <p><strong>Facilitators Contractor Email:</strong>
+        <p><strong>Facilitators Contract or Email:</strong>
           <input class="form-control" id="facilitatorNField" type="text" value="${
             eventData.facilitatorsContactorEmail
               ? eventData.facilitatorsContactorEmail.replace(/"/g, "&quot;")

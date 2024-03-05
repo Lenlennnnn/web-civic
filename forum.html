@@ -902,7 +902,7 @@
         <div id="modal-forum">
           <!-- Modal Header -->
           <div id="modal-headerForum">
-            <span class="closepo" onclick="closeModal()" id="closeModaldetail">
+            <span class="closepo" id="closeModaldetail">
               <ion-icon name="close"></ion-icon>
             </span>
             <h3>View Report</h3>
@@ -981,7 +981,12 @@
         // Re-check overflow on window resize
         window.addEventListener("resize", checkOverflow);
       }
+      function closeModalSec() {
+        const modal = document.getElementById("reportSec");
+        modal.style.display = "none";
+      }
     </script>
+
     <script type="module" src="js/forum.js"></script>
     <script type="module" src="js/forumPost.js"></script>
   </body>

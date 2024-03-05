@@ -274,7 +274,7 @@ function fetchForumPosts(currentUserCampus) {
               ${postData.postTime}
             </p>
           </div>
-         <p class="text-muted text-sm" style="margin-top:4%; font-weight: bold; font-size: 14px;" id="forumText-${postKey}">
+         <p class="text-muted text-sm" style="margin-top:4%; font-weight: bold; font-size: 14px; line-height: 1.8;" id="forumText-${postKey}">
     ${postData.postText}
 </p>
 
@@ -772,6 +772,7 @@ document.addEventListener("click", function (event) {
     modal.style.display = "none";
     const toggleSwitch = document.getElementById("toggleReport");
     toggleSwitch.checked = false;
+    closeModal();
   }
 });
 

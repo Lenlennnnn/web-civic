@@ -980,6 +980,10 @@
         // Re-check overflow on window resize
         window.addEventListener("resize", checkOverflow);
       }
+      function closeModalSec() {
+        const modal = document.getElementById("reportSec");
+        modal.style.display = "none";
+      }
     </script>
     <script type="module" src="js/forum.js"></script>
     <script type="module" src="js/forumPost.js"></script>
