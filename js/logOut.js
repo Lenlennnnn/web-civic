@@ -42,6 +42,7 @@ onAuthStateChanged(auth, (user) => {
     console.log("User is logged out");
   }
 });
+
 document.getElementById("logOut").addEventListener("click", () => {
   // Sign out the current user
   auth
@@ -51,6 +52,9 @@ document.getElementById("logOut").addEventListener("click", () => {
 
       // Redirect to the suplogin.html page after successful logout
       window.location.href = "login/suplogin.html";
+
+      // Remove previous page from history
+      history.replaceState(null, "", "login/suplogin.html");
     })
     .catch((error) => {
       console.error("Error logging out:", error);

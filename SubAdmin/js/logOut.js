@@ -51,6 +51,9 @@ document.getElementById("logOut").addEventListener("click", () => {
 
       // Redirect to the suplogin.html page after successful logout
       window.location.href = "login/sublogin.html";
+
+      // Remove previous page from history
+      history.replaceState(null, "", "login/sublogin.html");
     })
     .catch((error) => {
       console.error("Error logging out:", error);
