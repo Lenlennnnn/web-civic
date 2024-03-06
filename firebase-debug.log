@@ -1,0 +1,21 @@
+[debug] [2024-03-06T15:33:38.832Z] ----------------------------------------------------------------------
+[debug] [2024-03-06T15:33:38.834Z] Command:       /home/kbarpilleda/.config/nvm/versions/node/v20.11.1/bin/node /home/kbarpilleda/.config/nvm/versions/node/v20.11.1/bin/firebase init
+[debug] [2024-03-06T15:33:38.834Z] CLI Version:   13.4.0
+[debug] [2024-03-06T15:33:38.835Z] Platform:      linux
+[debug] [2024-03-06T15:33:38.835Z] Node Version:  v20.11.1
+[debug] [2024-03-06T15:33:38.835Z] Time:          Wed Mar 06 2024 23:33:38 GMT+0800 (Philippine Standard Time)
+[debug] [2024-03-06T15:33:38.835Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-03-06T15:33:38.839Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-03-06T15:33:38.839Z] > authorizing via signed-in user (kbarpilleda@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /home/kbarpilleda/web-civicall
+
